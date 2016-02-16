@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="main_orange">#eb6001</color>
+    <color name="lightgray">#d8d8d8</color>
+    <color name="darkgray">#282828</color>
+    <color name="line_color">#a3a3a3</color>
+</resources>

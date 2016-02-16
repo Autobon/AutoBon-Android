@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">AutoBon</string>
+
+    <!--登陆界面-->
+    <string name="text_language">语言</string>
+    <string name="text_login">登录</string>
+    <string name="text_forget_pwd">忘记密码?</string>
+    <string name="text_tips">还没账号? </string>
+    <string name="text_reg">注册</string>
+    <string name="hint_text_phone">请输入手机号</string>
+    <string name="hint_text_pwd">请输入密码</string>
+    <string name="login_title">车邻邦</string>
+
 </resources>
