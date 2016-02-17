@@ -84,14 +84,13 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_eye:
+                isFocus = !isFocus;
                 if (isFocus) {
                     showOrHidenLoginPwd(true);
                     iv_eye.setImageResource(R.mipmap.eye_open);
-                    isFocus = false;
                 } else {
                     showOrHidenLoginPwd(false);
                     iv_eye.setImageResource(R.mipmap.eye_hidden);
-                    isFocus = true;
                 }
                 break;
             case R.id.iv_clear: //清除
@@ -108,8 +107,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                 switchLang();
                 break;
             case R.id.tv_forget_pwd: //忘记密码
-                //Intent i = new Intent(this,FindPasswordActivity.class);
-                //startActivity(i);
+                Intent i = new Intent(this,FindPasswordActivity.class);
+                startActivity(i);
                 break;
         }
     }

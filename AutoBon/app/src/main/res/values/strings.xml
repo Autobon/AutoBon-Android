@@ -26,4 +26,6 @@
     <string name="code_tips">验证码已以短信形式发送到您的手机中,请注意查收</string>
     <string name="next_btn_text">下一步</string>
     <string name="repeat_get_text">再次获取</string>
+    <string name="code_length_tips">验证码的长度为6位字符</string>
+    <string name="second_text">秒</string>
 </resources>
