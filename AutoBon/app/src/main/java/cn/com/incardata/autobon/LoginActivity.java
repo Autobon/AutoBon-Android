@@ -19,9 +19,9 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import cn.com.incardata.autobon.application.Language;
-import cn.com.incardata.autobon.application.MyApplication;
-import cn.com.incardata.autobon.util.StringUtil;
+import cn.com.incardata.application.Language;
+import cn.com.incardata.application.MyApplication;
+import cn.com.incardata.utils.StringUtil;
 
 public class LoginActivity extends Activity implements View.OnClickListener{
     private ImageView iv_eye,iv_clear;

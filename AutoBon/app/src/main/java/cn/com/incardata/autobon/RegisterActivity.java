@@ -16,7 +16,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import cn.com.incardata.autobon.util.StringUtil;
+import cn.com.incardata.utils.StringUtil;
+
 
 /**
  * Created by Administrator on 2016/2/16.

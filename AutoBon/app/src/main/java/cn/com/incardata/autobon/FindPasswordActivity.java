@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import cn.com.incardata.autobon.util.StringUtil;
+import cn.com.incardata.utils.StringUtil;
 
 /**
  * Created by Administrator on 2016/2/17.
