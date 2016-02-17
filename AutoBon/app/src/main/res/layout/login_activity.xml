@@ -7,6 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp50">
         <TextView
+            android:id="@+id/tv_language"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/sp15"
@@ -14,7 +15,9 @@
             android:text="@string/text_language"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dp20"/>
+            android:layout_marginRight="@dimen/dp20"
+            android:clickable="true"
+            android:focusable="true"/>
     </RelativeLayout>
 
     <LinearLayout
@@ -66,7 +69,8 @@
                 android:maxLength="11"
                 android:hint="@string/hint_text_phone"
                 android:layout_centerVertical="true"
-                android:textColorHint="@color/lightgray"/>
+                android:textColorHint="@color/lightgray"
+                android:textSize="@dimen/sp15"/>
             <ImageView
                 android:id="@+id/iv_clear"
                 android:layout_width="@dimen/dp25"
@@ -75,7 +79,8 @@
                 android:src="@mipmap/iv_delete"
                 android:layout_marginRight="@dimen/dp20"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:visibility="invisible"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -92,7 +97,7 @@
                 android:id="@+id/iv_pwd"
                 android:layout_width="@dimen/dp25"
                 android:layout_height="@dimen/dp25"
-                android:src="@mipmap/img_account"
+                android:src="@mipmap/img_pwd"
                 android:scaleType="centerInside"
                 android:layout_marginLeft="@dimen/dp15"
                 android:layout_centerVertical="true"/>
@@ -108,7 +113,8 @@
                 android:maxLength="18"
                 android:hint="@string/hint_text_pwd"
                 android:layout_centerVertical="true"
-                android:textColorHint="@color/lightgray" />
+                android:textColorHint="@color/lightgray"
+                android:textSize="@dimen/sp15"/>
             <ImageView
                 android:id="@+id/iv_eye"
                 android:layout_width="@dimen/dp25"
@@ -130,20 +136,25 @@
         <Button
             android:id="@+id/login_btn"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp50"
+            android:layout_height="@dimen/dp40"
             android:layout_margin="@dimen/dp20"
+            android:paddingTop="@dimen/dp10"
+            android:paddingBottom="@dimen/dp10"
             android:text="@string/text_login"
             android:gravity="center"
-            android:textSize="@dimen/sp20"
+            android:textSize="@dimen/sp18"
             android:background="@drawable/login_btn_selector"
             android:textColor="@android:color/white"/>
         <TextView
+            android:id="@+id/tv_forget_pwd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp20"
             android:textColor="@android:color/darker_gray"
             android:textSize="@dimen/sp15"
-            android:text="@string/text_forget_pwd" />
+            android:text="@string/text_forget_pwd"
+            android:clickable="true"
+            android:focusable="true"/>
     </LinearLayout>
 
     <LinearLayout

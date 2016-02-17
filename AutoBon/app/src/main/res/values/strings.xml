@@ -11,4 +11,19 @@
     <string name="hint_text_pwd">请输入密码</string>
     <string name="login_title">车邻邦</string>
 
+    <!--注册界面-->
+    <string name="hint_text_code">请输入验证码</string>
+    <string name="btn_text_check">验证</string>
+    <string name="btn_text_submit">提交</string>
+    <string name="tips">点击“提交”代表本人已阅读并同意</string>
+    <string name="text_protocal">《车邻邦服务协议》</string>
+
+    <!--找回密码界面-->
+    <string name="find_password">找回密码</string>
+    <string name="hint_phone">+86手机号</string>
+    <string name="hint_code">请输入收到的验证码</string>
+    <string name="text_timer">(60)秒</string>
+    <string name="code_tips">验证码已以短信形式发送到您的手机中,请注意查收</string>
+    <string name="next_btn_text">下一步</string>
+    <string name="repeat_get_text">再次获取</string>
 </resources>
