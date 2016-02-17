@@ -31,4 +31,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     //    compile 'com.android.support:appcompat-v7'
     compile 'com.android.support:appcompat-v7:21.0.3'
+    compile files('libs/fastjson-1.2.4.jar')
 }
