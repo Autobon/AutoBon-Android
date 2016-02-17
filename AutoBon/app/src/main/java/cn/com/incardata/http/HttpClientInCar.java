@@ -197,16 +197,8 @@ public class HttpClientInCar extends CustomHttpClient {
 	}
 	
 	private static synchronized DefaultHttpClient getDefaultHttpClient(){
-//		BasicHttpParams params = new BasicHttpParams(); 
-//		HttpConnectionParams.setConnectionTimeout(params, 10000); //设置连接超时
-//		 HttpConnectionParams.setSoTimeout(params, 10000); //设置请求超时
-		 
 		DefaultHttpClient httpclient = new DefaultHttpClient();
 		HttpParams httpParameters = httpclient.getParams();
-//		BasicCookieStore cookieStore = new BasicCookieStore();
-//		BasicClientCookie clientCookie = new BasicClientCookie("token", "vWfvmf1nPssdPBWOSuXJSg%3D%3D");
-//		clientCookie.setDomain("dev.incardata.com.cn");
-//		cookieStore.addCookie(clientCookie);
 
 		CookieStore token = MyApplication.getInstance().getCookieStore();
 		httpclient.setCookieStore(token);
