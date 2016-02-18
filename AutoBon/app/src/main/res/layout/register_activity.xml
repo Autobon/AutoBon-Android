@@ -53,8 +53,8 @@
             android:textSize="@dimen/sp15"/>
         <ImageView
             android:id="@+id/iv_clear"
-            android:layout_width="@dimen/dp60"
-            android:layout_height="@dimen/dp40"
+            android:layout_width="@dimen/dp25"
+            android:layout_height="@dimen/dp25"
             android:scaleType="centerInside"
             android:src="@mipmap/iv_delete"
             android:layout_marginRight="@dimen/dp35"
@@ -62,7 +62,7 @@
             android:layout_centerVertical="true"
             android:clickable="true"
             android:focusable="true"
-            android:visibility="visible"/>
+            android:visibility="invisible"/>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -74,8 +74,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp60"
-        android:layout_marginTop="@dimen/dp5">
+        android:layout_height="@dimen/dp60">
         <ImageView
             android:id="@+id/iv_check"
             android:layout_width="@dimen/dp25"
@@ -101,14 +100,14 @@
             android:maxLength="6"/>
         <Button
             android:id="@+id/btn_check"
-            android:layout_width="@dimen/dp65"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dp70"
+            android:layout_height="@dimen/dp35"
             android:layout_marginRight="@dimen/dp35"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="@drawable/check_btn"
             android:text="@string/btn_text_check"
-            android:textSize="@dimen/sp15"
+            android:textSize="@dimen/sp13"
             android:textColor="@color/main_orange"
             android:gravity="center"/>
         <View
@@ -122,8 +121,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp60"
-        android:layout_marginTop="@dimen/dp5">
+        android:layout_height="@dimen/dp60">
         <ImageView
             android:id="@+id/iv_pwd"
             android:layout_width="@dimen/dp25"
@@ -170,11 +168,11 @@
     <Button
         android:id="@+id/register_btn"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp60"
+        android:layout_height="@dimen/dp40"
         android:layout_marginLeft="@dimen/dp35"
         android:layout_marginRight="@dimen/dp35"
-        android:layout_marginTop="@dimen/dp15"
-        android:layout_marginBottom="@dimen/dp15"
+        android:layout_marginTop="@dimen/dp20"
+        android:layout_marginBottom="@dimen/dp20"
         android:paddingTop="@dimen/dp10"
         android:paddingBottom="@dimen/dp10"
         android:text="@string/btn_text_submit"

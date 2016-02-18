@@ -5,8 +5,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -15,6 +16,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import cn.com.incardata.utils.StringUtil;
+import cn.com.incardata.utils.T;
 
 /**
  * Created by Administrator on 2016/2/17.
@@ -39,9 +41,10 @@ public class FindPasswordActivity extends Activity implements View.OnClickListen
     public void initView(){
         context = this;
         iv_back = (ImageView) findViewById(R.id.iv_back);
-        btn_check = (Button) findViewById(R.id.btn_check);
+        iv_clear = (ImageView) findViewById(R.id.iv_clear);
         et_phone = (EditText) findViewById(R.id.et_phone);
         et_code = (EditText) findViewById(R.id.et_code);
+        btn_check = (Button) findViewById(R.id.btn_check);
     }
 
     public void setListener(){
@@ -70,7 +73,17 @@ public class FindPasswordActivity extends Activity implements View.OnClickListen
            }
         });
 
-
+        et_code.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus == false){  //失去焦点
+                    String code = et_code.getText().toString().trim();
+                    if(code.length()!=6){  //验证码的长度不为6位,提示用户
+                        T.show(context,context.getResources().getString(R.string.code_length_tips));
+                    }
+                }
+            }
+        });
     }
 
     public void openTimerTask(){
@@ -105,10 +118,8 @@ public class FindPasswordActivity extends Activity implements View.OnClickListen
 
                         String str = btn_check.getText().toString().trim();
                         if(StringUtil.isNotEmpty(str)){
-                            String time = str.substring(str.indexOf("(")+1,str.indexOf(")"));
-                            Log.i("test","time========================>"+time);
-                            btn_check.setText(time);
                             count--;
+                            btn_check.setText("("+count+")"+context.getResources().getString(R.string.second_text));
                         }
                     }
                 });
@@ -118,6 +129,7 @@ public class FindPasswordActivity extends Activity implements View.OnClickListen
                     @Override
                     public void run() {
                         btn_check.setText(context.getResources().getString(R.string.repeat_get_text));
+                        btn_check.setTextSize(15);
                         btn_check.setFocusable(true);
                         btn_check.setClickable(true);
                     }
@@ -144,5 +156,15 @@ public class FindPasswordActivity extends Activity implements View.OnClickListen
                 sendValidCode();
                 break;
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if(null != this.getCurrentFocus()){
+            //点击空白位置 隐藏软键盘
+            InputMethodManager mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            return mInputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+        }
+        return super.onTouchEvent(event);
     }
 }
