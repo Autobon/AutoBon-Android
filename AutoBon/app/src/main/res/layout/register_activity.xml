@@ -53,8 +53,8 @@
             android:textSize="@dimen/sp15"/>
         <ImageView
             android:id="@+id/iv_clear"
-            android:layout_width="@dimen/dp25"
-            android:layout_height="@dimen/dp25"
+            android:layout_width="@dimen/dp60"
+            android:layout_height="@dimen/dp40"
             android:scaleType="centerInside"
             android:src="@mipmap/iv_delete"
             android:layout_marginRight="@dimen/dp35"
@@ -62,7 +62,7 @@
             android:layout_centerVertical="true"
             android:clickable="true"
             android:focusable="true"
-            android:visibility="invisible"/>
+            android:visibility="visible"/>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -102,7 +102,7 @@
         <Button
             android:id="@+id/btn_check"
             android:layout_width="@dimen/dp65"
-            android:layout_height="@dimen/dp35"
+            android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/dp35"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
@@ -170,7 +170,7 @@
     <Button
         android:id="@+id/register_btn"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp40"
+        android:layout_height="@dimen/dp60"
         android:layout_marginLeft="@dimen/dp35"
         android:layout_marginRight="@dimen/dp35"
         android:layout_marginTop="@dimen/dp15"
