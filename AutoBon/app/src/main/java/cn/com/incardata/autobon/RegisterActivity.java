@@ -89,14 +89,13 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
                 et_phone.setText("");
                 break;
             case R.id.iv_eye:
+                isFocus = !isFocus;
                 if (isFocus) {
                     showOrHidenLoginPwd(true);
                     iv_eye.setImageResource(R.mipmap.eye_open);
-                    isFocus = false;
                 } else {
                     showOrHidenLoginPwd(false);
                     iv_eye.setImageResource(R.mipmap.eye_hidden);
-                    isFocus = true;
                 }
                 break;
             case R.id.register_btn:

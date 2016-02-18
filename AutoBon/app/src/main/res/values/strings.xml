@@ -26,4 +26,17 @@
     <string name="code_tips">验证码已以短信形式发送到您的手机中,请注意查收</string>
     <string name="next_btn_text">下一步</string>
     <string name="repeat_get_text">再次获取</string>
+    <string name="code_length_tips">验证码的长度为6位字符</string>
+    <string name="second_text">秒</string>
+
+    <!--接单,开始工作-->
+    <string name="text_distance">距离: </string>
+    <string name="tab_one_text">+合作人</string>
+    <string name="tab_two_text">开始工作</string>
+    <string name="work_timer">施工时间:</string>
+    <string name="memo_text">备注:</string>
+    <string name="no_network_error">无网络</string>
+    <string name="error_key_tips">key校验失败</string>
+    <string name="no_result_tips">未搜索到结果</string>
+
 </resources>
