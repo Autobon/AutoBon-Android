@@ -1,13 +1,19 @@
 package cn.com.incardata.http;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
 import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CookieStore;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -21,6 +27,7 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.com.incardata.application.MyApplication;
@@ -74,6 +81,48 @@ public class HttpClientInCar extends CustomHttpClient {
 			throw new RuntimeException("连接失败", e);
 		}finally{
 			httpPost.abort();
+		}
+	}
+
+    /**
+     * 以post键值对表单形式提交数据
+     * @param context
+     * @param url
+     * @param nameValuePairs
+     * @return
+     */
+	public static String PostFormByHttpClient(Context context, String url,NameValuePair... nameValuePairs) {
+		try {
+			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			if (nameValuePairs != null) {
+				for (int i = 0; i < nameValuePairs.length; i++) {
+					params.add(nameValuePairs[i]);
+				}
+			}
+
+			UrlEncodedFormEntity urlEncoded = new UrlEncodedFormEntity(params,CHARSET_UTF8);
+			urlEncoded.setContentType("application/x-www-form-urlencoded");
+			urlEncoded.setChunked(false);
+			HttpPost httpPost = new HttpPost(url);
+			httpPost.setEntity(urlEncoded);
+
+			HttpClient client = getHttpClient(context);
+			HttpResponse response = client.execute(httpPost);
+			if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+				throw new RuntimeException("请求失败");
+			}
+			HttpEntity resEntity = response.getEntity();
+			//return (resEntity == null) ? null:resEntity.getContent().toString();
+			return (resEntity == null) ? null : EntityUtils.toString(resEntity,
+					CHARSET_UTF8);
+		} catch (UnsupportedEncodingException e) {
+			Log.w(TAG, e.getMessage());
+			return null;
+		} catch (ClientProtocolException e) {
+			Log.w(TAG, e.getMessage());
+			return null;
+		} catch (IOException e) {
+			throw new RuntimeException("连接失败", e);
 		}
 	}
 

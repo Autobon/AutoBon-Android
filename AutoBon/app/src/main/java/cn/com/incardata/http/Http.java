@@ -126,7 +126,7 @@ public class Http{
 		msgQueue.put(onResult.hashCode(), onResult);
  		taskToken(strUrl, param, PUT, cls, onResult.hashCode());
 	}
-	
+
 	public void shutdown(){
 		if (mExecutor != null) {
 			mExecutor.shutdown();

@@ -1,6 +1,7 @@
 package cn.com.incardata.autobon;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     private TextView tv_register,tv_language,tv_forget_pwd;
     private Button login_btn;
     private boolean isFocus;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     }
 
     public void initView(){
+        context = this;
         iv_eye = (ImageView) findViewById(R.id.iv_eye);
         iv_clear = (ImageView) findViewById(R.id.iv_clear);
         et_phone = (EditText) findViewById(R.id.et_phone);
@@ -156,7 +159,17 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     }
 
     private void login(){
-
+        /**
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                BasicNameValuePair value01 = new BasicNameValuePair("phone","15972219148");
+                BasicNameValuePair value02 = new BasicNameValuePair("password","12345678");
+                String result = HttpClientInCar.PostFormByHttpClient(context,"http://121.40.157.200:51234/api/mobile/technician/login",value01,value02);
+                Log.i("test","========================>"+result);
+            }
+        }).start();
+         **/
     }
 
     @Override

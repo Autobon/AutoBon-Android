@@ -2,6 +2,7 @@ package cn.com.incardata.autobon;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -25,7 +26,7 @@ public class FindPasswordActivity extends Activity implements View.OnClickListen
     private ImageView iv_back,iv_clear;
     private EditText et_phone,et_code;
     private Timer timer;
-    private Button btn_check;
+    private Button btn_check,next_btn;
     private Context context;
     private static int count;
 
@@ -35,7 +36,6 @@ public class FindPasswordActivity extends Activity implements View.OnClickListen
         setContentView(R.layout.find_password_activity);
         initView();
         setListener();
-        openTimerTask();
     }
 
     public void initView(){
@@ -50,6 +50,7 @@ public class FindPasswordActivity extends Activity implements View.OnClickListen
     public void setListener(){
         iv_back.setOnClickListener(this);
         btn_check.setOnClickListener(this);
+        next_btn.setOnClickListener(this);
 
         et_phone.addTextChangedListener(new TextWatcher() {
            @Override
@@ -88,7 +89,7 @@ public class FindPasswordActivity extends Activity implements View.OnClickListen
 
     public void openTimerTask(){
         count = 60;  //默认时间1分钟
-        btn_check.setText(getString(R.string.text_timer));
+        btn_check.setText(getString(R.string.text_get_code));
 
         TimerTask task = new MyTimerTask();
         timer = new Timer();
@@ -118,8 +119,8 @@ public class FindPasswordActivity extends Activity implements View.OnClickListen
 
                         String str = btn_check.getText().toString().trim();
                         if(StringUtil.isNotEmpty(str)){
-                            count--;
                             btn_check.setText("("+count+")"+context.getResources().getString(R.string.second_text));
+                            count--;
                         }
                     }
                 });
@@ -154,6 +155,11 @@ public class FindPasswordActivity extends Activity implements View.OnClickListen
             case R.id.btn_check:
                 openTimerTask();
                 sendValidCode();
+                break;
+            case R.id.next_btn: //下一步
+                Intent intent = new Intent();
+                intent.setClass(context,ResetPasswordActivity.class);
+                startActivity(intent);
                 break;
         }
     }
