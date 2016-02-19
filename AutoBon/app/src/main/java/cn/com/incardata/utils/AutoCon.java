@@ -7,6 +7,6 @@ package cn.com.incardata.utils;
 public class AutoCon {
     /** app语言 */
     public static final String LANGUAGE = "language";
-    /** token */
-    public static final String TOKEN = "token";
+    /** autoken */
+    public static final String AUTOKEN = "autoken";
 }

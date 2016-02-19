@@ -20,8 +20,12 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import org.apache.http.message.BasicNameValuePair;
+
 import cn.com.incardata.application.Language;
 import cn.com.incardata.application.MyApplication;
+import cn.com.incardata.http.HttpClientInCar;
+import cn.com.incardata.http.NetURL;
 import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
 
