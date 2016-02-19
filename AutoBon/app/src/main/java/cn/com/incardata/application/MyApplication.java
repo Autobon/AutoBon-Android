@@ -54,20 +54,20 @@ public class MyApplication extends Application{
         return null;
     }
 
-    public synchronized void setCookieStore(String token){
-        if (token == null){
+    public synchronized void setCookieStore(String autoken){
+        if (autoken == null){
             return;
         }
         cookieStore = new BasicCookieStore();
-        BasicClientCookie clientCookie = new BasicClientCookie("token", token);
+        BasicClientCookie clientCookie = new BasicClientCookie(AutoCon.AUTOKEN, autoken);
         clientCookie.setDomain("dev.incardata.com.cn");
         cookieStore.addCookie(clientCookie);
     }
 
     public synchronized CookieStore getCookieStore(){
         if (this.cookieStore == null) {
-            String token = SharedPre.getString(this, AutoCon.TOKEN, "");
-            setCookieStore(token);
+            String autoken = SharedPre.getString(this, AutoCon.AUTOKEN, "");
+            setCookieStore(autoken);
         }
         return this.cookieStore;
     }

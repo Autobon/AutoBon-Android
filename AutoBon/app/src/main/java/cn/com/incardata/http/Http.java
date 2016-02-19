@@ -1,12 +1,14 @@
 package cn.com.incardata.http;
 
-import java.util.HashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+
+import org.apache.http.NameValuePair;
+
+import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Http{
 	public final static int POST = 1;
@@ -84,14 +86,21 @@ public class Http{
 		msgQueue.put(onResult.hashCode(), onResult);
 		task(context, strUrl, param, PUT, cls, onResult.hashCode());
 	}
-	
+
+	/**
+	 * 携带token传送json的任务
+	 * @param strUrl
+	 * @param param
+	 * @param httpMode
+	 * @param cls
+	 * @param what
+	 */
 	private void taskToken(String strUrl, String param, int httpMode, Class<?> cls, int what){
 		mExecutor.submit(new NetTaskToken(strUrl, param, httpMode, cls, handler, what));
 	}
 	
 	/**
-	 * post方式加载数据带token
-	 * @param context
+	 * post方式加载数据带token（传送json）
 	 * @param strUrl
 	 * @param param
 	 * @param cls
@@ -103,8 +112,7 @@ public class Http{
 	}
 	
 	/**
-	 * get方式加载数据带token
-	 * @param context
+	 * get方式加载数据带token（传送json）
 	 * @param strUrl
 	 * @param param
 	 * @param cls
@@ -116,7 +124,7 @@ public class Http{
 	}
 	
 	/**
-	 * put方式加载数据带token
+	 * put方式加载数据带token（传送json）
 	 * @param strUrl
 	 * @param param
 	 * @param cls
@@ -126,7 +134,58 @@ public class Http{
 		msgQueue.put(onResult.hashCode(), onResult);
  		taskToken(strUrl, param, PUT, cls, onResult.hashCode());
 	}
-	
+
+	/**
+	 * 携带token传送表单（NameValuePair）的任务
+	 * @param strUrl
+	 * @param httpMode
+	 * @param cls
+	 * @param what
+	 * @param nameValuePairs
+	 */
+	private void taskToken(String strUrl, int httpMode, Class<?> cls, int what, NameValuePair... nameValuePairs){
+		mExecutor.submit(new NetTaskToken(strUrl, httpMode, cls, handler, what, nameValuePairs));
+	}
+
+	/**
+	 * post方式加载数据带token（传送表单NameValuePair）
+	 * @param strUrl
+	 * @param cls
+	 * @param onResult
+	 * @param nameValuePairs
+	 */
+	public void postTaskToken(String strUrl, Class<?> cls, OnResult onResult, NameValuePair... nameValuePairs){
+		msgQueue.put(onResult.hashCode(), onResult);
+		taskToken(strUrl, POST, cls, onResult.hashCode(), nameValuePairs);
+	}
+
+	/**
+	 * get方式加载数据带token（传送表单NameValuePair)
+	 * @param strUrl
+	 * @param cls
+	 * @param onResult
+	 * @param nameValuePairs
+	 */
+	public void getTaskToken(String strUrl, Class<?> cls, OnResult onResult, NameValuePair... nameValuePairs){
+		msgQueue.put(onResult.hashCode(), onResult);
+		taskToken(strUrl, GET, cls, onResult.hashCode(), nameValuePairs);
+	}
+
+	/**
+	 * put方式加载数据带token（传送表单NameValuePair)
+	 * @param strUrl
+	 * @param cls
+	 * @param onResult
+	 * @param nameValuePairs
+	 */
+	public void putTaskToken(String strUrl, Class<?> cls, OnResult onResult, NameValuePair... nameValuePairs){
+		msgQueue.put(onResult.hashCode(), onResult);
+		taskToken(strUrl, PUT, cls, onResult.hashCode(), nameValuePairs);
+	}
+
+	/**
+	 * Executor.shutdown
+	 */
 	public void shutdown(){
 		if (mExecutor != null) {
 			mExecutor.shutdown();

@@ -19,8 +19,12 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import org.apache.http.message.BasicNameValuePair;
+
 import cn.com.incardata.application.Language;
 import cn.com.incardata.application.MyApplication;
+import cn.com.incardata.http.HttpClientInCar;
+import cn.com.incardata.http.NetURL;
 import cn.com.incardata.utils.StringUtil;
 
 public class LoginActivity extends Activity implements View.OnClickListener{
@@ -156,7 +160,19 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     }
 
     private void login(){
-
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                BasicNameValuePair pair1 = new BasicNameValuePair("phone", "13026000000");
+                BasicNameValuePair pair2 = new BasicNameValuePair("password", "123456789");
+                try {
+                    String json = HttpClientInCar.postLoginHttpToken(LoginActivity.this, NetURL.LOGIN, pair1, pair2);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
 
     @Override

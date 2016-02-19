@@ -5,21 +5,33 @@ import android.os.Message;
 
 import com.alibaba.fastjson.JSON;
 
+import org.apache.http.NameValuePair;
+
 public class NetTaskToken implements Runnable {
 	private String strUrl;
+	private NameValuePair[] params;
 	private String param;
 	private Handler handler;
 	private Class<?> cls;
 	private int httpMode;
 	private int what;
 
-	public NetTaskToken(String strUrl, String param, int httpMode, Class<?> cls,Handler handler, int what) {
+	public NetTaskToken(String strUrl, String param, int httpMode, Class<?> cls, Handler handler, int what) {
 		this.strUrl = strUrl;
-		this.param = param;
 		this.handler = handler;
 		this.cls = cls;
 		this.httpMode = httpMode;
 		this.what = what;
+		this.param = param;
+	}
+
+	public NetTaskToken(String strUrl, int httpMode, Class<?> cls, Handler handler, int what, NameValuePair... params) {
+		this.strUrl = strUrl;
+		this.handler = handler;
+		this.cls = cls;
+		this.httpMode = httpMode;
+		this.what = what;
+		this.params = params;
 	}
 
 	@Override
@@ -28,13 +40,13 @@ public class NetTaskToken implements Runnable {
 			String json = null;
 			switch (httpMode) {
 			case Http.POST:
-				json = HttpClientInCar.postHttpToken(strUrl, param);
+				json = HttpClientInCar.postHttpToken(strUrl, params);
 				break;
 			case Http.GET:
-				json = HttpClientInCar.getHttpToken(strUrl, param);
+				json = HttpClientInCar.getHttpToken(strUrl, params);
 				break;
 			case Http.PUT:
-				json = HttpClientInCar.PutHttpToken(strUrl, param);
+				json = HttpClientInCar.PutHttpToken(strUrl, params);
 				break;
 			default:
 				break;
