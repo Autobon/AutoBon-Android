@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import cn.com.incardata.utils.StringUtil;
+import cn.com.incardata.utils.T;
 
 
 /**
@@ -24,7 +25,7 @@ import cn.com.incardata.utils.StringUtil;
  */
 public class RegisterActivity extends Activity implements View.OnClickListener{
     private ImageView iv_back,iv_clear,iv_eye;
-    private EditText et_phone,et_pwd;
+    private EditText et_phone,et_pwd,et_code;
     private Button register_btn;
     private boolean isFocus;
     private TextView tv_protocal;
@@ -44,6 +45,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
         iv_clear = (ImageView) findViewById(R.id.iv_clear);
         iv_eye = (ImageView) findViewById(R.id.iv_eye);
         et_phone = (EditText) findViewById(R.id.et_phone);
+        et_code = (EditText) findViewById(R.id.et_code);
         et_pwd = (EditText) findViewById(R.id.et_pwd);
         register_btn = (Button) findViewById(R.id.register_btn);
         tv_protocal = (TextView) findViewById(R.id.tv_protocal);
@@ -110,6 +112,39 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
     }
 
     private void submitRegisterInfo(){
+        String phone = et_phone.getText().toString().trim();
+        String code = et_code.getText().toString().trim();
+        String password = et_pwd.getText().toString().trim();
+        if(StringUtil.isEmpty(phone)){
+            T.show(context,context.getString(R.string.empty_phone));
+            return;
+        }
+        if(phone.length()!=11){
+            T.show(context,context.getString(R.string.error_phone));
+            return;
+        }
+        if(StringUtil.isEmpty(password)){
+            T.show(context,context.getString(R.string.empty_password));
+            return;
+        }
+        if(StringUtil.isEmpty(code)){
+            T.show(context,context.getString(R.string.empty_code));
+            return;
+        }
+        if(code.length()!=6){  //验证码的长度不为6位,提示用户
+            T.show(context,context.getResources().getString(R.string.code_length_tips));
+            return;
+        }
+
+        if(password.length()<8){
+            T.show(context,context.getString(R.string.password_length_tips));
+            return;
+        }
+        if(!password.matches(".*[a-zA-Z].*[0-9]|.*[0-9].*[a-zA-Z]")){  //密码长度至少为8位,且为数字或字母组合
+            T.show(context,context.getString(R.string.error_password));
+            return;
+        }
+
         //TODO 注册成功后清空任务栈返回登录界面
         Intent intent = new Intent(context, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

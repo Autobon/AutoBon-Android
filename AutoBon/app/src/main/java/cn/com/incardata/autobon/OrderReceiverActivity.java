@@ -43,7 +43,7 @@ import cn.com.incardata.utils.T;
 /**
  * Created by Administrator on 2016/2/17.
  */
-public class OrderReceiverActivity extends Activity{
+public class OrderReceiverActivity extends Activity implements View.OnClickListener{
     private Context context;
     private MyBaiduSDKReceiver receiver;
     private MapView mMapView;
@@ -51,7 +51,7 @@ public class OrderReceiverActivity extends Activity{
     public LocationClient mLocationClient;
     private MyListener myListener;
     private View pop;
-    private TextView tv_distance;
+    private TextView tv_distance,tv_add_contact;
     private boolean isZoomCenter = true;
 
     private Overlay[] markOverlay;  //标志物图层
@@ -64,7 +64,9 @@ public class OrderReceiverActivity extends Activity{
     private static final int length = 4;  //常量字段
     private static final int defaultLevel = 15;
 
-    private static final String mAddress = "武汉同济医院";  //测试地址,可以更改
+    private static final int ADD_CONTACT_CODE = 1;
+
+    private static final String mAddress = "武汉光谷广场";  //测试地址,可以更改
 
 
     @Override
@@ -165,6 +167,7 @@ public class OrderReceiverActivity extends Activity{
     public void initView(){
         context = this;
         tv_distance = (TextView) findViewById(R.id.tv_distance);
+        tv_add_contact = (TextView) findViewById(R.id.tv_add_contact);
         mMapView = (MapView) findViewById(R.id.bmapView);  	// 获取地图控件引用
         baiduMap = mMapView.getMap();  //管理具体的某一个MapView对象,缩放,旋转,平移
         MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.zoomTo(defaultLevel);  //默认级别12
@@ -183,6 +186,7 @@ public class OrderReceiverActivity extends Activity{
     }
 
     public void setListener(){
+        tv_add_contact.setOnClickListener(this);
         baiduMap.setOnMapLoadedCallback(new BaiduMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
@@ -301,6 +305,24 @@ public class OrderReceiverActivity extends Activity{
         double d =  Math.acos(Math.sin(lat1)*Math.sin(lat2)+Math.cos(lat1)*Math.cos(lat2)*Math.cos(lon2-lon1))*R;  //两点间距离 km，如果想要米的话，结果*1000就可以了
 
         return d*1000;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.tv_add_contact:
+                Intent intent = new Intent(this,AddContactActivity.class);
+                startActivityForResult(intent,ADD_CONTACT_CODE);
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == ADD_CONTACT_CODE){  //添加联系人返回,更新界面
+
+        }
     }
 
     @Override

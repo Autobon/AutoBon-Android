@@ -156,6 +156,7 @@
         android:orientation="horizontal"
         android:weightSum="2">
         <TextView
+            android:id="@+id/tv_add_contact"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

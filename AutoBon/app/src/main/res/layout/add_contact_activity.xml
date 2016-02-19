@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white">
     <RelativeLayout
@@ -69,29 +71,49 @@
         android:layout_height="@dimen/dp120"
         android:paddingLeft="@dimen/dp10"
         android:paddingRight="@dimen/dp10">
-        <ImageView
-            android:id="@+id/circle_image"
+        <cn.com.incardata.view.CircleImageView
+            android:id="@+id/iv_circle"
             android:layout_width="@dimen/dp70"
             android:layout_height="@dimen/dp70"
             android:layout_gravity="center_vertical"
-            android:scaleType="centerInside"
-            android:src="@mipmap/ic_launcher"/>
+            android:src="@mipmap/ic_launcher"
+            app:border_width="1dp"
+            app:border_color="@color/line_color"/>
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="@dimen/dp70"
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/dp5">
             <TextView
+                android:id="@+id/tv_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="dsasd"/>
-            <TextView
+                android:text="zhangming"
+                android:textSize="@dimen/sp15"
+                android:textColor="@color/darkgray"/>
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="dsasd"
-                android:layout_marginTop="@dimen/dp10"/>
+                android:layout_marginTop="@dimen/dp10"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/order_number_text"
+                    android:textSize="@dimen/sp15"
+                    android:textColor="@color/darkgray"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sp15"
+                    android:layout_marginLeft="@dimen/dp5"
+                    android:textColor="@color/main_orange" />
+            </LinearLayout>
+
         </LinearLayout>
         <Button
             android:id="@+id/btn_check"

@@ -23,6 +23,7 @@ import android.widget.TextView;
 import cn.com.incardata.application.Language;
 import cn.com.incardata.application.MyApplication;
 import cn.com.incardata.utils.StringUtil;
+import cn.com.incardata.utils.T;
 
 public class LoginActivity extends Activity implements View.OnClickListener{
     private ImageView iv_eye,iv_clear;
@@ -159,6 +160,21 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     }
 
     private void login(){
+        String phone = et_phone.getText().toString().trim();
+        String password = et_phone.getText().toString().trim();
+        if(StringUtil.isEmpty(phone)){
+            T.show(context,context.getString(R.string.empty_phone));
+            return;
+        }
+        if(phone.length()!=11){
+            T.show(context,context.getString(R.string.error_phone));
+            return;
+        }
+        if(StringUtil.isEmpty(password)){
+            T.show(context,context.getString(R.string.empty_password));
+            return;
+        }
+
         /**
         new Thread(new Runnable() {
             @Override
