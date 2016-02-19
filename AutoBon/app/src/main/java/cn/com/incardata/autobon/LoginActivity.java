@@ -1,6 +1,7 @@
 package cn.com.incardata.autobon;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import cn.com.incardata.application.MyApplication;
 import cn.com.incardata.http.HttpClientInCar;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.utils.StringUtil;
+import cn.com.incardata.utils.T;
 
 public class LoginActivity extends Activity implements View.OnClickListener{
     private ImageView iv_eye,iv_clear;
@@ -33,6 +35,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     private TextView tv_register,tv_language,tv_forget_pwd;
     private Button login_btn;
     private boolean isFocus;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     }
 
     public void initView(){
+        context = this;
         iv_eye = (ImageView) findViewById(R.id.iv_eye);
         iv_clear = (ImageView) findViewById(R.id.iv_clear);
         et_phone = (EditText) findViewById(R.id.et_phone);
@@ -160,19 +164,32 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     }
 
     private void login(){
-        new Thread(){
+        String phone = et_phone.getText().toString().trim();
+        String password = et_phone.getText().toString().trim();
+        if(StringUtil.isEmpty(phone)){
+            T.show(context,context.getString(R.string.empty_phone));
+            return;
+        }
+        if(phone.length()!=11){
+            T.show(context,context.getString(R.string.error_phone));
+            return;
+        }
+        if(StringUtil.isEmpty(password)){
+            T.show(context,context.getString(R.string.empty_password));
+            return;
+        }
+
+        /**
+        new Thread(new Runnable() {
             @Override
             public void run() {
-                super.run();
-                BasicNameValuePair pair1 = new BasicNameValuePair("phone", "13026000000");
-                BasicNameValuePair pair2 = new BasicNameValuePair("password", "123456789");
-                try {
-                    String json = HttpClientInCar.postLoginHttpToken(LoginActivity.this, NetURL.LOGIN, pair1, pair2);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                BasicNameValuePair value01 = new BasicNameValuePair("phone","15972219148");
+                BasicNameValuePair value02 = new BasicNameValuePair("password","12345678");
+                String result = HttpClientInCar.PostFormByHttpClient(context,"http://121.40.157.200:51234/api/mobile/technician/login",value01,value02);
+                Log.i("test","========================>"+result);
             }
-        }.start();
+        }).start();
+         **/
     }
 
     @Override

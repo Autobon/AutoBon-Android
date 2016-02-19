@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ZoomControls;
 
@@ -38,12 +39,14 @@ import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import java.util.ArrayList;
 
 import cn.com.incardata.utils.DecimalUtil;
+import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
 
 /**
+ * 接单开始工作
  * Created by Administrator on 2016/2/17.
  */
-public class OrderReceiverActivity extends Activity{
+public class OrderReceiverActivity extends Activity implements View.OnClickListener{
     private Context context;
     private MyBaiduSDKReceiver receiver;
     private MapView mMapView;
@@ -51,8 +54,13 @@ public class OrderReceiverActivity extends Activity{
     public LocationClient mLocationClient;
     private MyListener myListener;
     private View pop;
-    private TextView tv_distance;
+    private TextView tv_distance,tv_add_contact;
     private boolean isZoomCenter = true;
+
+    private LinearLayout ll_add_contact,ll_tab_bottom;
+    private TextView tv_username,tv_begin_work;
+    private View bt_line_view;
+    private ImageView iv_back;
 
     private Overlay[] markOverlay;  //标志物图层
     private Overlay[] popOverlay;  //信息框图层
@@ -64,7 +72,9 @@ public class OrderReceiverActivity extends Activity{
     private static final int length = 4;  //常量字段
     private static final int defaultLevel = 15;
 
-    private static final String mAddress = "武汉同济医院";  //测试地址,可以更改
+    private static final int ADD_CONTACT_CODE = 1;
+
+    private static final String mAddress = "武汉光谷广场";  //测试地址,可以更改
 
 
     @Override
@@ -151,9 +161,6 @@ public class OrderReceiverActivity extends Activity{
             latLngArray[1] = result.getLocation();
             windowInfo[1] = result.getAddress();
             zoomByTwoPoint(latLngArray[0],latLngArray[1]);
-            double distance = getDistance(latLngArray[0], latLngArray[1]);
-
-            tv_distance.setText(String.valueOf((int)distance)+"米");
         }
 
         @Override
@@ -165,6 +172,15 @@ public class OrderReceiverActivity extends Activity{
     public void initView(){
         context = this;
         tv_distance = (TextView) findViewById(R.id.tv_distance);
+        tv_add_contact = (TextView) findViewById(R.id.tv_add_contact);
+        tv_username = (TextView) findViewById(R.id.tv_username);
+        tv_begin_work = (TextView)findViewById(R.id.tv_begin_work);
+        ll_add_contact = (LinearLayout) findViewById(R.id.ll_add_contact);
+        ll_tab_bottom = (LinearLayout) findViewById(R.id.ll_tab_bottom);
+        bt_line_view = findViewById(R.id.bt_line_view);
+        iv_back = (ImageView) findViewById(R.id.iv_back);
+
+
         mMapView = (MapView) findViewById(R.id.bmapView);  	// 获取地图控件引用
         baiduMap = mMapView.getMap();  //管理具体的某一个MapView对象,缩放,旋转,平移
         MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.zoomTo(defaultLevel);  //默认级别12
@@ -183,6 +199,9 @@ public class OrderReceiverActivity extends Activity{
     }
 
     public void setListener(){
+        tv_add_contact.setOnClickListener(this);
+        iv_back.setOnClickListener(this);
+
         baiduMap.setOnMapLoadedCallback(new BaiduMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
@@ -304,9 +323,44 @@ public class OrderReceiverActivity extends Activity{
     }
 
     @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.tv_add_contact:
+                Intent intent = new Intent(this,AddContactActivity.class);
+                startActivityForResult(intent,ADD_CONTACT_CODE);
+                break;
+            case R.id.iv_back:
+                finish();
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == ADD_CONTACT_CODE){  //添加联系人返回,更新界面
+            switch (resultCode){
+                case RESULT_OK:
+                    String username = data.getExtras().getString("username");
+                    if(StringUtil.isNotEmpty(username)){
+                        tv_username.setText(username);
+                        bt_line_view.setVisibility(View.VISIBLE);
+                        ll_add_contact.setVisibility(View.VISIBLE);
+                        ll_tab_bottom.setVisibility(View.GONE);
+                        tv_begin_work.setVisibility(View.VISIBLE);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(receiver);
+        baiduMap.clear();
         // 在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
         mMapView.onDestroy();
     }

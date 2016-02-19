@@ -10,6 +10,13 @@
     <string name="hint_text_phone">请输入手机号</string>
     <string name="hint_text_pwd">请输入密码</string>
     <string name="login_title">车邻邦</string>
+    <string name="empty_phone">手机号不能为空</string>
+    <string name="error_phone">手机号为11位数字</string>
+    <string name="empty_password">密码不能为空</string>
+    <string name="password_length_tips">密码至少为8位</string>
+    <string name="error_password">密码必须为数字和字母的组合</string>
+
+
 
     <!--注册界面-->
     <string name="hint_text_code">请输入验证码</string>
@@ -22,12 +29,15 @@
     <string name="find_password">找回密码</string>
     <string name="hint_phone">+86手机号</string>
     <string name="hint_code">请输入收到的验证码</string>
-    <string name="text_timer">(60)秒</string>
+    <string name="text_get_code">获取</string>
     <string name="code_tips">验证码已以短信形式发送到您的手机中,请注意查收</string>
     <string name="next_btn_text">下一步</string>
     <string name="repeat_get_text">再次获取</string>
-    <string name="code_length_tips">验证码的长度为6位字符</string>
+    <string name="code_length_tips">验证码的长度为6位</string>
     <string name="second_text">秒</string>
+    <string name="reset_pwd">重置密码</string>
+    <string name="reset_tips">需要数字 字母或符号</string>
+    <string name="empty_code">验证码不能为空</string>
 
     <!--接单,开始工作-->
     <string name="text_distance">距离: </string>
@@ -38,5 +48,10 @@
     <string name="no_network_error">无网络</string>
     <string name="error_key_tips">key校验失败</string>
     <string name="no_result_tips">未搜索到结果</string>
+    <string name="search_text">搜索</string>
+    <string name="assure_text">确定</string>
+    <string name="order_number_text">订单数</string>
+    <string name="contact_text">合作人:</string>
+    <string name="receiver_text">已接单</string>
 
 </resources>
