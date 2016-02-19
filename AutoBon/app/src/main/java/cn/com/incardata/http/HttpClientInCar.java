@@ -1,13 +1,16 @@
 package cn.com.incardata.http;
 
-import com.alibaba.fastjson.JSON;
+import android.content.Context;
+import android.util.Log;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
 import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CookieStore;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -21,11 +24,13 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.com.incardata.application.MyApplication;
-import cn.com.incardata.http.response.LoginEntity;
+import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.L;
+import cn.com.incardata.utils.SharedPre;
 
 
 /**
@@ -38,42 +43,51 @@ public class HttpClientInCar extends CustomHttpClient {
 	/**
 	 * 登录
 	 * @param url
-	 * @param json
+	 * @param nameValuePairs
 	 * @return
 	 */
-	public static String postLoginHttpToken(String url, String json) throws Exception{
-		HttpPost httpPost = new HttpPost(url); 
-		DefaultHttpClient httpclient = getDefaultHttpClient();
+	public static String postLoginHttpToken(Context context, String url, NameValuePair... nameValuePairs) throws Exception{
 		try {
-			StringEntity s = new StringEntity(json, HTTP.UTF_8);
-			s.setContentType(APPLICATION_JSON);
-			httpPost.setEntity(s); 
-			HttpResponse response = httpclient.execute(httpPost);
+			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			if (nameValuePairs != null) {
+				for (int i = 0; i < nameValuePairs.length; i++) {
+					params.add(nameValuePairs[i]);
+				}
+			}
+
+			UrlEncodedFormEntity urlEncoded = new UrlEncodedFormEntity(params,CHARSET_UTF8);
+			urlEncoded.setContentType("application/x-www-form-urlencoded");
+			urlEncoded.setChunked(false);
+			HttpPost httpPost = new HttpPost(url);
+			httpPost.setEntity(urlEncoded);
+
+			DefaultHttpClient client = getDefaultHttpClient();
+
+			HttpResponse response = client.execute(httpPost);
 			if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
 				throw new RuntimeException("请求失败");
 			}
-			HttpEntity resEntity = response.getEntity();
-			String result = null;
-			if (resEntity != null) {
-				result = EntityUtils.toString(resEntity,CHARSET_UTF8);
-				LoginEntity loginEntity = JSON.parseObject(result, LoginEntity.class);
-				if (StatusCode.STATUS_SUCCESS.equals(loginEntity.getStatus())) {
-					List<Cookie> token = httpclient.getCookieStore().getCookies();
-					//提取token
-					MyApplication.getInstance().setCookieStore("");
+
+			List<Cookie> cookies = client.getCookieStore().getCookies();
+			for (Cookie cookie : cookies){
+				if (AutoCon.AUTOKEN.equals(cookie.getName())){
+					SharedPre.setSharedPreferences(context, AutoCon.AUTOKEN, cookie.getValue());
+					break;
 				}
 			}
-			return result;
+
+			HttpEntity resEntity = response.getEntity();
+			//return (resEntity == null) ? null:resEntity.getContent().toString();
+			return (resEntity == null) ? null : EntityUtils.toString(resEntity,
+					CHARSET_UTF8);
 		} catch (UnsupportedEncodingException e) {
-			L.e(TAG, e.getMessage());
+			Log.w(TAG, e.getMessage());
 			return null;
 		} catch (ClientProtocolException e) {
-			L.e(TAG, e.getMessage());
+			Log.w(TAG, e.getMessage());
 			return null;
 		} catch (IOException e) {
 			throw new RuntimeException("连接失败", e);
-		}finally{
-			httpPost.abort();
 		}
 	}
 
@@ -117,14 +131,14 @@ public class HttpClientInCar extends CustomHttpClient {
 //			httpPost.abort();
 //		}
 //	}
-	
+
 	public static String postHttpToken(String url, String json) throws Exception{
-		HttpPost httpPost = new HttpPost(url); 
+		HttpPost httpPost = new HttpPost(url);
 		DefaultHttpClient httpclient = getDefaultHttpClient();
 		try {
 			StringEntity s = new StringEntity(json, HTTP.UTF_8);
 			s.setContentType(APPLICATION_JSON);
-			httpPost.setEntity(s); 
+			httpPost.setEntity(s);
 			HttpResponse response = httpclient.execute(httpPost);
 			if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
 				throw new RuntimeException("请求失败");
@@ -142,6 +156,42 @@ public class HttpClientInCar extends CustomHttpClient {
 			throw new RuntimeException("连接失败", e);
 		}finally{
 			httpPost.abort();
+		}
+	}
+
+	public static String postHttpToken(String url, NameValuePair... nameValuePairs) {
+		try {
+			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			if (nameValuePairs != null) {
+				for (int i = 0; i < nameValuePairs.length; i++) {
+					params.add(nameValuePairs[i]);
+				}
+			}
+
+			UrlEncodedFormEntity urlEncoded = new UrlEncodedFormEntity(params,CHARSET_UTF8);
+			urlEncoded.setContentType("application/x-www-form-urlencoded");
+			urlEncoded.setChunked(false);
+			HttpPost httpPost = new HttpPost(url);
+			httpPost.setEntity(urlEncoded);
+
+			DefaultHttpClient client = getDefaultHttpClient();
+
+			HttpResponse response = client.execute(httpPost);
+			if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+				throw new RuntimeException("请求失败");
+			}
+			HttpEntity resEntity = response.getEntity();
+			//return (resEntity == null) ? null:resEntity.getContent().toString();
+			return (resEntity == null) ? null : EntityUtils.toString(resEntity,
+					CHARSET_UTF8);
+		} catch (UnsupportedEncodingException e) {
+			Log.w(TAG, e.getMessage());
+			return null;
+		} catch (ClientProtocolException e) {
+			Log.w(TAG, e.getMessage());
+			return null;
+		} catch (IOException e) {
+			throw new RuntimeException("连接失败", e);
 		}
 	}
 
@@ -168,15 +218,60 @@ public class HttpClientInCar extends CustomHttpClient {
 			throw new RuntimeException("连接失败",e);
 		}finally{
 			httpGet.abort();
-		} 	
+		}
+	}
+
+	public static String getHttpToken(String url, NameValuePair... nameValuePairs) throws Exception{
+		try {
+			StringBuilder sb = new StringBuilder();
+			sb.append(url);
+			if (nameValuePairs != null && nameValuePairs.length > 0) {
+				sb.append("?");
+				for (int i = 0; i < nameValuePairs.length; i++) {
+					if (i > 0) {
+						sb.append("&");
+					}
+					sb.append(String.format("%s=%s",
+							nameValuePairs[i].getName(),
+							nameValuePairs[i].getValue()));
+				}
+			}
+			L.d(CustomHttpClient.class,"getFromWebByHttpClient url = " + sb);
+			// HttpGet连接对象
+			HttpGet httpRequest = new HttpGet(sb.toString());
+			// 取得HttpClient对象
+			DefaultHttpClient httpclient = getDefaultHttpClient();
+			// 请求HttpClient，取得HttpResponse
+			HttpResponse httpResponse = httpclient.execute(httpRequest);
+			// 请求成功
+			if (httpResponse.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+				throw new RuntimeException("连接失败");
+			}
+			return EntityUtils.toString(httpResponse.getEntity(),"UTF-8");
+//			BufferedReader br = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent(), "UTF-8"));
+//			String respone = "";
+//            String line = null;
+//            while ((line = br.readLine()) != null) {
+//                    respone += line;
+//            }
+//            return respone;
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			throw new RuntimeException("连接失败",e);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			L.e("IOException ");
+			e.printStackTrace();
+			throw new RuntimeException("连接失败",e);
+		}
 	}
 
 	public static String PutHttpToken(String url,String json) throws Exception{
 		try {
-			HttpPut httpPut = new HttpPut(url); 
+			HttpPut httpPut = new HttpPut(url);
 			StringEntity s = new StringEntity(json, HTTP.UTF_8);
 			s.setContentType("application/json");
-			httpPut.setEntity(s); 
+			httpPut.setEntity(s);
 			DefaultHttpClient client = getDefaultHttpClient();
 			HttpResponse response = client.execute(httpPut);
 			if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
@@ -193,19 +288,54 @@ public class HttpClientInCar extends CustomHttpClient {
 			return "";
 		} catch (IOException e) {
 			throw new RuntimeException("连接失败", e);
-		} 
+		}
 	}
-	
+
+	public static String PutHttpToken(String url, NameValuePair... nameValuePairs) throws Exception {
+		try {
+			List<NameValuePair> params = new ArrayList<NameValuePair>();
+			if (nameValuePairs != null) {
+				for (int i = 0; i < nameValuePairs.length; i++) {
+					params.add(nameValuePairs[i]);
+				}
+			}
+
+			UrlEncodedFormEntity urlEncoded = new UrlEncodedFormEntity(params, CHARSET_UTF8);
+			urlEncoded.setContentType("application/x-www-form-urlencoded");
+			urlEncoded.setChunked(false);
+			HttpPut httpPut = new HttpPut(url);
+			httpPut.setEntity(urlEncoded);
+
+			DefaultHttpClient client = getDefaultHttpClient();
+
+			HttpResponse response = client.execute(httpPut);
+			if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+				throw new RuntimeException("请求失败");
+			}
+			HttpEntity resEntity = response.getEntity();
+			return (resEntity == null) ? null : EntityUtils.toString(resEntity,
+					CHARSET_UTF8);
+		} catch (UnsupportedEncodingException e) {
+			Log.w(TAG, e.getMessage());
+			return null;
+		} catch (ClientProtocolException e) {
+			Log.w(TAG, e.getMessage());
+			return null;
+		} catch (IOException e) {
+			throw new RuntimeException("连接失败", e);
+		}
+	}
+
 	private static synchronized DefaultHttpClient getDefaultHttpClient(){
 		DefaultHttpClient httpclient = new DefaultHttpClient();
 		HttpParams httpParameters = httpclient.getParams();
 
 		CookieStore token = MyApplication.getInstance().getCookieStore();
 		httpclient.setCookieStore(token);
-		
+
 		HttpConnectionParams.setConnectionTimeout(httpParameters, 10000);
 		HttpConnectionParams.setSoTimeout(httpParameters, 10000);
-		
+
 //		//请求超时
 //		httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 10000); 
 //		//读取超时
