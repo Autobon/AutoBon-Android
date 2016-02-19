@@ -58,6 +58,7 @@ public class FindPasswordActivity extends Activity implements View.OnClickListen
         btn_check.setOnClickListener(this);
         next_btn.setOnClickListener(this);
         iv_eye.setOnClickListener(this);
+        iv_clear.setOnClickListener(this);
 
         et_phone.addTextChangedListener(new TextWatcher() {
            @Override

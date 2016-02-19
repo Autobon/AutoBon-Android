@@ -51,5 +51,7 @@
     <string name="search_text">搜索</string>
     <string name="assure_text">确定</string>
     <string name="order_number_text">订单数</string>
+    <string name="contact_text">合作人:</string>
+    <string name="receiver_text">已接单</string>
 
 </resources>
