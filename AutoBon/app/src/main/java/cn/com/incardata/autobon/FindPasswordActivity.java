@@ -15,9 +15,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import org.apache.http.message.BasicNameValuePair;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import cn.com.incardata.http.Http;
+import cn.com.incardata.http.NetURL;
+import cn.com.incardata.http.NetWorkHelper;
+import cn.com.incardata.http.OnResult;
+import cn.com.incardata.http.response.ResetPasswordEntity;
+import cn.com.incardata.http.response.VerifySmsEntity;
 import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
 
@@ -157,8 +167,27 @@ public class FindPasswordActivity extends Activity implements View.OnClickListen
     /**
      * 发送验证码
      */
-    public void sendValidCode(){
-        //TODO
+    public void sendValidCode(String phone){
+        if(NetWorkHelper.isNetworkAvailable(context)) {
+            BasicNameValuePair bv_phone = new BasicNameValuePair("phone", phone);
+            Http.getInstance().getTaskToken(NetURL.VERIFY_SMS, VerifySmsEntity.class, new OnResult() {
+                @Override
+                public void onResult(Object entity) {
+                    if (entity == null) {
+                        T.show(context, context.getString(R.string.failed_code));
+                        return;
+                    }
+                    VerifySmsEntity verifySmsEntity = (VerifySmsEntity) entity;
+                    if(verifySmsEntity.isResult()){
+                        T.show(context,context.getString(R.string.send_code_success));
+                        return;
+                    }
+                }
+            }, bv_phone);
+        }else{
+            T.show(context,getString(R.string.no_network_tips));
+            return;
+        }
     }
 
     /**
@@ -167,7 +196,7 @@ public class FindPasswordActivity extends Activity implements View.OnClickListen
     public void submitRegisterInfo(){
         String phone = et_phone.getText().toString().trim();
         String code = et_code.getText().toString().trim();
-        String password = et_pwd.getText().toString().trim();
+        final String password = et_pwd.getText().toString().trim();
 
         if(StringUtil.isEmpty(phone)){
             T.show(context,context.getString(R.string.empty_phone));
@@ -198,11 +227,32 @@ public class FindPasswordActivity extends Activity implements View.OnClickListen
             return;
         }
 
-        //TODO 重置密码成功后清空任务栈返回登录界面
-        Intent intent = new Intent(context, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finish();
+        List<BasicNameValuePair> mList = new ArrayList<BasicNameValuePair>();
+        mList.add(new BasicNameValuePair("phone",phone));
+        mList.add(new BasicNameValuePair("password",password));
+        mList.add(new BasicNameValuePair("verifySms",code));
+
+        Http.getInstance().postTaskToken(NetURL.RESET_PASSWORD, ResetPasswordEntity.class, new OnResult() {
+            @Override
+            public void onResult(Object entity) {
+                if (entity == null) {
+                    T.show(context, context.getString(R.string.reset_failed));
+                    return;
+                }
+                ResetPasswordEntity resetPasswordEntity = (ResetPasswordEntity) entity;
+                if(resetPasswordEntity.isResult()){
+                    //TODO 重置密码成功后清空任务栈返回登录界面
+                    T.show(context,context.getString(R.string.reset_success)+password);
+                    Intent intent = new Intent(context, LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                }else{  //失败
+
+                }
+            }
+        },(BasicNameValuePair[]) mList.toArray(new BasicNameValuePair[mList.size()]));
+
     }
 
 
@@ -223,7 +273,7 @@ public class FindPasswordActivity extends Activity implements View.OnClickListen
                     return;
                 }
                 openTimerTask();
-                sendValidCode();
+                sendValidCode(phone);
                 break;
             case R.id.next_btn: //下一步(改成直接提交重置密码)
                 //Intent intent = new Intent();

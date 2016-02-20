@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
@@ -16,6 +17,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.apache.http.message.BasicNameValuePair;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import cn.com.incardata.http.Http;
+import cn.com.incardata.http.NetURL;
+import cn.com.incardata.http.NetWorkHelper;
+import cn.com.incardata.http.OnResult;
+import cn.com.incardata.http.response.RegisterEntity;
+import cn.com.incardata.http.response.VerifySmsEntity;
 import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
 
@@ -26,7 +38,7 @@ import cn.com.incardata.utils.T;
 public class RegisterActivity extends Activity implements View.OnClickListener{
     private ImageView iv_back,iv_clear,iv_eye;
     private EditText et_phone,et_pwd,et_code;
-    private Button register_btn;
+    private Button register_btn,send_code_btn;
     private boolean isFocus;
     private TextView tv_protocal;
     private Context context;
@@ -48,6 +60,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
         et_code = (EditText) findViewById(R.id.et_code);
         et_pwd = (EditText) findViewById(R.id.et_pwd);
         register_btn = (Button) findViewById(R.id.register_btn);
+        send_code_btn = (Button) findViewById(R.id.btn_send_code);
         tv_protocal = (TextView) findViewById(R.id.tv_protocal);
     }
 
@@ -57,6 +70,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
         iv_eye.setOnClickListener(this);
         register_btn.setOnClickListener(this);
         tv_protocal.setOnClickListener(this);
+        send_code_btn.setOnClickListener(this);
 
         et_phone.addTextChangedListener(new TextWatcher() {
             @Override
@@ -108,6 +122,62 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
                 intent.setClass(context,ServiceProtocalActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.btn_send_code: //倒计时发送验证码
+                String phone = et_phone.getText().toString().trim();
+                if(StringUtil.isEmpty(phone)){
+                    T.show(context,context.getString(R.string.empty_phone));
+                    return;
+                }
+                if(phone.length()!=11){
+                    T.show(context,context.getString(R.string.error_phone));
+                    return;
+                }
+                countDownTimer(phone,60); //倒计时60秒
+                break;
+        }
+    }
+
+    /**
+     * 倒计时
+     * @param phone
+     * @param time
+     */
+    private void countDownTimer(String phone,int time){
+        new CountDownTimer(time*1000,1000){
+            @Override
+            public void onTick(long millisUntilFinished) {
+                send_code_btn.setText("("+String.valueOf(millisUntilFinished/1000)+")"+context.getString(R.string.time_tips));
+                send_code_btn.setClickable(false);
+            }
+            @Override
+            public void onFinish() {
+                send_code_btn.setText(context.getString(R.string.btn_text_send_code_repeat));
+                send_code_btn.setClickable(true);
+            }
+        }.start();
+        sendValidCode(phone);
+    }
+
+    private void sendValidCode(String phone){
+        if(NetWorkHelper.isNetworkAvailable(context)) {
+            BasicNameValuePair bv_phone = new BasicNameValuePair("phone",phone);
+            Http.getInstance().getTaskToken(NetURL.VERIFY_SMS, VerifySmsEntity.class, new OnResult() {
+                @Override
+                public void onResult(Object entity) {
+                    if (entity == null) {
+                        T.show(context, context.getString(R.string.failed_code));
+                        return;
+                    }
+                    VerifySmsEntity verifySmsEntity = (VerifySmsEntity) entity;
+                    if(verifySmsEntity.isResult()){
+                        T.show(context,context.getString(R.string.send_code_success));
+                        return;
+                    }
+                }
+            },bv_phone);
+        }else{
+            T.show(context,getString(R.string.no_network_tips));
+            return;
         }
     }
 
@@ -145,11 +215,36 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
             return;
         }
 
-        //TODO 注册成功后清空任务栈返回登录界面
-        Intent intent = new Intent(context, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finish();
+        List<BasicNameValuePair> mList = new ArrayList<BasicNameValuePair>();
+        mList.add(new BasicNameValuePair("phone",phone));
+        mList.add(new BasicNameValuePair("password",password));
+        mList.add(new BasicNameValuePair("verifySms",code));
+
+        if(NetWorkHelper.isNetworkAvailable(context)) {
+            Http.getInstance().postTaskToken(NetURL.REGISTER, RegisterEntity.class, new OnResult() {
+                @Override
+                public void onResult(Object entity) {
+                    if (entity == null) {
+                        T.show(context, context.getString(R.string.register_failed_tips));
+                        return;
+                    }
+                    RegisterEntity registerEntity = (RegisterEntity) entity;
+                    if(registerEntity.isResult()){  //成功
+                        T.show(context,context.getString(R.string.register_success_tips));
+                        //TODO 注册成功后清空任务栈返回登录界面
+                        Intent intent = new Intent(context, LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    }else{  //失败
+
+                    }
+                }
+            },(BasicNameValuePair[]) mList.toArray(new BasicNameValuePair[mList.size()]));
+        }else{
+            T.show(context,getString(R.string.no_network_tips));
+            return;
+        }
     }
 
     /**
