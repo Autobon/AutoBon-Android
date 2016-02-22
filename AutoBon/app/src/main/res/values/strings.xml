@@ -50,7 +50,7 @@
     <string name="failed_code">发送验证码失败</string>
     <string name="send_code_success">验证码已发送</string>
     <string name="reset_failed">重置密码失败</string>
-    <string name="reset_success">重置密码成功,新密码为:</string>
+    <string name="reset_success">重置密码成功</string>
 
     <!--接单,开始工作-->
     <string name="text_distance">距离: </string>
@@ -66,5 +66,10 @@
     <string name="order_number_text">订单数</string>
     <string name="contact_text">合作人:</string>
     <string name="receiver_text">已接单</string>
+
+    <!--签到-->
+    <string name="work_model_text">工作模式</string>
+    <string name="distance_text">距离门店</string>
+    <string name="sign_in_text">签到</string>
 
 </resources>

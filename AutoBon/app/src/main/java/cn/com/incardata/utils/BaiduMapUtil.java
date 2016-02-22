@@ -91,12 +91,12 @@ public class BaiduMapUtil {
     /**
      * 自动定位当前位置
      */
-    public static void locate(Context context,BaiduMap baiduMap, LocationClient mLocationClient,BDLocationListener myListener) {
+    public static void locate(Context context,BaiduMap baiduMap,int scanTime,LocationClient mLocationClient,BDLocationListener myListener) {
         mLocationClient.registerLocationListener(myListener);
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);// 设置定位模式
         option.setCoorType("bd09ll");// 返回的定位结果是百度经纬度,默认值gcj02
-        option.setScanSpan(1000);
+        option.setScanSpan(scanTime);  //设置扫描定位时间
         option.setIsNeedAddress(true);// 返回的定位结果包含地址信息
         option.setNeedDeviceDirect(true);
         option.setOpenGps(true);  //设置打开GPS
@@ -245,9 +245,14 @@ public class BaiduMapUtil {
                 if(markOverlay[1] == null){
                     tv_distance.setText("0");
                 }else{
-                    double distance = BaiduMapUtil.getDistance(latLngArray[0],latLngArray[1])/1000; //单位为km
-                    distance = DecimalUtil.DoubleDecimal1(distance);  //保留一位小数
-                    tv_distance.setText(String.valueOf(distance));
+                    double distance = BaiduMapUtil.getDistance(latLngArray[0],latLngArray[1]); //单位为m
+                    if(distance>1){  //距离大于1公里
+                        distance = DecimalUtil.DoubleDecimal1(distance/1000);  //保留一位小数
+                        tv_distance.setText(String.valueOf(distance)+"km");
+                    }else{  //距离小于1公里
+                        distance = DecimalUtil.DoubleDecimal1(distance); //保留一位小数
+                        tv_distance.setText(String.valueOf(distance)+"m");
+                    }
                 }
             }
         }

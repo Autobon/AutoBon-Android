@@ -2,11 +2,7 @@ package cn.com.incardata.autobon;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.baidu.location.LocationClient;
@@ -15,37 +11,31 @@ import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import cn.com.incardata.utils.BaiduMapUtil;
-import cn.com.incardata.utils.StringUtil;
+import cn.com.incardata.utils.DateCompute;
 
 /**
- * 接单开始工作
- * Created by Administrator on 2016/2/17.
+ * Created by zhangming on 2016/2/22.
+ * 工作签到
  */
-public class OrderReceiverActivity extends Activity implements View.OnClickListener{
+public class WorkSignInActivity extends Activity{
+    private TextView tv_day,tv_week_day,tv_distance;
+    private MapView mMapView;
+    private BaiduMap baiduMap;
+    private LocationClient mLocationClient;
     private Context context;
-    private TextView tv_distance,tv_add_contact;
-
-    private LinearLayout ll_add_contact,ll_tab_bottom;
-    private TextView tv_username,tv_begin_work;
-    private View bt_line_view;
-    private ImageView iv_back;
-
-    protected BaiduMap baiduMap;
-    protected MapView mMapView;
-    protected LocationClient mLocationClient;
-
     private static final String mAddress = "武汉光谷广场";  //测试地址,可以更改
-    private static final int ADD_CONTACT_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BaiduMapUtil.registerBaiduMapReceiver(this);  //注册百度地图广播接收者
-        setContentView(R.layout.order_receiver_activity);
+        setContentView(R.layout.work_map_address);
         initBaiduMapView();
         initView();
-        BaiduMapUtil.initData();
         setListener();
     }
 
@@ -61,22 +51,20 @@ public class OrderReceiverActivity extends Activity implements View.OnClickListe
         mMapView.showScaleControl(true);  //默认是true,显示标尺
     }
 
-    public void initView(){
+    private void initView(){
         context = this;
+        tv_day = (TextView) findViewById(R.id.tv_day);
+        tv_week_day = (TextView) findViewById(R.id.tv_week_day);
         tv_distance = (TextView) findViewById(R.id.tv_distance);
-        tv_add_contact = (TextView) findViewById(R.id.tv_add_contact);
-        tv_username = (TextView) findViewById(R.id.tv_username);
-        tv_begin_work = (TextView)findViewById(R.id.tv_begin_work);
-        ll_add_contact = (LinearLayout) findViewById(R.id.ll_add_contact);
-        ll_tab_bottom = (LinearLayout) findViewById(R.id.ll_tab_bottom);
-        bt_line_view = findViewById(R.id.bt_line_view);
-        iv_back = (ImageView) findViewById(R.id.iv_back);
+
+        tv_day.setText(DateCompute.getCurrentYearMonthDay());
+        Date date=new Date();
+        SimpleDateFormat dateFm = new SimpleDateFormat("EEEE");
+        dateFm.format(date);
+        tv_week_day.setText(DateCompute.getWeekOfDate(date));  //传入参数值为null代表获取当前系统时间为星期几
     }
 
     public void setListener(){
-        tv_add_contact.setOnClickListener(this);
-        iv_back.setOnClickListener(this);
-
         /**
          * 百度地图加载完毕后回调此方法(传参入口)
          */
@@ -88,48 +76,6 @@ public class OrderReceiverActivity extends Activity implements View.OnClickListe
                         new BaiduMapUtil.MyListener(context,baiduMap,tv_distance,mAddress));
             }
         });
-    }
-
-
-    @Override
-    public void onClick(View v) {
-        Intent intent;
-        switch (v.getId()){
-            case R.id.tv_add_contact:
-                intent = new Intent(this,AddContactActivity.class);
-                startActivityForResult(intent,ADD_CONTACT_CODE);
-                break;
-            case R.id.iv_back:
-                finish();
-                break;
-            case R.id.tv_begin_work:
-                intent = new Intent(this,WorkSignInActivity.class);
-                startActivity(intent);
-                finish();
-                break;
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == ADD_CONTACT_CODE){  //添加联系人返回,更新界面
-            switch (resultCode){
-                case RESULT_OK:
-                    String username = data.getExtras().getString("username");
-                    if(StringUtil.isNotEmpty(username)){
-                        tv_username.setText(username);
-                        bt_line_view.setVisibility(View.VISIBLE);
-                        ll_add_contact.setVisibility(View.VISIBLE);
-                        ll_tab_bottom.setVisibility(View.GONE);
-                        tv_begin_work.setVisibility(View.VISIBLE);
-                        tv_begin_work.setOnClickListener(this);
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
     }
 
     @Override
@@ -157,4 +103,5 @@ public class OrderReceiverActivity extends Activity implements View.OnClickListe
         // 在activity执行onPause时执行mMapView. onPause ()，实现地图生命周期管理
         mMapView.onPause();
     }
+
 }

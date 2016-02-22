@@ -2,16 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/main_white">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp50"
         android:background="@color/main_orange">
         <ImageView
             android:id="@+id/iv_back"
-            android:layout_width="@dimen/dp35"
+            android:layout_width="@dimen/dp45"
             android:layout_height="match_parent"
-            android:padding="@dimen/dp10"
+            android:paddingTop="@dimen/dp10"
+            android:paddingBottom="@dimen/dp10"
+            android:paddingLeft="@dimen/dp15"
+            android:paddingRight="@dimen/dp15"
             android:src="@mipmap/img_account"
             android:scaleType="centerInside"
             android:clickable="true"
@@ -25,4 +29,71 @@
             android:textColor="@android:color/white"/>
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp50"
+        android:gravity="center_vertical">
+        <TextView
+            android:id="@+id/tv_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp15"
+            android:textColor="@color/darkgray"
+            android:layout_marginLeft="@dimen/dp15"/>
+        <TextView
+            android:id="@+id/tv_week_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp15"
+            android:textColor="@color/darkgray"
+            android:layout_toRightOf="@id/tv_day"
+            android:layout_marginLeft="@dimen/dp5"/>
+        <TextView
+            android:id="@+id/tv_model"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp15"
+            android:textColor="@color/darkgray"
+            android:layout_marginRight="@dimen/dp15"
+            android:layout_alignParentRight="true"
+            android:text="@string/work_model_text"/>
+    </RelativeLayout>
+
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/bmapView"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/dp200"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp60"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp15"
+            android:textColor="@color/darkgray"
+            android:text="@string/distance_text"/>
+        <TextView
+            android:id="@+id/tv_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp15"
+            android:textColor="@color/darkgray"
+            android:layout_marginLeft="@dimen/dp5"/>
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp50"
+        android:layout_marginLeft="@dimen/dp50"
+        android:layout_marginRight="@dimen/dp50"
+        android:background="@color/lightgray"
+        android:text="@string/sign_in_text"
+        android:textSize="@dimen/sp20"
+        android:textColor="@color/line_color"
+        android:gravity="center"/>
 </LinearLayout>
