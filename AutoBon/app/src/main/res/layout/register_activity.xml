@@ -26,7 +26,7 @@
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp60"
+        android:layout_height="@dimen/dp50"
         android:layout_marginTop="@dimen/dp30">
         <ImageView
             android:id="@+id/iv_phone"
@@ -39,7 +39,7 @@
         <EditText
             android:id="@+id/et_phone"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp50"
+            android:layout_height="@dimen/dp40"
             android:background="@null"
             android:layout_marginLeft="@dimen/dp15"
             android:layout_marginRight="@dimen/dp60"
@@ -74,7 +74,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp60">
+        android:layout_height="@dimen/dp50">
         <ImageView
             android:id="@+id/iv_check"
             android:layout_width="@dimen/dp25"
@@ -86,7 +86,7 @@
         <EditText
             android:id="@+id/et_code"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp50"
+            android:layout_height="@dimen/dp40"
             android:background="@null"
             android:layout_marginLeft="@dimen/dp15"
             android:layout_marginRight="@dimen/dp100"
@@ -99,14 +99,14 @@
             android:inputType="number"
             android:maxLength="6"/>
         <Button
-            android:id="@+id/btn_check"
-            android:layout_width="@dimen/dp70"
-            android:layout_height="@dimen/dp35"
+            android:id="@+id/btn_send_code"
+            android:layout_width="@dimen/dp65"
+            android:layout_height="@dimen/dp25"
             android:layout_marginRight="@dimen/dp35"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="@drawable/check_btn"
-            android:text="@string/btn_text_check"
+            android:text="@string/btn_text_send_code"
             android:textSize="@dimen/sp13"
             android:textColor="@color/main_orange"
             android:gravity="center"/>
@@ -121,7 +121,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp60">
+        android:layout_height="@dimen/dp50">
         <ImageView
             android:id="@+id/iv_pwd"
             android:layout_width="@dimen/dp25"
@@ -133,7 +133,7 @@
         <EditText
             android:id="@+id/et_pwd"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp50"
+            android:layout_height="@dimen/dp40"
             android:background="@null"
             android:layout_marginLeft="@dimen/dp15"
             android:layout_marginRight="@dimen/dp60"

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,12 +21,16 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+
 import org.apache.http.message.BasicNameValuePair;
 
 import cn.com.incardata.application.Language;
 import cn.com.incardata.application.MyApplication;
 import cn.com.incardata.http.HttpClientInCar;
 import cn.com.incardata.http.NetURL;
+import cn.com.incardata.http.NetWorkHelper;
+import cn.com.incardata.http.response.LoginEntity;
 import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
 
@@ -165,7 +170,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
     private void login(){
         String phone = et_phone.getText().toString().trim();
-        String password = et_phone.getText().toString().trim();
+        String password = et_pwd.getText().toString().trim();
         if(StringUtil.isEmpty(phone)){
             T.show(context,context.getString(R.string.empty_phone));
             return;
@@ -179,17 +184,68 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             return;
         }
 
-        /**
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                BasicNameValuePair value01 = new BasicNameValuePair("phone","15972219148");
-                BasicNameValuePair value02 = new BasicNameValuePair("password","12345678");
-                String result = HttpClientInCar.PostFormByHttpClient(context,"http://121.40.157.200:51234/api/mobile/technician/login",value01,value02);
-                Log.i("test","========================>"+result);
+        if(NetWorkHelper.isNetworkAvailable(context)){
+            MyAsyncTask myAsyncTask = new MyAsyncTask(phone,password);
+            myAsyncTask.execute();
+        }else{
+            T.show(context,getString(R.string.no_network_tips));
+            return;
+        }
+    }
+
+    /**
+     * 自定义异步任务实现登陆操作
+     */
+    class MyAsyncTask extends AsyncTask<Void,Void,String>{
+        private String phone;
+        private String password;
+        public MyAsyncTask(String phone,String password){
+            this.phone = phone;
+            this.password = password;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            BasicNameValuePair bv_phone = new BasicNameValuePair("phone",this.phone);
+            BasicNameValuePair bv_password = new BasicNameValuePair("password",this.password);
+            try{
+                String result = HttpClientInCar.postLoginHttpToken(context,NetURL.LOGIN,bv_phone,bv_password);
+                return result;
+            }catch (Exception e){
+                return null;
             }
-        }).start();
-         **/
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            if (StringUtil.isEmpty(result)) {
+                T.show(context,context.getString(R.string.login_failed));
+                return;
+            }
+            LoginEntity loginEntity = JSON.parseObject(result,LoginEntity.class);
+            if(loginEntity == null){
+                T.show(context,context.getString(R.string.login_failed));
+                return;
+            }
+            if(loginEntity.isResult()){  //成功
+                //TODO 跳转主页
+                finish();
+            }else{  //失败
+                if("NO_SUCH_USER".equals(loginEntity.getError())){
+                    T.show(context,context.getString(R.string.phone_no_register_tips));
+                    return;
+                }else if("PASSWORD_MISMATCH".equals(loginEntity.getError())){
+                    T.show(context,context.getString(R.string.password_error_tips));
+                    return;
+                }
+            }
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
     }
 
     @Override
