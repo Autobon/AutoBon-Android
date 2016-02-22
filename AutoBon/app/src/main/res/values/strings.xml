@@ -31,6 +31,7 @@
     <string name="register_failed_tips">注册失败</string>
     <string name="register_success_tips">注册成功</string>
     <string name="valid_code_error_tips">验证码错误</string>
+    <string name="phone_has_register_tips">手机号已被注册</string>
     <string name="time_tips">秒</string>
 
     <!--找回密码界面-->

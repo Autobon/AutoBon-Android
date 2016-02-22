@@ -132,17 +132,16 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
                     T.show(context,context.getString(R.string.error_phone));
                     return;
                 }
-                countDownTimer(phone,60); //倒计时60秒
+                sendValidCode(phone);
                 break;
         }
     }
 
     /**
      * 倒计时
-     * @param phone
      * @param time
      */
-    private void countDownTimer(String phone,int time){
+    private void countDownTimer(int time){
         new CountDownTimer(time*1000,1000){
             @Override
             public void onTick(long millisUntilFinished) {
@@ -155,7 +154,6 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
                 send_code_btn.setClickable(true);
             }
         }.start();
-        sendValidCode(phone);
     }
 
     private void sendValidCode(String phone){
@@ -170,6 +168,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
                     }
                     VerifySmsEntity verifySmsEntity = (VerifySmsEntity) entity;
                     if(verifySmsEntity.isResult()){
+                        countDownTimer(60); //验证码发送成功后,再倒计时60秒
                         T.show(context,context.getString(R.string.send_code_success));
                         return;
                     }
@@ -237,7 +236,13 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
                         startActivity(intent);
                         finish();
                     }else{  //失败
-
+                        if("OCCUPIED_ID".equals(registerEntity.getError())){  //手机号已注册
+                            T.show(context,context.getString(R.string.phone_has_register_tips));
+                            return;
+                        }else if("ILLEGAL_PARAM".equals(registerEntity.getError())){  //验证码错误
+                            T.show(context,context.getString(R.string.valid_code_error_tips));
+                            return;
+                        }
                     }
                 }
             },(BasicNameValuePair[]) mList.toArray(new BasicNameValuePair[mList.size()]));

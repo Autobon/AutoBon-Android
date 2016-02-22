@@ -179,6 +179,7 @@ public class FindPasswordActivity extends Activity implements View.OnClickListen
                     }
                     VerifySmsEntity verifySmsEntity = (VerifySmsEntity) entity;
                     if(verifySmsEntity.isResult()){
+                        openTimerTask();  //验证码发送成功后,再倒计时60秒
                         T.show(context,context.getString(R.string.send_code_success));
                         return;
                     }
@@ -248,7 +249,13 @@ public class FindPasswordActivity extends Activity implements View.OnClickListen
                     startActivity(intent);
                     finish();
                 }else{  //失败
-
+                    if("NO_SUCH_USER".equals(resetPasswordEntity.getError())){  //手机号未注册
+                        T.show(context,context.getString(R.string.phone_no_register_tips));
+                        return;
+                    }else if("ILLEGAL_PARAM".equals(resetPasswordEntity.getError())){  //验证码错误
+                        T.show(context,context.getString(R.string.valid_code_error_tips));
+                        return;
+                    }
                 }
             }
         },(BasicNameValuePair[]) mList.toArray(new BasicNameValuePair[mList.size()]));
@@ -272,7 +279,6 @@ public class FindPasswordActivity extends Activity implements View.OnClickListen
                     T.show(context,context.getString(R.string.error_phone));
                     return;
                 }
-                openTimerTask();
                 sendValidCode(phone);
                 break;
             case R.id.next_btn: //下一步(改成直接提交重置密码)

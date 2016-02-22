@@ -208,8 +208,12 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         protected String doInBackground(Void... params) {
             BasicNameValuePair bv_phone = new BasicNameValuePair("phone",this.phone);
             BasicNameValuePair bv_password = new BasicNameValuePair("password",this.password);
-            String result = HttpClientInCar.postHttpToken(NetURL.LOGIN,bv_phone,bv_password);
-            return result;
+            try{
+                String result = HttpClientInCar.postLoginHttpToken(context,NetURL.LOGIN,bv_phone,bv_password);
+                return result;
+            }catch (Exception e){
+                return null;
+            }
         }
 
         @Override
