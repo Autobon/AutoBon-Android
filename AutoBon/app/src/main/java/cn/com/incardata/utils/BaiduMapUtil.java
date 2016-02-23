@@ -4,9 +4,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ZoomControls;
 
 import com.baidu.location.BDLocation;
@@ -77,7 +80,7 @@ public class BaiduMapUtil {
         IntentFilter filter = new IntentFilter();
         filter.addAction(SDKInitializer.SDK_BROADCAST_ACTION_STRING_NETWORK_ERROR);  //注册网络错误
         filter.addAction(SDKInitializer.SDK_BROADTCAST_ACTION_STRING_PERMISSION_CHECK_ERROR); //注册key校验结果
-        context.registerReceiver(receiver, filter);
+        context.getApplicationContext().registerReceiver(receiver, filter);
     }
 
     /**
@@ -85,7 +88,8 @@ public class BaiduMapUtil {
      * @param context
      */
     public static void unRegisterBaiduMapReceiver(Context context){
-        context.unregisterReceiver(receiver);
+        context.getApplicationContext().unregisterReceiver(receiver);
+        receiver = null;
     }
 
     /**
@@ -211,14 +215,16 @@ public class BaiduMapUtil {
     public static class MyListener implements BDLocationListener {
         private Context context;
         private BaiduMap baiduMap;
-        private TextView tv_distance;
-        private String mAddress;
+        private TextView tv_distance; //代表底部距离的TextView控件
+        private String mAddress; //另一个点的位置
+        private Button sign_in_btn; //签到界面Button
 
-        public MyListener(Context context,BaiduMap baiduMap,TextView tv_distance,String mAddress){
+        public MyListener(Context context, BaiduMap baiduMap, TextView tv_distance, String mAddress, Button sign_in_btn){
             this.context = context;
             this.baiduMap = baiduMap;
             this.tv_distance = tv_distance;
             this.mAddress = mAddress;
+            this.sign_in_btn = sign_in_btn;
         }
 
         @Override
@@ -232,21 +238,34 @@ public class BaiduMapUtil {
                     TextView tv = (TextView) pop.findViewById(R.id.title);
                     tv.setText(result.getAddrStr());
                 }else{
-                    markOverlay[0] = BaiduMapUtil.drawMarker(baiduMap,latLng,BitmapDescriptorFactory.fromResource(R.mipmap.eat_icon),markZIndex);
-                    popOverlay[0] = BaiduMapUtil.drawPopWindow(baiduMap,context,latLng,result.getAddrStr(),popZIndex);
+                    markOverlay[0] = BaiduMapUtil.drawMarker(this.baiduMap,latLng,BitmapDescriptorFactory.fromResource(R.mipmap.eat_icon),markZIndex);
+                    popOverlay[0] = BaiduMapUtil.drawPopWindow(this.baiduMap,context,latLng,result.getAddrStr(),popZIndex);
                     latLngArray[0] = latLng;
                     windowInfo[0] = result.getAddrStr();
-                    BaiduMapUtil.drawOnePoint(mAddress,new MyGeoCoderListener(context,baiduMap));
+                    BaiduMapUtil.drawOnePoint(mAddress,new MyGeoCoderListener(context,this.baiduMap));
                 }
                 if(isZoomCenter){
                     BaiduMapUtil.zoomByOneCenterPoint(baiduMap,latLngArray[0],defaultLevel);
                     isZoomCenter = false;
                 }
                 if(markOverlay[1] == null){
-                    tv_distance.setText("0");
+                    tv_distance.setText("0m");
                 }else{
                     double distance = BaiduMapUtil.getDistance(latLngArray[0],latLngArray[1]); //单位为m
-                    if(distance>1){  //距离大于1公里
+
+                    if(sign_in_btn!=null){  //签到界面有提示框,并且改变Button样式
+                        if(Math.abs(distance)<=10){  //到达(有误差)
+                            tv_distance.setText(R.string.arrive_text);
+                            sign_in_btn.setClickable(true);
+                            sign_in_btn.setBackgroundColor(context.getResources().getColor(R.color.main_orange));
+                            sign_in_btn.setTextColor(context.getResources().getColor(android.R.color.white));
+                        }else{
+                            Toast toast = Toast.makeText(context.getApplicationContext(),context.getString(R.string.not_arrive_text),Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER,0,0);
+                            toast.show();
+                        }
+                    }
+                    if(distance>=1000){  //距离大于等于1公里
                         distance = DecimalUtil.DoubleDecimal1(distance/1000);  //保留一位小数
                         tv_distance.setText(String.valueOf(distance)+"km");
                     }else{  //距离小于1公里
@@ -281,8 +300,8 @@ public class BaiduMapUtil {
                 popOverlay[1].remove();
             }
 
-            markOverlay[1] = BaiduMapUtil.drawMarker(baiduMap,result.getLocation(),BitmapDescriptorFactory.fromResource(R.mipmap.eat_icon),markZIndex);
-            popOverlay[1] = BaiduMapUtil.drawPopWindow(baiduMap,context,result.getLocation(),result.getAddress(),popZIndex);
+            markOverlay[1] = BaiduMapUtil.drawMarker(this.baiduMap,result.getLocation(),BitmapDescriptorFactory.fromResource(R.mipmap.eat_icon),markZIndex);
+            popOverlay[1] = BaiduMapUtil.drawPopWindow(this.baiduMap,context,result.getLocation(),result.getAddress(),popZIndex);
             latLngArray[1] = result.getLocation();
             windowInfo[1] = result.getAddress();
             BaiduMapUtil.zoomByTwoPoint(baiduMap,latLngArray[0],latLngArray[1]);

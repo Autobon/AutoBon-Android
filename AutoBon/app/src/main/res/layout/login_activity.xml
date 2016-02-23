@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="@color/main_white">
     <RelativeLayout
         android:id="@+id/rl_title"
         android:layout_width="match_parent"
@@ -56,7 +56,7 @@
                 android:layout_height="@dimen/dp25"
                 android:src="@mipmap/img_account"
                 android:scaleType="centerInside"
-                android:layout_marginLeft="@dimen/dp15"
+                android:layout_marginLeft="@dimen/dp35"
                 android:layout_centerVertical="true"/>
             <EditText
                 android:id="@+id/et_phone"
@@ -64,7 +64,7 @@
                 android:layout_height="@dimen/dp50"
                 android:background="@null"
                 android:layout_marginLeft="@dimen/dp15"
-                android:layout_marginRight="@dimen/dp45"
+                android:layout_marginRight="@dimen/dp65"
                 android:layout_toRightOf="@+id/iv_phone"
                 android:inputType="number"
                 android:maxLength="11"
@@ -75,21 +75,21 @@
                 android:textSize="@dimen/sp15"/>
             <ImageView
                 android:id="@+id/iv_clear"
-                android:layout_width="@dimen/dp25"
-                android:layout_height="@dimen/dp25"
+                android:layout_width="@dimen/dp20"
+                android:layout_height="@dimen/dp20"
                 android:scaleType="centerInside"
                 android:src="@mipmap/iv_delete"
-                android:layout_marginRight="@dimen/dp20"
+                android:layout_marginRight="@dimen/dp40"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:visibility="invisible"/>
+                android:visibility="gone"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_alignLeft="@id/et_phone"
                 android:layout_below="@id/et_phone"
                 android:background="@color/line_color"
-                android:layout_marginRight="@dimen/dp20"/>
+                android:layout_marginRight="@dimen/dp40"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -99,9 +99,9 @@
                 android:id="@+id/iv_pwd"
                 android:layout_width="@dimen/dp25"
                 android:layout_height="@dimen/dp25"
-                android:src="@mipmap/img_pwd"
+                android:src="@mipmap/img_password"
                 android:scaleType="centerInside"
-                android:layout_marginLeft="@dimen/dp15"
+                android:layout_marginLeft="@dimen/dp35"
                 android:layout_centerVertical="true"/>
             <EditText
                 android:id="@+id/et_pwd"
@@ -109,7 +109,7 @@
                 android:layout_height="@dimen/dp50"
                 android:background="@null"
                 android:layout_marginLeft="@dimen/dp15"
-                android:layout_marginRight="@dimen/dp45"
+                android:layout_marginRight="@dimen/dp65"
                 android:layout_toRightOf="@+id/iv_pwd"
                 android:inputType="textPassword"
                 android:maxLength="18"
@@ -120,11 +120,11 @@
                 android:textSize="@dimen/sp15"/>
             <ImageView
                 android:id="@+id/iv_eye"
-                android:layout_width="@dimen/dp25"
-                android:layout_height="@dimen/dp25"
+                android:layout_width="@dimen/dp20"
+                android:layout_height="@dimen/dp20"
                 android:scaleType="centerInside"
                 android:src="@mipmap/eye_hidden"
-                android:layout_marginRight="@dimen/dp20"
+                android:layout_marginRight="@dimen/dp40"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"/>
             <View
@@ -132,17 +132,20 @@
                 android:layout_height="1dp"
                 android:layout_alignLeft="@id/et_pwd"
                 android:layout_below="@id/et_pwd"
-                android:layout_marginRight="@dimen/dp20"
+                android:layout_marginRight="@dimen/dp40"
                 android:background="@color/line_color"/>
         </RelativeLayout>
 
         <Button
             android:id="@+id/login_btn"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp40"
-            android:layout_margin="@dimen/dp20"
-            android:paddingTop="@dimen/dp10"
-            android:paddingBottom="@dimen/dp10"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft ="@dimen/dp35"
+            android:layout_marginRight="@dimen/dp40"
+            android:layout_marginTop="@dimen/dp20"
+            android:layout_marginBottom="@dimen/dp20"
+            android:paddingTop="@dimen/dp12"
+            android:paddingBottom="@dimen/dp12"
             android:text="@string/text_login"
             android:gravity="center"
             android:textSize="@dimen/sp18"
@@ -152,7 +155,7 @@
             android:id="@+id/tv_forget_pwd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp20"
+            android:layout_marginLeft="@dimen/dp45"
             android:textColor="@android:color/darker_gray"
             android:textSize="@dimen/sp15"
             android:text="@string/text_forget_pwd"
@@ -166,7 +169,8 @@
         android:layout_height="@dimen/dp50"
         android:layout_alignParentBottom="true"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@android:color/white">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -181,13 +185,13 @@
             android:textSize="@dimen/sp15"
             android:clickable="true"
             android:focusable="true"
-            android:padding="@dimen/dp5"/>
+            android:padding="@dimen/dp5" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_above="@+id/ll_bottom"
-        android:background="@color/line_color"/>
+        android:background="#eeeeee"/>
 
 </RelativeLayout>

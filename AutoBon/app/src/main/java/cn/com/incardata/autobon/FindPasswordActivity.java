@@ -113,7 +113,7 @@ public class FindPasswordActivity extends Activity implements View.OnClickListen
     }
 
     public void openTimerTask(){
-        count = 60;  //默认时间1分钟
+        count = 10;  //默认时间1分钟
         btn_check.setText(getString(R.string.text_get_code));
 
         TimerTask task = new MyTimerTask();
@@ -155,7 +155,6 @@ public class FindPasswordActivity extends Activity implements View.OnClickListen
                     @Override
                     public void run() {
                         btn_check.setText(context.getResources().getString(R.string.repeat_get_text));
-                        btn_check.setTextSize(15);
                         btn_check.setFocusable(true);
                         btn_check.setClickable(true);
                     }

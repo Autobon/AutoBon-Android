@@ -34,6 +34,11 @@
             android:name="cn.com.incardata.autobon.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="cn.com.incardata.autobon.RegisterActivity"
@@ -55,11 +60,6 @@
             android:name="cn.com.incardata.autobon.OrderReceiverActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="cn.com.incardata.autobon.AddContactActivity"

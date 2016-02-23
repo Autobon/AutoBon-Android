@@ -87,13 +87,17 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/sign_in_btn"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp50"
-        android:layout_marginLeft="@dimen/dp50"
-        android:layout_marginRight="@dimen/dp50"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp30"
+        android:layout_marginRight="@dimen/dp30"
         android:background="@color/lightgray"
         android:text="@string/sign_in_text"
-        android:textSize="@dimen/sp20"
+        android:textSize="@dimen/sp18"
         android:textColor="@color/line_color"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:clickable="false"
+        android:paddingTop="@dimen/dp10"
+        android:paddingBottom="@dimen/dp10"/>
 </LinearLayout>

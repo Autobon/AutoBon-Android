@@ -3,6 +3,7 @@ package cn.com.incardata.autobon;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.baidu.location.LocationClient;
@@ -27,6 +28,7 @@ public class WorkSignInActivity extends Activity{
     private BaiduMap baiduMap;
     private LocationClient mLocationClient;
     private Context context;
+    private Button sign_in_btn;
     private static final String mAddress = "武汉光谷广场";  //测试地址,可以更改
 
     @Override
@@ -36,6 +38,7 @@ public class WorkSignInActivity extends Activity{
         setContentView(R.layout.work_map_address);
         initBaiduMapView();
         initView();
+        BaiduMapUtil.initData();
         setListener();
     }
 
@@ -56,12 +59,13 @@ public class WorkSignInActivity extends Activity{
         tv_day = (TextView) findViewById(R.id.tv_day);
         tv_week_day = (TextView) findViewById(R.id.tv_week_day);
         tv_distance = (TextView) findViewById(R.id.tv_distance);
+        sign_in_btn = (Button) findViewById(R.id.sign_in_btn);
 
         tv_day.setText(DateCompute.getCurrentYearMonthDay());
         Date date=new Date();
         SimpleDateFormat dateFm = new SimpleDateFormat("EEEE");
         dateFm.format(date);
-        tv_week_day.setText(DateCompute.getWeekOfDate(date));  //传入参数值为null代表获取当前系统时间为星期几
+        tv_week_day.setText(DateCompute.getWeekOfDate(date)); //获取当前日期是星期几
     }
 
     public void setListener(){
@@ -71,9 +75,9 @@ public class WorkSignInActivity extends Activity{
         baiduMap.setOnMapLoadedCallback(new BaiduMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
-                //tv_distance为下方显示距离的TextView控件,mAddress为另一个点的位置,定位扫描时间为5s
+                //tv_distance为下方显示距离的TextView控件,mAddress为另一个点的位置,定位扫描时间为5s,true代表是签到界面
                 BaiduMapUtil.locate(context,baiduMap,5000,mLocationClient,
-                        new BaiduMapUtil.MyListener(context,baiduMap,tv_distance,mAddress));
+                        new BaiduMapUtil.MyListener(context,baiduMap,tv_distance,mAddress,sign_in_btn));
             }
         });
     }
@@ -81,7 +85,7 @@ public class WorkSignInActivity extends Activity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        BaiduMapUtil.unRegisterBaiduMapReceiver(this);
+        //BaiduMapUtil.unRegisterBaiduMapReceiver(this);
         mLocationClient.stop();
         baiduMap.clear();
         baiduMap.setMyLocationEnabled(false); // 关闭定位图层

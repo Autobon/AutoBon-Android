@@ -168,7 +168,7 @@ public class RegisterActivity extends Activity implements View.OnClickListener{
                     }
                     VerifySmsEntity verifySmsEntity = (VerifySmsEntity) entity;
                     if(verifySmsEntity.isResult()){
-                        countDownTimer(60); //验证码发送成功后,再倒计时60秒
+                        countDownTimer(10); //验证码发送成功后,再倒计时60秒
                         T.show(context,context.getString(R.string.send_code_success));
                         return;
                     }

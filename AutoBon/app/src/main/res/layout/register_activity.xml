@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="@color/main_white">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp50"
@@ -53,8 +53,8 @@
             android:textSize="@dimen/sp15"/>
         <ImageView
             android:id="@+id/iv_clear"
-            android:layout_width="@dimen/dp25"
-            android:layout_height="@dimen/dp25"
+            android:layout_width="@dimen/dp20"
+            android:layout_height="@dimen/dp20"
             android:scaleType="centerInside"
             android:src="@mipmap/iv_delete"
             android:layout_marginRight="@dimen/dp35"
@@ -106,8 +106,8 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="@drawable/check_btn"
-            android:text="@string/btn_text_send_code"
-            android:textSize="@dimen/sp13"
+            android:text="@string/text_get_code"
+            android:textSize="@dimen/sp12"
             android:textColor="@color/main_orange"
             android:gravity="center"/>
         <View
@@ -147,8 +147,8 @@
             android:textSize="@dimen/sp15"/>
         <ImageView
             android:id="@+id/iv_eye"
-            android:layout_width="@dimen/dp25"
-            android:layout_height="@dimen/dp25"
+            android:layout_width="@dimen/dp20"
+            android:layout_height="@dimen/dp20"
             android:scaleType="centerInside"
             android:src="@mipmap/eye_hidden"
             android:layout_marginRight="@dimen/dp35"
@@ -168,11 +168,11 @@
     <Button
         android:id="@+id/register_btn"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp40"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp35"
         android:layout_marginRight="@dimen/dp35"
-        android:layout_marginTop="@dimen/dp20"
-        android:layout_marginBottom="@dimen/dp20"
+        android:layout_marginTop="@dimen/dp15"
+        android:layout_marginBottom="@dimen/dp10"
         android:paddingTop="@dimen/dp10"
         android:paddingBottom="@dimen/dp10"
         android:text="@string/btn_text_submit"
@@ -190,7 +190,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:textSize="@dimen/sp12"
+            android:textSize="@dimen/sp10"
             android:text="@string/tips"
             android:textColor="@color/line_color"/>
         <TextView
@@ -198,7 +198,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:textSize="@dimen/sp12"
+            android:textSize="@dimen/sp10"
             android:text="@string/text_protocal"
             android:textColor="@color/main_orange"
             android:clickable="true"

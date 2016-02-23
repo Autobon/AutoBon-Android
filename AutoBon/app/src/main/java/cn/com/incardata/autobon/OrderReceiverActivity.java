@@ -83,9 +83,9 @@ public class OrderReceiverActivity extends Activity implements View.OnClickListe
         baiduMap.setOnMapLoadedCallback(new BaiduMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
-                //tv_distance为下方显示距离的TextView控件,mAddress为另一个点的位置,定位扫描时间为5s
+                //tv_distance为下方显示距离的TextView控件,mAddress为另一个点的位置,定位扫描时间为5s,null代表不是签到界面
                 BaiduMapUtil.locate(context,baiduMap,5000,mLocationClient,
-                        new BaiduMapUtil.MyListener(context,baiduMap,tv_distance,mAddress));
+                        new BaiduMapUtil.MyListener(context,baiduMap,tv_distance,mAddress,null));
             }
         });
     }
@@ -135,7 +135,7 @@ public class OrderReceiverActivity extends Activity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        BaiduMapUtil.unRegisterBaiduMapReceiver(this);
+        //BaiduMapUtil.unRegisterBaiduMapReceiver(this);
         mLocationClient.stop();
         baiduMap.clear();
         baiduMap.setMyLocationEnabled(false); // 关闭定位图层

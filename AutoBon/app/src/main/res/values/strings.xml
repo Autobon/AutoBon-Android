@@ -23,11 +23,11 @@
 
     <!--注册界面-->
     <string name="hint_text_code">请输入验证码</string>
-    <string name="btn_text_send_code">获取</string>
+    <string name="btn_text_send_code">获取验证</string>
     <string name="btn_text_send_code_repeat">再次获取</string>
     <string name="btn_text_submit">提交</string>
     <string name="tips">点击“提交”代表本人已阅读并同意</string>
-    <string name="text_protocal">《车邻邦服务协议》</string>
+    <string name="text_protocal">《车邻邦技师服务协议》</string>
     <string name="register_failed_tips">注册失败</string>
     <string name="register_success_tips">注册成功</string>
     <string name="valid_code_error_tips">验证码错误</string>
@@ -37,8 +37,8 @@
     <!--找回密码界面-->
     <string name="find_password">找回密码</string>
     <string name="hint_phone">+86手机号</string>
-    <string name="hint_code">请输入收到的验证码</string>
-    <string name="text_get_code">获取</string>
+    <string name="hint_code">请输入验证码</string>
+    <string name="text_get_code">获取验证</string>
     <string name="code_tips">验证码已以短信形式发送到您的手机中,请注意查收</string>
     <string name="next_btn_text">下一步</string>
     <string name="repeat_get_text">再次获取</string>
@@ -71,5 +71,7 @@
     <string name="work_model_text">工作模式</string>
     <string name="distance_text">距离门店</string>
     <string name="sign_in_text">签到</string>
+    <string name="not_arrive_text">还未到达,不能签到噢</string>
+    <string name="arrive_text">到达门店? 签到开始工作吧!</string>
 
 </resources>
