@@ -21,8 +21,18 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/login_title"
-            android:textSize="@dimen/sp20"
-            android:textColor="@android:color/white"/>
+            android:textSize="@dimen/sp18"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"/>
+        <ImageView
+            android:layout_width="@dimen/dp50"
+            android:layout_height="match_parent"
+            android:padding="@dimen/dp10"
+            android:src="@mipmap/emit"
+            android:scaleType="centerInside"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_alignParentRight="true"/>
     </RelativeLayout>
 
     <com.baidu.mapapi.map.MapView

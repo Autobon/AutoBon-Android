@@ -23,8 +23,9 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/login_title"
-            android:textSize="@dimen/sp20"
-            android:textColor="@android:color/white"/>
+            android:textSize="@dimen/sp18"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"/>
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"

@@ -25,8 +25,9 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/login_title"
-            android:textSize="@dimen/sp20"
-            android:textColor="@android:color/white"/>
+            android:textSize="@dimen/sp18"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -94,7 +95,7 @@
         android:layout_marginRight="@dimen/dp30"
         android:background="@color/lightgray"
         android:text="@string/sign_in_text"
-        android:textSize="@dimen/sp18"
+        android:textSize="@dimen/sp15"
         android:textColor="@color/line_color"
         android:gravity="center"
         android:clickable="false"

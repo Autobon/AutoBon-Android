@@ -39,6 +39,7 @@ import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import java.util.ArrayList;
 
 import cn.com.incardata.autobon.R;
+import cn.com.incardata.http.NetWorkHelper;
 
 /**
  * Created by zhangming on 2016/2/22.
@@ -109,7 +110,7 @@ public class BaiduMapUtil {
         mLocationClient.start();
         MyLocationConfiguration configuration = new MyLocationConfiguration(
                 MyLocationConfiguration.LocationMode.FOLLOWING, true,
-                BitmapDescriptorFactory.fromResource(R.mipmap.eat_icon));
+                BitmapDescriptorFactory.fromResource(R.mipmap.here));
         baiduMap.setMyLocationConfigeration(configuration);// 设置定位显示的模式
         baiduMap.setMyLocationEnabled(true);// 打开定位图层p
         baiduMap.getUiSettings().setCompassEnabled(false);  //不显示指南针
@@ -154,6 +155,7 @@ public class BaiduMapUtil {
         MarkerOptions markerOptions = new MarkerOptions();
         ArrayList<BitmapDescriptor> bitmaps = new ArrayList<BitmapDescriptor>();
         bitmaps.add(BitmapDescriptorFactory.fromView(initPop(context,address,true)));
+
         markerOptions.position(latLng).icons(bitmaps).draggable(false);
         Overlay overlay = baiduMap.addOverlay(markerOptions);
         overlay.setZIndex(zIndex);
@@ -238,7 +240,10 @@ public class BaiduMapUtil {
                     TextView tv = (TextView) pop.findViewById(R.id.title);
                     tv.setText(result.getAddrStr());
                 }else{
-                    markOverlay[0] = BaiduMapUtil.drawMarker(this.baiduMap,latLng,BitmapDescriptorFactory.fromResource(R.mipmap.eat_icon),markZIndex);
+                    if(!NetWorkHelper.isNetworkAvailable(context)) {  //无网络不显示
+                        return;
+                    }
+                    markOverlay[0] = BaiduMapUtil.drawMarker(this.baiduMap,latLng,BitmapDescriptorFactory.fromResource(R.mipmap.here),markZIndex);
                     popOverlay[0] = BaiduMapUtil.drawPopWindow(this.baiduMap,context,latLng,result.getAddrStr(),popZIndex);
                     latLngArray[0] = latLng;
                     windowInfo[0] = result.getAddrStr();
@@ -299,8 +304,10 @@ public class BaiduMapUtil {
             if(popOverlay[1]!=null){
                 popOverlay[1].remove();
             }
-
-            markOverlay[1] = BaiduMapUtil.drawMarker(this.baiduMap,result.getLocation(),BitmapDescriptorFactory.fromResource(R.mipmap.eat_icon),markZIndex);
+            if(!NetWorkHelper.isNetworkAvailable(context)) {  //无网络不显示
+                return;
+            }
+            markOverlay[1] = BaiduMapUtil.drawMarker(this.baiduMap,result.getLocation(),BitmapDescriptorFactory.fromResource(R.mipmap.shop),markZIndex);
             popOverlay[1] = BaiduMapUtil.drawPopWindow(this.baiduMap,context,result.getLocation(),result.getAddress(),popZIndex);
             latLngArray[1] = result.getLocation();
             windowInfo[1] = result.getAddress();
