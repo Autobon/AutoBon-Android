@@ -135,14 +135,47 @@
                 android:layout_marginLeft="@dimen/dp10"
                 android:singleLine="true"/>
         </LinearLayout>
+        <View
+            android:id="@+id/bt_line_view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_color"
+            android:visibility="gone"/>
         <LinearLayout
+            android:id="@+id/ll_add_contact"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:visibility="gone">
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/contact_text"
+                android:textSize="@dimen/sp15"
+                android:textColor="@color/darkgray"
+                android:layout_marginLeft="@dimen/dp10"/>
+            <TextView
+                android:id="@+id/tv_username"
+                android:layout_width="@dimen/dp70"
+                android:layout_height="@dimen/dp30"
+                android:textSize="@dimen/sp15"
+                android:textColor="@color/darkgray"
+                android:layout_marginLeft="@dimen/dp10"
+                android:singleLine="true"
+                android:gravity="center_vertical"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/tv_accept_order"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/sp15"
+                android:textColor="@color/lightgray"
+                android:singleLine="true"
+                android:gravity="center_vertical"
+                android:layout_marginRight="@dimen/dp10"
+                android:text="@string/receiver_text"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -150,27 +183,45 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/line_color"/>
-    <LinearLayout
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp50"
-        android:orientation="horizontal"
-        android:weightSum="2">
-        <TextView
-            android:layout_width="0dp"
+        android:layout_height="@dimen/dp40">
+        <LinearLayout
+            android:id="@+id/ll_tab_bottom"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/tab_one_text"
-            android:gravity="center"
-            android:textSize="@dimen/sp15"
-            android:textColor="@color/lightgray"/>
+            android:orientation="horizontal"
+            android:weightSum="2">
+            <TextView
+                android:id="@+id/tv_add_contact"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/tab_one_text"
+                android:gravity="center"
+                android:textSize="@dimen/sp15"
+                android:textColor="@color/lightgray" />
+            <TextView
+                android:id="@+id/begin_work"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/tab_two_text"
+                android:gravity="center"
+                android:background="@color/main_orange"
+                android:textSize="@dimen/sp15"
+                android:textColor="@android:color/white"/>
+        </LinearLayout>
         <TextView
-            android:layout_width="0dp"
+            android:id="@+id/tv_begin_work"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:text="@string/tab_two_text"
             android:gravity="center"
-            android:background="@color/main_orange"
+            android:background="@android:color/white"
             android:textSize="@dimen/sp15"
-            android:textColor="@android:color/white"/>
-    </LinearLayout>
+            android:textColor="@color/lightgray"
+            android:visibility="gone"/>
+    </RelativeLayout>
 </LinearLayout>
