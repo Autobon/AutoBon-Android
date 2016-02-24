@@ -61,15 +61,25 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity
-            android:name=".AddContactActivity"
+            android:name="cn.com.incardata.autobon.BaseBaiduMapActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar"></activity>
+
+        <activity
+            android:name="cn.com.incardata.autobon.AddContactActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity
+            android:name="cn.com.incardata.autobon.WorkSignInActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar"/>
 
         <!-- 百度地图的定位服务 -->
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote"></service>
+            android:process=":remote" >
+        </service>
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"

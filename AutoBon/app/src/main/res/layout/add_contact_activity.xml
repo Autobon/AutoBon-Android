@@ -4,10 +4,10 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="@color/main_white">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp50"
+        android:layout_height="@dimen/dp45"
         android:background="@color/main_orange">
         <ImageView
             android:id="@+id/iv_back"
@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/login_title"
-            android:textSize="@dimen/sp20"
+            android:textSize="@dimen/sp18"
             android:textColor="@android:color/white"/>
     </RelativeLayout>
     <LinearLayout
@@ -34,12 +34,12 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/check_btn"
+            android:background="@drawable/pop_shape"
             android:gravity="center_vertical">
             <ImageView
                 android:layout_width="@dimen/dp25"
                 android:layout_height="@dimen/dp25"
-                android:src="@mipmap/ic_launcher"
+                android:src="@mipmap/search_img"
                 android:scaleType="centerInside" />
             <EditText
                 android:id="@+id/et_phone"
@@ -55,10 +55,10 @@
                 android:textSize="@dimen/sp15"/>
             <ImageView
                 android:id="@+id/iv_clear"
-                android:layout_width="@dimen/dp25"
-                android:layout_height="@dimen/dp25"
+                android:layout_width="@dimen/dp20"
+                android:layout_height="@dimen/dp20"
                 android:src="@mipmap/iv_delete"
-                android:scaleType="centerInside" />
+                android:scaleType="centerInside"/>
         </LinearLayout>
         <TextView
             android:id="@+id/tv_search"
