@@ -62,10 +62,19 @@
             android:theme="@android:style/Theme.NoTitleBar">
         </activity>
         <activity
-            android:name="cn.com.incardata.autobon.AddContactActivity"
+            android:name="cn.com.incardata.autobon.BaseBaiduMapActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar">
         </activity>
+
+        <activity
+            android:name="cn.com.incardata.autobon.AddContactActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity
+            android:name="cn.com.incardata.autobon.WorkSignInActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar"/>
 
         <!-- 百度地图的定位服务 -->
         <service

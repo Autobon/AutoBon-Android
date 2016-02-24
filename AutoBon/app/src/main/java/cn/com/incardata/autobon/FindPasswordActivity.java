@@ -155,7 +155,6 @@ public class FindPasswordActivity extends Activity implements View.OnClickListen
                     @Override
                     public void run() {
                         btn_check.setText(context.getResources().getString(R.string.repeat_get_text));
-                        btn_check.setTextSize(15);
                         btn_check.setFocusable(true);
                         btn_check.setClickable(true);
                     }
@@ -192,9 +191,9 @@ public class FindPasswordActivity extends Activity implements View.OnClickListen
     }
 
     /**
-     * 提交注册信息
+     * 提交信息
      */
-    public void submitRegisterInfo(){
+    public void submitInfo(){
         String phone = et_phone.getText().toString().trim();
         String code = et_code.getText().toString().trim();
         final String password = et_pwd.getText().toString().trim();
@@ -233,33 +232,37 @@ public class FindPasswordActivity extends Activity implements View.OnClickListen
         mList.add(new BasicNameValuePair("password",password));
         mList.add(new BasicNameValuePair("verifySms",code));
 
-        Http.getInstance().postTaskToken(NetURL.RESET_PASSWORD, ResetPasswordEntity.class, new OnResult() {
-            @Override
-            public void onResult(Object entity) {
-                if (entity == null) {
-                    T.show(context, context.getString(R.string.reset_failed));
-                    return;
-                }
-                ResetPasswordEntity resetPasswordEntity = (ResetPasswordEntity) entity;
-                if(resetPasswordEntity.isResult()){
-                    //TODO 重置密码成功后清空任务栈返回登录界面
-                    T.show(context,context.getString(R.string.reset_success)+password);
-                    Intent intent = new Intent(context, LoginActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    finish();
-                }else{  //失败
-                    if("NO_SUCH_USER".equals(resetPasswordEntity.getError())){  //手机号未注册
-                        T.show(context,context.getString(R.string.phone_no_register_tips));
-                        return;
-                    }else if("ILLEGAL_PARAM".equals(resetPasswordEntity.getError())){  //验证码错误
-                        T.show(context,context.getString(R.string.valid_code_error_tips));
+        if(NetWorkHelper.isNetworkAvailable(context)) {
+            Http.getInstance().postTaskToken(NetURL.RESET_PASSWORD, ResetPasswordEntity.class, new OnResult() {
+                @Override
+                public void onResult(Object entity) {
+                    if (entity == null) {
+                        T.show(context, context.getString(R.string.reset_failed));
                         return;
                     }
+                    ResetPasswordEntity resetPasswordEntity = (ResetPasswordEntity) entity;
+                    if (resetPasswordEntity.isResult()) {
+                        //TODO 重置密码成功后清空任务栈返回登录界面
+                        T.show(context, context.getString(R.string.reset_success));
+                        Intent intent = new Intent(context, LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    } else {  //失败
+                        if ("NO_SUCH_USER".equals(resetPasswordEntity.getError())) {  //手机号未注册
+                            T.show(context, context.getString(R.string.phone_no_register_tips));
+                            return;
+                        } else if ("ILLEGAL_PARAM".equals(resetPasswordEntity.getError())) {  //验证码错误
+                            T.show(context, context.getString(R.string.valid_code_error_tips));
+                            return;
+                        }
+                    }
                 }
-            }
-        },(BasicNameValuePair[]) mList.toArray(new BasicNameValuePair[mList.size()]));
-
+            }, (BasicNameValuePair[]) mList.toArray(new BasicNameValuePair[mList.size()]));
+        }else{
+            T.show(context,getString(R.string.no_network_tips));
+            return;
+        }
     }
 
 
@@ -285,7 +288,7 @@ public class FindPasswordActivity extends Activity implements View.OnClickListen
                 //Intent intent = new Intent();
                 //intent.setClass(context,ResetPasswordActivity.class);
                 //startActivity(intent);
-                submitRegisterInfo();
+                submitInfo();
                 break;
             case R.id.iv_eye: //显示隐藏密码
                 isFocus = !isFocus;

@@ -230,6 +230,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             }
             if(loginEntity.isResult()){  //成功
                 //TODO 跳转主页
+                Intent intent = new Intent(context,OrderReceiverActivity.class);
+                startActivity(intent);
                 finish();
             }else{  //失败
                 if("NO_SUCH_USER".equals(loginEntity.getError())){
