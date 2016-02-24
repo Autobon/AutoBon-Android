@@ -58,7 +58,7 @@
     <string name="tab_two_text">开始工作</string>
     <string name="work_timer">工作时间:</string>
     <string name="memo_text">工作备注:</string>
-    <string name="no_network_error">无网络</string>
+    <string name="no_network_error">网络异常</string>
     <string name="error_key_tips">key校验失败</string>
     <string name="no_result_tips">未搜索到结果</string>
     <string name="search_text">搜索</string>

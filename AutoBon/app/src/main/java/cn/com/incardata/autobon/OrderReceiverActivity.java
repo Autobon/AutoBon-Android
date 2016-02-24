@@ -14,10 +14,8 @@ import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 
-import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.utils.BaiduMapUtil;
 import cn.com.incardata.utils.StringUtil;
-import cn.com.incardata.utils.T;
 
 /**
  * 接单开始工作
@@ -25,7 +23,7 @@ import cn.com.incardata.utils.T;
  */
 public class OrderReceiverActivity extends BaseBaiduMapActivity implements View.OnClickListener{
     private Context context;
-    private TextView tv_distance,tv_add_contact;
+    private TextView tv_add_contact;
 
     private LinearLayout ll_add_contact,ll_tab_bottom;
     private TextView tv_username,tv_begin_work;
@@ -57,7 +55,7 @@ public class OrderReceiverActivity extends BaseBaiduMapActivity implements View.
 
     public void initView(){
         context = this;
-        tv_distance = (TextView) findViewById(R.id.tv_distance);
+        super.tv_distance = (TextView) findViewById(R.id.tv_distance);
         tv_add_contact = (TextView) findViewById(R.id.tv_add_contact);
         tv_username = (TextView) findViewById(R.id.tv_username);
         tv_begin_work = (TextView)findViewById(R.id.tv_begin_work);
@@ -77,13 +75,9 @@ public class OrderReceiverActivity extends BaseBaiduMapActivity implements View.
         baiduMap.setOnMapLoadedCallback(new BaiduMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
-                if(NetWorkHelper.isNetworkAvailable(context)) {
-                    //tv_distance为下方显示距离的TextView控件,mAddress为另一个点的位置,null代表不是签到界面
-                    BaiduMapUtil.locate(context, baiduMap, scanTime, mLocationClient,
-                            new BaiduMapUtil.MyListener(context, baiduMap, tv_distance,mLatLng, mAddress, null));
-                }else{
-                    T.show(context,getString(R.string.no_network_tips));
-                }
+                //tv_distance为下方显示距离的TextView控件,mAddress为另一个点的位置,null代表不是签到界面
+                BaiduMapUtil.locate(baiduMap, scanTime, mLocationClient,
+                        new BaiduMapUtil.MyListener(context, baiduMap,tv_distance,mLatLng, mAddress, null));
             }
         });
     }

@@ -54,7 +54,7 @@ public class BaiduMapUtil {
     /**
      * 自动定位当前位置
      */
-    public static void locate(Context context,BaiduMap baiduMap,int scanTime,LocationClient mLocationClient,BDLocationListener myListener) {
+    public static void locate(BaiduMap baiduMap,int scanTime,LocationClient mLocationClient,BDLocationListener myListener) {
         mLocationClient.registerLocationListener(myListener);
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);// 设置定位模式
@@ -74,7 +74,6 @@ public class BaiduMapUtil {
         baiduMap.getUiSettings().setCompassEnabled(false);  //不显示指南针
         baiduMap.setMapStatus(MapStatusUpdateFactory.zoomTo(baiduMap.getMapStatus().zoom));  //定位后更新缩放级别
     }
-
 
     public static void initData() {
         markOverlay = new Overlay[length];
@@ -234,11 +233,9 @@ public class BaiduMapUtil {
                     double distance = BaiduMapUtil.getDistance(latLngArray[0],this.latLng); //单位为m
 
                     if(sign_in_btn!=null){  //签到界面有提示框,并且改变Button样式
-                        if(Math.abs(distance)<=10){  //到达(有误差)
+                        if(Math.abs(distance)<=10*1000){  //到达(有误差)
                             tv_distance.setText(R.string.arrive_text);
-                            sign_in_btn.setClickable(true);
-                            sign_in_btn.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.click_btn));  //兼容api14
-                            //sign_in_btn.setBackgroundColor(context.getResources().getColor(R.color.main_orange));
+                            sign_in_btn.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.default_btn));  //兼容api14
                             sign_in_btn.setTextColor(context.getResources().getColor(android.R.color.white));
                         }else{
                             Toast toast = Toast.makeText(context.getApplicationContext(),context.getString(R.string.not_arrive_text),Toast.LENGTH_LONG);

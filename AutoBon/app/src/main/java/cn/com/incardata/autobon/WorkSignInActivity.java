@@ -14,17 +14,15 @@ import com.baidu.mapapi.map.MapView;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.utils.BaiduMapUtil;
 import cn.com.incardata.utils.DateCompute;
-import cn.com.incardata.utils.T;
 
 /**
  * Created by zhangming on 2016/2/22.
  * 工作签到
  */
 public class WorkSignInActivity extends BaseBaiduMapActivity{
-    private TextView tv_day,tv_week_day,tv_distance;
+    private TextView tv_day,tv_week_day;
     private Context context;
     private Button sign_in_btn;
 
@@ -53,7 +51,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity{
         context = this;
         tv_day = (TextView) findViewById(R.id.tv_day);
         tv_week_day = (TextView) findViewById(R.id.tv_week_day);
-        tv_distance = (TextView) findViewById(R.id.tv_distance);
+        super.tv_distance = (TextView) findViewById(R.id.tv_distance);
         sign_in_btn = (Button) findViewById(R.id.sign_in_btn);
 
         tv_day.setText(DateCompute.getCurrentYearMonthDay());
@@ -70,13 +68,9 @@ public class WorkSignInActivity extends BaseBaiduMapActivity{
         baiduMap.setOnMapLoadedCallback(new BaiduMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
-                if(NetWorkHelper.isNetworkAvailable(context)) {
-                    //tv_distance为下方显示距离的TextView控件,mAddress为另一个点的位置,定位扫描时间为5s,true代表是签到界面
-                    BaiduMapUtil.locate(context, baiduMap,scanTime, mLocationClient,
-                            new BaiduMapUtil.MyListener(context,baiduMap,tv_distance,mLatLng,mAddress,sign_in_btn));
-                }else{
-                    T.show(context,getString(R.string.no_network_tips));
-                }
+                //tv_distance为下方显示距离的TextView控件,mAddress为另一个点的位置,定位扫描时间为5s,true代表是签到界面
+                BaiduMapUtil.locate(baiduMap,scanTime, mLocationClient,
+                        new BaiduMapUtil.MyListener(context,baiduMap,tv_distance,mLatLng,mAddress,sign_in_btn));
             }
         });
     }
