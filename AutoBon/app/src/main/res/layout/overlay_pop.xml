@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:textColor="@color/darkgray"
-            android:textSize="@dimen/sp15" />
+            android:textSize="@dimen/sp12" />
 
     </LinearLayout>
 

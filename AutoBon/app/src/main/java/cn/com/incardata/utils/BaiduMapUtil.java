@@ -1,9 +1,6 @@
 package cn.com.incardata.utils;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -16,7 +13,6 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
@@ -44,8 +40,6 @@ import cn.com.incardata.http.NetWorkHelper;
  */
 public class BaiduMapUtil {
     protected static View pop;
-    protected static BroadcastReceiver receiver;
-
     protected static Overlay[] markOverlay;  //标志物图层
     protected static Overlay[] popOverlay;  //信息框图层
     protected static LatLng[] latLngArray;  //位置信息记录
@@ -56,38 +50,6 @@ public class BaiduMapUtil {
     protected static final int length = 4;
     public static final int defaultLevel = 15;  //常量字段
 
-    /**
-     * 注册百度地图的广播接收者
-     * @param context
-     */
-    public static void registerBaiduMapReceiver(Context context){
-        receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String result = intent.getAction();
-                if(SDKInitializer.SDK_BROADCAST_ACTION_STRING_NETWORK_ERROR.equals(result)){
-                    //网络错误
-                    //T.show(context,context.getString(R.string.no_network_error));
-                }else if(SDKInitializer.SDK_BROADTCAST_ACTION_STRING_PERMISSION_CHECK_ERROR.equals(result)){
-                    //key校验失败
-                    //T.show(context,context.getString(R.string.error_key_tips));
-                }
-            }
-        };
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(SDKInitializer.SDK_BROADCAST_ACTION_STRING_NETWORK_ERROR);  //注册网络错误
-        filter.addAction(SDKInitializer.SDK_BROADTCAST_ACTION_STRING_PERMISSION_CHECK_ERROR); //注册key校验结果
-        context.getApplicationContext().registerReceiver(receiver, filter);
-    }
-
-    /**
-     * 注销百度地图的广播接收者
-     * @param context
-     */
-    public static void unRegisterBaiduMapReceiver(Context context){
-        context.getApplicationContext().unregisterReceiver(receiver);
-        receiver = null;
-    }
 
     /**
      * 自动定位当前位置

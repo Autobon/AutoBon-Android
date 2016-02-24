@@ -1,31 +1,37 @@
 package cn.com.incardata.autobon;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 
 import com.baidu.location.LocationClient;
+import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.model.LatLng;
 
-import cn.com.incardata.utils.BaiduMapUtil;
-
 /**
  * Created by zhangming on 2016/2/24.
+ * 有关百度地图页面的基类
  */
 public class BaseBaiduMapActivity extends Activity{
+    protected BroadcastReceiver receiver;
     protected BaiduMap baiduMap;
     protected MapView mMapView;
     protected LocationClient mLocationClient;
 
     protected static final LatLng mLatLng = new LatLng(30.511869,114.405746);
     protected static final String mAddress = "门店";  //测试地址,可以更改
-    protected static final int scanTime = 30000;  //设置30s定位一次
+    protected static final int scanTime = 10000;  //设置10s定位一次
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BaiduMapUtil.registerBaiduMapReceiver(this);  //注册百度地图广播接收者
+        //registerBaiduMapReceiver(this);  //注册百度地图广播接收者
     }
 
     @Override
@@ -44,7 +50,7 @@ public class BaseBaiduMapActivity extends Activity{
 
     @Override
     protected void onDestroy() {
-        //BaiduMapUtil.unRegisterBaiduMapReceiver(this);
+        //unRegisterBaiduMapReceiver(this);
         mLocationClient.stop();
         baiduMap.clear();
         baiduMap.setMyLocationEnabled(false); // 关闭定位图层
@@ -52,5 +58,38 @@ public class BaseBaiduMapActivity extends Activity{
         //mMapView.onDestroy();
         //mMapView = null;
         super.onDestroy();
+    }
+
+    /**
+     * 注册百度地图的广播接收者
+     * @param context
+     */
+    public void registerBaiduMapReceiver(Context context){
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String result = intent.getAction();
+                if(SDKInitializer.SDK_BROADCAST_ACTION_STRING_NETWORK_ERROR.equals(result)){
+                    //网络错误
+                    //T.show(context,context.getString(R.string.no_network_error));
+                }else if(SDKInitializer.SDK_BROADTCAST_ACTION_STRING_PERMISSION_CHECK_ERROR.equals(result)){
+                    //key校验失败
+                    //T.show(context,context.getString(R.string.error_key_tips));
+                }
+            }
+        };
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(SDKInitializer.SDK_BROADCAST_ACTION_STRING_NETWORK_ERROR);  //注册网络错误
+        filter.addAction(SDKInitializer.SDK_BROADTCAST_ACTION_STRING_PERMISSION_CHECK_ERROR); //注册key校验结果
+        context.getApplicationContext().registerReceiver(receiver, filter);
+    }
+
+    /**
+     * 注销百度地图的广播接收者
+     * @param context
+     */
+    public void unRegisterBaiduMapReceiver(Context context){
+        context.getApplicationContext().unregisterReceiver(receiver);
+        receiver = null;
     }
 }

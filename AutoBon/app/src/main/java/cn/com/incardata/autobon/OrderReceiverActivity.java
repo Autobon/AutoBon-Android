@@ -78,7 +78,7 @@ public class OrderReceiverActivity extends BaseBaiduMapActivity implements View.
             @Override
             public void onMapLoaded() {
                 if(NetWorkHelper.isNetworkAvailable(context)) {
-                    //tv_distance为下方显示距离的TextView控件,mAddress为另一个点的位置,定位扫描时间为5s,null代表不是签到界面
+                    //tv_distance为下方显示距离的TextView控件,mAddress为另一个点的位置,null代表不是签到界面
                     BaiduMapUtil.locate(context, baiduMap, scanTime, mLocationClient,
                             new BaiduMapUtil.MyListener(context, baiduMap, tv_distance,mLatLng, mAddress, null));
                 }else{

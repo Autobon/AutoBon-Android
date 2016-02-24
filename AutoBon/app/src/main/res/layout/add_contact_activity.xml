@@ -7,7 +7,7 @@
     android:background="@color/main_white">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp50"
+        android:layout_height="@dimen/dp45"
         android:background="@color/main_orange">
         <ImageView
             android:id="@+id/iv_back"
@@ -24,8 +24,7 @@
             android:layout_centerInParent="true"
             android:text="@string/login_title"
             android:textSize="@dimen/sp18"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"/>
+            android:textColor="@android:color/white"/>
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
