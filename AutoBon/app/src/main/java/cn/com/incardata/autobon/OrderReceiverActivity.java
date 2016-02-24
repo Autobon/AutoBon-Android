@@ -1,6 +1,5 @@
 package cn.com.incardata.autobon;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,7 +21,7 @@ import cn.com.incardata.utils.StringUtil;
  * 接单开始工作
  * Created by Administrator on 2016/2/17.
  */
-public class OrderReceiverActivity extends Activity implements View.OnClickListener{
+public class OrderReceiverActivity extends BaseActivity implements View.OnClickListener{
     private Context context;
     private TextView tv_distance,tv_add_contact;
 

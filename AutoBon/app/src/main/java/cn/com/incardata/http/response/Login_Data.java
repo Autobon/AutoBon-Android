@@ -40,6 +40,8 @@ public class Login_Data {
 
     private String skill; // 技师技能
 
+    private String status;//账号状态（包括认证未认证）
+
     public int getId() {
         return id;
     }
@@ -182,5 +184,13 @@ public class Login_Data {
 
     public void setSkill(String skill) {
         this.skill = skill;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

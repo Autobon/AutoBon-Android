@@ -1,6 +1,5 @@
 package cn.com.incardata.autobon;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -19,7 +18,7 @@ import cn.com.incardata.view.CircleImageView;
 /**
  * Created by Administrator on 2016/2/19.
  */
-public class AddContactActivity extends Activity implements View.OnClickListener{
+public class AddContactActivity extends BaseActivity implements View.OnClickListener{
     private CircleImageView circle_image;
     private ImageView iv_back,iv_clear;
     private TextView tv_search,tv_username;

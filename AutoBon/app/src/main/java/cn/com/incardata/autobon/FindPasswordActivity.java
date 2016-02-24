@@ -1,6 +1,5 @@
 package cn.com.incardata.autobon;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,7 +33,7 @@ import cn.com.incardata.utils.T;
 /**
  * Created by Administrator on 2016/2/17.
  */
-public class FindPasswordActivity extends Activity implements View.OnClickListener{
+public class FindPasswordActivity extends BaseActivity implements View.OnClickListener{
     private ImageView iv_back,iv_clear,iv_eye;
     private EditText et_phone,et_code,et_pwd;
     private Timer timer;
