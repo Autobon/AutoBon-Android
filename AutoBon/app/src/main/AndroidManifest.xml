@@ -29,7 +29,7 @@
         <activity
             android:name=".MainUnauthorizedActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait"
@@ -59,33 +59,39 @@
         <activity
             android:name=".OrderReceiverActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="cn.com.incardata.autobon.BaseBaiduMapActivity"
+            android:name=".BaseBaiduMapActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"></activity>
-
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="cn.com.incardata.autobon.AddContactActivity"
+            android:name=".AddContactActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"/>
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name="cn.com.incardata.autobon.WorkSignInActivity"
+            android:name=".WorkSignInActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"/>
+            android:theme="@android:style/Theme.NoTitleBar" />
 
         <!-- 百度地图的定位服务 -->
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote" >
-        </service>
+            android:process=":remote" />
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="W12Nb7yu0uTcGAlowNN6CBOb" />
 
-        <activity android:name=".MainAuthorizedActivity"></activity>
+        <activity
+            android:name=".MainAuthorizedActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".AuthorizationProgressActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity android:name=".AuthorizeActivity"></activity>
     </application>
 
 </manifest>

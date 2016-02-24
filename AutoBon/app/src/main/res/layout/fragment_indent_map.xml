@@ -43,6 +43,7 @@
             android:gravity="center_vertical"
             android:text="km"
             android:textSize="@dimen/sp15"
+            android:visibility="gone"
             android:textColor="@color/darkgray"
             android:layout_marginLeft="@dimen/dp5"/>
 

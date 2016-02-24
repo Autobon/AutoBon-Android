@@ -6,6 +6,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -233,7 +234,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 if (StatusCode.VERIFIED.equals(loginEntity.getData().getStatus())){
                     startActivity(MainAuthorizedActivity.class);
                 }else {
-                    startActivity(MainUnauthorizedActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putBoolean("isVerifying", !TextUtils.isEmpty(loginEntity.getData().getIdNo()));//是否正在审核
+                    startActivity(MainUnauthorizedActivity.class, bundle);
                 }
                 finish();
             }else{  //失败

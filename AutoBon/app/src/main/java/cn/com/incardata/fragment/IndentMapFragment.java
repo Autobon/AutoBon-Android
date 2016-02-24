@@ -2,6 +2,10 @@ package cn.com.incardata.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.baidu.location.LocationClient;
+import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
@@ -29,7 +34,7 @@ import cn.com.incardata.utils.BaiduMapUtil;
  * Use the {@link IndentMapFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class IndentMapFragment extends BaseFragment{
+public class IndentMapFragment extends BaiduMapFragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -41,8 +46,8 @@ public class IndentMapFragment extends BaseFragment{
 
     private OnFragmentInteractionListener mListener;
     private View rootView;
-    protected BaiduMap baiduMap;
-    protected MapView mMapView;
+//    protected BaiduMap baiduMap;
+//    protected MapView mMapView;
     private TextView distance;
     private ImageView indentImage;
     private TextView indentText;
@@ -78,7 +83,7 @@ public class IndentMapFragment extends BaseFragment{
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        BaiduMapUtil.registerBaiduMapReceiver(getActivity());  //注册百度地图广播接收者
+        registerBaiduMapReceiver(getActivity());  //注册百度地图广播接收者
     }
 
     @Override
@@ -134,8 +139,8 @@ public class IndentMapFragment extends BaseFragment{
             @Override
             public void onMapLoaded() {
                 //tv_distance为下方显示距离的TextView控件,mAddress为另一个点的位置
-                BaiduMapUtil.locate(getActivity(),baiduMap,new LocationClient(getActivity()),
-                        new BaiduMapUtil.MyListener(getActivity(),baiduMap,distance,"武汉光谷广场"));
+                BaiduMapUtil.locate(getActivity(),baiduMap, 5000, new LocationClient(getActivity()),
+                        new BaiduMapUtil.MyListener(getActivity(),baiduMap,distance, mLatLng, "4S店", null));
             }
         });
     }
@@ -167,7 +172,7 @@ public class IndentMapFragment extends BaseFragment{
     @Override
     public void onDestroy() {
         super.onDestroy();
-        BaiduMapUtil.unRegisterBaiduMapReceiver(getActivity());
+        unRegisterBaiduMapReceiver(getActivity());
         baiduMap.clear();
         // 在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
         mMapView.onDestroy();
@@ -184,6 +189,40 @@ public class IndentMapFragment extends BaseFragment{
     public void onResume() {
         super.onResume();
         mMapView.onResume();
+    }
+
+    private BroadcastReceiver receiver;
+    /**
+     * 注册百度地图的广播接收者
+     * @param context
+     */
+    public void registerBaiduMapReceiver(Context context){
+       receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String result = intent.getAction();
+                if(SDKInitializer.SDK_BROADCAST_ACTION_STRING_NETWORK_ERROR.equals(result)){
+                    //网络错误
+                    //T.show(context,context.getString(R.string.no_network_error));
+                }else if(SDKInitializer.SDK_BROADTCAST_ACTION_STRING_PERMISSION_CHECK_ERROR.equals(result)){
+                    //key校验失败
+                    //T.show(context,context.getString(R.string.error_key_tips));
+                }
+            }
+        };
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(SDKInitializer.SDK_BROADCAST_ACTION_STRING_NETWORK_ERROR);  //注册网络错误
+        filter.addAction(SDKInitializer.SDK_BROADTCAST_ACTION_STRING_PERMISSION_CHECK_ERROR); //注册key校验结果
+        context.getApplicationContext().registerReceiver(receiver, filter);
+    }
+
+    /**
+     * 注销百度地图的广播接收者
+     * @param context
+     */
+    public void unRegisterBaiduMapReceiver(Context context){
+        context.getApplicationContext().unregisterReceiver(receiver);
+        receiver = null;
     }
 
     /**
