@@ -5,7 +5,7 @@ android {
         incar {
         }
     }
-    compileSdkVersion  21
+    compileSdkVersion 21
     buildToolsVersion '22.0.1'
     defaultConfig {
         applicationId "cn.com.incardata.autobon"

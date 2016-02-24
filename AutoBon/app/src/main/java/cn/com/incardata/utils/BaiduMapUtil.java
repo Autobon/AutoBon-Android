@@ -195,13 +195,13 @@ public class BaiduMapUtil {
         private LatLng latLng;  //另一个点的经纬度
         private Button sign_in_btn; //签到界面Button
 
-        public MyListener(Context context, BaiduMap baiduMap, TextView tv_distance, LatLng latLng,String mAddress, Button sign_in_btn){
+        public MyListener(Context context, BaiduMap baiduMap, TextView tv_distance, LatLng latLng,String mOhterTitle, Button sign_in_btn){
             initData();
             this.context = context;
             this.baiduMap = baiduMap;
             this.tv_distance = tv_distance;
             this.latLng = latLng;
-            this.mAddress = mAddress;
+            this.mAddress = mOhterTitle;
             this.sign_in_btn = sign_in_btn;
         }
 
