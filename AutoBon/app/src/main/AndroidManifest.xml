@@ -62,6 +62,12 @@
             android:theme="@android:style/Theme.NoTitleBar">
         </activity>
         <activity
+            android:name="cn.com.incardata.autobon.BaseBaiduMapActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
+
+        <activity
             android:name="cn.com.incardata.autobon.AddContactActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar"/>

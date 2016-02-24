@@ -29,12 +29,9 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.model.LatLngBounds;
-import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.geocode.GeoCodeOption;
-import com.baidu.mapapi.search.geocode.GeoCodeResult;
 import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
-import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 
 import java.util.ArrayList;
 
@@ -54,7 +51,6 @@ public class BaiduMapUtil {
     protected static LatLng[] latLngArray;  //位置信息记录
     protected static String[] windowInfo;  //窗体信息记录
 
-    protected static boolean isZoomCenter = true;
     protected static final int markZIndex = 1;
     protected static final int popZIndex = 2;
     protected static final int length = 4;
@@ -71,10 +67,10 @@ public class BaiduMapUtil {
                 String result = intent.getAction();
                 if(SDKInitializer.SDK_BROADCAST_ACTION_STRING_NETWORK_ERROR.equals(result)){
                     //网络错误
-                    T.show(context,context.getString(R.string.no_network_error));
+                    //T.show(context,context.getString(R.string.no_network_error));
                 }else if(SDKInitializer.SDK_BROADTCAST_ACTION_STRING_PERMISSION_CHECK_ERROR.equals(result)){
                     //key校验失败
-                    T.show(context,context.getString(R.string.error_key_tips));
+                    //T.show(context,context.getString(R.string.error_key_tips));
                 }
             }
         };
@@ -139,6 +135,22 @@ public class BaiduMapUtil {
         GeoCoder mSearch = GeoCoder.newInstance();
         mSearch.setOnGetGeoCodeResultListener(geoCoderListener);
         mSearch.geocode(new GeoCodeOption().city(address).address(address));
+    }
+
+    public static void drawAnotherPointByGeo(Context context,BaiduMap baiduMap,LatLng latLng,String mAddress){
+        if(markOverlay[1]!=null){
+            markOverlay[1].remove();
+        }
+        if(popOverlay[1]!=null){
+            popOverlay[1].remove();
+        }
+        if(!NetWorkHelper.isNetworkAvailable(context)) {  //无网络不显示
+            return;
+        }
+        markOverlay[1] = drawMarker(baiduMap,latLng,BitmapDescriptorFactory.fromResource(R.mipmap.shop),markZIndex);
+        popOverlay[1] = drawPopWindow(baiduMap,context,latLng,mAddress,popZIndex);
+        latLngArray[1] = latLng;
+        windowInfo[1] = mAddress;
     }
 
     public static Overlay drawMarker(BaiduMap baiduMap,LatLng latLng, BitmapDescriptor descriptor, int zIndex) {
@@ -219,12 +231,15 @@ public class BaiduMapUtil {
         private BaiduMap baiduMap;
         private TextView tv_distance; //代表底部距离的TextView控件
         private String mAddress; //另一个点的位置
+        private LatLng latLng;  //另一个点的经纬度
         private Button sign_in_btn; //签到界面Button
 
-        public MyListener(Context context, BaiduMap baiduMap, TextView tv_distance, String mAddress, Button sign_in_btn){
+        public MyListener(Context context, BaiduMap baiduMap, TextView tv_distance, LatLng latLng,String mAddress, Button sign_in_btn){
+            initData();
             this.context = context;
             this.baiduMap = baiduMap;
             this.tv_distance = tv_distance;
+            this.latLng = latLng;
             this.mAddress = mAddress;
             this.sign_in_btn = sign_in_btn;
         }
@@ -243,26 +258,25 @@ public class BaiduMapUtil {
                     if(!NetWorkHelper.isNetworkAvailable(context)) {  //无网络不显示
                         return;
                     }
-                    markOverlay[0] = BaiduMapUtil.drawMarker(this.baiduMap,latLng,BitmapDescriptorFactory.fromResource(R.mipmap.here),markZIndex);
-                    popOverlay[0] = BaiduMapUtil.drawPopWindow(this.baiduMap,context,latLng,result.getAddrStr(),popZIndex);
+                    markOverlay[0] = drawMarker(this.baiduMap,latLng,BitmapDescriptorFactory.fromResource(R.mipmap.here),markZIndex);
+                    popOverlay[0] = drawPopWindow(this.baiduMap,context,latLng,result.getAddrStr(),popZIndex);
                     latLngArray[0] = latLng;
                     windowInfo[0] = result.getAddrStr();
-                    BaiduMapUtil.drawOnePoint(mAddress,new MyGeoCoderListener(context,this.baiduMap));
-                }
-                if(isZoomCenter){
-                    BaiduMapUtil.zoomByOneCenterPoint(baiduMap,latLngArray[0],defaultLevel);
-                    isZoomCenter = false;
+                    //drawOnePoint(mAddress,new MyGeoCoderListener(context,this.baiduMap));
+                    drawAnotherPointByGeo(context,this.baiduMap,this.latLng,this.mAddress);
+                    zoomByTwoPoint(baiduMap,latLngArray[0],this.latLng);
                 }
                 if(markOverlay[1] == null){
                     tv_distance.setText("0m");
                 }else{
-                    double distance = BaiduMapUtil.getDistance(latLngArray[0],latLngArray[1]); //单位为m
+                    double distance = BaiduMapUtil.getDistance(latLngArray[0],this.latLng); //单位为m
 
                     if(sign_in_btn!=null){  //签到界面有提示框,并且改变Button样式
                         if(Math.abs(distance)<=10){  //到达(有误差)
                             tv_distance.setText(R.string.arrive_text);
                             sign_in_btn.setClickable(true);
-                            sign_in_btn.setBackgroundColor(context.getResources().getColor(R.color.main_orange));
+                            sign_in_btn.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.click_btn));  //兼容api14
+                            //sign_in_btn.setBackgroundColor(context.getResources().getColor(R.color.main_orange));
                             sign_in_btn.setTextColor(context.getResources().getColor(android.R.color.white));
                         }else{
                             Toast toast = Toast.makeText(context.getApplicationContext(),context.getString(R.string.not_arrive_text),Toast.LENGTH_LONG);
@@ -282,6 +296,7 @@ public class BaiduMapUtil {
         }
     }
 
+    /**
     public static class MyGeoCoderListener implements OnGetGeoCoderResultListener {
         private Context context;
         private BaiduMap baiduMap;
@@ -318,7 +333,6 @@ public class BaiduMapUtil {
         public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
 
         }
-    }
-
+    }**/
 
 }

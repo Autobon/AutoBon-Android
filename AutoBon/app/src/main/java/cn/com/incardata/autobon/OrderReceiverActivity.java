@@ -1,6 +1,5 @@
 package cn.com.incardata.autobon;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,14 +14,16 @@ import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 
+import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.utils.BaiduMapUtil;
 import cn.com.incardata.utils.StringUtil;
+import cn.com.incardata.utils.T;
 
 /**
  * 接单开始工作
  * Created by Administrator on 2016/2/17.
  */
-public class OrderReceiverActivity extends Activity implements View.OnClickListener{
+public class OrderReceiverActivity extends BaseBaiduMapActivity implements View.OnClickListener{
     private Context context;
     private TextView tv_distance,tv_add_contact;
 
@@ -31,25 +32,18 @@ public class OrderReceiverActivity extends Activity implements View.OnClickListe
     private View bt_line_view;
     private ImageView iv_back;
 
-    protected BaiduMap baiduMap;
-    protected MapView mMapView;
-    protected LocationClient mLocationClient;
-
-    private static final String mAddress = "武汉光谷广场";  //测试地址,可以更改
-    private static final int ADD_CONTACT_CODE = 1;
+    private static final int ADD_CONTACT_CODE = 1;  //添加联系人的请求码requestCode
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BaiduMapUtil.registerBaiduMapReceiver(this);  //注册百度地图广播接收者
         setContentView(R.layout.order_receiver_activity);
         initBaiduMapView();
         initView();
-        BaiduMapUtil.initData();
         setListener();
     }
 
-    public void initBaiduMapView(){
+    protected void initBaiduMapView(){
         mMapView = (MapView) findViewById(R.id.bmapView);  	// 获取地图控件引用
         baiduMap = mMapView.getMap();  //管理具体的某一个MapView对象,缩放,旋转,平移
         MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.zoomTo(BaiduMapUtil.defaultLevel);  //默认级别12
@@ -83,9 +77,13 @@ public class OrderReceiverActivity extends Activity implements View.OnClickListe
         baiduMap.setOnMapLoadedCallback(new BaiduMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
-                //tv_distance为下方显示距离的TextView控件,mAddress为另一个点的位置,定位扫描时间为5s,null代表不是签到界面
-                BaiduMapUtil.locate(context,baiduMap,5000,mLocationClient,
-                        new BaiduMapUtil.MyListener(context,baiduMap,tv_distance,mAddress,null));
+                if(NetWorkHelper.isNetworkAvailable(context)) {
+                    //tv_distance为下方显示距离的TextView控件,mAddress为另一个点的位置,定位扫描时间为5s,null代表不是签到界面
+                    BaiduMapUtil.locate(context, baiduMap, scanTime, mLocationClient,
+                            new BaiduMapUtil.MyListener(context, baiduMap, tv_distance,mLatLng, mAddress, null));
+                }else{
+                    T.show(context,getString(R.string.no_network_tips));
+                }
             }
         });
     }
@@ -134,27 +132,16 @@ public class OrderReceiverActivity extends Activity implements View.OnClickListe
 
     @Override
     protected void onDestroy() {
-        //BaiduMapUtil.unRegisterBaiduMapReceiver(this);
-        mLocationClient.stop();
-        baiduMap.clear();
-        baiduMap.setMyLocationEnabled(false); // 关闭定位图层
-        // 在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
-        //mMapView.onDestroy();
-        //mMapView = null;
         super.onDestroy();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // 在activity执行onResume时执行mMapView. onResume ()，实现地图生命周期管理
-        mMapView.onResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        // 在activity执行onPause时执行mMapView. onPause ()，实现地图生命周期管理
-        mMapView.onPause();
     }
 }

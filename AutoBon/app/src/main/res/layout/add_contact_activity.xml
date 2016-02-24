@@ -35,12 +35,12 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/check_btn"
+            android:background="@drawable/pop_shape"
             android:gravity="center_vertical">
             <ImageView
                 android:layout_width="@dimen/dp25"
                 android:layout_height="@dimen/dp25"
-                android:src="@mipmap/ic_launcher"
+                android:src="@mipmap/search_img"
                 android:scaleType="centerInside" />
             <EditText
                 android:id="@+id/et_phone"
@@ -56,10 +56,10 @@
                 android:textSize="@dimen/sp15"/>
             <ImageView
                 android:id="@+id/iv_clear"
-                android:layout_width="@dimen/dp25"
-                android:layout_height="@dimen/dp25"
+                android:layout_width="@dimen/dp20"
+                android:layout_height="@dimen/dp20"
                 android:src="@mipmap/iv_delete"
-                android:scaleType="centerInside" />
+                android:scaleType="centerInside"/>
         </LinearLayout>
         <TextView
             android:id="@+id/tv_search"

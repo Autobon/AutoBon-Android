@@ -1,6 +1,5 @@
 package cn.com.incardata.autobon;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.widget.Button;
@@ -15,34 +14,30 @@ import com.baidu.mapapi.map.MapView;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.utils.BaiduMapUtil;
 import cn.com.incardata.utils.DateCompute;
+import cn.com.incardata.utils.T;
 
 /**
  * Created by zhangming on 2016/2/22.
  * 工作签到
  */
-public class WorkSignInActivity extends Activity{
+public class WorkSignInActivity extends BaseBaiduMapActivity{
     private TextView tv_day,tv_week_day,tv_distance;
-    private MapView mMapView;
-    private BaiduMap baiduMap;
-    private LocationClient mLocationClient;
     private Context context;
     private Button sign_in_btn;
-    private static final String mAddress = "武汉光谷广场";  //测试地址,可以更改
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BaiduMapUtil.registerBaiduMapReceiver(this);  //注册百度地图广播接收者
         setContentView(R.layout.work_map_address);
         initBaiduMapView();
         initView();
-        BaiduMapUtil.initData();
         setListener();
     }
 
-    public void initBaiduMapView(){
+    protected void initBaiduMapView(){
         mMapView = (MapView) findViewById(R.id.bmapView);  	// 获取地图控件引用
         baiduMap = mMapView.getMap();  //管理具体的某一个MapView对象,缩放,旋转,平移
         MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.zoomTo(BaiduMapUtil.defaultLevel);  //默认级别12
@@ -75,9 +70,13 @@ public class WorkSignInActivity extends Activity{
         baiduMap.setOnMapLoadedCallback(new BaiduMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
-                //tv_distance为下方显示距离的TextView控件,mAddress为另一个点的位置,定位扫描时间为5s,true代表是签到界面
-                BaiduMapUtil.locate(context,baiduMap,5000,mLocationClient,
-                        new BaiduMapUtil.MyListener(context,baiduMap,tv_distance,mAddress,sign_in_btn));
+                if(NetWorkHelper.isNetworkAvailable(context)) {
+                    //tv_distance为下方显示距离的TextView控件,mAddress为另一个点的位置,定位扫描时间为5s,true代表是签到界面
+                    BaiduMapUtil.locate(context, baiduMap,scanTime, mLocationClient,
+                            new BaiduMapUtil.MyListener(context,baiduMap,tv_distance,mLatLng,mAddress,sign_in_btn));
+                }else{
+                    T.show(context,getString(R.string.no_network_tips));
+                }
             }
         });
     }
@@ -85,27 +84,16 @@ public class WorkSignInActivity extends Activity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //BaiduMapUtil.unRegisterBaiduMapReceiver(this);
-        mLocationClient.stop();
-        baiduMap.clear();
-        baiduMap.setMyLocationEnabled(false); // 关闭定位图层
-        // 在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
-        mMapView.onDestroy();
-        mMapView = null;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // 在activity执行onResume时执行mMapView. onResume ()，实现地图生命周期管理
-        mMapView.onResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        // 在activity执行onPause时执行mMapView. onPause ()，实现地图生命周期管理
-        mMapView.onPause();
     }
 
 }
