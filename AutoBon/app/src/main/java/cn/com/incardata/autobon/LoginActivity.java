@@ -1,12 +1,12 @@
 package cn.com.incardata.autobon;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -30,11 +30,12 @@ import cn.com.incardata.application.MyApplication;
 import cn.com.incardata.http.HttpClientInCar;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.NetWorkHelper;
+import cn.com.incardata.http.StatusCode;
 import cn.com.incardata.http.response.LoginEntity;
 import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
 
-public class LoginActivity extends Activity implements View.OnClickListener{
+public class LoginActivity extends BaseActivity implements View.OnClickListener{
     private ImageView iv_eye,iv_clear;
     private EditText et_pwd,et_phone;
     private TextView tv_register,tv_language,tv_forget_pwd;
@@ -230,8 +231,13 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             }
             if(loginEntity.isResult()){  //成功
                 //TODO 跳转主页
-                Intent intent = new Intent(context,OrderReceiverActivity.class);
-                startActivity(intent);
+                if (StatusCode.VERIFIED.equals(loginEntity.getData().getStatus())){
+                    startActivity(MainAuthorizedActivity.class);
+                }else {
+                    Bundle bundle = new Bundle();
+                    bundle.putBoolean("isVerifying", !TextUtils.isEmpty(loginEntity.getData().getIdNo()));//是否正在审核
+                    startActivity(MainUnauthorizedActivity.class, bundle);
+                }
                 finish();
             }else{  //失败
                 if("NO_SUCH_USER".equals(loginEntity.getError())){

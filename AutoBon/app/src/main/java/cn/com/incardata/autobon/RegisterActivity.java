@@ -1,6 +1,5 @@
 package cn.com.incardata.autobon;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,7 +34,7 @@ import cn.com.incardata.utils.T;
 /**
  * Created by Administrator on 2016/2/16.
  */
-public class RegisterActivity extends Activity implements View.OnClickListener{
+public class RegisterActivity extends BaseActivity implements View.OnClickListener{
     private ImageView iv_back,iv_clear,iv_eye;
     private EditText et_phone,et_pwd,et_code;
     private Button register_btn,send_code_btn;

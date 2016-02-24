@@ -10,15 +10,15 @@
 
     <!-- 圆角 -->
     <corners
-        android:bottomLeftRadius="@dimen/dp10"
-        android:bottomRightRadius="@dimen/dp10"
-        android:topLeftRadius="@dimen/dp10"
-        android:topRightRadius="@dimen/dp10" /> <!-- 设置四个角的半径 -->
+        android:bottomLeftRadius="10dp"
+        android:bottomRightRadius="10dp"
+        android:topLeftRadius="10dp"
+        android:topRightRadius="10dp" /> <!-- 设置四个角的半径 -->
 
     <!-- 间隔 -->
     <padding
-        android:bottom="@dimen/dp10"
-        android:left="@dimen/dp10"
-        android:right="@dimen/dp10"
-        android:top="@dimen/dp10" /> <!-- 设置各个方向的间隔 -->
+        android:bottom="3dp"
+        android:left="8dp"
+        android:right="8dp"
+        android:top="3dp" /> <!-- 设置各个方向的间隔 -->
 </shape>
