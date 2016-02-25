@@ -5,4 +5,9 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="mRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/my_rating_bg_bar</item>
+        <item name="android:minHeight">@dimen/dp15</item>
+        <item name="android:maxHeight">@dimen/dp15</item>
+    </style>
 </resources>
