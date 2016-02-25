@@ -23,6 +23,7 @@ public class BaiduMapFragment extends BaseFragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mLocationClient = new LocationClient(getActivity().getApplicationContext());
     }
 
     @Override
@@ -40,14 +41,22 @@ public class BaiduMapFragment extends BaseFragment{
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
     public void onDestroy() {
         //unRegisterBaiduMapReceiver(this);
-        mLocationClient.stop();
+        if(mLocationClient!=null){
+            mLocationClient.stop();
+            mLocationClient = null;
+        }
         baiduMap.clear();
         baiduMap.setMyLocationEnabled(false); // 关闭定位图层
         // 在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
-        mMapView.onDestroy();
-        mMapView = null;
+        //mMapView.onDestroy();
+        //mMapView = null;
         super.onDestroy();
     }
 }

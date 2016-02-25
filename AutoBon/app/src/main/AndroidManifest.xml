@@ -11,7 +11,6 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.BAIDU_LOCATION_SERVICE" />
 
     <supports-screens
         android:anyDensity="true"
@@ -74,12 +73,19 @@
             android:name=".WorkSignInActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".MyInfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
+
 
         <!-- 百度地图的定位服务 -->
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote">
+            android:process=":remote"
+            android:permission="android.permission.BAIDU_LOCATION_SERVICE">
         </service>
 
         <meta-data

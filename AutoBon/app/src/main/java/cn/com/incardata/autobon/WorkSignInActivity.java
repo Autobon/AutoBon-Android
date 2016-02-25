@@ -1,8 +1,11 @@
 package cn.com.incardata.autobon;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.baidu.location.LocationClient;
@@ -21,10 +24,11 @@ import cn.com.incardata.utils.DateCompute;
  * Created by zhangming on 2016/2/22.
  * 工作签到
  */
-public class WorkSignInActivity extends BaseBaiduMapActivity{
+public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnClickListener{
     private TextView tv_day,tv_week_day;
     private Context context;
     private Button sign_in_btn;
+    private ImageView iv_my_info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +57,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity{
         tv_week_day = (TextView) findViewById(R.id.tv_week_day);
         super.tv_distance = (TextView) findViewById(R.id.tv_distance);
         sign_in_btn = (Button) findViewById(R.id.sign_in_btn);
+        iv_my_info = (ImageView) findViewById(R.id.iv_my_info);
 
         tv_day.setText(DateCompute.getCurrentYearMonthDay());
         Date date=new Date();
@@ -73,6 +78,18 @@ public class WorkSignInActivity extends BaseBaiduMapActivity{
                         new BaiduMapUtil.MyListener(context,baiduMap,tv_distance,mLatLng,mAddress,sign_in_btn));
             }
         });
+        iv_my_info.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.iv_my_info:
+                Intent intent = new Intent(this,MyInfoActivity.class);
+                startActivity(intent);
+                finish();
+                break;
+        }
     }
 
     @Override

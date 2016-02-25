@@ -103,7 +103,6 @@ public class IndentMapFragment extends BaiduMapFragment{
     }
 
     private void initViews() {
-        mLocationClient = new LocationClient(getActivity());
         mMapView = (MapView) rootView.findViewById(R.id.bdmapView);
         distance = (TextView) rootView.findViewById(R.id.distance);
         indentImage = (ImageView) rootView.findViewById(R.id.indent_image);
