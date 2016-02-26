@@ -33,7 +33,7 @@ public class BaseBaiduMapActivity extends Activity{
 
     protected static LatLng mLatLng = new LatLng(30.511869,114.405746);
     protected static String mAddress = "门店";  //测试地址,可以更改
-    protected static int scanTime = 10000;  //设置10s定位一次
+    protected static int scanTime = 10*1000;  //设置10s定位一次
 
 
     @Override
@@ -60,12 +60,10 @@ public class BaseBaiduMapActivity extends Activity{
     @Override
     protected void onDestroy() {
         unregisterReceiver(mReceiver);
-        mLocationClient.stop();
-        baiduMap.clear();
-        baiduMap.setMyLocationEnabled(false); // 关闭定位图层
+        BaiduMapUtil.closeLocationClient(baiduMap,mLocationClient);  //关闭定位
         // 在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
-        //mMapView.onDestroy();
-        //mMapView = null;
+        mMapView.onDestroy();
+        mMapView = null;
         super.onDestroy();
     }
 
@@ -90,8 +88,9 @@ public class BaseBaiduMapActivity extends Activity{
             if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
                 Log.d("test", "网络状态已经改变");
                 if(NetWorkHelper.isNetworkAvailable(context)){
-                    BaiduMapUtil.locate(baiduMap,scanTime,mLocationClient,
-                            new BaiduMapUtil.MyListener(context,baiduMap,tv_distance,mLatLng, mAddress,null));
+                   // BaiduMapUtil.locate(baiduMap,scanTime,mLocationClient,
+                     //       new BaiduMapUtil.MyListener(context,baiduMap,tv_distance,mLatLng, mAddress,null));
+                    BaiduMapUtil.locate(baiduMap);
                 }else{
                     T.show(context,context.getString(R.string.no_network_error));
                 }

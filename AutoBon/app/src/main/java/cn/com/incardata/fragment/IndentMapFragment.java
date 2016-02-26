@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapStatusUpdate;
@@ -48,6 +49,7 @@ public class IndentMapFragment extends BaiduMapFragment{
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private BDLocationListener myBDLocationListener;
     private View rootView;
     private TextView distance;
     private ImageView indentImage;
@@ -139,9 +141,9 @@ public class IndentMapFragment extends BaiduMapFragment{
         baiduMap.setOnMapLoadedCallback(new BaiduMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
+                myBDLocationListener = new BaiduMapUtil.MyListener(getActivity(),baiduMap,distance, mLatLng, "4S店", null);
                 //tv_distance为下方显示距离的TextView控件,mAddress为另一个点的位置
-                BaiduMapUtil.locate(baiduMap,scanTime, new LocationClient(getActivity()),
-                        new BaiduMapUtil.MyListener(getActivity(),baiduMap,distance, mLatLng, "4S店", null));
+                BaiduMapUtil.locate(baiduMap,scanTime, new LocationClient(getActivity()),myBDLocationListener);
             }
         });
     }
@@ -170,9 +172,20 @@ public class IndentMapFragment extends BaiduMapFragment{
         mListener = null;
     }
 
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+    }
+
     @Override
     public void onDestroy() {
+        mLocationClient.unRegisterLocationListener(myBDLocationListener); //销毁定位广播
+        BaiduMapUtil.closeLocationClient(baiduMap,mLocationClient);  //关闭定位
         getActivity().unregisterReceiver(mReceiver);
+        myBDLocationListener = null;
+        mReceiver = null;
         super.onDestroy();
     }
 
@@ -215,8 +228,9 @@ public class IndentMapFragment extends BaiduMapFragment{
             if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
                 Log.d("test", "网络状态已经改变");
                 if(NetWorkHelper.isNetworkAvailable(context)){
-                    BaiduMapUtil.locate(baiduMap,scanTime,mLocationClient,
-                            new BaiduMapUtil.MyListener(context,baiduMap,distance,mLatLng,mAddress,null));
+                    //BaiduMapUtil.locate(baiduMap,scanTime,mLocationClient,
+                      //      new BaiduMapUtil.MyListener(context,baiduMap,distance,mLatLng,mAddress,null));
+                    BaiduMapUtil.locate(baiduMap);
                 }else{
                     T.show(context,context.getString(R.string.no_network_error));
                 }

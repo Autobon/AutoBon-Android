@@ -45,8 +45,8 @@ public class BaiduMapUtil {
     protected static LatLng[] latLngArray;  //位置信息记录
     protected static String[] windowInfo;  //窗体信息记录
 
-    protected static final int markZIndex = 1;
-    protected static final int popZIndex = 2;
+    public static final int markZIndex = 1;
+    public static final int popZIndex = 2;
     protected static final int length = 4;
     public static final int defaultLevel = 15;  //常量字段
 
@@ -55,7 +55,6 @@ public class BaiduMapUtil {
      * 自动定位当前位置
      */
     public static void locate(BaiduMap baiduMap,int scanTime,LocationClient mLocationClient,BDLocationListener myListener) {
-        mLocationClient.registerLocationListener(myListener);
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);// 设置定位模式
         option.setCoorType("bd09ll");// 返回的定位结果是百度经纬度,默认值gcj02
@@ -63,16 +62,27 @@ public class BaiduMapUtil {
         option.setIsNeedAddress(true);// 返回的定位结果包含地址信息
         option.setNeedDeviceDirect(true);
         option.setOpenGps(true);  //设置打开GPS
-
+        mLocationClient.registerLocationListener(myListener);
         mLocationClient.setLocOption(option);
         mLocationClient.start();
+        baiduMap.setMyLocationEnabled(true);// 打开定位图层
+        baiduMap.getUiSettings().setCompassEnabled(false);  //不显示指南针
+        locate(baiduMap);
+    }
+
+    public static void locate(BaiduMap baiduMap){
         MyLocationConfiguration configuration = new MyLocationConfiguration(
                 MyLocationConfiguration.LocationMode.FOLLOWING, true,
                 BitmapDescriptorFactory.fromResource(R.mipmap.here));
         baiduMap.setMyLocationConfigeration(configuration);// 设置定位显示的模式
-        baiduMap.setMyLocationEnabled(true);// 打开定位图层p
-        baiduMap.getUiSettings().setCompassEnabled(false);  //不显示指南针
         baiduMap.setMapStatus(MapStatusUpdateFactory.zoomTo(baiduMap.getMapStatus().zoom));  //定位后更新缩放级别
+    }
+
+    public static void closeLocationClient(BaiduMap baiduMap,LocationClient mLocationClient){
+        if(mLocationClient!=null){
+            mLocationClient.stop();
+        }
+        baiduMap.setMyLocationEnabled(false); // 关闭定位图层
     }
 
     public static void initData() {
@@ -220,7 +230,8 @@ public class BaiduMapUtil {
                         return;
                     }
                     markOverlay[0] = drawMarker(this.baiduMap,latLng,BitmapDescriptorFactory.fromResource(R.mipmap.here),markZIndex);
-                    popOverlay[0] = drawPopWindow(this.baiduMap,context,latLng,result.getAddrStr(),popZIndex);
+                    /** 暂时隐藏pop **/
+                    //popOverlay[0] = drawPopWindow(this.baiduMap,context,latLng,result.getAddrStr(),popZIndex);
                     latLngArray[0] = latLng;
                     windowInfo[0] = result.getAddrStr();
                     //drawOnePoint(mAddress,new MyGeoCoderListener(context,this.baiduMap));

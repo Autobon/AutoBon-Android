@@ -87,7 +87,7 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
                 break;
             case R.id.tv_begin_work:
                 super.startActivity(WorkSignInActivity.class);
-                finish();
+                //finish();
                 break;
         }
     }
