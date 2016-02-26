@@ -53,6 +53,17 @@
     <string name="reset_failed">重置密码失败</string>
     <string name="reset_success">重置密码成功</string>
 
+    <!--修改密码-->
+    <string name="modify_pwd">修改密码</string>
+    <string name="input_old_pwd">请输入旧密码</string>
+    <string name="input_new_pwd">请输入新密码</string>
+    <string name="old_empty_tips">旧密码不能为空</string>
+    <string name="new_empty_tips">新密码不能为空</string>
+    <string name="old_length_tips">旧密码长度不能小于6位</string>
+    <string name="new_length_tips">新密码长度不能小于6位</string>
+    <string name="modify_pwd_failed">修改密码失败</string>
+    <string name="modify_pwd_success">修改密码成功</string>
+
     <!--接单,开始工作-->
     <string name="text_distance">距离: </string>
     <string name="tab_one_text">+合作人</string>
