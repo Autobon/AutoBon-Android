@@ -1,30 +1,49 @@
 package cn.com.incardata.autobon;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import org.apache.http.message.BasicNameValuePair;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import cn.com.incardata.adapter.MyContactAdapter;
+import cn.com.incardata.http.Http;
+import cn.com.incardata.http.NetURL;
+import cn.com.incardata.http.NetWorkHelper;
+import cn.com.incardata.http.OnResult;
+import cn.com.incardata.http.response.AddContactEntity;
+import cn.com.incardata.http.response.AddContact_data_list;
 import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
-import cn.com.incardata.view.CircleImageView;
+import cn.com.incardata.view.PullToRefreshView;
 
 /**
  * Created by Administrator on 2016/2/19.
  */
-public class AddContactActivity extends BaseActivity implements View.OnClickListener{
-    private CircleImageView circle_image;
+public class AddContactActivity extends BaseActivity implements View.OnClickListener,
+        PullToRefreshView.OnHeaderRefreshListener,PullToRefreshView.OnFooterRefreshListener{
+    private Context context;
     private ImageView iv_back,iv_clear;
-    private TextView tv_search,tv_username;
-    private EditText et_phone;
-    private Button btn_submit;
-    private LinearLayout ll_contact;
+    private TextView tv_search;
+    private EditText et_content;
+    private ListView technician_list;
+    private PullToRefreshView refreshView;
+
+    private MyContactAdapter mAdapter;
+    private List<AddContact_data_list> mList;
+
+    private int total;
+    private int curPage = 1;
+    private static final int pageSize = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,24 +51,28 @@ public class AddContactActivity extends BaseActivity implements View.OnClickList
         setContentView(R.layout.add_contact_activity);
         initView();
         setListener();
+
+        mList = new ArrayList<AddContact_data_list>();
+        mAdapter = new MyContactAdapter(AddContactActivity.this,mList);
+        technician_list.setAdapter(mAdapter);
     }
 
     public void initView(){
-        circle_image = (CircleImageView) findViewById(R.id.iv_circle);
+        context = this;
         iv_back = (ImageView) findViewById(R.id.iv_back);
         iv_clear = (ImageView) findViewById(R.id.iv_clear);
-        et_phone = (EditText) findViewById(R.id.et_phone);
+        et_content = (EditText) findViewById(R.id.et_content);
         tv_search = (TextView) findViewById(R.id.tv_search);
-        tv_username = (TextView) findViewById(R.id.tv_username);
-        btn_submit = (Button) findViewById(R.id.btn_submit);
-        ll_contact = (LinearLayout) findViewById(R.id.ll_contact);
+        technician_list = (ListView) findViewById(R.id.technician_list);
+        refreshView = (PullToRefreshView) findViewById(R.id.pull_refresh);
+        refreshView.setEnablePullTorefresh(false);
     }
 
     public void setListener(){
         iv_back.setOnClickListener(this);
         iv_clear.setOnClickListener(this);
         tv_search.setOnClickListener(this);
-        btn_submit.setOnClickListener(this);
+        refreshView.setOnFooterRefreshListener(this);
     }
 
     @Override
@@ -59,29 +82,85 @@ public class AddContactActivity extends BaseActivity implements View.OnClickList
                 finish();
                 break;
             case R.id.iv_clear:
-                et_phone.setText("");
+                et_content.setText("");
                 break;
             case R.id.tv_search:  //搜索
-                String phone = et_phone.getText().toString().trim();
-                if(StringUtil.isEmpty(phone)){
+                String content = et_content.getText().toString().trim();
+                if(StringUtil.isEmpty(content)){
                     T.show(this,getString(R.string.empty_phone));
                     return;
                 }
-                if(phone.length()!=11){
-                    T.show(this,getString(R.string.error_phone));
-                    return;
-                }
-                //TODO 网络请求,根据手机号寻找联系人,显示订单数
-                ll_contact.setVisibility(View.VISIBLE);
-                break;
-            case R.id.btn_submit:  //确定
-                Intent i=new Intent();
-                String username = tv_username.getText().toString().trim();
-                i.putExtra("username",username);
-                this.setResult(RESULT_OK,i);
-                finish();
+                total = -1;  //初始化总条目个数
+                mList.clear();  //清除上次的数据
+                findContactByPage(content,1,pageSize,true);  //分页查询技师
                 break;
         }
+    }
+
+    /**
+     * 查询技师
+     * @param page  当前第几页
+     * @param pageSize 一页数量
+     * @param isPullRefresh 是否上拉刷新
+     */
+    private void findContactByPage(final String content, final int page, final int pageSize, final boolean isPullRefresh){
+        List<BasicNameValuePair> bpList = new ArrayList<BasicNameValuePair>();
+        BasicNameValuePair param = new BasicNameValuePair("query",content);
+        BasicNameValuePair two_param = new BasicNameValuePair("page",String.valueOf(page).trim());
+        BasicNameValuePair three_param = new BasicNameValuePair("pageSize",String.valueOf(pageSize).trim());
+        bpList.add(param);
+        bpList.add(two_param);
+        bpList.add(three_param);
+
+        if(NetWorkHelper.isNetworkAvailable(context)) {
+            Http.getInstance().getTaskToken(NetURL.SEARCH_TECHNICIAN, AddContactEntity.class, new OnResult() {
+                @Override
+                public void onResult(Object entity) {
+                    if (entity == null) {
+                        T.show(context, context.getString(R.string.add_contact_failed));
+                        return;
+                    }
+                    AddContactEntity addContactEntity = (AddContactEntity) entity;
+                    if (addContactEntity.isResult()) {
+                        if (total == -1) {
+                            total = addContactEntity.getData().getTotalElements(); //获取总条目数量(只在搜索时获取总条目个数,刷新时不必再次获取)
+                        }
+                        List<AddContact_data_list> dataList = addContactEntity.getData().getList();
+                        updateData(dataList, isPullRefresh);
+                        if (total == 0) {
+                            T.show(context, context.getString(R.string.no_contact_tips));
+                            return;
+                        }
+                    }
+                }
+            }, (BasicNameValuePair[]) bpList.toArray(new BasicNameValuePair[bpList.size()]));
+        }else{
+            T.show(this,getString(R.string.no_network_tips));
+        }
+        refreshView.onFooterRefreshComplete();  //不管网络是否连接,刷新完后隐藏脚布局
+    }
+
+    protected void updateData(List<AddContact_data_list> dataList,boolean isPullRefresh){
+        if(mList.size() < total){
+            mList.addAll(dataList);
+            if(isPullRefresh){  //加载数据成功后,当前页指针加一
+                curPage++;
+            }
+        }else if(mList.size()>0){  //排除条目数为0这种情况
+            T.show(context,context.getString(R.string.has_load_all_label));
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onFooterRefresh(PullToRefreshView view) {
+        String phone = et_content.getText().toString().trim();
+        findContactByPage(phone,curPage+1,pageSize,true);
+    }
+
+    @Override
+    public void onHeaderRefresh(PullToRefreshView view) {
+
     }
 
     @Override

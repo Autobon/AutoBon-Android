@@ -6,23 +6,27 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
-import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 
 import cn.com.incardata.autobon.R;
+import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.utils.BaiduMapUtil;
+import cn.com.incardata.utils.T;
 
 
 /**
@@ -45,9 +49,8 @@ public class IndentMapFragment extends BaiduMapFragment{
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private BDLocationListener myBDLocationListener;
     private View rootView;
-//    protected BaiduMap baiduMap;
-//    protected MapView mMapView;
     private TextView distance;
     private ImageView indentImage;
     private TextView indentText;
@@ -83,7 +86,6 @@ public class IndentMapFragment extends BaiduMapFragment{
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        registerBaiduMapReceiver(getActivity());  //注册百度地图广播接收者
     }
 
     @Override
@@ -99,6 +101,12 @@ public class IndentMapFragment extends BaiduMapFragment{
         }
         initViews();
         return rootView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        initNetManager(getActivity());  //网络状态切换监听
     }
 
     private void initViews() {
@@ -138,9 +146,9 @@ public class IndentMapFragment extends BaiduMapFragment{
         baiduMap.setOnMapLoadedCallback(new BaiduMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
+                myBDLocationListener = new BaiduMapUtil.MyListener(getActivity(),baiduMap,distance, mLatLng, "4S店", null);
                 //tv_distance为下方显示距离的TextView控件,mAddress为另一个点的位置
-                BaiduMapUtil.locate(getActivity(),baiduMap, 5000, new LocationClient(getActivity()),
-                        new BaiduMapUtil.MyListener(getActivity(),baiduMap,distance, mLatLng, "4S店", null));
+                BaiduMapUtil.locate(baiduMap,scanTime, new LocationClient(getActivity()),myBDLocationListener);
             }
         });
     }
@@ -169,60 +177,36 @@ public class IndentMapFragment extends BaiduMapFragment{
         mListener = null;
     }
 
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(mReceiver!=null){
+            getActivity().unregisterReceiver(mReceiver);  //注销网络监听的广播
+        }
+    }
+
+
     @Override
     public void onDestroy() {
+        if(myBDLocationListener!=null){
+            mLocationClient.unRegisterLocationListener(myBDLocationListener); //销毁定位广播
+            myBDLocationListener = null;
+        }
+        BaiduMapUtil.closeLocationClient(baiduMap,mLocationClient);  //关闭定位
+        mReceiver = null;
         super.onDestroy();
-        unRegisterBaiduMapReceiver(getActivity());
-        baiduMap.clear();
-        // 在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
-        mMapView.onDestroy();
     }
 
 
     @Override
     public void onPause() {
         super.onPause();
-        mMapView.onPause();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mMapView.onResume();
-    }
-
-    private BroadcastReceiver receiver;
-    /**
-     * 注册百度地图的广播接收者
-     * @param context
-     */
-    public void registerBaiduMapReceiver(Context context){
-       receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String result = intent.getAction();
-                if(SDKInitializer.SDK_BROADCAST_ACTION_STRING_NETWORK_ERROR.equals(result)){
-                    //网络错误
-                    //T.show(context,context.getString(R.string.no_network_error));
-                }else if(SDKInitializer.SDK_BROADTCAST_ACTION_STRING_PERMISSION_CHECK_ERROR.equals(result)){
-                    //key校验失败
-                    //T.show(context,context.getString(R.string.error_key_tips));
-                }
-            }
-        };
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(SDKInitializer.SDK_BROADCAST_ACTION_STRING_NETWORK_ERROR);  //注册网络错误
-        filter.addAction(SDKInitializer.SDK_BROADTCAST_ACTION_STRING_PERMISSION_CHECK_ERROR); //注册key校验结果
-        context.getApplicationContext().registerReceiver(receiver, filter);
-    }
-
-    /**
-     * 注销百度地图的广播接收者
-     * @param context
-     */
-    public void unRegisterBaiduMapReceiver(Context context){
-        context.getApplicationContext().unregisterReceiver(receiver);
-        receiver = null;
     }
 
     /**
@@ -239,4 +223,27 @@ public class IndentMapFragment extends BaiduMapFragment{
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    private void initNetManager(Context context){
+        IntentFilter mFilter = new IntentFilter();
+        mFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        context.registerReceiver(mReceiver, mFilter);
+    }
+
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+                Log.d("test", "网络状态已经改变");
+                if(NetWorkHelper.isNetworkAvailable(context)){
+                    //BaiduMapUtil.locate(baiduMap,scanTime,mLocationClient,
+                      //      new BaiduMapUtil.MyListener(context,baiduMap,distance,mLatLng,mAddress,null));
+                    BaiduMapUtil.locate(baiduMap);
+                }else{
+                    T.show(context,context.getString(R.string.no_network_error));
+                }
+            }
+        }
+    };
 }

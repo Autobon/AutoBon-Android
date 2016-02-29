@@ -21,4 +21,6 @@ public class NetURL {
 	public static final String AVATAR = BASE_URL + "technician/avatar";
 	/** 上传身份证照片 */
 	public static final String ID_PHOTO = BASE_URL + "technician/idPhoto";
+	/** 查询技师 */
+	public static final String SEARCH_TECHNICIAN = BASE_URL + "technician/search";
 }
