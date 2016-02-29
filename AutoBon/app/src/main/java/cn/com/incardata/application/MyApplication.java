@@ -3,7 +3,6 @@ package cn.com.incardata.application;
 import android.app.Application;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.os.Environment;
 import android.util.DisplayMetrics;
 
 import com.baidu.mapapi.SDKInitializer;
@@ -44,14 +43,6 @@ public class MyApplication extends Application{
 //        if (language != Language.DEFAULT) {
 //            switchLanguage(language);
 //        }
-    }
-
-    public String getSDCardDirectory(){
-        boolean isCardExist = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
-        if (isCardExist) {
-            return Environment.getExternalStorageDirectory().toString();
-        }
-        return null;
     }
 
     public synchronized void setCookieStore(String autoken){

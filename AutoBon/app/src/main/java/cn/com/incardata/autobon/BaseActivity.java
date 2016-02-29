@@ -19,4 +19,8 @@ public class BaseActivity extends Activity{
         i.putExtras(bundle);
         startActivity(i);
     }
+
+    protected BaseActivity getContext(){
+        return this;
+    }
 }

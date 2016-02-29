@@ -172,6 +172,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     private void login(){
         String phone = et_phone.getText().toString().trim();
         String password = et_pwd.getText().toString().trim();
+        phone = "13026000000";
+        password = "w12345678";
         if(StringUtil.isEmpty(phone)){
             T.show(context,context.getString(R.string.empty_phone));
             return;
