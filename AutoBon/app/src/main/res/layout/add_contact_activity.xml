@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_white"
@@ -49,14 +48,12 @@
                 android:src="@mipmap/search_img" />
 
             <EditText
-                android:id="@+id/et_phone"
+                android:id="@+id/et_content"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@null"
                 android:hint="@string/hint_text_phone"
-                android:inputType="number"
-                android:maxLength="11"
                 android:textColor="@color/darkgray"
                 android:textColorHint="@color/lightgray"
                 android:textSize="@dimen/sp15" />
@@ -80,78 +77,22 @@
             android:text="@string/search_text"
             android:textColor="@color/darkgray" />
     </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_contact"
+    <cn.com.incardata.view.PullToRefreshView
+        android:id="@+id/pull_refresh"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp120"
-        android:paddingLeft="@dimen/dp10"
-        android:paddingRight="@dimen/dp10"
-        android:visibility="gone">
-
-        <cn.com.incardata.view.CircleImageView
-            android:id="@+id/iv_circle"
-            android:layout_width="@dimen/dp60"
-            android:layout_height="@dimen/dp60"
-            android:layout_gravity="center_vertical"
-            android:src="@mipmap/ic_launcher"
-            app:border_color="@color/line_light_color"
-            app:border_width="1dp" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="@dimen/dp70"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/dp5"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_username"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="zhangming"
-                android:textColor="@color/darkgray"
-                android:textSize="@dimen/sp15" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp10"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/order_number_text"
-                    android:textColor="@color/darkgray"
-                    android:textSize="@dimen/sp15" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp5"
-                    android:textColor="@color/main_orange"
-                    android:textSize="@dimen/sp15" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/btn_submit"
-            android:layout_width="@dimen/dp60"
-            android:layout_height="@dimen/dp35"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/check_btn"
-            android:gravity="center"
-            android:text="@string/assure_text"
-            android:textColor="@color/main_orange"
-            android:textSize="@dimen/sp13" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/lightgray" />
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+        <ListView
+            android:id="@+id/technician_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:listSelector="@android:color/transparent"
+            android:divider="@color/lightgray"
+            android:dividerHeight="1dp"
+            android:scrollbars="none"
+            android:fadingEdge="none"
+            android:cacheColorHint="@android:color/transparent"
+            android:fadeScrollbars="false">
+        </ListView>
+    </cn.com.incardata.view.PullToRefreshView>
 </LinearLayout>

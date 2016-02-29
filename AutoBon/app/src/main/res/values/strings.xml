@@ -8,7 +8,7 @@
     <string name="text_forget_pwd">忘记密码?</string>
     <string name="text_tips">还没账号? </string>
     <string name="text_reg">注册</string>
-    <string name="hint_text_phone">请输入手机号</string>
+    <string name="hint_text_phone">请输入手机号或姓名</string>
     <string name="hint_text_pwd">请输入密码</string>
     <string name="login_title">车邻邦</string>
     <string name="empty_phone">手机号不能为空</string>
@@ -53,6 +53,17 @@
     <string name="reset_failed">重置密码失败</string>
     <string name="reset_success">重置密码成功</string>
 
+    <!--修改密码-->
+    <string name="modify_pwd">修改密码</string>
+    <string name="input_old_pwd">请输入旧密码</string>
+    <string name="input_new_pwd">请输入新密码</string>
+    <string name="old_empty_tips">旧密码不能为空</string>
+    <string name="new_empty_tips">新密码不能为空</string>
+    <string name="old_length_tips">旧密码长度不能小于6位</string>
+    <string name="new_length_tips">新密码长度不能小于6位</string>
+    <string name="modify_pwd_failed">修改密码失败</string>
+    <string name="modify_pwd_success">修改密码成功</string>
+
     <!--接单,开始工作-->
     <string name="text_distance">距离: </string>
     <string name="tab_one_text">+合作人</string>
@@ -64,9 +75,23 @@
     <string name="no_result_tips">未搜索到结果</string>
     <string name="search_text">搜索</string>
     <string name="assure_text">确定</string>
-    <string name="order_number_text">订单数</string>
     <string name="contact_text">合作人:</string>
     <string name="receiver_text">已接单</string>
+
+
+    <!--添加合作人-->
+    <string name="add_contact_failed">添加失败</string>
+    <string name="no_contact_tips">没有查询到合作人</string>
+    <string name="refresh_more">向上滑动加载更多</string>
+
+    <!--上拉加载,下拉刷新字段-->
+    <string name="pull_to_refresh_pull_label">下拉刷新</string>
+    <string name="pull_to_refresh_release_label">松开后刷新</string>
+    <string name="pull_to_refresh_refreshing_label">正在刷新\u2026</string>
+    <string name="pull_to_refresh_footer_release_label">松开后加载</string>
+    <string name="pull_to_refresh_footer_pull_label">上拉加载更多</string>
+    <string name="pull_to_refresh_footer_refreshing_label">正在加载中\u2026</string>
+    <string name="has_load_all_label">已加载全部</string>
 
     <!--签到-->
     <string name="work_model_text">工作模式</string>
@@ -83,11 +108,13 @@
     <string name="start_authorization">我要认证</string>
     <string name="authorization_progress">认证进度</string>
 
+    <!--我的信息-->
     <string name="my_info_text">我的信息</string>
     <string name="good_rank_rate">好评率</string>
     <string name="package_text">钱包</string>
     <string name="cost_text">余额(￥)</string>
     <string name="order_num_text">账单(条)</string>
+    <string name="order_number_text">订单数</string>
     <string name="my_order_text">我的订单</string>
     <string name="modify_pwd_text">修改密码</string>
     <string name="logout_text">退出登录</string>

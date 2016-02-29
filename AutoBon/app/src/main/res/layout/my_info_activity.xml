@@ -143,9 +143,11 @@
         android:background="@color/line_light_color"
         android:layout_marginTop="@dimen/dp15"/>
     <LinearLayout
+        android:id="@+id/my_ll_package"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp45"
-        android:background="@android:color/white">
+        android:background="@android:color/white"
+        android:clickable="true">
         <ImageView
             android:layout_width="@dimen/dp50"
             android:layout_height="match_parent"
@@ -276,10 +278,12 @@
         android:background="@color/line_light_color"/>
 
     <LinearLayout
+        android:id="@+id/ll_modify_pwd"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp45"
         android:background="@android:color/white"
-        android:layout_marginTop="@dimen/dp10">
+        android:layout_marginTop="@dimen/dp10"
+        android:clickable="true">
         <ImageView
             android:layout_width="@dimen/dp50"
             android:layout_height="match_parent"
@@ -314,11 +318,14 @@
         android:layout_height="1dp"
         android:background="@color/line_light_color"/>
     <TextView
+        android:id="@+id/tv_logout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp45"
         android:gravity="center"
         android:text="@string/logout_text"
         android:textSize="@dimen/sp15"
         android:textColor="@color/lightgray"
-        android:background="@android:color/white"/>
+        android:background="@android:color/white"
+        android:clickable="true"
+        android:focusable="true"/>
 </LinearLayout>

@@ -17,7 +17,7 @@ public class BaiduMapFragment extends BaseFragment{
 
     protected static final LatLng mLatLng = new LatLng(30.511869,114.405746);
     protected static final String mAddress = "门店";  //测试地址,可以更改
-    protected static final int scanTime = 10000;  //设置10s定位一次
+    protected static final int scanTime = 10*1000;  //设置10s定位一次
 
 
     @Override
@@ -48,15 +48,8 @@ public class BaiduMapFragment extends BaseFragment{
     @Override
     public void onDestroy() {
         //unRegisterBaiduMapReceiver(this);
-        if(mLocationClient!=null){
-            mLocationClient.stop();
-            mLocationClient = null;
-        }
-        baiduMap.clear();
-        baiduMap.setMyLocationEnabled(false); // 关闭定位图层
         // 在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
         //mMapView.onDestroy();
-        //mMapView = null;
         super.onDestroy();
     }
 }
