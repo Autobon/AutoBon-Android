@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/ll_contact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/dp10"
+        android:paddingRight="@dimen/dp10"
+        android:paddingTop="@dimen/dp10"
+        android:paddingBottom="@dimen/dp10">
+
+        <cn.com.incardata.view.CircleImageView
+            android:id="@+id/iv_circle"
+            android:layout_width="@dimen/dp60"
+            android:layout_height="@dimen/dp60"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/ic_launcher"
+            app:border_color="@color/line_light_color"
+            app:border_width="1dp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp70"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dp5"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="zhangming"
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/sp15" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp10"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#a3a3a3"
+                    android:textSize="@dimen/sp15" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="@dimen/dp60"
+            android:layout_height="@dimen/dp35"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/check_btn"
+            android:gravity="center"
+            android:text="@string/assure_text"
+            android:textColor="@color/main_orange"
+            android:textSize="@dimen/sp13" />
+    </LinearLayout>
+</LinearLayout>

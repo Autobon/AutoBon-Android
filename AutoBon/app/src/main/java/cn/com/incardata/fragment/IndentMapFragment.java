@@ -181,10 +181,12 @@ public class IndentMapFragment extends BaiduMapFragment{
 
     @Override
     public void onDestroy() {
-        mLocationClient.unRegisterLocationListener(myBDLocationListener); //销毁定位广播
+        if(myBDLocationListener!=null){
+            mLocationClient.unRegisterLocationListener(myBDLocationListener); //销毁定位广播
+            myBDLocationListener = null;
+        }
         BaiduMapUtil.closeLocationClient(baiduMap,mLocationClient);  //关闭定位
         getActivity().unregisterReceiver(mReceiver);
-        myBDLocationListener = null;
         mReceiver = null;
         super.onDestroy();
     }

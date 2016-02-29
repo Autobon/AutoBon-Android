@@ -115,7 +115,6 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
             case R.id.iv_my_info:
                 Intent intent = new Intent(this,MyInfoActivity.class);
                 startActivity(intent);
-                finish();
                 break;
         }
     }
@@ -123,7 +122,10 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        myBDLocationListener = null;
+        if(myBDLocationListener!=null){
+            mLocationClient.unRegisterLocationListener(myBDLocationListener);
+            myBDLocationListener = null;
+        }
     }
 
     @Override
