@@ -3,6 +3,7 @@ package cn.com.incardata.autobon;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -56,6 +57,16 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
         initView();
         initData();
         setListener();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.i("test","再次启动定位图层......");
+        if(mLocationClient!=null){
+            mLocationClient.start();
+            baiduMap.setMyLocationEnabled(true);
+        }
     }
 
     protected void initBaiduMapView(){
@@ -119,12 +130,27 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
         }
     }
 
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(mLocationClient!=null){
+            mLocationClient.stop();
+            baiduMap.setMyLocationEnabled(false); //关闭定位图层
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         if(myBDLocationListener!=null){
             mLocationClient.unRegisterLocationListener(myBDLocationListener);
             myBDLocationListener = null;
+        }
+        if(mLocationClient!=null){
+            mLocationClient.stop();
+            mLocationClient = null;
+            baiduMap.setMyLocationEnabled(false); //关闭定位图层
         }
     }
 
