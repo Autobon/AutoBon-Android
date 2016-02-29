@@ -18,6 +18,7 @@ import java.util.List;
 import cn.com.incardata.adapter.MyContactAdapter;
 import cn.com.incardata.http.Http;
 import cn.com.incardata.http.NetURL;
+import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.AddContactEntity;
 import cn.com.incardata.http.response.AddContact_data_list;
@@ -111,27 +112,32 @@ public class AddContactActivity extends BaseActivity implements View.OnClickList
         bpList.add(two_param);
         bpList.add(three_param);
 
-        Http.getInstance().getTaskToken(NetURL.SEARCH_TECHNICIAN,AddContactEntity.class, new OnResult() {
-            @Override
-            public void onResult(Object entity) {
-                if(entity==null){
-                    T.show(context,context.getString(R.string.add_contact_failed));
-                    return;
-                }
-                AddContactEntity addContactEntity = (AddContactEntity) entity;
-                if(addContactEntity.isResult()){
-                    if(total == -1){
-                        total = addContactEntity.getData().getTotalElements(); //获取总条目数量(只在搜索时获取总条目个数,刷新时不必再次获取)
-                    }
-                    List<AddContact_data_list> dataList = addContactEntity.getData().getList();
-                    updateData(dataList,isPullRefresh);
-                    if(total == 0){
-                        T.show(context,context.getString(R.string.no_contact_tips));
+        if(NetWorkHelper.isNetworkAvailable(context)) {
+            Http.getInstance().getTaskToken(NetURL.SEARCH_TECHNICIAN, AddContactEntity.class, new OnResult() {
+                @Override
+                public void onResult(Object entity) {
+                    if (entity == null) {
+                        T.show(context, context.getString(R.string.add_contact_failed));
                         return;
                     }
+                    AddContactEntity addContactEntity = (AddContactEntity) entity;
+                    if (addContactEntity.isResult()) {
+                        if (total == -1) {
+                            total = addContactEntity.getData().getTotalElements(); //获取总条目数量(只在搜索时获取总条目个数,刷新时不必再次获取)
+                        }
+                        List<AddContact_data_list> dataList = addContactEntity.getData().getList();
+                        updateData(dataList, isPullRefresh);
+                        if (total == 0) {
+                            T.show(context, context.getString(R.string.no_contact_tips));
+                            return;
+                        }
+                    }
                 }
-            }
-        },(BasicNameValuePair[])bpList.toArray(new BasicNameValuePair[bpList.size()]));
+            }, (BasicNameValuePair[]) bpList.toArray(new BasicNameValuePair[bpList.size()]));
+        }else{
+            T.show(this,getString(R.string.no_network_tips));
+        }
+        refreshView.onFooterRefreshComplete();  //不管网络是否连接,刷新完后隐藏脚布局
     }
 
     protected void updateData(List<AddContact_data_list> dataList,boolean isPullRefresh){
@@ -144,7 +150,6 @@ public class AddContactActivity extends BaseActivity implements View.OnClickList
             T.show(context,context.getString(R.string.has_load_all_label));
         }
         mAdapter.notifyDataSetChanged();
-        refreshView.onFooterRefreshComplete();
     }
 
     @Override

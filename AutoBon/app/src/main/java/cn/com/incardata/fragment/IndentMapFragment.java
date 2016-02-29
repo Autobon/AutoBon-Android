@@ -86,7 +86,6 @@ public class IndentMapFragment extends BaiduMapFragment{
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        initNetManager(getActivity());  //网络状态切换监听
     }
 
     @Override
@@ -102,6 +101,12 @@ public class IndentMapFragment extends BaiduMapFragment{
         }
         initViews();
         return rootView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        initNetManager(getActivity());  //网络状态切换监听
     }
 
     private void initViews() {
@@ -176,8 +181,11 @@ public class IndentMapFragment extends BaiduMapFragment{
     @Override
     public void onStop() {
         super.onStop();
-
+        if(mReceiver!=null){
+            getActivity().unregisterReceiver(mReceiver);  //注销网络监听的广播
+        }
     }
+
 
     @Override
     public void onDestroy() {
@@ -186,7 +194,6 @@ public class IndentMapFragment extends BaiduMapFragment{
             myBDLocationListener = null;
         }
         BaiduMapUtil.closeLocationClient(baiduMap,mLocationClient);  //关闭定位
-        getActivity().unregisterReceiver(mReceiver);
         mReceiver = null;
         super.onDestroy();
     }

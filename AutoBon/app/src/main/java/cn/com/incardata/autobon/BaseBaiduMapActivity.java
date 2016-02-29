@@ -62,8 +62,7 @@ public class BaseBaiduMapActivity extends Activity{
         unregisterReceiver(mReceiver);
         BaiduMapUtil.closeLocationClient(baiduMap,mLocationClient);  //关闭定位
         // 在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
-        mMapView.onDestroy();
-        mMapView = null;
+        //mMapView.onDestroy();
         super.onDestroy();
     }
 
