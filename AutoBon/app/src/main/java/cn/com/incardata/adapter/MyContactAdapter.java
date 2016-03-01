@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +13,14 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.List;
 
 import cn.com.incardata.autobon.R;
@@ -30,6 +36,7 @@ public class MyContactAdapter extends BaseAdapter{
     private Activity activity;
     private List<AddContact_data_list> mList;
     private String technicianName;
+    private int technicianId;
 
     public MyContactAdapter(Activity activity, List<AddContact_data_list> mList){
         this.activity = activity;
@@ -70,13 +77,13 @@ public class MyContactAdapter extends BaseAdapter{
             if(data.getAvatar()!=null){
                 String imageUrl = NetURL.IP_URL+data.getAvatar();
                 Log.i("test","imageUrl=======>"+imageUrl);
-                if(getHttpBitmap(imageUrl)!=null){
-                    holder.circleImageView.setImageBitmap(getHttpBitmap(imageUrl));
-                }
+                TechnicianPhotoAsyncTask task = new TechnicianPhotoAsyncTask(imageUrl,holder.circleImageView);
+                task.execute();
             }
             holder.tv_username.setText(data.getName());
             holder.tv_phone.setText(data.getPhone());
             technicianName = data.getName();
+            technicianId = data.getId();
         }
         holder.btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,6 +98,7 @@ public class MyContactAdapter extends BaseAdapter{
     public void addTechnician(String technicianName){
         Intent i=new Intent();
         i.putExtra("username",technicianName);
+        i.putExtra("technicianId",technicianId);
         activity.setResult(activity.RESULT_OK,i);
         activity.finish();
     }
@@ -103,28 +111,40 @@ public class MyContactAdapter extends BaseAdapter{
     public static Bitmap getHttpBitmap(String imageUrl){
         Bitmap bitmap=null;
         try{
-            URL myFileURL = new URL(imageUrl);
-            //获得连接
-            HttpURLConnection conn=(HttpURLConnection)myFileURL.openConnection();
-            //设置超时时间为6000毫秒，conn.setConnectionTiem(0);表示没有时间限制
-            conn.setConnectTimeout(6000);
-            //连接设置获得数据流
-            conn.setDoInput(true);
-            //不使用缓存
-            conn.setUseCaches(false);
-            //这句可有可无，没有影响
-            //conn.connect();
-
-            //得到数据流
-            InputStream is = conn.getInputStream();
-            //解析得到图片
-            bitmap = BitmapFactory.decodeStream(is);
-            //关闭数据流
-            is.close();
-        }catch(Exception e){
+            HttpGet httpGet = new HttpGet(imageUrl);
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpResponse response = httpClient.execute(httpGet);
+            if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+                HttpEntity entity = response.getEntity();
+                InputStream in = entity.getContent();
+                bitmap = BitmapFactory.decodeStream(in);
+            }
+        }catch (Exception e){
             e.printStackTrace();
         }
         return bitmap;
+    }
+
+    class TechnicianPhotoAsyncTask extends AsyncTask<Void,Void,Bitmap>{
+        private String imageUrl;
+        private CircleImageView image;
+
+        public TechnicianPhotoAsyncTask(String imageUrl,CircleImageView image){
+            this.imageUrl = imageUrl;
+            this.image = image;
+        }
+
+        @Override
+        protected Bitmap doInBackground(Void... params) {
+            Bitmap bitmap = getHttpBitmap(this.imageUrl);
+            return bitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            super.onPostExecute(bitmap);
+            image.setImageBitmap(bitmap);
+        }
     }
 
     static class ViewHolder{

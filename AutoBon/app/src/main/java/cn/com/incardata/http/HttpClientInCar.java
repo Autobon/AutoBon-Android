@@ -3,8 +3,6 @@ package cn.com.incardata.http;
 import android.content.Context;
 import android.util.Log;
 
-import com.alibaba.fastjson.JSON;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -371,7 +369,7 @@ public class HttpClientInCar extends CustomHttpClient {
 		}
 	}
 
-	private static synchronized DefaultHttpClient getDefaultHttpClient(){
+	public static synchronized DefaultHttpClient getDefaultHttpClient(){
 		DefaultHttpClient httpclient = new DefaultHttpClient();
 		HttpParams httpParameters = httpclient.getParams();
 

@@ -22,13 +22,22 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.model.LatLng;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import org.apache.http.message.BasicNameValuePair;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import cn.com.incardata.http.Http;
+import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.NetWorkHelper;
+import cn.com.incardata.http.OnResult;
+import cn.com.incardata.http.response.SignInEntity;
 import cn.com.incardata.utils.BaiduMapUtil;
 import cn.com.incardata.utils.DateCompute;
 import cn.com.incardata.utils.DecimalUtil;
+import cn.com.incardata.utils.T;
 
 /**
  * Created by zhangming on 2016/2/22.
@@ -46,6 +55,8 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
     protected static Overlay[] popOverlay;  //信息框图层
     protected static LatLng[] latLngArray;  //位置信息记录
     protected static String[] windowInfo;  //窗体信息记录
+
+    private int technicianId;  //技师id
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +110,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
         popOverlay = new Overlay[4];
         latLngArray = new LatLng[4];
         windowInfo = new String[4];
+        technicianId = getIntent().getIntExtra("technicianId",0);
     }
 
     public void setListener(){
@@ -116,6 +128,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
             }
         });
         iv_my_info.setOnClickListener(this);
+        sign_in_btn.setOnClickListener(this);
     }
 
     @Override
@@ -124,6 +137,9 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
             case R.id.iv_my_info:
                 Intent intent = new Intent(this,MyInfoActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.sign_in_btn:
+                //signIn();
                 break;
         }
     }
@@ -156,6 +172,31 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+
+    /**
+     * 签到
+     */
+    public void signIn(){
+        List<BasicNameValuePair> bvList = new ArrayList<BasicNameValuePair>();
+        BasicNameValuePair bv_one = new BasicNameValuePair("rtpositionLon",String.valueOf(latLngArray[0].longitude)); //经度
+        BasicNameValuePair bv_two = new BasicNameValuePair("rtpositionLat",String.valueOf(latLngArray[0].latitude)); //纬度
+        BasicNameValuePair bv_three = new BasicNameValuePair("technicianId",String.valueOf(technicianId)); //技师id
+
+        bvList.add(bv_one);
+        bvList.add(bv_two);
+        bvList.add(bv_three);
+
+        Http.getInstance().postTaskToken(NetURL.SIGN_IN_URL, SignInEntity.class, new OnResult() {
+            @Override
+            public void onResult(Object entity) {
+                if(entity == null){
+                    T.show(context,context.getString(R.string.sign_in_failed));
+                    return;
+                }
+            }
+        },(BasicNameValuePair[])bvList.toArray(new BasicNameValuePair[bvList.size()]));
     }
 
 
