@@ -28,6 +28,7 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
     private View bt_line_view;
     private ImageView iv_back;
 
+    private int technicianId = -1;
     private static final int ADD_CONTACT_CODE = 1;  //添加联系人的请求码requestCode
 
     @Override
@@ -88,6 +89,9 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
             case R.id.tv_begin_work:
                 intent = new Intent(this,WorkSignInActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                if(technicianId!=-1){
+                    intent.putExtra("technicianId",technicianId);
+                }
                 startActivity(intent);
                 finish();
                 break;
@@ -100,7 +104,8 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
         if(requestCode == ADD_CONTACT_CODE){  //添加联系人返回,更新界面
             switch (resultCode){
                 case RESULT_OK:
-                    String username = data.getExtras().getString("username");
+                    String username = data.getExtras().getString("username");  //技师姓名
+                    technicianId = data.getExtras().getInt("technicianId");  //技师id
                     if(StringUtil.isNotEmpty(username)){
                         tv_username.setText(username);
                         bt_line_view.setVisibility(View.VISIBLE);

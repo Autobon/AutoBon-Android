@@ -8,7 +8,7 @@
     <string name="text_forget_pwd">忘记密码?</string>
     <string name="text_tips">还没账号? </string>
     <string name="text_reg">注册</string>
-    <string name="hint_text_phone">请输入手机号或姓名</string>
+    <string name="hint_text_phone">请输入手机号</string>
     <string name="hint_text_pwd">请输入密码</string>
     <string name="login_title">车邻邦</string>
     <string name="empty_phone">手机号不能为空</string>
@@ -64,6 +64,18 @@
     <string name="modify_pwd_failed">修改密码失败</string>
     <string name="modify_pwd_success">修改密码成功</string>
 
+    <!--认证进度-->
+    <string name="authorize_progress_title">认证进度</string>
+    <string name="authorize_status_text">审核状态:</string>
+    <string name="authorize_progress_default_text">正在审核</string>
+    <string name="failed_reason_text">失败原因:</string>
+    <string name="authorize_info">认证信息</string>
+    <string name="skill_project_text">技能项目:</string>
+    <string name="bank_number_text">银行卡号:</string>
+    <string name="card_number_photo">手持身份证正面照</string>
+    <string name="change_authorize_info">更改认证信息</string>
+    <string name="get_info_failed">获取信息失败</string>
+
     <!--接单,开始工作-->
     <string name="text_distance">距离: </string>
     <string name="tab_one_text">+合作人</string>
@@ -83,6 +95,8 @@
     <string name="add_contact_failed">添加失败</string>
     <string name="no_contact_tips">没有查询到合作人</string>
     <string name="refresh_more">向上滑动加载更多</string>
+    <string name="hint_text_phone_name">请输入手机号或姓名</string>
+    <string name="content_text_tips">手机号或姓名不能为空</string>
 
     <!--上拉加载,下拉刷新字段-->
     <string name="pull_to_refresh_pull_label">下拉刷新</string>
@@ -99,6 +113,7 @@
     <string name="sign_in_text">签到</string>
     <string name="not_arrive_text">还未到达,不能签到噢</string>
     <string name="arrive_text">到达门店? 签到开始工作吧!</string>
+    <string name="sign_in_failed">签到失败</string>
 
     <!-- 地图－订单fragment -->
     <string name="indent_image_text">订单图片</string>
