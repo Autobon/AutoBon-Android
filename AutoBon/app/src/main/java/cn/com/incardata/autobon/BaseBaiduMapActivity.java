@@ -40,6 +40,11 @@ public class BaseBaiduMapActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //initManager();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         initNetManager();
     }
 
@@ -58,8 +63,15 @@ public class BaseBaiduMapActivity extends Activity{
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        if(mReceiver!=null){
+            unregisterReceiver(mReceiver);
+        }
+    }
+
+    @Override
     protected void onDestroy() {
-        unregisterReceiver(mReceiver);
         BaiduMapUtil.closeLocationClient(baiduMap,mLocationClient);  //关闭定位
         // 在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
         //mMapView.onDestroy();

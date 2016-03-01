@@ -42,7 +42,7 @@ public class AddContactActivity extends BaseActivity implements View.OnClickList
     private List<AddContact_data_list> mList;
 
     private int total;
-    private int curPage = 1;
+    private int curPage;
     private static final int pageSize = 20;
 
     @Override
@@ -66,6 +66,7 @@ public class AddContactActivity extends BaseActivity implements View.OnClickList
         technician_list = (ListView) findViewById(R.id.technician_list);
         refreshView = (PullToRefreshView) findViewById(R.id.pull_refresh);
         refreshView.setEnablePullTorefresh(false);
+        refreshView.setVisibility(View.GONE);
     }
 
     public void setListener(){
@@ -74,6 +75,7 @@ public class AddContactActivity extends BaseActivity implements View.OnClickList
         tv_search.setOnClickListener(this);
         refreshView.setOnFooterRefreshListener(this);
     }
+
 
     @Override
     public void onClick(View v) {
@@ -87,10 +89,11 @@ public class AddContactActivity extends BaseActivity implements View.OnClickList
             case R.id.tv_search:  //搜索
                 String content = et_content.getText().toString().trim();
                 if(StringUtil.isEmpty(content)){
-                    T.show(this,getString(R.string.empty_phone));
+                    T.show(this,getString(R.string.content_text_tips));
                     return;
                 }
                 total = -1;  //初始化总条目个数
+                curPage = 1;  //初始化当前页
                 mList.clear();  //清除上次的数据
                 findContactByPage(content,1,pageSize,true);  //分页查询技师
                 break;
@@ -126,11 +129,14 @@ public class AddContactActivity extends BaseActivity implements View.OnClickList
                             total = addContactEntity.getData().getTotalElements(); //获取总条目数量(只在搜索时获取总条目个数,刷新时不必再次获取)
                         }
                         List<AddContact_data_list> dataList = addContactEntity.getData().getList();
-                        updateData(dataList, isPullRefresh);
                         if (total == 0) {
+                            updateData(dataList,false);
+                            refreshView.setVisibility(View.GONE);
                             T.show(context, context.getString(R.string.no_contact_tips));
                             return;
                         }
+                        updateData(dataList, isPullRefresh);
+                        refreshView.setVisibility(View.VISIBLE);
                     }
                 }
             }, (BasicNameValuePair[]) bpList.toArray(new BasicNameValuePair[bpList.size()]));

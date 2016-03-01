@@ -8,7 +8,7 @@
     <string name="text_forget_pwd">忘记密码?</string>
     <string name="text_tips">还没账号? </string>
     <string name="text_reg">注册</string>
-    <string name="hint_text_phone">请输入手机号或姓名</string>
+    <string name="hint_text_phone">请输入手机号</string>
     <string name="hint_text_pwd">请输入密码</string>
     <string name="login_title">车邻邦</string>
     <string name="empty_phone">手机号不能为空</string>
@@ -83,6 +83,8 @@
     <string name="add_contact_failed">添加失败</string>
     <string name="no_contact_tips">没有查询到合作人</string>
     <string name="refresh_more">向上滑动加载更多</string>
+    <string name="hint_text_phone_name">请输入手机号或姓名</string>
+    <string name="content_text_tips">手机号或姓名不能为空</string>
 
     <!--上拉加载,下拉刷新字段-->
     <string name="pull_to_refresh_pull_label">下拉刷新</string>

@@ -81,7 +81,7 @@
                 android:id="@+id/tv_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp15"
+                android:layout_marginLeft="@dimen/dp25"
                 android:background="@drawable/login_btn_selector"
                 android:gravity="center"
                 android:paddingLeft="@dimen/dp20"

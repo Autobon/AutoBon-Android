@@ -1,6 +1,8 @@
 package cn.com.incardata.http;
 
 public class NetURL {
+	public final static String IP_URL = "http://121.40.157.200:51234";
+
 	/** 基地址 */
 	public final static String BASE_URL = "http://121.40.157.200:51234/api/mobile/";
 

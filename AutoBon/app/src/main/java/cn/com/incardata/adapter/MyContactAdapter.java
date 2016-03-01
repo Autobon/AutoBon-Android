@@ -67,10 +67,12 @@ public class MyContactAdapter extends BaseAdapter{
         }
         if(getCount() > 0){
             AddContact_data_list data = mList.get(position);
-            String imageUrl = NetURL.BASE_URL+data.getIdPhoto().replaceFirst("/","");
-            Log.i("test","imageUrl=======>"+imageUrl);
-            if(getHttpBitmap(imageUrl)!=null){
-                holder.circleImageView.setImageBitmap(getHttpBitmap(imageUrl));
+            if(data.getAvatar()!=null){
+                String imageUrl = NetURL.IP_URL+data.getAvatar();
+                Log.i("test","imageUrl=======>"+imageUrl);
+                if(getHttpBitmap(imageUrl)!=null){
+                    holder.circleImageView.setImageBitmap(getHttpBitmap(imageUrl));
+                }
             }
             holder.tv_username.setText(data.getName());
             holder.tv_phone.setText(data.getPhone());
@@ -112,6 +114,7 @@ public class MyContactAdapter extends BaseAdapter{
             conn.setUseCaches(false);
             //这句可有可无，没有影响
             //conn.connect();
+
             //得到数据流
             InputStream is = conn.getInputStream();
             //解析得到图片

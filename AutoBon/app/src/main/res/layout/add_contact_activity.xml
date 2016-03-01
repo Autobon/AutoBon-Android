@@ -54,7 +54,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@null"
-                android:hint="@string/hint_text_phone"
+                android:hint="@string/hint_text_phone_name"
                 android:textColor="@color/darkgray"
                 android:textColorHint="@color/lightgray"
                 android:textSize="@dimen/sp15" />

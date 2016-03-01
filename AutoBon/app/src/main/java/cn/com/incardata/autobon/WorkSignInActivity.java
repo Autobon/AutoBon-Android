@@ -4,12 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -147,11 +145,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
             mLocationClient.unRegisterLocationListener(myBDLocationListener);
             myBDLocationListener = null;
         }
-        if(mLocationClient!=null){
-            mLocationClient.stop();
-            mLocationClient = null;
-            baiduMap.setMyLocationEnabled(false); //关闭定位图层
-        }
+        mLocationClient = null;
     }
 
     @Override
@@ -238,9 +232,9 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
                             sign_in_btn.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.default_btn));  //兼容api14
                             sign_in_btn.setTextColor(context.getResources().getColor(android.R.color.white));
                         }else{
-                            Toast toast = Toast.makeText(context.getApplicationContext(),context.getString(R.string.not_arrive_text),Toast.LENGTH_LONG);
-                            toast.setGravity(Gravity.CENTER,0,0);
-                            toast.show();
+                            //Toast toast = Toast.makeText(context.getApplicationContext(),context.getString(R.string.not_arrive_text),Toast.LENGTH_LONG);
+                            //toast.setGravity(Gravity.CENTER,0,0);
+                            //toast.show();
                         }
                     }
                     if(distance>=1000){  //距离大于等于1公里
