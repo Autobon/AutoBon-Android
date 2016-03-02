@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="bank_array">
+        <item>中国银行</item>
+        <item>建设银行</item>
+        <item>工商银行</item>
+        <item>农业银行</item>
+        <item>招商银行</item>
+        <item>邮政储蓄银行</item>
+        <item>光大银行</item>
+        <item>浦发银行</item>
+        <item>汉口银行</item>
+    </string-array>
+</resources>
