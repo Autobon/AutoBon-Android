@@ -5,6 +5,17 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="LoginButtonStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/dp40</item>
+        <item name="android:layout_marginRight">@dimen/dp40</item>
+        <item name="android:textSize">@dimen/sp18</item>
+        <item name="android:background">@drawable/login_btn_selector</item>
+        <item name="android:padding">@dimen/dp10</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
     <style name="mRatingBar" parent="@android:style/Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/my_rating_bg_bar</item>
         <item name="android:minHeight">@dimen/dp15</item>

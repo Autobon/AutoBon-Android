@@ -1,6 +1,5 @@
 package cn.com.incardata.autobon;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,7 +13,7 @@ import cn.com.incardata.utils.DecimalUtil;
 /**
  * Created by zhangming on 2016/2/25.
  */
-public class MyInfoActivity extends Activity implements View.OnClickListener{
+public class MyInfoActivity extends BaseActivity implements View.OnClickListener{
     private RatingBar mRatingbar;
     private TextView tv_rate,tv_logout;
     private LinearLayout my_ll_package,ll_my_package,ll_modify_pwd;

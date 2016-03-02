@@ -3,7 +3,6 @@ package cn.com.incardata.application;
 import android.app.Application;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.os.Environment;
 import android.util.DisplayMetrics;
 
 import com.baidu.mapapi.SDKInitializer;
@@ -14,6 +13,7 @@ import org.apache.http.impl.cookie.BasicClientCookie;
 
 import java.util.Locale;
 
+import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.SharedPre;
 
@@ -31,9 +31,11 @@ public class MyApplication extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
         //在使用百度地图SDK各组件之前初始化context信息,传入ApplicationContext
         SDKInitializer.initialize(getApplicationContext());
-        instance = this;
+        //初始化ImageLoaderCache
+        ImageLoaderCache.getInstance().init(getApplicationContext());
         initState();
 
     }
@@ -44,14 +46,6 @@ public class MyApplication extends Application{
 //        if (language != Language.DEFAULT) {
 //            switchLanguage(language);
 //        }
-    }
-
-    public String getSDCardDirectory(){
-        boolean isCardExist = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
-        if (isCardExist) {
-            return Environment.getExternalStorageDirectory().toString();
-        }
-        return null;
     }
 
     public synchronized void setCookieStore(String autoken){

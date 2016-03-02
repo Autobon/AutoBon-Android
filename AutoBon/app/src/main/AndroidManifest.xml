@@ -101,7 +101,11 @@
             android:name=".AuthorizationProgressActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
-        <activity android:name=".AuthorizeActivity"></activity>
+        <activity
+            android:name=".AuthorizeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity android:name=".AuthorizeAgreementActivity"></activity>
     </application>
 
 </manifest>

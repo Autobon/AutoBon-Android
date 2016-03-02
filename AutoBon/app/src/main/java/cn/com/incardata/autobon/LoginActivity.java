@@ -172,6 +172,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     private void login(){
         String phone = et_phone.getText().toString().trim();
         String password = et_pwd.getText().toString().trim();
+        phone = "13026000000";
+        password = "w12345678";
         if(StringUtil.isEmpty(phone)){
             T.show(context,context.getString(R.string.empty_phone));
             return;
@@ -233,12 +235,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 //TODO 跳转主页
                 if (StatusCode.VERIFIED.equals(loginEntity.getData().getStatus())){
                     startActivity(MainAuthorizedActivity.class);
-                    //startActivity(OrderReceiveActivity.class);
+//                    startActivity(OrderReceiveActivity.class);
                 }else {
                     Bundle bundle = new Bundle();
                     bundle.putBoolean("isVerifying", !TextUtils.isEmpty(loginEntity.getData().getIdNo()));//是否正在审核
                     startActivity(MainUnauthorizedActivity.class, bundle);
-                    //startActivity(OrderReceiveActivity.class);
+//                    startActivity(OrderReceiveActivity.class);
                 }
                 finish();
             }else{  //失败

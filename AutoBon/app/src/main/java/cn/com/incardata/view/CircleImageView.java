@@ -116,7 +116,7 @@ public class CircleImageView extends ImageView {
         invalidate();
     }
 
-    public int getBorderWidth() {
+    public int getBorderWidt() {
         return mBorderWidth;
     }
 

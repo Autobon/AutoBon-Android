@@ -1,6 +1,7 @@
 <resources>
     <!--<string name="app_name">AutoBon</string>-->
     <string name="app_name">车邻邦</string>
+    <string name="digits_indentify_number">0123456789XY</string>
 
     <!--登陆界面-->
     <string name="text_language">语言</string>
@@ -123,6 +124,31 @@
     <string name="start_authorization">我要认证</string>
     <string name="authorization_progress">认证进度</string>
 
+    <!-- 我要认证 -->
+    <string name="name">姓名</string>
+    <string name="identify_number">身份证号</string>
+    <string name="skill_item">技能项目</string>
+    <string name="skill_item_1">隔热膜</string>
+    <string name="skill_item_2">隐身车衣</string>
+    <string name="skill_item_3">车身改色</string>
+    <string name="skill_item_4">美容清洁</string>
+    <string name="identify_photo">身份证正面照</string>
+    <string name="bank_card_info">银行卡信息</string>
+    <string name="bank_number">银行卡号</string>
+    <string name="submit">提交</string>
+    <string name="authorize_agreement_1">点击“提交”代表您已阅读并同意</string>
+    <string name="authorize_agreement_2">《车邻邦技师认证协议》</string>
+    <string name="name_error">姓名不能为空</string>
+    <string name="identify_number_error">身份证号不能为空</string>
+    <string name="bank_number_error">银行卡号不能为空</string>
+    <string name="skill_item_empty">请选择技能项</string>
+    <string name="order_mode">接单模式</string>
+    <string name="unfinished_order_number">未完成的订单数：</string>
+    <string name="today_finish_order_number">今日完成订单数：</string>
+    <string name="amount">共计金额：</string>
+    <string name="uninstalled_sdcard">您的手机未安装SD卡</string>
+    <string name="upload_image_failed">上传失败，请重试一次</string>
+
     <!--我的信息-->
     <string name="my_info_text">我的信息</string>
     <string name="good_rank_rate">好评率</string>
@@ -133,4 +159,6 @@
     <string name="my_order_text">我的订单</string>
     <string name="modify_pwd_text">修改密码</string>
     <string name="logout_text">退出登录</string>
+    <string name="requirement_id_photo">审核需要身份证照片</string>
+    <string name="network_exception">网络异常</string>
 </resources>
