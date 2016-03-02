@@ -15,6 +15,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import cn.com.incardata.http.Http;
 import cn.com.incardata.http.NetURL;
+import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.ChangePasswordEntity;
 import cn.com.incardata.utils.StringUtil;
@@ -77,22 +78,26 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
         BasicNameValuePair oldPassword = new BasicNameValuePair("oldPassword",old_pwd);
         BasicNameValuePair newPassword = new BasicNameValuePair("newPassword",new_pwd);
 
-        Http.getInstance().postTaskToken(NetURL.CHANGE_PASSWORD, ChangePasswordEntity.class, new OnResult() {
-            @Override
-            public void onResult(Object entity) {
-                if (entity == null) {
-                    T.show(context, context.getString(R.string.modify_pwd_failed));
-                    return;
-                }
-                ChangePasswordEntity changePasswordEntity = (ChangePasswordEntity) entity;
-                if(changePasswordEntity.isResult()){
-                    T.show(context,context.getString(R.string.modify_pwd_success));
-                    return;
-                }else{
+        if(NetWorkHelper.isNetworkAvailable(context)) {
+            Http.getInstance().postTaskToken(NetURL.CHANGE_PASSWORD, ChangePasswordEntity.class, new OnResult() {
+                @Override
+                public void onResult(Object entity) {
+                    if (entity == null) {
+                        T.show(context, context.getString(R.string.modify_pwd_failed));
+                        return;
+                    }
+                    ChangePasswordEntity changePasswordEntity = (ChangePasswordEntity) entity;
+                    if (changePasswordEntity.isResult()) {
+                        T.show(context, context.getString(R.string.modify_pwd_success));
+                        return;
+                    } else {
 
+                    }
                 }
-            }
-        },oldPassword,newPassword);
+            }, oldPassword, newPassword);
+        }else{
+            T.show(this,getString(R.string.no_network_tips));
+        }
     }
 
     @Override

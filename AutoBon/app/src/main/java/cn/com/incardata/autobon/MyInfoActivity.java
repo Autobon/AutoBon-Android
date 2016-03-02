@@ -1,5 +1,6 @@
 package cn.com.incardata.autobon;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,17 +9,31 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import cn.com.incardata.http.Http;
+import cn.com.incardata.http.ImageLoaderCache;
+import cn.com.incardata.http.NetURL;
+import cn.com.incardata.http.NetWorkHelper;
+import cn.com.incardata.http.OnResult;
+import cn.com.incardata.http.response.MyInfoEntity;
+import cn.com.incardata.http.response.MyInfo_Data;
 import cn.com.incardata.utils.DecimalUtil;
+import cn.com.incardata.utils.T;
+import cn.com.incardata.view.CircleImageView;
 
 /**
  * Created by zhangming on 2016/2/25.
  */
 public class MyInfoActivity extends BaseActivity implements View.OnClickListener{
+    private Context context;
     private RatingBar mRatingbar;
-    private TextView tv_rate,tv_logout;
-    private LinearLayout my_ll_package,ll_my_package,ll_modify_pwd;
+    private TextView tv_rate,tv_logout,tv_cost,tv_good_rate,tv_login_username;
+    private LinearLayout my_ll_package,ll_my_package,ll_modify_pwd,ll_cost;
     private ImageView iv_back;
+    private CircleImageView iv_circle;
     private boolean isVisible = false;
+
+    private String bank;
+    private String bankCardNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,16 +42,23 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         initView();
         initData();
         setListener();
+        getDataFromServer();
     }
 
     public void initView(){
+        context = this;
         mRatingbar = (RatingBar) findViewById(R.id.mratingbar);
         tv_rate = (TextView) findViewById(R.id.tv_rate);
         tv_logout = (TextView) findViewById(R.id.tv_logout);
+        tv_cost = (TextView) findViewById(R.id.tv_cost);
         my_ll_package = (LinearLayout) findViewById(R.id.my_ll_package);
         ll_my_package = (LinearLayout) findViewById(R.id.ll_my_package);
         ll_modify_pwd = (LinearLayout) findViewById(R.id.ll_modify_pwd);
+        ll_cost = (LinearLayout) findViewById(R.id.ll_cost);
         iv_back = (ImageView) findViewById(R.id.iv_back);
+        iv_circle = (CircleImageView) findViewById(R.id.iv_circle);
+        tv_good_rate = (TextView) findViewById(R.id.tv_good_rate);
+        tv_login_username = (TextView)findViewById(R.id.tv_login_username);
     }
 
     private void initData(){
@@ -49,6 +71,37 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         ll_modify_pwd.setOnClickListener(this);
         iv_back.setOnClickListener(this);
         tv_logout.setOnClickListener(this);
+        ll_cost.setOnClickListener(this);
+    }
+
+    private void getDataFromServer(){
+        if(NetWorkHelper.isNetworkAvailable(context)) {
+            Http.getInstance().getTaskToken(NetURL.MY_INFO_URL, MyInfoEntity.class, new OnResult() {
+                @Override
+                public void onResult(Object entity) {
+                    if (entity == null) {
+                        T.show(context, context.getString(R.string.get_info_failed));
+                        return;
+                    }
+                    MyInfoEntity myInfoEntity = (MyInfoEntity) entity;
+                    MyInfo_Data data = myInfoEntity.getData();
+
+                    String avatar = data.getAvatar(); //技师头像url尾部
+                    String name = data.getName();
+                    int star = data.getStar();  //星级
+                    bank = data.getBank(); //银行字典
+                    bankCardNumber = data.getBankCardNo(); //银行卡号
+
+                    ImageLoaderCache.getInstance().loader(NetURL.IP_PORT+avatar,iv_circle);
+                    tv_login_username.setText(name);
+                    mRatingbar.setRating(star);
+                    tv_rate.setText(String.valueOf(star));
+                    tv_good_rate.setText((star/5)*100+"%");
+                }
+            });
+        }else{
+            T.show(this,getString(R.string.no_network_tips));
+        }
     }
 
     @Override
@@ -73,8 +126,15 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
                 finish();
                 break;
             case R.id.ll_modify_pwd:
-                Intent i = new Intent(this, ModifyPasswordActivity.class);
-                startActivity(i);
+                startActivity(ModifyPasswordActivity.class);
+                break;
+            case R.id.ll_cost:  //余额
+                String rest_money = tv_cost.getText().toString().trim();
+                Bundle bundle = new Bundle();
+                bundle.putString("rest_money",rest_money);  //余额信息
+                bundle.putString("bank",bank);
+                bundle.putString("bankCardNumber",bankCardNumber);
+                startActivity(RestInfoActivity.class,bundle);
                 break;
         }
     }

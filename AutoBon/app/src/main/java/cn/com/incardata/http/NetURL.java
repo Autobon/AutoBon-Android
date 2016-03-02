@@ -22,8 +22,6 @@ public class NetURL {
 	public static final String AVATAR = BASE_URL + "technician/avatar";
 	/** 上传身份证照片 */
 	public static final String ID_PHOTO = BASE_URL + "technician/idPhoto";
-	/** 查询技师 */
-	public static final String SEARCH_TECHNICIAN = BASE_URL + "technician/search";
 
 	/** 认证进度 */
 	public static final String AUTHORIZATION_PROGRESS = BASE_URL + "technician/getCertificate";
@@ -31,4 +29,6 @@ public class NetURL {
 	public static final String SEARCH_TECHNICIAN = BASE_URL + "technician/search";
 	/** 签到*/
 	public static final String SIGN_IN_URL = BASE_URL + "construction/signIn";
+	/** 我的信息*/
+	public static final String MY_INFO_URL = BASE_URL + "technician";
 }

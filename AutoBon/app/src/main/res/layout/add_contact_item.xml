@@ -15,8 +15,8 @@
 
         <cn.com.incardata.view.CircleImageView
             android:id="@+id/iv_circle"
-            android:layout_width="@dimen/dp70"
-            android:layout_height="@dimen/dp70"
+            android:layout_width="@dimen/dp50"
+            android:layout_height="@dimen/dp50"
             android:layout_gravity="center_vertical"
             android:src="@mipmap/ic_launcher"
             app:border_color="@color/line_light_color"
@@ -24,7 +24,7 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="@dimen/dp70"
+            android:layout_height="@dimen/dp50"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/dp5"
             android:layout_weight="1"
