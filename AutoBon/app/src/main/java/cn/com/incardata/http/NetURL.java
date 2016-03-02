@@ -15,6 +15,7 @@ public class NetURL {
 	public static final String RESET_PASSWORD = BASE_URL + "technician/resetPassword";
 	/** 更改密码 */
 	public static final String CHANGE_PASSWORD = BASE_URL + "technician/changePassword";
+
 	/** 提交认证 */
 	public static final String COMMIT_CERTIFICATE = BASE_URL + "technician/commitCertificate";
 	/** 上传头像 */
@@ -23,4 +24,11 @@ public class NetURL {
 	public static final String ID_PHOTO = BASE_URL + "technician/idPhoto";
 	/** 查询技师 */
 	public static final String SEARCH_TECHNICIAN = BASE_URL + "technician/search";
+
+	/** 认证进度 */
+	public static final String AUTHORIZATION_PROGRESS = BASE_URL + "technician/getCertificate";
+	/** 查询技师 */
+	public static final String SEARCH_TECHNICIAN = BASE_URL + "technician/search";
+	/** 签到*/
+	public static final String SIGN_IN_URL = BASE_URL + "construction/signIn";
 }

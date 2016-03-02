@@ -15,8 +15,8 @@
 
         <cn.com.incardata.view.CircleImageView
             android:id="@+id/iv_circle"
-            android:layout_width="@dimen/dp60"
-            android:layout_height="@dimen/dp60"
+            android:layout_width="@dimen/dp70"
+            android:layout_height="@dimen/dp70"
             android:layout_gravity="center_vertical"
             android:src="@mipmap/ic_launcher"
             app:border_color="@color/line_light_color"
@@ -35,14 +35,13 @@
                 android:id="@+id/tv_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="zhangming"
                 android:textColor="@color/darkgray"
                 android:textSize="@dimen/sp15" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp10"
+                android:layout_marginTop="@dimen/dp5"
                 android:orientation="horizontal">
 
                 <TextView
