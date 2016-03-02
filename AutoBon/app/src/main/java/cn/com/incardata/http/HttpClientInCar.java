@@ -403,9 +403,6 @@ public class HttpClientInCar extends CustomHttpClient {
 				throw new RuntimeException("请求失败");
 			}
 			HttpEntity resEntity = response.getEntity();
-			if (resEntity != null) {
-				resEntity.consumeContent();
-			}
 			return (resEntity == null) ? null : EntityUtils.toString(resEntity,
 					CHARSET_UTF8);
 

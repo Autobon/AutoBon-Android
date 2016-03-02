@@ -144,4 +144,6 @@
     <string name="my_order_text">我的订单</string>
     <string name="modify_pwd_text">修改密码</string>
     <string name="logout_text">退出登录</string>
+    <string name="requirement_id_photo">审核需要身份证照片</string>
+    <string name="network_exception">网络异常</string>
 </resources>

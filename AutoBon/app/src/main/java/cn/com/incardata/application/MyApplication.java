@@ -13,6 +13,7 @@ import org.apache.http.impl.cookie.BasicClientCookie;
 
 import java.util.Locale;
 
+import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.SharedPre;
 
@@ -30,9 +31,11 @@ public class MyApplication extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
         //在使用百度地图SDK各组件之前初始化context信息,传入ApplicationContext
         SDKInitializer.initialize(getApplicationContext());
-        instance = this;
+        //初始化ImageLoaderCache
+        ImageLoaderCache.getInstance().init(getApplicationContext());
         initState();
 
     }

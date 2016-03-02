@@ -33,6 +33,7 @@ import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.AvatarEntity;
 import cn.com.incardata.http.response.CommitCertificateEntity;
+import cn.com.incardata.http.response.IdPhotoEntity;
 import cn.com.incardata.utils.BitmapHelper;
 import cn.com.incardata.utils.SDCardUtils;
 import cn.com.incardata.utils.T;
@@ -58,7 +59,7 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
     private String idNumStr; //身份证号
     private String bankNumStr; //银行卡号
     private String bankNameStr; //银行卡所属银行
-    private boolean isUploadIDImage;//身份证照片是否已上传
+    private boolean isUploadIDImage = false;//身份证照片是否已上传
 
     private Uri imageUri; //头像拍照
     private Uri imageCorpUri; //头像裁剪
@@ -147,8 +148,17 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
         }
 
         if (imageUri == null) {
-            imageUri = Uri.fromFile(new File(SDCardUtils.getGatherDir() + File.separator + "image.jpeg"));
-            imageCorpUri = Uri.fromFile(new File(SDCardUtils.getGatherDir() + File.separator + "imageCorpUri.jpeg"));
+            File file1 = new File(SDCardUtils.getGatherDir() + File.separator + "image.jpeg");
+            File file2 = new File(SDCardUtils.getGatherDir() + File.separator + "imageCorpUri.jpeg");
+
+            if (file1.exists()){
+                file1.delete();
+            }
+            if (file2.exists()){
+                file2.delete();
+            }
+            imageUri = Uri.fromFile(file1);
+            imageCorpUri = Uri.fromFile(file2);
         }
 
         capture(GatherImage.CAPTURE_REQUEST, imageUri);
@@ -233,6 +243,11 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
             return;
         }
 
+        if (!isUploadIDImage){
+            T.show(this, getString(R.string.requirement_id_photo));
+            return;
+        }
+
         if (!(skillArray[0] || skillArray[1] || skillArray[2] || skillArray[3])){
             T.show(this, R.string.skill_item_empty);
             return;
@@ -259,7 +274,11 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void onResult(Object entity) {
                 if (entity == null){
-
+                    T.show(getContext(), R.string.network_exception);
+                    return;
+                }
+                if (entity instanceof CommitCertificateEntity && ((CommitCertificateEntity) entity).isResult()){
+                    finish();//携带结果返回
                 }
             }
         }, (NameValuePair[]) params.toArray(new NameValuePair[params.size()]));
@@ -285,14 +304,18 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
             return;
         }
         if (requestCode == GatherImage.CROP_REQUEST){
-            uploadImage();
+            uploadHeadImage();
             return;
         }
         if (requestCode == GatherImage.CAPTURE_ID_REQUEST){
             try {
                 Bitmap bitmap = BitmapFactory.decodeStream(getContext().getContentResolver().openInputStream(idPhotoUri));
-                identifyPhoto.setImageBitmap(BitmapHelper.resizeImage(bitmap, 600, 360));
+                bitmap = BitmapHelper.resizeImage(bitmap, 0.5f);
+                BitmapHelper.saveBitmap(idPhotoUri, bitmap, true);
+                uploadIdPhoto();
             } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }catch (NullPointerException e){
                 e.printStackTrace();
             }
         }
@@ -313,8 +336,8 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
         intent.putExtra("crop", true);
         intent.putExtra("aspectX", 1);
         intent.putExtra("aspectY", 1);
-        intent.putExtra("outputX", 200);
-        intent.putExtra("outputY", 200);
+        intent.putExtra("outputX", 350);
+        intent.putExtra("outputY", 350);
         intent.putExtra("scale", true);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageCorpUri);
         intent.putExtra("return-data", false);
@@ -322,7 +345,7 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
         startActivityForResult(intent, GatherImage.CROP_REQUEST);
     }
 
-    private void uploadImage(){
+    private void uploadHeadImage(){
         new AsyncTask<String, Void, String>() {
             @Override
             protected String doInBackground(String... params) {
@@ -355,5 +378,38 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
 
             }
         }.execute(imageCorpUri.getPath(), NetURL.AVATAR);
+    }
+
+    private void uploadIdPhoto(){
+        new AsyncTask<String, Void, String>() {
+            @Override
+            protected String doInBackground(String... params) {
+                try {
+                    String json = HttpClientInCar.uploadImage(params[0], params[1]);
+                    return json;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                if (s == null) {
+                    isUploadIDImage = false;
+                    T.show(getContext(), getString(R.string.upload_image_failed));
+                    return;
+                }else {
+                    IdPhotoEntity idPhotoEntity = JSON.parseObject(s, IdPhotoEntity.class);
+                    if (idPhotoEntity.isResult()){
+                        isUploadIDImage = true;
+                        Bitmap bitmap = BitmapFactory.decodeFile(idPhotoUri.getPath());
+                        identifyPhoto.setImageBitmap(bitmap);
+                    }
+                }
+
+            }
+        }.execute(idPhotoUri.getPath(), NetURL.ID_PHOTO);
     }
 }

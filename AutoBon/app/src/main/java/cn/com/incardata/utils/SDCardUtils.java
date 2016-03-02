@@ -17,19 +17,33 @@ public class SDCardUtils {
     public SDCardUtils() {
     }
 
+    public static String getAppRootDir() throws Throwable {
+        if (isExistSDCard()){
+            String path = Environment.getExternalStorageDirectory() + File.separator + appDir;
+            File file = new File(path);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            return path;
+        }
+        throw new Throwable("No find SD card");
+    }
+
     /**
      * 采集的图片临时目录
      * @return
      */
     public static String getGatherDir(){
-        if (isExistSDCard()){
-            String path = Environment.getExternalStorageDirectory() + File.separator + appDir + File.separator + "temp";
-            if (!existFile(path)) {
-                File file = new File(path);
+        String path = null;
+        try {
+            path = getAppRootDir() + File.separator + "temp";
+            File file = new File(path);
+            if (!file.exists()) {
                 file.mkdirs();
             }
             return path;
-        }else {
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
             return null;
         }
     }
@@ -38,10 +52,16 @@ public class SDCardUtils {
      * 缓存目录
      * @return
      */
-    public static String getCacheDir(){
-        if (isExistSDCard()){
-            return Environment.getExternalStorageDirectory() + File.separator + "cache";
-        }else {
+    public static File getCacheDir(){
+        try {
+            String path = getAppRootDir() + File.separator + "cache";
+            File file = new File(path);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            return file;
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
             return null;
         }
     }

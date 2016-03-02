@@ -1,6 +1,5 @@
 package cn.com.incardata.autobon;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
@@ -24,7 +23,7 @@ import cn.com.incardata.utils.T;
 /**
  * Created by zhangming on 2016/2/26.
  */
-public class ModifyPasswordActivity extends Activity implements View.OnClickListener{
+public class ModifyPasswordActivity extends BaseActivity implements View.OnClickListener{
     private EditText et_pwd;
     private EditText et_new_pwd;
     private Button submit_pwd_btn;
