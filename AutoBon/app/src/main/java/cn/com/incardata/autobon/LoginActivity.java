@@ -32,6 +32,8 @@ import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.http.StatusCode;
 import cn.com.incardata.http.response.LoginEntity;
+import cn.com.incardata.utils.AutoCon;
+import cn.com.incardata.utils.SharedPre;
 import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
 
@@ -61,6 +63,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         tv_language = (TextView) findViewById(R.id.tv_language);
         tv_forget_pwd = (TextView) findViewById(R.id.tv_forget_pwd);
         login_btn =(Button) findViewById(R.id.login_btn);
+
+        String phone = SharedPre.getString(context,AutoCon.FLAG_PHONE,"");
+        String pwd = SharedPre.getString(context, AutoCon.FLAG_PASSWORD,"");
+        et_phone.setText(phone);
+        et_pwd.setText(pwd);
     }
 
     public void setListener(){
@@ -230,6 +237,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 return;
             }
             if(loginEntity.isResult()){  //成功
+                SharedPre.setSharedPreferences(context,AutoCon.FLAG_PHONE,this.phone);
+                SharedPre.setSharedPreferences(context, AutoCon.FLAG_PASSWORD,this.password);  //保存密码
                 //TODO 跳转主页
                 if (StatusCode.VERIFIED.equals(loginEntity.getData().getStatus())){
                     startActivity(MainAuthorizedActivity.class);

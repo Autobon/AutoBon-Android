@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import cn.com.incardata.http.Http;
 import cn.com.incardata.http.NetURL;
@@ -20,10 +21,11 @@ import cn.com.incardata.utils.T;
  * @author wanghao
  */
 public class AuthorizationProgressActivity extends Activity implements View.OnClickListener{
-    private ImageView iv_back;
+    private ImageView iv_back,iv_circle;
     private LinearLayout ll_failed_reason;
     private Button btn_change_info;
     private Context context;
+    private TextView tv_status,tv_username,tv_phone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +38,12 @@ public class AuthorizationProgressActivity extends Activity implements View.OnCl
     private void initView(){
         context = this;
         iv_back = (ImageView)findViewById(R.id.iv_back);
+        iv_circle = (ImageView) findViewById(R.id.iv_circle);
         ll_failed_reason = (LinearLayout)findViewById(R.id.ll_failed_reason);
         btn_change_info = (Button) findViewById(R.id.btn_change_info);
+        tv_status = (TextView) findViewById(R.id.tv_status);
+        tv_username = (TextView) findViewById(R.id.tv_username);
+        tv_phone = (TextView) findViewById(R.id.tv_phone);
     }
 
     private void getDataFromServer(){
@@ -59,6 +65,8 @@ public class AuthorizationProgressActivity extends Activity implements View.OnCl
                     String bankCardNo = apData.getBankCardNo(); //银行卡号
                     String bank = apData.getBank();  //银行
                     String idPhoto = apData.getIdPhoto();  //身份证图像地址URL
+
+                    tv_username.setText(name);
                 }
             }
         });

@@ -77,8 +77,8 @@ public class MyContactAdapter extends BaseAdapter{
             if(data.getAvatar()!=null){
                 String imageUrl = NetURL.IP_URL+data.getAvatar();
                 Log.i("test","imageUrl=======>"+imageUrl);
-                TechnicianPhotoAsyncTask task = new TechnicianPhotoAsyncTask(imageUrl,holder.circleImageView);
-                task.execute();
+                //TechnicianPhotoAsyncTask task = new TechnicianPhotoAsyncTask(imageUrl,holder.circleImageView);
+                //task.execute();
             }
             holder.tv_username.setText(data.getName());
             holder.tv_phone.setText(data.getPhone());
