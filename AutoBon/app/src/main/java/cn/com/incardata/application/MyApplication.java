@@ -14,6 +14,7 @@ import org.apache.http.impl.cookie.BasicClientCookie;
 import java.util.Locale;
 
 import cn.com.incardata.http.ImageLoaderCache;
+import cn.com.incardata.http.NetURL;
 import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.SharedPre;
 
@@ -54,7 +55,7 @@ public class MyApplication extends Application{
         }
         cookieStore = new BasicCookieStore();
         BasicClientCookie clientCookie = new BasicClientCookie(AutoCon.AUTOKEN, autoken);
-        clientCookie.setDomain("dev.incardata.com.cn");
+        clientCookie.setDomain(NetURL.DOMAIN);
         cookieStore.addCookie(clientCookie);
     }
 

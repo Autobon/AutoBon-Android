@@ -75,7 +75,7 @@ public class MyContactAdapter extends BaseAdapter{
         if(getCount() > 0){
             AddContact_data_list data = mList.get(position);
             if(data.getAvatar()!=null){
-                String imageUrl = NetURL.IP_URL+data.getAvatar();
+                String imageUrl = NetURL.IP_PORT+data.getAvatar();
                 Log.i("test","imageUrl=======>"+imageUrl);
                 TechnicianPhotoAsyncTask task = new TechnicianPhotoAsyncTask(imageUrl,holder.circleImageView);
                 task.execute();

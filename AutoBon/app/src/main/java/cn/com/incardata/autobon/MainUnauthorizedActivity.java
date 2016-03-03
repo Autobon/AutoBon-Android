@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import cn.com.incardata.fragment.IndentMapFragment;
+import cn.com.incardata.service.AutobonService;
 
 /**
  * 未认证主页
@@ -30,6 +31,7 @@ public class MainUnauthorizedActivity extends BaseActivity implements IndentMapF
         fragmentManager = getFragmentManager();
         isVerifying = getIntent().getExtras().getBoolean("isVerifying", false);
         init();
+        startService(new Intent(this, AutobonService.class));
     }
 
     private void init() {
