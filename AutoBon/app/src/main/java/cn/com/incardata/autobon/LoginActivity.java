@@ -6,7 +6,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -32,6 +31,8 @@ import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.http.StatusCode;
 import cn.com.incardata.http.response.LoginEntity;
+import cn.com.incardata.utils.AutoCon;
+import cn.com.incardata.utils.SharedPre;
 import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
 
@@ -61,6 +62,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         tv_language = (TextView) findViewById(R.id.tv_language);
         tv_forget_pwd = (TextView) findViewById(R.id.tv_forget_pwd);
         login_btn =(Button) findViewById(R.id.login_btn);
+
+        String phone = SharedPre.getString(context,AutoCon.FLAG_PHONE,"");
+        String pwd = SharedPre.getString(context, AutoCon.FLAG_PASSWORD,"");
+        et_phone.setText(phone);
+        et_pwd.setText(pwd);
     }
 
     public void setListener(){
@@ -172,8 +178,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     private void login(){
         String phone = et_phone.getText().toString().trim();
         String password = et_pwd.getText().toString().trim();
-        phone = "13026000000";
-        password = "w12345678";
         if(StringUtil.isEmpty(phone)){
             T.show(context,context.getString(R.string.empty_phone));
             return;
@@ -232,15 +236,19 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 return;
             }
             if(loginEntity.isResult()){  //成功
+                SharedPre.setSharedPreferences(context,AutoCon.FLAG_PHONE,this.phone);
+                SharedPre.setSharedPreferences(context, AutoCon.FLAG_PASSWORD,this.password);  //保存密码
                 //TODO 跳转主页
                 if (StatusCode.VERIFIED.equals(loginEntity.getData().getStatus())){
-                    startActivity(MainAuthorizedActivity.class);
-//                    startActivity(OrderReceiveActivity.class);
+                    //startActivity(MainAuthorizedActivity.class);
+                    startActivity(MyInfoActivity.class);
+                    //startActivity(AuthorizationProgressActivity.class);
                 }else {
-                    Bundle bundle = new Bundle();
-                    bundle.putBoolean("isVerifying", !TextUtils.isEmpty(loginEntity.getData().getIdNo()));//是否正在审核
-                    startActivity(MainUnauthorizedActivity.class, bundle);
-//                    startActivity(OrderReceiveActivity.class);
+                    //Bundle bundle = new Bundle();
+                    //bundle.putBoolean("isVerifying", !TextUtils.isEmpty(loginEntity.getData().getIdNo()));//是否正在审核
+                    //startActivity(MainUnauthorizedActivity.class, bundle);
+                    startActivity(MyInfoActivity.class);
+                    //startActivity(AuthorizationProgressActivity.class);
                 }
                 finish();
             }else{  //失败

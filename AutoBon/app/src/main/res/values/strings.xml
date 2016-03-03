@@ -69,6 +69,7 @@
     <string name="authorize_progress_title">认证进度</string>
     <string name="authorize_status_text">审核状态:</string>
     <string name="authorize_progress_default_text">正在审核</string>
+    <string name="authorize_progress_failed_text">失败</string>
     <string name="failed_reason_text">失败原因:</string>
     <string name="authorize_info">认证信息</string>
     <string name="skill_project_text">技能项目:</string>
@@ -161,4 +162,9 @@
     <string name="logout_text">退出登录</string>
     <string name="requirement_id_photo">审核需要身份证照片</string>
     <string name="network_exception">网络异常</string>
+
+    <!--余额-->
+    <string name="rest_money_title">余额</string>
+    <string name="money_tips">元</string>
+    <string name="pay_bottom_tips">每月底为车邻邦平台结算时间</string>
 </resources>

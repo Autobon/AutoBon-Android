@@ -81,7 +81,8 @@
         <activity
             android:name=".OrderReceiveActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
         <activity
             android:name=".BaseBaiduMapActivity"
             android:screenOrientation="portrait"
@@ -97,18 +98,28 @@
         <activity
             android:name=".MyInfoActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
         <activity
             android:name=".ModifyPasswordActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
+        <activity
+            android:name=".RestInfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
+
+
 
         <!-- 百度地图的定位服务 -->
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:permission="android.permission.BAIDU_LOCATION_SERVICE"
-            android:process=":remote"></service>
+            android:process=":remote"
+            android:permission="android.permission.BAIDU_LOCATION_SERVICE">
+        </service>
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"

@@ -34,8 +34,8 @@
         android:background="@android:color/white">
         <cn.com.incardata.view.CircleImageView
             android:id="@+id/iv_circle"
-            android:layout_width="@dimen/dp60"
-            android:layout_height="@dimen/dp60"
+            android:layout_width="@dimen/dp50"
+            android:layout_height="@dimen/dp50"
             android:layout_gravity="center_vertical"
             android:src="@mipmap/ic_launcher"
             app:border_width="1dp"
@@ -44,10 +44,9 @@
             android:id="@+id/tv_login_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="张明"
+            android:text="姓名"
             android:layout_toRightOf="@id/iv_circle"
             android:layout_marginLeft="@dimen/dp15"
-            android:layout_marginTop="@dimen/dp5"
             android:textSize="@dimen/sp15"
             android:paddingTop="@dimen/dp5"
             android:paddingBottom="@dimen/dp5"
@@ -60,7 +59,9 @@
             android:layout_height="wrap_content"
             android:numStars="5"
             android:rating="2"
-            android:layout_marginTop="@dimen/dp12"
+            android:layout_marginTop="@dimen/dp5"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
             android:layout_marginLeft="@dimen/dp10"
             android:layout_toRightOf="@id/tv_login_username"
             android:gravity="center_vertical"
@@ -74,7 +75,7 @@
             android:background="@drawable/default_btn"
             android:text="2.0"
             android:layout_toRightOf="@id/mratingbar"
-            android:layout_marginTop="@dimen/dp5"
+            android:layout_marginTop="2dp"
             android:layout_marginLeft="@dimen/dp10"
             android:paddingLeft="@dimen/dp10"
             android:paddingRight="@dimen/dp10"
@@ -114,6 +115,7 @@
             android:layout_marginLeft="@dimen/dp10"/>
 
         <TextView
+            android:id="@+id/tv_good_rate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/sp15"
