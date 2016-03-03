@@ -2,9 +2,6 @@ package cn.com.incardata.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,17 +10,10 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import java.io.InputStream;
 import java.util.List;
 
 import cn.com.incardata.autobon.R;
+import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.response.AddContact_data_list;
 import cn.com.incardata.view.CircleImageView;
@@ -75,10 +65,9 @@ public class MyContactAdapter extends BaseAdapter{
         if(getCount() > 0){
             AddContact_data_list data = mList.get(position);
             if(data.getAvatar()!=null){
-                String imageUrl = NetURL.IP_URL+data.getAvatar();
+                String imageUrl = NetURL.IP_PORT+data.getAvatar();
                 Log.i("test","imageUrl=======>"+imageUrl);
-                TechnicianPhotoAsyncTask task = new TechnicianPhotoAsyncTask(imageUrl,holder.circleImageView);
-                task.execute();
+                ImageLoaderCache.getInstance().loader(imageUrl,holder.circleImageView);
             }
             holder.tv_username.setText(data.getName());
             holder.tv_phone.setText(data.getPhone());
@@ -101,50 +90,6 @@ public class MyContactAdapter extends BaseAdapter{
         i.putExtra("technicianId",technicianId);
         activity.setResult(activity.RESULT_OK,i);
         activity.finish();
-    }
-
-    /**
-     * 获取网落图片资源
-     * @param imageUrl
-     * @return
-     */
-    public static Bitmap getHttpBitmap(String imageUrl){
-        Bitmap bitmap=null;
-        try{
-            HttpGet httpGet = new HttpGet(imageUrl);
-            HttpClient httpClient = new DefaultHttpClient();
-            HttpResponse response = httpClient.execute(httpGet);
-            if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
-                HttpEntity entity = response.getEntity();
-                InputStream in = entity.getContent();
-                bitmap = BitmapFactory.decodeStream(in);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return bitmap;
-    }
-
-    class TechnicianPhotoAsyncTask extends AsyncTask<Void,Void,Bitmap>{
-        private String imageUrl;
-        private CircleImageView image;
-
-        public TechnicianPhotoAsyncTask(String imageUrl,CircleImageView image){
-            this.imageUrl = imageUrl;
-            this.image = image;
-        }
-
-        @Override
-        protected Bitmap doInBackground(Void... params) {
-            Bitmap bitmap = getHttpBitmap(this.imageUrl);
-            return bitmap;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            super.onPostExecute(bitmap);
-            image.setImageBitmap(bitmap);
-        }
     }
 
     static class ViewHolder{

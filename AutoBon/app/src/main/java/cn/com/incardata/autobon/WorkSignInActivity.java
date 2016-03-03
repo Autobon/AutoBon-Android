@@ -246,6 +246,8 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
                 final double latitude = result.getLatitude();
                 final double longitude = result.getLongitude();
                 final LatLng latLng = new LatLng(latitude, longitude);
+                reportLocation(latLng);  //报告实时位置
+
                 if(markOverlay[0]!=null){
                     View pop = BaiduMapUtil.initPop(context,null,false);
                     TextView tv = (TextView) pop.findViewById(R.id.title);
@@ -290,4 +292,11 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
         }
     }
 
+    /**
+     * 上传实时位置
+     * @param mLatlng
+     */
+    private void reportLocation(LatLng mLatlng){
+
+    }
 }
