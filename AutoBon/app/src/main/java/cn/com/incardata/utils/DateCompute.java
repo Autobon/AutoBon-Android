@@ -140,5 +140,16 @@ public class DateCompute {
 //        cl.setTime(new Date());  
         cl.add(Calendar.DAY_OF_MONTH, option);  
         return sdf.format(cl.getTime());  
-    }  
+    }
+
+	/**
+	 * 获取毫秒的日期及时间
+	 * @param time 毫秒
+	 * @return
+	 */
+	public static String getDate(long time){
+		Date d = new Date(time);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		return sdf.format(d);
+	}
 }

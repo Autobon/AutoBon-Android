@@ -2,8 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
-        incar {
-        }
     }
     compileSdkVersion 21
     buildToolsVersion '22.0.1'

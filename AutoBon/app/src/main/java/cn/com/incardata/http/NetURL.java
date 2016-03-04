@@ -18,7 +18,7 @@ public class NetURL {
 	public static final String CHANGE_PASSWORD = BASE_URL + "technician/changePassword";
 
 	/** 提交认证 */
-	public static final String COMMIT_CERTIFICATE = BASE_URL + "technician/commitCertificate";
+	public static final String COMMIT_CERTIFICATE = BASE_URL + "technician/certificate";
 	/** 上传头像 */
 	public static final String AVATAR = BASE_URL + "technician/avatar";
 	/** 上传身份证照片 */

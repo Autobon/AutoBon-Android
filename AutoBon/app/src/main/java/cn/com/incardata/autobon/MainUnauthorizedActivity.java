@@ -2,13 +2,20 @@ package cn.com.incardata.autobon;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+
 import cn.com.incardata.fragment.IndentMapFragment;
+import cn.com.incardata.getui.ActionType;
+import cn.com.incardata.getui.CustomIntentFilter;
+import cn.com.incardata.getui.OrderMsg;
 import cn.com.incardata.service.AutobonService;
 
 /**
@@ -47,7 +54,7 @@ public class MainUnauthorizedActivity extends BaseActivity implements IndentMapF
         });
 
         transaction = fragmentManager.beginTransaction();
-        mFragment = IndentMapFragment.newInstance("2月25日 14:35", "下面比较脏车门下面脏下面比较脏下脏下面比较脏下面比较脏下面比较脏");
+        mFragment = new IndentMapFragment();
         transaction.replace(R.id.fragment_container, mFragment);
         transaction.commit();
     }
@@ -58,6 +65,33 @@ public class MainUnauthorizedActivity extends BaseActivity implements IndentMapF
         }else {
             startActivity(AuthorizeActivity.class);
         }
+    }
+
+    private final BroadcastReceiver mOrderReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+            if (ActionType.ACTION_ORDER.equals(action)){
+                if (mFragment != null){
+                    String json = intent.getStringExtra(ActionType.NEW_ORDER);
+                    OrderMsg orderMsg = JSON.parseObject(json, OrderMsg.class);
+                    mFragment.setData(orderMsg.getOrder());
+                }
+            }
+
+        }
+    };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(mOrderReceiver, CustomIntentFilter.getOrderIntentFilter());
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(mOrderReceiver);
     }
 
     @Override
