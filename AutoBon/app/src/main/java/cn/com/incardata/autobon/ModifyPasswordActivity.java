@@ -67,14 +67,23 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
             return;
         }
 
-        if(old_pwd.length()<6){
+        if(old_pwd.length()<8){
             T.show(this,getString(R.string.old_length_tips));
             return;
         }
-        if(new_pwd.length()<6){
+        if(new_pwd.length()<8){
             T.show(this,getString(R.string.new_length_tips));
             return;
         }
+        if(!old_pwd.matches(".*[a-zA-Z].*[0-9]|.*[0-9].*[a-zA-Z]")){
+            T.show(this,getString(R.string.error_password));
+            return;
+        }
+        if(!new_pwd.matches(".*[a-zA-Z].*[0-9]|.*[0-9].*[a-zA-Z]")){  //密码长度至少为8位,且为数字或字母组合
+            T.show(context,context.getString(R.string.error_password));
+            return;
+        }
+
         BasicNameValuePair oldPassword = new BasicNameValuePair("oldPassword",old_pwd);
         BasicNameValuePair newPassword = new BasicNameValuePair("newPassword",new_pwd);
 
@@ -91,7 +100,10 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
                         T.show(context, context.getString(R.string.modify_pwd_success));
                         return;
                     } else {
-
+                        if("ILLEGAL_PARAM".equals(changePasswordEntity.getError())){
+                            T.show(context,context.getString(R.string.old_pwd_error_tips));
+                            return;
+                        }
                     }
                 }
             }, oldPassword, newPassword);

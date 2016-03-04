@@ -60,10 +60,11 @@
     <string name="input_new_pwd">请输入新密码</string>
     <string name="old_empty_tips">旧密码不能为空</string>
     <string name="new_empty_tips">新密码不能为空</string>
-    <string name="old_length_tips">旧密码长度不能小于6位</string>
-    <string name="new_length_tips">新密码长度不能小于6位</string>
-    <string name="modify_pwd_failed">修改密码失败</string>
+    <string name="old_length_tips">旧密码长度不能小于8位</string>
+    <string name="new_length_tips">新密码长度不能小于8位</string>
     <string name="modify_pwd_success">修改密码成功</string>
+    <string name="modify_pwd_failed">修改密码</string>
+    <string name="old_pwd_error_tips">原密码错误</string>
 
     <!--认证进度-->
     <string name="authorize_progress_title">认证进度</string>
@@ -167,5 +168,13 @@
     <string name="rest_money_title">余额</string>
     <string name="money_tips">元</string>
     <string name="pay_bottom_tips">每月底为车邻邦平台结算时间</string>
+
     <string name="banned">账户已被禁用</string>
+    <string name="modify_bank_number_text">修改银行卡信息</string>
+
+    <!--银行卡-->
+    <string name="bank_title">银行卡</string>
+    <string name="bank_info_text">银行卡信息</string>
+    <string name="modify_bankcard_info_tips">修改银行卡信息失败</string>
+    <string name="modify_bankcard_info_success">修改成功</string>
 </resources>

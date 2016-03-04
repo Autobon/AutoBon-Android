@@ -68,14 +68,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         String pwd = SharedPre.getString(context, AutoCon.FLAG_PASSWORD,"");
         et_phone.setText(phone);
         et_pwd.setText(pwd);
-
-        login_btn.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                startActivity(MainAuthorizedActivity.class);
-                return true;
-            }
-        });
     }
 
     public void setListener(){

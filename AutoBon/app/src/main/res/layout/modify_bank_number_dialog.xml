@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_dialog"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp50"
+    android:orientation="vertical"
+    android:padding="@dimen/dp10"
+    android:background="@android:color/white"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center_vertical">
+    <TextView
+        android:id="@+id/tv_modify_bank_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/modify_bank_number_text"
+        android:textColor="@color/darkgray"
+        android:textSize="@dimen/sp15"/>
+</LinearLayout>

@@ -24,8 +24,6 @@ public class NetURL {
 	/** 上传身份证照片 */
 	public static final String ID_PHOTO = BASE_URL + "technician/idPhoto";
 
-	/** 认证进度 */
-	public static final String AUTHORIZATION_PROGRESS = BASE_URL + "technician/getCertificate";
 	/** 查询技师 */
 	public static final String SEARCH_TECHNICIAN = BASE_URL + "technician/search";
 	/** 签到*/
@@ -34,6 +32,11 @@ public class NetURL {
 	/** 更新个推ID */
 	public static final String PUSH_ID = BASE_URL + "technician/pushId";
 
+	/** 报告实时位置 */
+	public static final String REPORT_MY_ADDRESS = BASE_URL+ "technician/reportLocation";
+
 	/** 我的信息*/
 	public static final String MY_INFO_URL = BASE_URL + "technician";
+	/** 修改银行卡信息 */
+	public static final String MODIFY_BANK_CARD_INFO_URL = BASE_URL + "technician/changeBankCard";
 }

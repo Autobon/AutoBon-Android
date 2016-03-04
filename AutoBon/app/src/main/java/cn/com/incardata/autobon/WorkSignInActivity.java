@@ -33,6 +33,7 @@ import cn.com.incardata.http.Http;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.http.OnResult;
+import cn.com.incardata.http.response.ReportLocationEntity;
 import cn.com.incardata.http.response.SignInEntity;
 import cn.com.incardata.utils.BaiduMapUtil;
 import cn.com.incardata.utils.DateCompute;
@@ -57,6 +58,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
     protected static String[] windowInfo;  //窗体信息记录
 
     private int technicianId;  //技师id
+    private int count;  //计数单位
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +74,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
     protected void onRestart() {
         super.onRestart();
         Log.i("test","再次启动定位图层......");
+        count = 1;
         if(mLocationClient!=null){
             mLocationClient.start();
             baiduMap.setMyLocationEnabled(true);
@@ -106,6 +109,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
     }
 
     private void initData(){
+        count = 1;
         markOverlay = new Overlay[4];
         popOverlay = new Overlay[4];
         latLngArray = new LatLng[4];
@@ -246,7 +250,10 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
                 final double latitude = result.getLatitude();
                 final double longitude = result.getLongitude();
                 final LatLng latLng = new LatLng(latitude, longitude);
-                reportLocation(latLng);  //报告实时位置
+                if(count == 1 || count % 60 == 0){
+                    reportLocation(latLng);  //报告实时位置
+                }
+                count++;
 
                 if(markOverlay[0]!=null){
                     View pop = BaiduMapUtil.initPop(context,null,false);
@@ -270,7 +277,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
                     double distance = BaiduMapUtil.getDistance(latLngArray[0],mLatLng); //单位为m
 
                     if(sign_in_btn!=null){  //签到界面有提示框,并且改变Button样式
-                        if(Math.abs(distance)<=10){  //到达(有误差)
+                        if(Math.abs(distance)<=50){  //到达(有误差)
                             tv_distance.setText(R.string.arrive_text);
                             sign_in_btn.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.default_btn));  //兼容api14
                             sign_in_btn.setTextColor(context.getResources().getColor(android.R.color.white));
@@ -293,10 +300,24 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
     }
 
     /**
-     * 上传实时位置
+     * 上传实时位置,每五分钟上传一次
      * @param mLatlng
      */
-    private void reportLocation(LatLng mLatlng){
-
+    private void reportLocation(final LatLng mLatlng){
+        BasicNameValuePair bv_one = new BasicNameValuePair("rtpostionLon",String.valueOf(mLatlng.longitude)); //经度
+        BasicNameValuePair bv_two = new BasicNameValuePair("rtpositionLat",String.valueOf(mLatlng.latitude)); //纬度
+        Http.getInstance().postTaskToken(NetURL.REPORT_MY_ADDRESS, ReportLocationEntity.class, new OnResult() {
+            @Override
+            public void onResult(Object entity) {
+                if(entity == null){
+                    return;
+                }
+                ReportLocationEntity reportLocationEntity = (ReportLocationEntity) entity;
+                if(reportLocationEntity.isResult()){
+                    Log.i("test","上传数据===>"+mLatlng.longitude+","+mLatlng.latitude);
+                    return;
+                }
+            }
+        },bv_one,bv_two);
     }
 }
