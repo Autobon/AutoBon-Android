@@ -253,7 +253,7 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
             return;
         }
 
-        String skillArray="";
+        String skillArray = "";
         for (int i = 0; i < 4; i++){
             if (this.skillArray[i]){
                 skillArray += (i + 1) + ",";

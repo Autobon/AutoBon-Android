@@ -120,8 +120,8 @@
 
     <!-- 地图－订单fragment -->
     <string name="indent_image_text">订单图片</string>
-    <string name="work_time">工作时间：</string>
-    <string name="work_notes">工作备注：</string>
+    <string name="work_time">施工时间：</string>
+    <string name="work_notes">施工备注：</string>
     <string name="receive_indent">我要接单</string>
     <string name="start_authorization">我要认证</string>
     <string name="authorization_progress">认证进度</string>
@@ -168,6 +168,8 @@
     <string name="rest_money_title">余额</string>
     <string name="money_tips">元</string>
     <string name="pay_bottom_tips">每月底为车邻邦平台结算时间</string>
+
+    <string name="banned">账户已被禁用</string>
     <string name="modify_bank_number_text">修改银行卡信息</string>
 
     <!--银行卡-->

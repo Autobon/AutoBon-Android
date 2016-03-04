@@ -15,4 +15,16 @@ public class StatusCode {
 	 * 账号未认证
 	 */
 	public final static String NOTVERIFIED = "NOTVERIFIED";
+	/**
+	 * 等待审核中
+	 */
+	public final static String IN_VERIFICATION = "IN_VERIFICATION";
+	/**
+	 * 认证未通过
+	 */
+	public final static String REJECTED = "REJECTED";
+	/**
+	 * 帐户已被禁用
+	 */
+	public final static String BANNED = "BANNED";
 }

@@ -4,6 +4,7 @@ public class NetURL {
 	/** 基地址 */
 	public final static String BASE_URL = "http://121.40.157.200:51234/api/mobile/";
 	public final static String IP_PORT = "http://121.40.157.200:51234";
+	public final static String DOMAIN = "121.40.157.200";
 
 	/** 发送验证短信 */
 	public static final String VERIFY_SMS = BASE_URL + "verifySms";
@@ -27,8 +28,13 @@ public class NetURL {
 	public static final String SEARCH_TECHNICIAN = BASE_URL + "technician/search";
 	/** 签到*/
 	public static final String SIGN_IN_URL = BASE_URL + "construction/signIn";
+
+	/** 更新个推ID */
+	public static final String PUSH_ID = BASE_URL + "technician/pushId";
+
 	/** 报告实时位置 */
 	public static final String REPORT_MY_ADDRESS = BASE_URL+ "technician/reportLocation";
+
 	/** 我的信息*/
 	public static final String MY_INFO_URL = BASE_URL + "technician";
 	/** 修改银行卡信息 */
