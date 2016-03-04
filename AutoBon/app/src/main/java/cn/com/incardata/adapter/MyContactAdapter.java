@@ -13,9 +13,13 @@ import android.widget.TextView;
 import java.util.List;
 
 import cn.com.incardata.autobon.R;
+import cn.com.incardata.http.Http;
 import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
+import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.AddContact_data_list;
+import cn.com.incardata.http.response.InviteTechnicainEntity;
+import cn.com.incardata.utils.T;
 import cn.com.incardata.view.CircleImageView;
 
 /**
@@ -27,6 +31,7 @@ public class MyContactAdapter extends BaseAdapter{
     private List<AddContact_data_list> mList;
     private String technicianName;
     private int technicianId;
+    private static final int orderId = 43;
 
     public MyContactAdapter(Activity activity, List<AddContact_data_list> mList){
         this.activity = activity;
@@ -77,22 +82,35 @@ public class MyContactAdapter extends BaseAdapter{
         holder.btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addTechnician(technicianName); //添加技师
+                addTechnician(orderId,technicianName); //添加技师
             }
         });
 
         return convertView;
     }
 
-    public void addTechnician(String technicianName){
+    public void addTechnician(int orderId,final String technicianName){
         //TODO 发送合作邀请
-
-
-        Intent i=new Intent();
-        i.putExtra("username",technicianName);
-        i.putExtra("technicianId",technicianId);
-        activity.setResult(activity.RESULT_OK,i);
-        activity.finish();
+        Http.getInstance().postTaskToken(NetURL.inviteTechnician(String.valueOf(orderId), String.valueOf(technicianId)), InviteTechnicainEntity.class, new OnResult() {
+            @Override
+            public void onResult(Object entity) {
+                if(entity == null){
+                    T.show(activity,activity.getString(R.string.invite_contact_failed));
+                    return;
+                }
+                InviteTechnicainEntity inviteTechnicainEntity = (InviteTechnicainEntity) entity;
+                if(inviteTechnicainEntity.isResult()){
+                    Log.i("test","添加合作技师成功");
+                    Intent i=new Intent();
+                    i.putExtra("username",technicianName);
+                    i.putExtra("technicianId",technicianId);
+                    activity.setResult(activity.RESULT_OK,i);
+                    activity.finish();
+                }else{
+                    T.show(activity,inviteTechnicainEntity.getMessage());
+                }
+            }
+        });
     }
 
     static class ViewHolder{

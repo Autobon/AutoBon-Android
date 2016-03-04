@@ -100,6 +100,7 @@
     <string name="refresh_more">向上滑动加载更多</string>
     <string name="hint_text_phone_name">请输入手机号或姓名</string>
     <string name="content_text_tips">手机号或姓名不能为空</string>
+    <string name="invite_contact_failed">邀请合作人失败</string>
 
     <!--上拉加载,下拉刷新字段-->
     <string name="pull_to_refresh_pull_label">下拉刷新</string>
