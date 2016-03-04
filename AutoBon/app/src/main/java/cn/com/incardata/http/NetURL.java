@@ -17,18 +17,20 @@ public class NetURL {
 	public static final String CHANGE_PASSWORD = BASE_URL + "technician/changePassword";
 
 	/** 提交认证 */
-	public static final String COMMIT_CERTIFICATE = BASE_URL + "technician/commitCertificate";
+	public static final String COMMIT_CERTIFICATE = BASE_URL + "technician/certificate";
 	/** 上传头像 */
 	public static final String AVATAR = BASE_URL + "technician/avatar";
 	/** 上传身份证照片 */
 	public static final String ID_PHOTO = BASE_URL + "technician/idPhoto";
 
-	/** 认证进度 */
-	public static final String AUTHORIZATION_PROGRESS = BASE_URL + "technician/getCertificate";
 	/** 查询技师 */
 	public static final String SEARCH_TECHNICIAN = BASE_URL + "technician/search";
 	/** 签到*/
 	public static final String SIGN_IN_URL = BASE_URL + "construction/signIn";
+	/** 报告实时位置 */
+	public static final String REPORT_MY_ADDRESS = BASE_URL+ "technician/reportLocation";
 	/** 我的信息*/
 	public static final String MY_INFO_URL = BASE_URL + "technician";
+	/** 修改银行卡信息 */
+	public static final String MODIFY_BANK_CARD_INFO_URL = BASE_URL + "technician/changeBankCard";
 }

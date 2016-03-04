@@ -17,6 +17,7 @@ import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.MyInfoEntity;
 import cn.com.incardata.http.response.MyInfo_Data;
 import cn.com.incardata.utils.DecimalUtil;
+import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
 import cn.com.incardata.view.CircleImageView;
 
@@ -27,11 +28,12 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
     private Context context;
     private RatingBar mRatingbar;
     private TextView tv_rate,tv_logout,tv_cost,tv_good_rate,tv_login_username;
-    private LinearLayout my_ll_package,ll_my_package,ll_modify_pwd,ll_cost;
+    private LinearLayout ll_my_package,ll_modify_pwd,ll_cost;
     private ImageView iv_back;
     private CircleImageView iv_circle;
     private boolean isVisible = false;
 
+    private String name;  //技师姓名
     private String bank;
     private String bankCardNumber;
 
@@ -42,7 +44,12 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         initView();
         initData();
         setListener();
-        getDataFromServer();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getDataFromServer();  //从服务器上拉取我的信息的数据
     }
 
     public void initView(){
@@ -51,7 +58,6 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         tv_rate = (TextView) findViewById(R.id.tv_rate);
         tv_logout = (TextView) findViewById(R.id.tv_logout);
         tv_cost = (TextView) findViewById(R.id.tv_cost);
-        my_ll_package = (LinearLayout) findViewById(R.id.my_ll_package);
         ll_my_package = (LinearLayout) findViewById(R.id.ll_my_package);
         ll_modify_pwd = (LinearLayout) findViewById(R.id.ll_modify_pwd);
         ll_cost = (LinearLayout) findViewById(R.id.ll_cost);
@@ -67,7 +73,6 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void setListener(){
-        my_ll_package.setOnClickListener(this);
         ll_modify_pwd.setOnClickListener(this);
         iv_back.setOnClickListener(this);
         tv_logout.setOnClickListener(this);
@@ -87,12 +92,14 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
                     MyInfo_Data data = myInfoEntity.getData();
 
                     String avatar = data.getAvatar(); //技师头像url尾部
-                    String name = data.getName();
+                    name = data.getName(); //技师姓名
                     int star = data.getStar();  //星级
                     bank = data.getBank(); //银行字典
                     bankCardNumber = data.getBankCardNo(); //银行卡号
 
-                    ImageLoaderCache.getInstance().loader(NetURL.IP_PORT+avatar,iv_circle);
+                    if(StringUtil.isNotEmpty(avatar)){
+                        ImageLoaderCache.getInstance().loader(NetURL.IP_PORT+avatar,iv_circle);
+                    }
                     tv_login_username.setText(name);
                     mRatingbar.setRating(star);
                     tv_rate.setText(String.valueOf(star));
@@ -107,15 +114,6 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.my_ll_package:
-                if(!isVisible){
-                    ll_my_package.setVisibility(View.VISIBLE);
-                    isVisible = true;
-                }else{
-                    ll_my_package.setVisibility(View.GONE);
-                    isVisible = false;
-                }
-                break;
             case R.id.iv_back:
                 finish();
                 break;
@@ -131,6 +129,7 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
             case R.id.ll_cost:  //余额
                 String rest_money = tv_cost.getText().toString().trim();
                 Bundle bundle = new Bundle();
+                bundle.putString("name",name);
                 bundle.putString("rest_money",rest_money);  //余额信息
                 bundle.putString("bank",bank);
                 bundle.putString("bankCardNumber",bankCardNumber);

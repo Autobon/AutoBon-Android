@@ -85,6 +85,9 @@ public class MyContactAdapter extends BaseAdapter{
     }
 
     public void addTechnician(String technicianName){
+        //TODO 发送合作邀请
+
+
         Intent i=new Intent();
         i.putExtra("username",technicianName);
         i.putExtra("technicianId",technicianId);

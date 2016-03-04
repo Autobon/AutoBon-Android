@@ -253,18 +253,18 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
             return;
         }
 
-        String skillArray = "{";
+        String skillArray="";
         for (int i = 0; i < 4; i++){
             if (this.skillArray[i]){
-                skillArray += "\"" + (i + 1) + "\",";
+                skillArray += (i + 1) + ",";
             }
         }
-        skillArray = skillArray.substring(0, skillArray.length() - 1) + "}";
+        skillArray = skillArray.substring(0, skillArray.length() - 1);
 
         ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("name", nameStr));
         params.add(new BasicNameValuePair("idNo", idNumStr));
-        params.add(new BasicNameValuePair("skillArray", skillArray));
+        params.add(new BasicNameValuePair("skills", skillArray));
 //        params.add(new BasicNameValuePair("idPhoto", "photo/url"));//暂不要该字段
         params.add(new BasicNameValuePair("bank", "16"));
         params.add(new BasicNameValuePair("bankAddress", "china"));

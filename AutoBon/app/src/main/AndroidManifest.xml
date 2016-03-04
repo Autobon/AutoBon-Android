@@ -73,7 +73,7 @@
             android:name=".MyInfoActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar">
-        </activity>
+        </activity>.
         <activity
             android:name=".ModifyPasswordActivity"
             android:screenOrientation="portrait"
@@ -84,8 +84,11 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar">
         </activity>
-
-
+        <activity
+            android:name=".ModifyBankCardInfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SpinnerTheme">
+        </activity>
 
         <!-- 百度地图的定位服务 -->
         <service

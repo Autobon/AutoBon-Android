@@ -13,8 +13,8 @@ import cn.com.incardata.http.Http;
 import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.OnResult;
-import cn.com.incardata.http.response.AuthorizationProgressEntity;
-import cn.com.incardata.http.response.AuthorizationProgress_Data;
+import cn.com.incardata.http.response.MyInfoEntity;
+import cn.com.incardata.http.response.MyInfo_Data;
 import cn.com.incardata.utils.T;
 
 /**
@@ -26,7 +26,7 @@ public class AuthorizationProgressActivity extends Activity implements View.OnCl
     private LinearLayout ll_failed_reason;
     private Button btn_change_info;
     private Context context;
-    private TextView tv_status,tv_username,tv_id_number,tv_bank_number;
+    private TextView tv_status,tv_username,tv_id_number,tv_bank_number,tv_bank;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,21 +47,25 @@ public class AuthorizationProgressActivity extends Activity implements View.OnCl
         tv_username = (TextView) findViewById(R.id.tv_username);
         tv_id_number = (TextView) findViewById(R.id.tv_id_number);
         tv_bank_number = (TextView) findViewById(R.id.tv_bank_number);
+        tv_bank = (TextView) findViewById(R.id.tv_bank);
 
         iv_back.setOnClickListener(this);
         btn_change_info.setOnClickListener(this);
     }
 
+    /**
+     * 此处获取认证进度信息返回的就是我的信息的字段
+     */
     private void getDataFromServer(){
-        Http.getInstance().postTaskToken(NetURL.AUTHORIZATION_PROGRESS, AuthorizationProgressEntity.class, new OnResult() {
+        Http.getInstance().getTaskToken(NetURL.MY_INFO_URL, MyInfoEntity.class, new OnResult() {
             @Override
             public void onResult(Object entity) {
                 if(entity == null){
                     T.show(context,context.getString(R.string.get_info_failed));
                     return;
                 }
-                AuthorizationProgressEntity apEntity = (AuthorizationProgressEntity) entity;
-                AuthorizationProgress_Data apData = apEntity.getData();
+                MyInfoEntity apEntity = (MyInfoEntity) entity;
+                MyInfo_Data apData = apEntity.getData();
                 if(apData!=null){
                     String status = apData.getStatus(); //审核状态
                     String avatar = apData.getAvatar(); //技师头像地址URL
@@ -71,9 +75,10 @@ public class AuthorizationProgressActivity extends Activity implements View.OnCl
                     String bankCardNo = apData.getBankCardNo(); //银行卡号
                     String bank = apData.getBank();  //银行
                     String idPhoto = apData.getIdPhoto();  //身份证图像地址URL
-
-                    if("REJECTED".equals(status)){  //审核失败
-                        tv_status.setText(R.string.authorize_progress_failed_text);
+                    if("IN_VERIFICATION".equals(status)){ //等待审核
+                        tv_status.setText(context.getString(R.string.authorize_progress_default_text));
+                    }else if("REJECTED".equals(status)){  //审核失败
+                        tv_status.setText(context.getString(R.string.authorize_progress_failed_text));
                         ll_failed_reason.setVisibility(View.VISIBLE);
                         btn_change_info.setVisibility(View.VISIBLE);
                     }
@@ -82,6 +87,7 @@ public class AuthorizationProgressActivity extends Activity implements View.OnCl
                     ImageLoaderCache.getInstance().loader(NetURL.IP_PORT+idPhoto,iv_card_photo);
                     tv_id_number.setText(idNo);
                     tv_bank_number.setText(bankCardNo);
+                    tv_bank.setText(bank);
                 }
             }
         });
