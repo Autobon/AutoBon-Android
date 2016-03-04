@@ -188,6 +188,7 @@ public class BaiduMapUtil {
      * @return
      */
     public static double getDistance(LatLng start,LatLng end){
+        if (start == null || end == null) return 0;
         double lat1 = (Math.PI/180)*start.latitude;
         double lat2 = (Math.PI/180)*end.latitude;
         double lon1 = (Math.PI/180)*start.longitude;
