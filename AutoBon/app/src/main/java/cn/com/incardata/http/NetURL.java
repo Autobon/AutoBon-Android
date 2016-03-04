@@ -23,8 +23,6 @@ public class NetURL {
 	/** 上传身份证照片 */
 	public static final String ID_PHOTO = BASE_URL + "technician/idPhoto";
 
-	/** 认证进度 */
-	public static final String AUTHORIZATION_PROGRESS = BASE_URL + "technician/getCertificate";
 	/** 查询技师 */
 	public static final String SEARCH_TECHNICIAN = BASE_URL + "technician/search";
 	/** 签到*/

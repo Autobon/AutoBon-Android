@@ -241,14 +241,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 //TODO 跳转主页
                 if (StatusCode.VERIFIED.equals(loginEntity.getData().getStatus())){
                     //startActivity(MainAuthorizedActivity.class);
-                    //startActivity(AuthorizationProgressActivity.class);
-                    startActivity(OrderReceiveActivity.class);
+                    startActivity(AuthorizationProgressActivity.class);
+                    //startActivity(OrderReceiveActivity.class);
                 }else {
                     //Bundle bundle = new Bundle();
                     //bundle.putBoolean("isVerifying", !TextUtils.isEmpty(loginEntity.getData().getIdNo()));//是否正在审核
                     //startActivity(MainUnauthorizedActivity.class, bundle);
-                    //startActivity(AuthorizationProgressActivity.class);
-                    startActivity(OrderReceiveActivity.class);
+                    startActivity(AuthorizationProgressActivity.class);
+                    //startActivity(OrderReceiveActivity.class);
                 }
                 finish();
             }else{  //失败

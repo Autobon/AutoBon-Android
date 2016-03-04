@@ -58,7 +58,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
     protected static String[] windowInfo;  //窗体信息记录
 
     private int technicianId;  //技师id
-    private int count = 1;  //计数单位
+    private int count;  //计数单位
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +74,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
     protected void onRestart() {
         super.onRestart();
         Log.i("test","再次启动定位图层......");
+        count = 1;
         if(mLocationClient!=null){
             mLocationClient.start();
             baiduMap.setMyLocationEnabled(true);
@@ -108,6 +109,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
     }
 
     private void initData(){
+        count = 1;
         markOverlay = new Overlay[4];
         popOverlay = new Overlay[4];
         latLngArray = new LatLng[4];

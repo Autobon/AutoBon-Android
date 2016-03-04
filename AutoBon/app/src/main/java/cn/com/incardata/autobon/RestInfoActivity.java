@@ -131,6 +131,9 @@ public class RestInfoActivity extends BaseActivity{
                     MyInfo_Data data = myInfoEntity.getData();
                     String bank = data.getBank(); //银行字典
                     String bankCardNumber = data.getBankCardNo(); //银行卡号
+                    if(bankCardNumber.length()>=8){
+                        bankCardNumber = replace(bankCardNumber,"*",3,bankCardNumber.length()-4);
+                    }
                     tv_bank_category.setText(bank);
                     tv_bank_number.setText(bankCardNumber);
                 }

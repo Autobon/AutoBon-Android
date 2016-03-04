@@ -62,8 +62,9 @@
     <string name="new_empty_tips">新密码不能为空</string>
     <string name="old_length_tips">旧密码长度不能小于8位</string>
     <string name="new_length_tips">新密码长度不能小于8位</string>
-    <string name="modify_pwd_failed">修改密码失败</string>
     <string name="modify_pwd_success">修改密码成功</string>
+    <string name="modify_pwd_failed">修改密码</string>
+    <string name="old_pwd_error_tips">原密码错误</string>
 
     <!--认证进度-->
     <string name="authorize_progress_title">认证进度</string>
