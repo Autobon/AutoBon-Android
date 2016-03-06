@@ -102,8 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/darkgray"
-            android:textSize="@dimen/sp15"
-            android:text="@string/work_time"/>
+            android:textSize="@dimen/sp15"/>
 
     </LinearLayout>
     <View
@@ -132,8 +131,7 @@
             android:textColor="@color/darkgray"
             android:textSize="@dimen/sp15"
             android:maxLines="3"
-            android:ellipsize="end"
-            android:text="strintimefdfdfdfadf下面比较脏下面比较脏下面比较脏下面比较脏下面比较脏下面比较脏下面比较脏下面比较脏下面比较脏下面比较脏df"/>
+            android:ellipsize="end"/>
 
     </LinearLayout>
 

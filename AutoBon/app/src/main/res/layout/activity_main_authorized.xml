@@ -12,7 +12,7 @@
         android:layout_height="@dimen/dp45"
         android:background="@color/main_orange">
         <ImageView
-            android:id="@+id/iv_back"
+            android:id="@+id/personal"
             android:layout_width="@dimen/dp35"
             android:layout_height="match_parent"
             android:padding="@dimen/dp10"

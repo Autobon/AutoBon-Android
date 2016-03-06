@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,10 +23,15 @@ import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.model.LatLng;
 
 import cn.com.incardata.autobon.R;
+import cn.com.incardata.getui.OrderMsg;
+import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.utils.BaiduMapUtil;
+import cn.com.incardata.utils.DateCompute;
+import cn.com.incardata.utils.L;
 import cn.com.incardata.utils.T;
 
 
@@ -39,14 +45,19 @@ import cn.com.incardata.utils.T;
  * create an instance of this fragment.
  */
 public class IndentMapFragment extends BaiduMapFragment{
+    private final static String TAG = "IndentMapFragment";
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String positionLon;
+    private String positionLat;
+    private String workTimeStr;
+    private String photoUrl;
+    private String remark;
+    private String shopName;
 
     private OnFragmentInteractionListener mListener;
     private BDLocationListener myBDLocationListener;
@@ -83,8 +94,11 @@ public class IndentMapFragment extends BaiduMapFragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            positionLon = getArguments().getString("PositionLon", "0.0");
+            positionLat =  getArguments().getString("PositionLat", "0.0");
+            photoUrl =  getArguments().getString("Photo", "http:");
+            workTimeStr =  getArguments().getString("OrderTime", "2016-03-02 02:14");
+            remark =  getArguments().getString("Remark", "");
         }
     }
 
@@ -101,6 +115,35 @@ public class IndentMapFragment extends BaiduMapFragment{
         }
         initViews();
         return rootView;
+    }
+
+    public void setData(OrderMsg.Order order){
+        if (order == null) return;
+        positionLon = order.getPositionLon();
+        positionLat = order.getPositionLat();
+        photoUrl = order.getPhoto();
+        workTimeStr = DateCompute.getDate(order.getOrderTime());
+        remark = order.getRemark();
+        shopName = order.getCreatorName();
+        setBaseData();
+
+//        Bundle bundle = new Bundle();
+//        bundle.putString("PositionLon", positionLon);
+//        bundle.putString("PositionLat", positionLat);
+//        bundle.putString("Photo", photoUrl);
+//        bundle.putString("OrderTime", workTimeStr);
+//        bundle.putString("Remark", remark);
+//        this.setArguments(bundle);
+    }
+
+    public void setData(String positionLon, String positionLat, String photoUrl, long orderTime, String remark, String creatorName){
+        this.positionLon = positionLon;
+        this.positionLat = positionLat;
+        this.photoUrl = photoUrl;
+        this.workTimeStr = DateCompute.getDate(orderTime);
+        this.remark = remark;
+        this.shopName = creatorName;
+        setBaseData();
     }
 
     @Override
@@ -131,11 +174,22 @@ public class IndentMapFragment extends BaiduMapFragment{
     }
 
     private void setBaseData(){
+        if (!TextUtils.isEmpty(photoUrl)){
+            ImageLoaderCache.getInstance().loader(photoUrl, indentImage, false);
+            indentText.setVisibility(View.GONE);
+        }
         if (workTime != null){
-            workTime.setText(mParam1);
+            workTime.setText(workTimeStr);
         }
         if (workNotes != null){
-            workNotes.setText(mParam2);
+            workNotes.setText(remark);
+        }
+        try {
+            BaiduMapUtil.drawAnotherPointByGeo(getActivity(), baiduMap, new LatLng(Double.parseDouble(positionLat), Double.parseDouble(positionLon)), shopName);
+        }catch (NumberFormatException e){
+            L.d(TAG, "NumberFormatException");
+        }catch (NullPointerException e){
+            e.printStackTrace();
         }
     }
 
@@ -146,7 +200,7 @@ public class IndentMapFragment extends BaiduMapFragment{
         baiduMap.setOnMapLoadedCallback(new BaiduMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
-                myBDLocationListener = new BaiduMapUtil.MyListener(getActivity(),baiduMap,distance, mLatLng, "4S店", null);
+                myBDLocationListener = new BaiduMapUtil.MyListener(getActivity(),baiduMap,distance, null, "4S店", null);
                 //tv_distance为下方显示距离的TextView控件,mAddress为另一个点的位置
                 BaiduMapUtil.locate(baiduMap,scanTime, new LocationClient(getActivity()),myBDLocationListener);
             }
@@ -238,7 +292,7 @@ public class IndentMapFragment extends BaiduMapFragment{
                 Log.d("test", "网络状态已经改变");
                 if(NetWorkHelper.isNetworkAvailable(context)){
                     //BaiduMapUtil.locate(baiduMap,scanTime,mLocationClient,
-                      //      new BaiduMapUtil.MyListener(context,baiduMap,distance,mLatLng,mAddress,null));
+                    //      new BaiduMapUtil.MyListener(context,baiduMap,distance,mLatLng,mAddress,null));
                     BaiduMapUtil.locate(baiduMap);
                 }else{
                     T.show(context,context.getString(R.string.no_network_error));

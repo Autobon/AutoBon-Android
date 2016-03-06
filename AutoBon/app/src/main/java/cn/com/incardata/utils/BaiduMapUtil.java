@@ -108,7 +108,7 @@ public class BaiduMapUtil {
         mSearch.geocode(new GeoCodeOption().city(address).address(address));
     }
 
-    public static void drawAnotherPointByGeo(Context context,BaiduMap baiduMap,LatLng latLng,String mAddress){
+    public static void drawAnotherPointByGeo(Context context,BaiduMap baiduMap,LatLng latLng,String shopName){
         if(markOverlay[1]!=null){
             markOverlay[1].remove();
         }
@@ -119,9 +119,11 @@ public class BaiduMapUtil {
             return;
         }
         markOverlay[1] = drawMarker(baiduMap,latLng,BitmapDescriptorFactory.fromResource(R.mipmap.shop),markZIndex);
-        popOverlay[1] = drawPopWindow(baiduMap,context,latLng,mAddress,popZIndex);
+        popOverlay[1] = drawPopWindow(baiduMap,context,latLng,shopName,popZIndex);
+
         latLngArray[1] = latLng;
-        windowInfo[1] = mAddress;
+        windowInfo[1] = shopName;
+
     }
 
     public static Overlay drawMarker(BaiduMap baiduMap,LatLng latLng, BitmapDescriptor descriptor, int zIndex) {
@@ -186,6 +188,7 @@ public class BaiduMapUtil {
      * @return
      */
     public static double getDistance(LatLng start,LatLng end){
+        if (start == null || end == null) return 0;
         double lat1 = (Math.PI/180)*start.latitude;
         double lat2 = (Math.PI/180)*end.latitude;
         double lon1 = (Math.PI/180)*start.longitude;
@@ -230,13 +233,14 @@ public class BaiduMapUtil {
                         return;
                     }
                     markOverlay[0] = drawMarker(this.baiduMap,latLng,BitmapDescriptorFactory.fromResource(R.mipmap.here),markZIndex);
+
                     /** 暂时隐藏pop **/
                     //popOverlay[0] = drawPopWindow(this.baiduMap,context,latLng,result.getAddrStr(),popZIndex);
-                    latLngArray[0] = latLng;
-                    windowInfo[0] = result.getAddrStr();
+//                    latLngArray[0] = latLng;
+//                    windowInfo[0] = result.getAddrStr();
                     //drawOnePoint(mAddress,new MyGeoCoderListener(context,this.baiduMap));
-                    drawAnotherPointByGeo(context,this.baiduMap,this.latLng,this.mAddress);
-                    zoomByTwoPoint(baiduMap,latLngArray[0],this.latLng);
+                    //drawAnotherPointByGeo(context,this.baiduMap,this.latLng,this.mAddress);
+                    zoomByTwoPoint(baiduMap,latLngArray[0], latLngArray[1]);
                 }
                 if(markOverlay[1] == null){
                     tv_distance.setText("0m");
@@ -267,42 +271,42 @@ public class BaiduMapUtil {
     }
 
     /**
-    public static class MyGeoCoderListener implements OnGetGeoCoderResultListener {
-        private Context context;
-        private BaiduMap baiduMap;
+     public static class MyGeoCoderListener implements OnGetGeoCoderResultListener {
+     private Context context;
+     private BaiduMap baiduMap;
 
-        public MyGeoCoderListener(Context context,BaiduMap baiduMap){
-            this.context = context;
-            this.baiduMap = baiduMap;
-        }
+     public MyGeoCoderListener(Context context,BaiduMap baiduMap){
+     this.context = context;
+     this.baiduMap = baiduMap;
+     }
 
-        @Override
-        public void onGetGeoCodeResult(GeoCodeResult result) {
-            if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
-                //没有检索到结果
-                T.show(context,context.getString(R.string.no_result_tips));
-                return;
-            }
-            if(markOverlay[1]!=null){
-                markOverlay[1].remove();
-            }
-            if(popOverlay[1]!=null){
-                popOverlay[1].remove();
-            }
-            if(!NetWorkHelper.isNetworkAvailable(context)) {  //无网络不显示
-                return;
-            }
-            markOverlay[1] = BaiduMapUtil.drawMarker(this.baiduMap,result.getLocation(),BitmapDescriptorFactory.fromResource(R.mipmap.shop),markZIndex);
-            popOverlay[1] = BaiduMapUtil.drawPopWindow(this.baiduMap,context,result.getLocation(),result.getAddress(),popZIndex);
-            latLngArray[1] = result.getLocation();
-            windowInfo[1] = result.getAddress();
-            BaiduMapUtil.zoomByTwoPoint(baiduMap,latLngArray[0],latLngArray[1]);
-        }
+     @Override
+     public void onGetGeoCodeResult(GeoCodeResult result) {
+     if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
+     //没有检索到结果
+     T.show(context,context.getString(R.string.no_result_tips));
+     return;
+     }
+     if(markOverlay[1]!=null){
+     markOverlay[1].remove();
+     }
+     if(popOverlay[1]!=null){
+     popOverlay[1].remove();
+     }
+     if(!NetWorkHelper.isNetworkAvailable(context)) {  //无网络不显示
+     return;
+     }
+     markOverlay[1] = BaiduMapUtil.drawMarker(this.baiduMap,result.getLocation(),BitmapDescriptorFactory.fromResource(R.mipmap.shop),markZIndex);
+     popOverlay[1] = BaiduMapUtil.drawPopWindow(this.baiduMap,context,result.getLocation(),result.getAddress(),popZIndex);
+     latLngArray[1] = result.getLocation();
+     windowInfo[1] = result.getAddress();
+     BaiduMapUtil.zoomByTwoPoint(baiduMap,latLngArray[0],latLngArray[1]);
+     }
 
-        @Override
-        public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
+     @Override
+     public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
 
-        }
-    }**/
+     }
+     }**/
 
 }

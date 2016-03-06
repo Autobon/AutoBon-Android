@@ -5,7 +5,6 @@ import android.os.Bundle;
 import com.baidu.location.LocationClient;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.model.LatLng;
 
 /**
  * Created by wanghao on 16/2/24.
@@ -15,7 +14,6 @@ public class BaiduMapFragment extends BaseFragment{
     protected MapView mMapView;
     protected LocationClient mLocationClient;
 
-    protected static final LatLng mLatLng = new LatLng(30.511869,114.405746);
     protected static final String mAddress = "门店";  //测试地址,可以更改
     protected static final int scanTime = 10*1000;  //设置10s定位一次
 

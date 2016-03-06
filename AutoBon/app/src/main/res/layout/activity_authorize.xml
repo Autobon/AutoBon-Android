@@ -137,7 +137,7 @@
 
                 <View
                     android:layout_width="5dp"
-                    android:layout_marginTop="@dimen/dp5"
+                    android:layout_marginTop="@dimen/dp10"
                     android:layout_height="match_parent"
                     android:background="@color/main_orange"/>
 
@@ -145,8 +145,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/darkgray"
+                    android:background="@android:color/white"
                     android:textSize="@dimen/sp15"
-                    android:layout_marginTop="@dimen/dp5"
+                    android:layout_marginTop="@dimen/dp10"
                     android:paddingLeft="@dimen/dp10"
                     android:paddingTop="@dimen/dp5"
                     android:paddingBottom="@dimen/dp5"
@@ -225,7 +226,7 @@
 
                 <View
                     android:layout_width="5dp"
-                    android:layout_marginTop="@dimen/dp5"
+                    android:layout_marginTop="@dimen/dp10"
                     android:layout_height="match_parent"
                     android:background="@color/main_orange"/>
 
@@ -233,8 +234,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/darkgray"
+                    android:background="@android:color/white"
                     android:textSize="@dimen/sp15"
-                    android:layout_marginTop="@dimen/dp5"
+                    android:layout_marginTop="@dimen/dp10"
                     android:paddingLeft="@dimen/dp10"
                     android:paddingTop="@dimen/dp5"
                     android:paddingBottom="@dimen/dp5"
@@ -283,7 +285,7 @@
 
                 <View
                     android:layout_width="5dp"
-                    android:layout_marginTop="@dimen/dp5"
+                    android:layout_marginTop="@dimen/dp10"
                     android:layout_height="match_parent"
                     android:background="@color/main_orange"/>
 
@@ -291,8 +293,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/darkgray"
+                    android:background="@android:color/white"
                     android:textSize="@dimen/sp15"
-                    android:layout_marginTop="@dimen/dp5"
+                    android:layout_marginTop="@dimen/dp10"
                     android:paddingLeft="@dimen/dp10"
                     android:paddingTop="@dimen/dp5"
                     android:paddingBottom="@dimen/dp5"
