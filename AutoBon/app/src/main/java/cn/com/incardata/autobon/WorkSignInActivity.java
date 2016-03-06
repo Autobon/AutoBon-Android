@@ -35,6 +35,7 @@ import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.ReportLocationEntity;
 import cn.com.incardata.http.response.SignInEntity;
+import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.BaiduMapUtil;
 import cn.com.incardata.utils.DateCompute;
 import cn.com.incardata.utils.DecimalUtil;
@@ -57,7 +58,6 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
     protected static LatLng[] latLngArray;  //位置信息记录
     protected static String[] windowInfo;  //窗体信息记录
 
-    private int technicianId;  //技师id
     private int count;  //计数单位
 
     @Override
@@ -114,7 +114,6 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
         popOverlay = new Overlay[4];
         latLngArray = new LatLng[4];
         windowInfo = new String[4];
-        technicianId = getIntent().getIntExtra("technicianId",0);
     }
 
     public void setListener(){
@@ -143,7 +142,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
                 startActivity(intent);
                 break;
             case R.id.sign_in_btn:
-                //signIn();
+                signIn();
                 break;
         }
     }
@@ -184,9 +183,9 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
      */
     public void signIn(){
         List<BasicNameValuePair> bvList = new ArrayList<BasicNameValuePair>();
-        BasicNameValuePair bv_one = new BasicNameValuePair("rtpositionLon",String.valueOf(latLngArray[0].longitude)); //经度
-        BasicNameValuePair bv_two = new BasicNameValuePair("rtpositionLat",String.valueOf(latLngArray[0].latitude)); //纬度
-        BasicNameValuePair bv_three = new BasicNameValuePair("technicianId",String.valueOf(technicianId)); //技师id
+        BasicNameValuePair bv_one = new BasicNameValuePair("positionLon",String.valueOf(latLngArray[0].longitude)); //经度
+        BasicNameValuePair bv_two = new BasicNameValuePair("positionLat",String.valueOf(latLngArray[0].latitude)); //纬度
+        BasicNameValuePair bv_three = new BasicNameValuePair("orderId",String.valueOf(AutoCon.orderId));  //订单id
 
         bvList.add(bv_one);
         bvList.add(bv_two);
@@ -198,6 +197,12 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
                 if(entity == null){
                     T.show(context,context.getString(R.string.sign_in_failed));
                     return;
+                }
+                SignInEntity signInEntity = (SignInEntity) entity;
+                if(signInEntity.isResult()){
+                    T.show(context,context.getString(R.string.sign_in_success));
+                }else{
+                    T.show(context,signInEntity.getMessage());
                 }
             }
         },(BasicNameValuePair[])bvList.toArray(new BasicNameValuePair[bvList.size()]));
@@ -277,7 +282,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
                     double distance = BaiduMapUtil.getDistance(latLngArray[0],mLatLng); //单位为m
 
                     if(sign_in_btn!=null){  //签到界面有提示框,并且改变Button样式
-                        if(Math.abs(distance)<=50){  //到达(有误差)
+                        if(Math.abs(distance)<=20*1000){  //到达(有误差)
                             tv_distance.setText(R.string.arrive_text);
                             sign_in_btn.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.default_btn));  //兼容api14
                             sign_in_btn.setTextColor(context.getResources().getColor(android.R.color.white));

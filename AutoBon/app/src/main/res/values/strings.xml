@@ -92,6 +92,7 @@
     <string name="assure_text">确定</string>
     <string name="contact_text">合作人:</string>
     <string name="receiver_text">已接单</string>
+    <string name="start_work_failed">开始工作失败</string>
 
 
     <!--添加合作人-->
@@ -118,6 +119,7 @@
     <string name="not_arrive_text">还未到达,不能签到噢</string>
     <string name="arrive_text">到达门店? 签到开始工作吧!</string>
     <string name="sign_in_failed">签到失败</string>
+    <string name="sign_in_success">签到成功</string>
 
     <!-- 地图－订单fragment -->
     <string name="indent_image_text">订单图片</string>

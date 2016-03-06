@@ -6,7 +6,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -241,17 +240,21 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 SharedPre.setSharedPreferences(context, AutoCon.FLAG_PASSWORD,this.password);  //保存密码
                 //TODO 跳转主页
                 if (StatusCode.VERIFIED.equals(loginEntity.getData().getStatus())){
-                    SharedPre.setSharedPreferences(getContext(), AutoCon.IS_AUTHORIZED, true);
-                    startActivity(MainAuthorizedActivity.class);
+                    //SharedPre.setSharedPreferences(getContext(), AutoCon.IS_AUTHORIZED, true);
+                    //startActivity(MainAuthorizedActivity.class);
+                    startActivity(OrderReceiveActivity.class);
+                    //startActivity(AuthorizationProgressActivity.class);
                 }else if(StatusCode.BANNED.equals(loginEntity.getData().getStatus())){
                     T.show(getContext(), R.string.banned);
                     SharedPre.setSharedPreferences(getContext(), AutoCon.IS_AUTHORIZED, false);
                     return;
                 }else {
-                    SharedPre.setSharedPreferences(getContext(), AutoCon.IS_AUTHORIZED, false);
-                    Bundle bundle = new Bundle();
-                    bundle.putBoolean("isVerifying", !TextUtils.isEmpty(loginEntity.getData().getIdNo()));//是否正在审核
-                    startActivity(MainUnauthorizedActivity.class, bundle);
+                   // SharedPre.setSharedPreferences(getContext(), AutoCon.IS_AUTHORIZED, false);
+                    //Bundle bundle = new Bundle();
+                   // bundle.putBoolean("isVerifying", !TextUtils.isEmpty(loginEntity.getData().getIdNo()));//是否正在审核
+                    //startActivity(MainUnauthorizedActivity.class, bundle);
+                    startActivity(OrderReceiveActivity.class);
+                    //startActivity(AuthorizationProgressActivity.class);
                 }
                 finish();
             }else{  //失败
