@@ -236,11 +236,12 @@ public class BaiduMapUtil {
 
                     /** 暂时隐藏pop **/
                     //popOverlay[0] = drawPopWindow(this.baiduMap,context,latLng,result.getAddrStr(),popZIndex);
-//                    latLngArray[0] = latLng;
-//                    windowInfo[0] = result.getAddrStr();
+                    latLngArray[0] = latLng;
+                    windowInfo[0] = result.getAddrStr();
                     //drawOnePoint(mAddress,new MyGeoCoderListener(context,this.baiduMap));
                     //drawAnotherPointByGeo(context,this.baiduMap,this.latLng,this.mAddress);
-                    zoomByTwoPoint(baiduMap,latLngArray[0], latLngArray[1]);
+                    //zoomByTwoPoint(baiduMap,latLngArray[0],this.latLng);
+                    zoomByOneCenterPoint(baiduMap,latLngArray[0],defaultLevel);
                 }
                 if(markOverlay[1] == null){
                     tv_distance.setText("0m");

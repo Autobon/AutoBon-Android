@@ -105,6 +105,7 @@ public class ModifyBankCardInfoActivity extends BaseActivity implements View.OnC
     private void modifyBankCardInfo(){
         if(NetWorkHelper.isNetworkAvailable(context)){
             String bankNo = bank_number.getText().toString().trim();
+            //TODO 银行卡号只能根据数字位数来判断,诸如16位和19位
             BasicNameValuePair bv_one = new BasicNameValuePair("bank",bankName);
             BasicNameValuePair bv_two = new BasicNameValuePair("bankCardNo",bankNo);
 

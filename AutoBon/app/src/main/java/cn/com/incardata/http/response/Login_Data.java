@@ -28,6 +28,10 @@ public class Login_Data {
 
     private long verifyAt; // 认证通过日期
 
+    private long requestVerifyAt;
+
+    private String verifyMsg;
+
     private long lastLoginAt; // 最后登录时间
 
     private String lastLoginIp; // 最后登录IP
@@ -192,5 +196,21 @@ public class Login_Data {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public long getRequestVerifyAt() {
+        return requestVerifyAt;
+    }
+
+    public void setRequestVerifyAt(long requestVerifyAt) {
+        this.requestVerifyAt = requestVerifyAt;
+    }
+
+    public String getVerifyMsg() {
+        return verifyMsg;
+    }
+
+    public void setVerifyMsg(String verifyMsg) {
+        this.verifyMsg = verifyMsg;
     }
 }

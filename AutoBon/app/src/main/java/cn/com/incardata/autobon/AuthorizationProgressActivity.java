@@ -9,12 +9,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import cn.com.incardata.application.MyApplication;
 import cn.com.incardata.http.Http;
 import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.MyInfoEntity;
 import cn.com.incardata.http.response.MyInfo_Data;
+import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
 
 /**
@@ -26,7 +28,7 @@ public class AuthorizationProgressActivity extends Activity implements View.OnCl
     private LinearLayout ll_failed_reason;
     private Button btn_change_info;
     private Context context;
-    private TextView tv_status,tv_username,tv_id_number,tv_bank_number,tv_bank;
+    private TextView tv_status,tv_username,tv_id_number,tv_bank_number,tv_bank,tv_skill;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class AuthorizationProgressActivity extends Activity implements View.OnCl
         tv_id_number = (TextView) findViewById(R.id.tv_id_number);
         tv_bank_number = (TextView) findViewById(R.id.tv_bank_number);
         tv_bank = (TextView) findViewById(R.id.tv_bank);
+        tv_skill = (TextView) findViewById(R.id.tv_skill);
 
         iv_back.setOnClickListener(this);
         btn_change_info.setOnClickListener(this);
@@ -75,12 +78,27 @@ public class AuthorizationProgressActivity extends Activity implements View.OnCl
                     String bankCardNo = apData.getBankCardNo(); //银行卡号
                     String bank = apData.getBank();  //银行
                     String idPhoto = apData.getIdPhoto();  //身份证图像地址URL
+                    //String verifyMsg = apData.getVerifyMsg();  //原因
+
+                    StringBuilder sb = new StringBuilder();
+                    MyApplication myApplication = MyApplication.getInstance();
+                    if(StringUtil.isNotEmpty(skill) && skill.contains(",")){
+                        String[] skillArray = skill.split(",");
+                        for(int i=0;i<skillArray.length;i++){
+                            sb.append(myApplication.getSkill(Integer.parseInt(skillArray[i])));
+                            if(i<skillArray.length-1){
+                                sb.append(",");
+                            }
+                        }
+                    }
+                    tv_skill.setText(sb.toString());
+
                     if("IN_VERIFICATION".equals(status)){ //等待审核
-                        tv_status.setText(context.getString(R.string.authorize_progress_default_text));
+                        tv_status.setText(context.getString(R.string.authorize_IN_VERIFICATION));
                     }else if("REJECTED".equals(status)){  //审核失败
-                        tv_status.setText(context.getString(R.string.authorize_progress_failed_text));
                         ll_failed_reason.setVisibility(View.VISIBLE);
                         btn_change_info.setVisibility(View.VISIBLE);
+                        tv_status.setText(context.getString(R.string.authorize_REJECTED));
                     }
                     tv_username.setText(name);
                     ImageLoaderCache.getInstance().loader(NetURL.IP_PORT+avatar,iv_circle);

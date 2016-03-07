@@ -53,8 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp10"
             android:textColor="@color/main_orange"
-            android:textSize="@dimen/sp15"
-            android:text="@string/authorize_progress_default_text"/>
+            android:textSize="@dimen/sp15"/>
     </LinearLayout>
 
     <LinearLayout
@@ -180,10 +179,11 @@
             android:text="@string/skill_project_text"
             android:textColor="@color/darkgray"/>
         <TextView
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:textColor="@color/darkgray"
-           android:layout_marginLeft="@dimen/dp10"/>
+            android:id="@+id/tv_skill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/darkgray"
+            android:layout_marginLeft="@dimen/dp10"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

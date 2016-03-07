@@ -24,10 +24,15 @@ public class NetURL {
 	/** 上传身份证照片 */
 	public static final String ID_PHOTO = BASE_URL + "technician/idPhoto";
 
+	/** 邀请技师(动态地址)*/
+	public static final String INVITE_TECHNICIAN = BASE_URL + "technician/order";
+
 	/** 查询技师 */
 	public static final String SEARCH_TECHNICIAN = BASE_URL + "technician/search";
+	/** 开始工作 */
+	public static final String START_WORK = BASE_URL + "technician/order/start";
 	/** 签到*/
-	public static final String SIGN_IN_URL = BASE_URL + "construction/signIn";
+	public static final String SIGN_IN_URL = BASE_URL + "technician/order/signIn";
 
 	/** 更新个推ID */
 	public static final String PUSH_ID = BASE_URL + "technician/pushId";
@@ -39,4 +44,9 @@ public class NetURL {
 	public static final String MY_INFO_URL = BASE_URL + "technician";
 	/** 修改银行卡信息 */
 	public static final String MODIFY_BANK_CARD_INFO_URL = BASE_URL + "technician/changeBankCard";
+
+
+	public static String inviteTechnician(String orderId,String partnerId){
+		return INVITE_TECHNICIAN+"/"+orderId+"/invite/"+partnerId;
+	}
 }

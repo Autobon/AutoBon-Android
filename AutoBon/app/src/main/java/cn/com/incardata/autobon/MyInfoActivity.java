@@ -100,7 +100,9 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
                     if(StringUtil.isNotEmpty(avatar)){
                         ImageLoaderCache.getInstance().loader(NetURL.IP_PORT+avatar,iv_circle);
                     }
-                    tv_login_username.setText(name);
+                    if(StringUtil.isNotEmpty(name)){
+                        tv_login_username.setText(name);
+                    }
                     mRatingbar.setRating(star);
                     tv_rate.setText(String.valueOf(star));
                     tv_good_rate.setText((star/5)*100+"%");
