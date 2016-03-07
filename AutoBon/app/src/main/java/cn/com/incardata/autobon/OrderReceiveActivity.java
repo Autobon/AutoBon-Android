@@ -2,6 +2,7 @@ package cn.com.incardata.autobon;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,8 +11,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.apache.http.message.BasicNameValuePair;
+
 import cn.com.incardata.fragment.IndentMapFragment;
+import cn.com.incardata.http.Http;
+import cn.com.incardata.http.NetURL;
+import cn.com.incardata.http.OnResult;
+import cn.com.incardata.http.response.StartWorkEntity;
+import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.StringUtil;
+import cn.com.incardata.utils.T;
 
 /**
  * Created by zhangming on 2016/2/24.
@@ -21,6 +30,7 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
     private IndentMapFragment mFragment;
+    private Context context;
 
     private TextView tv_add_contact;
     private LinearLayout ll_add_contact,ll_tab_bottom;
@@ -28,8 +38,8 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
     private View bt_line_view;
     private ImageView iv_back;
 
-    private int technicianId = -1;
     private static final int ADD_CONTACT_CODE = 1;  //添加联系人的请求码requestCode
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +64,7 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
     }
 
     private void initView(){
+        context = this;
         tv_add_contact = (TextView) findViewById(R.id.tv_add_contact);
         tv_username = (TextView) findViewById(R.id.tv_username);
         tv_begin_work = (TextView)findViewById(R.id.tv_begin_work);
@@ -87,13 +98,8 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
                 finish();
                 break;
             case R.id.tv_begin_work:
-                intent = new Intent(this,WorkSignInActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                if(technicianId!=-1){
-                    intent.putExtra("technicianId",technicianId);
-                }
-                startActivity(intent);
-                finish();
+                //发起开始工作请求
+                startWork();
                 break;
         }
     }
@@ -105,7 +111,7 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
             switch (resultCode){
                 case RESULT_OK:
                     String username = data.getExtras().getString("username");  //技师姓名
-                    technicianId = data.getExtras().getInt("technicianId");  //技师id
+
                     if(StringUtil.isNotEmpty(username)){
                         tv_username.setText(username);
                         bt_line_view.setVisibility(View.VISIBLE);
@@ -119,6 +125,28 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
                     break;
             }
         }
+    }
+
+    private void startWork(){
+        BasicNameValuePair bv_orderId = new BasicNameValuePair("orderId",String.valueOf(AutoCon.orderId));
+        Http.getInstance().postTaskToken(NetURL.START_WORK, StartWorkEntity.class, new OnResult() {
+            @Override
+            public void onResult(Object entity) {
+                if(entity == null){
+                    T.show(context,context.getString(R.string.start_work_failed));
+                    return;
+                }
+                StartWorkEntity startWorkEntity = (StartWorkEntity) entity;
+                if(startWorkEntity.isResult()){  //成功后跳转签到界面
+                    Intent intent = new Intent(context,WorkSignInActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                    finish();
+                }else{
+                    T.show(context,startWorkEntity.getMessage());
+                }
+            }
+        },bv_orderId);
     }
 
 }

@@ -45,9 +45,9 @@ public class MyApplication extends Application{
         if (skillMap == null){
             skillMap = new HashMap<Integer, String>();
             skillMap.put(1, "隔热层");
-            skillMap.put(1, "隐形车衣");
-            skillMap.put(1, "车身改色");
-            skillMap.put(1, "美容清洁");
+            skillMap.put(2, "隐形车衣");
+            skillMap.put(3, "车身改色");
+            skillMap.put(4, "美容清洁");
         }
         //initState();
     }
