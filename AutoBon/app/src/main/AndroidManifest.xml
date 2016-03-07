@@ -140,7 +140,7 @@
         <activity
             android:name=".AuthorizeActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar" />
+            android:theme="@style/SpinnerTheme" />
         <activity android:name=".AuthorizeAgreementActivity" />
 
         <!-- 个推SDK配置开始 -->

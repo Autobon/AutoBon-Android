@@ -1,7 +1,7 @@
 package cn.com.incardata.autobon;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +21,8 @@ import cn.com.incardata.utils.T;
  * 认证进度
  * @author wanghao
  */
-public class AuthorizationProgressActivity extends Activity implements View.OnClickListener{
+public class AuthorizationProgressActivity extends BaseActivity implements View.OnClickListener{
+    private final static int requestCode = 0x11;
     private ImageView iv_back,iv_circle,iv_card_photo;
     private LinearLayout ll_failed_reason;
     private Button btn_change_info;
@@ -100,7 +101,15 @@ public class AuthorizationProgressActivity extends Activity implements View.OnCl
                 finish();
                 break;
             case R.id.btn_change_info: //更改认证信息
+                Intent intent = new Intent(getContext(), AuthorizeActivity.class);
+                intent.putExtra("isAgain", true);
+                startActivityForResult(intent, requestCode);
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

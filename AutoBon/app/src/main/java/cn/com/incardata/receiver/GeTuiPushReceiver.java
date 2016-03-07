@@ -1,8 +1,12 @@
 package cn.com.incardata.receiver;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -13,6 +17,7 @@ import com.igexin.sdk.PushManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.com.incardata.autobon.R;
 import cn.com.incardata.getui.ActionType;
 import cn.com.incardata.utils.L;
 
@@ -44,8 +49,8 @@ public class GeTuiPushReceiver extends BroadcastReceiver{
                         Log.d("Getui", "receiver payload : [data = null");
                         return;
                     }
-                    processMessage(context, data);
                     Log.d("Getui", "receiver payload : " + data);
+                    processMessage(context, data);
 
                 }
                 break;
@@ -81,10 +86,39 @@ public class GeTuiPushReceiver extends BroadcastReceiver{
                 Intent intent = new Intent(ActionType.ACTION_ORDER);
                 intent.putExtra(ActionType.NEW_ORDER, msg);
                 context.sendBroadcast(intent);
+//            }else if (ActionType.VERIFICATION_SUCCEED.equals(action)){
+                showNotification(context, "认证通知", "认证通过");
             }
         } catch (JSONException e) {
             e.printStackTrace();
             Log.d("Getui", "透传的josn格式错误");
         }
+    }
+
+    private void showNotification(Context context, String title, String message) {
+        Intent intent = new Intent();
+        intent.putExtra("notification", 0);
+        intent.putExtra("message", title);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Notification.Builder builder = new Notification.Builder(context)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setContentIntent(contentIntent)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setAutoCancel(true)
+                .setTicker("您有一条新的消息！")
+                .setDefaults(Notification.DEFAULT_SOUND)
+                .setWhen(System.currentTimeMillis());
+
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification n = null;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+            n = builder.getNotification();
+        } else {
+            n = builder.build();
+        }
+        n.number++;
+        mNotificationManager.notify(0, n);
     }
 }

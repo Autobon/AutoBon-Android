@@ -7,6 +7,14 @@ import android.os.IBinder;
 
 import com.igexin.sdk.PushManager;
 
+import org.apache.http.message.BasicNameValuePair;
+
+import cn.com.incardata.http.Http;
+import cn.com.incardata.http.NetURL;
+import cn.com.incardata.http.OnResult;
+import cn.com.incardata.http.response.PushIDEntity;
+import cn.com.incardata.utils.L;
+
 public class AutobonService extends Service {
     private boolean isRun;
 
@@ -50,20 +58,20 @@ public class AutobonService extends Service {
      * 上传cid到后台
      */
     private void uploadClientId() {
-//        Http.getInstance().postTaskToken(NetURL.PUSH_ID, PushIDEntity.class, new OnResult() {
-//            @Override
-//            public void onResult(Object entity) {
-//                if (entity == null){
-//                    L.d("Getui", "cid上传失败");
-//                    uploadClientId();
-//                    return;
-//                }
-//                if (entity instanceof PushIDEntity && !((PushIDEntity) entity).isResult()){
-//                    L.d("Getui", "cid上传失败");
-//                    uploadClientId();
-//                }
-//            }
-//        }, new BasicNameValuePair("pushId", PushManager.getInstance().getClientid(this)));
+        Http.getInstance().postTaskToken(NetURL.PUSH_ID, PushIDEntity.class, new OnResult() {
+            @Override
+            public void onResult(Object entity) {
+                if (entity == null){
+                    L.d("Getui", "cid上传失败");
+                    uploadClientId();
+                    return;
+                }
+                if (entity instanceof PushIDEntity && !((PushIDEntity) entity).isResult()){
+                    L.d("Getui", "cid上传失败");
+                    uploadClientId();
+                }
+            }
+        }, new BasicNameValuePair("pushId", PushManager.getInstance().getClientid(this)));
     }
 
     @Override

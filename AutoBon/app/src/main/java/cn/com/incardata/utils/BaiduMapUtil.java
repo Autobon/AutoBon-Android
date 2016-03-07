@@ -223,7 +223,7 @@ public class BaiduMapUtil {
             if (result != null) {
                 final double latitude = result.getLatitude();
                 final double longitude = result.getLongitude();
-                final LatLng latLng = new LatLng(latitude, longitude);
+                latLng = new LatLng(latitude, longitude);
                 if(markOverlay[0]!=null){
                     View pop = BaiduMapUtil.initPop(context,null,false);
                     TextView tv = (TextView) pop.findViewById(R.id.title);
@@ -240,7 +240,8 @@ public class BaiduMapUtil {
 //                    windowInfo[0] = result.getAddrStr();
                     //drawOnePoint(mAddress,new MyGeoCoderListener(context,this.baiduMap));
                     //drawAnotherPointByGeo(context,this.baiduMap,this.latLng,this.mAddress);
-                    zoomByTwoPoint(baiduMap,latLngArray[0], latLngArray[1]);
+                    zoomByOneCenterPoint(baiduMap, this.latLng, BaiduMapUtil.defaultLevel);
+//                    zoomByTwoPoint(baiduMap,latLngArray[0], latLngArray[1]);
                 }
                 if(markOverlay[1] == null){
                     tv_distance.setText("0m");

@@ -1,7 +1,7 @@
 <resources>
     <!--<string name="app_name">AutoBon</string>-->
     <string name="app_name">车邻邦</string>
-    <string name="digits_indentify_number">0123456789XY</string>
+    <string name="digits_indentify_number">0123456789X</string>
 
     <!--登陆界面-->
     <string name="text_language">语言</string>
@@ -130,8 +130,8 @@
     <string name="name">姓名</string>
     <string name="identify_number">身份证号</string>
     <string name="skill_item">技能项目</string>
-    <string name="skill_item_1">隔热膜</string>
-    <string name="skill_item_2">隐身车衣</string>
+    <string name="skill_item_1">隔热层</string>
+    <string name="skill_item_2">隐型车衣</string>
     <string name="skill_item_3">车身改色</string>
     <string name="skill_item_4">美容清洁</string>
     <string name="identify_photo">身份证正面照</string>
@@ -150,6 +150,8 @@
     <string name="amount">共计金额：</string>
     <string name="uninstalled_sdcard">您的手机未安装SD卡</string>
     <string name="upload_image_failed">上传失败，请重试一次</string>
+    <string name="please_check_identify">请检查身份证号</string>
+    <string name="operate_failed_agen">操作失败，请重试一次</string>
 
     <!--我的信息-->
     <string name="my_info_text">我的信息</string>

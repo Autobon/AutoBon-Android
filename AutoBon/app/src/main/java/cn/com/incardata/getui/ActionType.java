@@ -43,6 +43,15 @@ public class ActionType {
      * 订单已取消
      */
     public final static String CANCELED = "CANCELED";
+    /**
+     * 认证通过
+     */
+    public final static String VERIFICATION_SUCCEED = "VERIFICATION_SUCCEED";
+    /**
+     * 认证失败
+     */
+    public final static String VERIFICATION_FAILED = "VERIFICATION_FAILED";
+
 
     /**
      * 订单广播
