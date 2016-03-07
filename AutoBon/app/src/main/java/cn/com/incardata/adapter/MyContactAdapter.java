@@ -19,6 +19,7 @@ import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.AddContact_data_list;
 import cn.com.incardata.http.response.InviteTechnicainEntity;
+import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.T;
 import cn.com.incardata.view.CircleImageView;
 
@@ -31,7 +32,6 @@ public class MyContactAdapter extends BaseAdapter{
     private List<AddContact_data_list> mList;
     private String technicianName;
     private int technicianId;
-    private static final int orderId = 43;
 
     public MyContactAdapter(Activity activity, List<AddContact_data_list> mList){
         this.activity = activity;
@@ -82,7 +82,7 @@ public class MyContactAdapter extends BaseAdapter{
         holder.btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addTechnician(orderId,technicianName); //添加技师
+                addTechnician(AutoCon.orderId,technicianName); //添加技师
             }
         });
 

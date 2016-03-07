@@ -78,6 +78,7 @@ public class AuthorizationProgressActivity extends Activity implements View.OnCl
                     String bankCardNo = apData.getBankCardNo(); //银行卡号
                     String bank = apData.getBank();  //银行
                     String idPhoto = apData.getIdPhoto();  //身份证图像地址URL
+                    //String verifyMsg = apData.getVerifyMsg();  //原因
 
                     StringBuilder sb = new StringBuilder();
                     MyApplication myApplication = MyApplication.getInstance();
@@ -93,11 +94,11 @@ public class AuthorizationProgressActivity extends Activity implements View.OnCl
                     tv_skill.setText(sb.toString());
 
                     if("IN_VERIFICATION".equals(status)){ //等待审核
-                        tv_status.setText(context.getString(R.string.authorize_progress_default_text));
+                        tv_status.setText(context.getString(R.string.authorize_IN_VERIFICATION));
                     }else if("REJECTED".equals(status)){  //审核失败
-                        tv_status.setText(context.getString(R.string.authorize_progress_failed_text));
                         ll_failed_reason.setVisibility(View.VISIBLE);
                         btn_change_info.setVisibility(View.VISIBLE);
+                        tv_status.setText(context.getString(R.string.authorize_REJECTED));
                     }
                     tv_username.setText(name);
                     ImageLoaderCache.getInstance().loader(NetURL.IP_PORT+avatar,iv_circle);

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_white">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp45"
+        android:background="@color/main_orange">
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="@dimen/dp35"
+            android:layout_height="match_parent"
+            android:padding="@dimen/dp10"
+            android:src="@mipmap/default_back"
+            android:scaleType="centerInside"
+            android:clickable="true"
+            android:focusable="true"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/bill_title"
+            android:textSize="@dimen/sp18"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
+    <ListView
+        android:id="@+id/bill_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:listSelector="@android:color/transparent"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="@dimen/dp5"
+        android:scrollbars="none"
+        android:fadingEdge="none"
+        android:cacheColorHint="@android:color/transparent"
+        android:fadeScrollbars="false">
+    </ListView>
+</LinearLayout>

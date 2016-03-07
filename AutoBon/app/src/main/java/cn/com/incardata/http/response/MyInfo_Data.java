@@ -15,6 +15,8 @@ public class MyInfo_Data {
     private String bankAddress;
     private String bankCardNo;
     private String verifyAt;
+    private long requestVerifyAt;
+    private String verifyMsg;
     private long lastLoginAt;
     private String lastLoginIp;
     private long createAt;
@@ -174,5 +176,21 @@ public class MyInfo_Data {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public long getRequestVerifyAt() {
+        return requestVerifyAt;
+    }
+
+    public void setRequestVerifyAt(long requestVerifyAt) {
+        this.requestVerifyAt = requestVerifyAt;
+    }
+
+    public String getVerifyMsg() {
+        return verifyMsg;
+    }
+
+    public void setVerifyMsg(String verifyMsg) {
+        this.verifyMsg = verifyMsg;
     }
 }

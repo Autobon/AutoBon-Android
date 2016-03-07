@@ -53,8 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp10"
             android:textColor="@color/main_orange"
-            android:textSize="@dimen/sp15"
-            android:text="@string/authorize_progress_default_text"/>
+            android:textSize="@dimen/sp15"/>
     </LinearLayout>
 
     <LinearLayout

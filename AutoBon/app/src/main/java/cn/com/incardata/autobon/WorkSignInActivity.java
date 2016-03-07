@@ -282,7 +282,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
                     double distance = BaiduMapUtil.getDistance(latLngArray[0],mLatLng); //单位为m
 
                     if(sign_in_btn!=null){  //签到界面有提示框,并且改变Button样式
-                        if(Math.abs(distance)<=20*1000){  //到达(有误差)
+                        if(Math.abs(distance)<=20){  //到达(有误差)
                             tv_distance.setText(R.string.arrive_text);
                             sign_in_btn.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.default_btn));  //兼容api14
                             sign_in_btn.setTextColor(context.getResources().getColor(android.R.color.white));
