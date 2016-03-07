@@ -29,11 +29,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:listSelector="@android:color/transparent"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="@dimen/dp5"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@color/lightgray"
+        android:dividerHeight="1dp"
         android:scrollbars="none"
         android:fadingEdge="none"
-        android:cacheColorHint="@android:color/transparent"
         android:fadeScrollbars="false">
     </ListView>
 </LinearLayout>
