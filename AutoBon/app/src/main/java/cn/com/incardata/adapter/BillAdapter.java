@@ -49,9 +49,9 @@ public class BillAdapter extends BaseAdapter{
     public View getView(int position, View convertView, ViewGroup parent) {
         BillEntity billEntity;
         if (position == 0){
-            return getTitleView("2016");
+            return getTitleView("2016",this.one_billList);
         }else if(position == (one_billList.size()+1)){
-            return getTitleView("2015");
+            return getTitleView("2015",this.two_billList);
         }else if(position <= one_billList.size()){
             billEntity = one_billList.get(position-1);
         }else{
@@ -74,14 +74,14 @@ public class BillAdapter extends BaseAdapter{
         return convertView;
     }
 
-    private View getTitleView(String year){
+    private View getTitleView(String year,List<BillEntity> billList){
         View view = LayoutInflater.from(context).inflate(R.layout.bill_title_item,null);
         TextView tv_year = (TextView) view.findViewById(R.id.tv_year);
         TextView tv_money = (TextView) view.findViewById(R.id.tv_money);
         tv_year.setText(year);
         double all_money = 0.0;
-        for(int i=0;i<one_billList.size();i++){
-            double money = one_billList.get(i).getPay();
+        for(int i=0;i<billList.size();i++){
+            double money = billList.get(i).getPay();
             all_money+=money;
         }
         tv_money.setText(String.valueOf(all_money));

@@ -30,8 +30,8 @@
         android:layout_height="match_parent"
         android:listSelector="@android:color/transparent"
         android:cacheColorHint="@android:color/transparent"
-        android:divider="@color/lightgray"
-        android:dividerHeight="1dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="5dp"
         android:scrollbars="none"
         android:fadingEdge="none"
         android:fadeScrollbars="false">

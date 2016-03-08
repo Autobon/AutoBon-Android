@@ -1,27 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="@dimen/dp60"
-    android:layout_marginRight="@dimen/dp20"
-    android:background="@android:color/white">
-    <TextView
-        android:layout_width="@dimen/dp60"
-        android:layout_height="@dimen/dp25"
-        android:background="@mipmap/bill_unpay"
-        android:textSize="@dimen/sp15"
-        android:gravity="center"/>
-    <TextView
-        android:id="@+id/tv_month"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/dp20"
-        android:textColor="@color/darkgray"/>
-    <TextView
-        android:id="@+id/tv_money"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:textColor="@color/lightgray"/>
-</RelativeLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/lightgray"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp60"
+        android:layout_marginRight="@dimen/dp15"
+        android:background="@android:color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bill_unpay"
+            android:gravity="center"
+            android:textSize="@dimen/sp12"
+            android:text="未认证"
+            android:paddingLeft="@dimen/dp10"
+            android:paddingRight="@dimen/dp10"/>
+
+        <TextView
+            android:id="@+id/tv_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp20"
+            android:textColor="@color/darkgray"
+            android:textSize="@dimen/sp15"/>
+
+        <TextView
+            android:id="@+id/tv_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/lightgray"
+            android:textSize="@dimen/sp15"/>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/lightgray"/>
+</LinearLayout>
