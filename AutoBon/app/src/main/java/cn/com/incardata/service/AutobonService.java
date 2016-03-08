@@ -3,9 +3,19 @@ package cn.com.incardata.service;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 
 import com.igexin.sdk.PushManager;
+
+import org.apache.http.message.BasicNameValuePair;
+
+import cn.com.incardata.http.Http;
+import cn.com.incardata.http.NetURL;
+import cn.com.incardata.http.OnResult;
+import cn.com.incardata.http.response.PushIDEntity;
+import cn.com.incardata.utils.L;
 
 public class AutobonService extends Service {
     private boolean isRun;
@@ -46,24 +56,34 @@ public class AutobonService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
+    final Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 10){
+                uploadClientId();
+            }
+        }
+    };
+
     /**
      * 上传cid到后台
      */
     private void uploadClientId() {
-//        Http.getInstance().postTaskToken(NetURL.PUSH_ID, PushIDEntity.class, new OnResult() {
-//            @Override
-//            public void onResult(Object entity) {
-//                if (entity == null){
-//                    L.d("Getui", "cid上传失败");
-//                    uploadClientId();
-//                    return;
-//                }
-//                if (entity instanceof PushIDEntity && !((PushIDEntity) entity).isResult()){
-//                    L.d("Getui", "cid上传失败");
-//                    uploadClientId();
-//                }
-//            }
-//        }, new BasicNameValuePair("pushId", PushManager.getInstance().getClientid(this)));
+        Http.getInstance().postTaskToken(NetURL.PUSH_ID, PushIDEntity.class, new OnResult() {
+            @Override
+            public void onResult(Object entity) {
+                if (entity == null){
+                    L.d("Getui", "cid上传失败");
+                    mHandler.sendEmptyMessageDelayed(10, 5000);
+                    return;
+                }
+                if (entity instanceof PushIDEntity && !((PushIDEntity) entity).isResult()){
+                    L.d("Getui", "cid上传失败");
+                    mHandler.sendEmptyMessageDelayed(0, 5000);
+                }
+            }
+        }, new BasicNameValuePair("pushId", PushManager.getInstance().getClientid(this)));
     }
 
     @Override

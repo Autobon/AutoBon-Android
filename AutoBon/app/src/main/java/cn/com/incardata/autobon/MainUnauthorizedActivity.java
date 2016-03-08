@@ -23,6 +23,7 @@ import cn.com.incardata.service.AutobonService;
  * @author wanghao
  */
 public class MainUnauthorizedActivity extends BaseActivity implements IndentMapFragment.OnFragmentInteractionListener{
+    private int requestCode = 0x10;
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
     private IndentMapFragment mFragment;
@@ -63,7 +64,8 @@ public class MainUnauthorizedActivity extends BaseActivity implements IndentMapF
         if (isVerifying){
             startActivity(AuthorizationProgressActivity.class);
         }else {
-            startActivity(AuthorizeActivity.class);
+            Intent intent = new Intent(this, AuthorizeActivity.class);
+            startActivityForResult(intent, requestCode);
         }
     }
 
@@ -97,8 +99,9 @@ public class MainUnauthorizedActivity extends BaseActivity implements IndentMapF
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data != null)
-        {
+        if (requestCode == this.requestCode && resultCode == RESULT_OK){
+           isVerifying = true;
+            mAuthorization.setText(R.string.authorization_progress);
         }
     }
 

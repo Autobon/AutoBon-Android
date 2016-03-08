@@ -29,6 +29,7 @@ import cn.com.incardata.adapter.BankNameAdapter;
 import cn.com.incardata.customfun.GatherImage;
 import cn.com.incardata.http.Http;
 import cn.com.incardata.http.HttpClientInCar;
+import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.AvatarEntity;
@@ -47,7 +48,7 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
     private ImageView headerImage;
     private EditText name;
     private EditText identifyNumber;
-    private TextView skillItem1, skillItem2, skillItem3, skillItem4;
+    private TextView[] skillItem = new TextView[4];
     private ImageView identifyPhoto;
     private Spinner bankSpinner;
     private EditText bankNumber;
@@ -65,23 +66,63 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
     private Uri imageCorpUri; //头像裁剪
     private Uri idPhotoUri; //身份证照片
 
+    private boolean isAgain = false;//再次认证／修改认证信息
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authorize);
 
         initView();
+        checkStatus();
         initSpinner();
+    }
+
+    /**
+     * 检查是否是再次认证
+     */
+    private void checkStatus() {
+        if (isAgain){
+            submit.setText(R.string.again_authorization);
+
+            nameStr = getIntent().getStringExtra("name");
+            idNumStr = getIntent().getStringExtra("idNumber");
+            String headUrl = getIntent().getStringExtra("headUrl");
+            String skill = getIntent().getStringExtra("skillArray");
+            String idUrl = getIntent().getStringExtra("idUrl");
+            bankNumStr = getIntent().getStringExtra("bankNo");
+            bankNameStr = getIntent().getStringExtra("bankName");
+
+            name.setText(nameStr);
+            identifyNumber.setText(idNumStr);
+            bankNumber.setText(bankNumStr);
+            if (!TextUtils.isEmpty(idUrl)){
+                ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + idUrl, identifyPhoto, false);
+                isUploadIDImage = true;
+            }
+            ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + headUrl, headerImage, false);
+
+            if (TextUtils.isEmpty(skill)) return;
+            String[] skillAr = skill.split(",");
+            for (String element : skillAr){
+                try{
+                    int ski = Integer.parseInt(element);
+                    onClickSkillItem(ski -1);
+                }catch(NumberFormatException e){
+                    continue;
+                }
+            }
+        }
     }
 
     private void initView() {
         headerImage = (ImageView) findViewById(R.id.header_image);
         name = (EditText) findViewById(R.id.name);
         identifyNumber = (EditText) findViewById(R.id.IDNo);
-        skillItem1 = (TextView) findViewById(R.id.skill_item_1);
-        skillItem2 = (TextView) findViewById(R.id.skill_item_2);
-        skillItem3 = (TextView) findViewById(R.id.skill_item_3);
-        skillItem4 = (TextView) findViewById(R.id.skill_item_4);
+        skillItem[0] = (TextView) findViewById(R.id.skill_item_1);
+        skillItem[1] = (TextView) findViewById(R.id.skill_item_2);
+        skillItem[2] = (TextView) findViewById(R.id.skill_item_3);
+        skillItem[3] = (TextView) findViewById(R.id.skill_item_4);
         identifyPhoto = (ImageView) findViewById(R.id.identify_photo);
         bankSpinner = (Spinner) findViewById(R.id.carInfo_brand);
         bankNumber = (EditText) findViewById(R.id.bank_number);
@@ -90,13 +131,15 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
 
         findViewById(R.id.iv_back).setOnClickListener(this);
         headerImage.setOnClickListener(this);
-        skillItem1.setOnClickListener(this);
-        skillItem2.setOnClickListener(this);
-        skillItem3.setOnClickListener(this);
-        skillItem4.setOnClickListener(this);
+        skillItem[0].setOnClickListener(this);
+        skillItem[1].setOnClickListener(this);
+        skillItem[2].setOnClickListener(this);
+        skillItem[3].setOnClickListener(this);
         identifyPhoto.setOnClickListener(this);
         submit.setOnClickListener(this);
         authorizeAgreement.setOnClickListener(this);
+
+        isAgain = getIntent().getBooleanExtra("isAgain", false);
     }
 
     /**
@@ -118,16 +161,16 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
                 onClickHeaderImage();
                 break;
             case R.id.skill_item_1:
-                onClickSkillItem(1);
+                onClickSkillItem(0);
                 break;
             case R.id.skill_item_2:
-                onClickSkillItem(2);
+                onClickSkillItem(1);
                 break;
             case R.id.skill_item_3:
-                onClickSkillItem(3);
+                onClickSkillItem(2);
                 break;
             case R.id.skill_item_4:
-                onClickSkillItem(4);
+                onClickSkillItem(3);
                 break;
             case R.id.identify_photo:
                 onClickIdentifyPhoto();
@@ -167,52 +210,16 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
     private void onClickSkillItem(int item) {
         int paddingPixel = getResources().getDimensionPixelSize(R.dimen.dp5);
 
-        switch (item){
-            case 1:
-                skillArray[0] = !skillArray[0];
-                if (skillArray[0]) {
-                    skillItem1.setBackgroundResource(R.drawable.skill_on);
-                    skillItem1.setTextColor(Color.WHITE);
-                }else {
-                    skillItem1.setBackgroundResource(R.drawable.skill_off);
-                    skillItem1.setTextColor(getResources().getColor(R.color.darkgray));
-                }
-                skillItem1.setPadding(paddingPixel,paddingPixel,paddingPixel,paddingPixel);
-                break;
-            case 2:
-                skillArray[1] = !skillArray[1];
-                if (skillArray[1]) {
-                    skillItem2.setBackgroundResource(R.drawable.skill_on);
-                    skillItem2.setTextColor(Color.WHITE);
-                } else {
-                    skillItem2.setBackgroundResource(R.drawable.skill_off);
-                    skillItem2.setTextColor(getResources().getColor(R.color.darkgray));
-                }
-                skillItem2.setPadding(paddingPixel,paddingPixel,paddingPixel,paddingPixel);
-                break;
-            case 3:
-                skillArray[2] = !skillArray[2];
-                if (skillArray[2]) {
-                    skillItem3.setBackgroundResource(R.drawable.skill_on);
-                    skillItem3.setTextColor(Color.WHITE);
-                }else {
-                    skillItem3.setBackgroundResource(R.drawable.skill_off);
-                    skillItem3.setTextColor(getResources().getColor(R.color.darkgray));
-                }
-                skillItem3.setPadding(paddingPixel,paddingPixel,paddingPixel,paddingPixel);
-                break;
-            case 4:
-                skillArray[3] = !skillArray[3];
-                if (skillArray[3]) {
-                    skillItem4.setBackgroundResource(R.drawable.skill_on);
-                    skillItem4.setTextColor(Color.WHITE);
-                }else {
-                    skillItem4.setBackgroundResource(R.drawable.skill_off);
-                    skillItem4.setTextColor(getResources().getColor(R.color.darkgray));
-                }
-                skillItem4.setPadding(paddingPixel,paddingPixel,paddingPixel,paddingPixel);
-                break;
+        skillArray[item ] = !skillArray[item];
+
+        if (skillArray[item]){
+            skillItem[item].setBackgroundResource(R.drawable.skill_on);
+            skillItem[item].setTextColor(Color.WHITE);
+        }else {
+            skillItem[item].setBackgroundResource(R.drawable.skill_off);
+            skillItem[item].setTextColor(getResources().getColor(R.color.darkgray));
         }
+        skillItem[item].setPadding(paddingPixel,paddingPixel,paddingPixel,paddingPixel);
     }
 
     private void onClickIdentifyPhoto() {
@@ -235,6 +242,10 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
         }
         if (TextUtils.isEmpty(idNumStr)){
             T.show(this, R.string.identify_number_error);
+            return;
+        }
+        if (!idNumStr.matches("^(\\d{14}|\\d{17})(\\d|[xX])$")){
+            T.show(this, getString(R.string.please_check_identify));
             return;
         }
 
@@ -266,7 +277,7 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
         params.add(new BasicNameValuePair("idNo", idNumStr));
         params.add(new BasicNameValuePair("skills", skillArray));
 //        params.add(new BasicNameValuePair("idPhoto", "photo/url"));//暂不要该字段
-        params.add(new BasicNameValuePair("bank", "16"));
+        params.add(new BasicNameValuePair("bank", bankNameStr));
         params.add(new BasicNameValuePair("bankAddress", "china"));
         params.add(new BasicNameValuePair("bankCardNo", bankNumStr));
 
@@ -277,8 +288,15 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
                     T.show(getContext(), R.string.network_exception);
                     return;
                 }
-                if (entity instanceof CommitCertificateEntity && ((CommitCertificateEntity) entity).isResult()){
-                    finish();//携带结果返回
+                if (entity instanceof CommitCertificateEntity ){
+                    CommitCertificateEntity certificateEntity = (CommitCertificateEntity) entity;
+                    if (certificateEntity.isResult()){
+                        setResult(RESULT_OK);//携带结果返回
+                        finish();
+                    }else {
+                        T.show(getContext(), R.string.operate_failed_agen);
+                        return;
+                    }
                 }
             }
         }, (NameValuePair[]) params.toArray(new NameValuePair[params.size()]));
@@ -373,9 +391,11 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         }
+                    }else {
+                        T.show(getContext(), getString(R.string.upload_image_failed));
+                        return;
                     }
                 }
-
             }
         }.execute(imageCorpUri.getPath(), NetURL.AVATAR);
     }
@@ -406,9 +426,11 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
                         isUploadIDImage = true;
                         Bitmap bitmap = BitmapFactory.decodeFile(idPhotoUri.getPath());
                         identifyPhoto.setImageBitmap(bitmap);
+                    }else {
+                        T.show(getContext(), getString(R.string.upload_image_failed));
+                        return;
                     }
                 }
-
             }
         }.execute(idPhotoUri.getPath(), NetURL.ID_PHOTO);
     }
