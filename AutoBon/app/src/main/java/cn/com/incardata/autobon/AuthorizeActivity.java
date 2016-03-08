@@ -29,13 +29,12 @@ import cn.com.incardata.adapter.BankNameAdapter;
 import cn.com.incardata.customfun.GatherImage;
 import cn.com.incardata.http.Http;
 import cn.com.incardata.http.HttpClientInCar;
+import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.AvatarEntity;
 import cn.com.incardata.http.response.CommitCertificateEntity;
 import cn.com.incardata.http.response.IdPhotoEntity;
-import cn.com.incardata.http.response.MyInfoEntity;
-import cn.com.incardata.http.response.MyInfo_Data;
 import cn.com.incardata.utils.BitmapHelper;
 import cn.com.incardata.utils.SDCardUtils;
 import cn.com.incardata.utils.T;
@@ -84,46 +83,35 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
      */
     private void checkStatus() {
         if (isAgain){
-            Http.getInstance().getTaskToken(NetURL.MY_INFO_URL, MyInfoEntity.class, new OnResult() {
-                @Override
-                public void onResult(Object entity) {
-                    if (entity == null) {
-                        T.show(getContext(), R.string.get_info_failed);
-                        return;
-                    }
-                    if (entity instanceof MyInfoEntity) {
-                        MyInfoEntity apEntity = (MyInfoEntity) entity;
-                        MyInfo_Data apData = apEntity.getData();
-                        if (apData != null) {
-                            nameStr = apData.getName();
-                            idNumStr = apData.getIdNo();
-                            bankNumStr = apData.getBankCardNo();
-                            bankNameStr = apData.getBank();
+            submit.setText(R.string.again_authorization);
 
+            nameStr = getIntent().getStringExtra("name");
+            idNumStr = getIntent().getStringExtra("idNumber");
+            String headUrl = getIntent().getStringExtra("headUrl");
+            String skill = getIntent().getStringExtra("skillArray");
+            String idUrl = getIntent().getStringExtra("idUrl");
+            bankNumStr = getIntent().getStringExtra("bankNo");
+            bankNameStr = getIntent().getStringExtra("bankName");
 
+            name.setText(nameStr);
+            identifyNumber.setText(idNumStr);
+            bankNumber.setText(bankNumStr);
+            if (!TextUtils.isEmpty(idUrl)){
+                ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + idUrl, identifyPhoto, false);
+                isUploadIDImage = true;
+            }
+            ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + headUrl, headerImage, false);
 
-
-                            name.setText(nameStr);
-                            identifyNumber.setText(idNumStr);
-                            bankNumber.setText(bankNumStr);
-
-                            String skill = apData.getSkill();
-                            if (TextUtils.isEmpty(skill)) return;
-                            String[] skillAr = skill.split(",");
-                            for (String element : skillAr){
-                                try{
-                                    int ski = Integer.parseInt(element);
-                                    onClickSkillItem(ski -1);
-                                }catch(NumberFormatException e){
-                                    continue;
-                                }
-                            }
-
-
-                        }
-                    }
+            if (TextUtils.isEmpty(skill)) return;
+            String[] skillAr = skill.split(",");
+            for (String element : skillAr){
+                try{
+                    int ski = Integer.parseInt(element);
+                    onClickSkillItem(ski -1);
+                }catch(NumberFormatException e){
+                    continue;
                 }
-            });
+            }
         }
     }
 
@@ -232,52 +220,6 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
             skillItem[item].setTextColor(getResources().getColor(R.color.darkgray));
         }
         skillItem[item].setPadding(paddingPixel,paddingPixel,paddingPixel,paddingPixel);
-//        switch (item){
-//            case 1:
-//                skillArray[0] = !skillArray[0];
-//                if (skillArray[0]) {
-//                    skillItem1.setBackgroundResource(R.drawable.skill_on);
-//                    skillItem1.setTextColor(Color.WHITE);
-//                }else {
-//                    skillItem1.setBackgroundResource(R.drawable.skill_off);
-//                    skillItem1.setTextColor(getResources().getColor(R.color.darkgray));
-//                }
-//                skillItem1.setPadding(paddingPixel,paddingPixel,paddingPixel,paddingPixel);
-//                break;
-//            case 2:
-//                skillArray[1] = !skillArray[1];
-//                if (skillArray[1]) {
-//                    skillItem2.setBackgroundResource(R.drawable.skill_on);
-//                    skillItem2.setTextColor(Color.WHITE);
-//                } else {
-//                    skillItem2.setBackgroundResource(R.drawable.skill_off);
-//                    skillItem2.setTextColor(getResources().getColor(R.color.darkgray));
-//                }
-//                skillItem2.setPadding(paddingPixel,paddingPixel,paddingPixel,paddingPixel);
-//                break;
-//            case 3:
-//                skillArray[2] = !skillArray[2];
-//                if (skillArray[2]) {
-//                    skillItem3.setBackgroundResource(R.drawable.skill_on);
-//                    skillItem3.setTextColor(Color.WHITE);
-//                }else {
-//                    skillItem3.setBackgroundResource(R.drawable.skill_off);
-//                    skillItem3.setTextColor(getResources().getColor(R.color.darkgray));
-//                }
-//                skillItem3.setPadding(paddingPixel,paddingPixel,paddingPixel,paddingPixel);
-//                break;
-//            case 4:
-//                skillArray[3] = !skillArray[3];
-//                if (skillArray[3]) {
-//                    skillItem4.setBackgroundResource(R.drawable.skill_on);
-//                    skillItem4.setTextColor(Color.WHITE);
-//                }else {
-//                    skillItem4.setBackgroundResource(R.drawable.skill_off);
-//                    skillItem4.setTextColor(getResources().getColor(R.color.darkgray));
-//                }
-//                skillItem4.setPadding(paddingPixel,paddingPixel,paddingPixel,paddingPixel);
-//                break;
-//        }
     }
 
     private void onClickIdentifyPhoto() {

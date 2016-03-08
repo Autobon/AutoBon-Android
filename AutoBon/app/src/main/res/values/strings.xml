@@ -185,4 +185,6 @@
 
     <!--账单-->
     <string name="bill_title">账单</string>
+    <string name="info_load_failure">信息加载失败</string>
+    <string name="again_authorization">再次认证</string>
 </resources>

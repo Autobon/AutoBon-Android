@@ -57,6 +57,7 @@ public class AuthorizationProgressActivity extends BaseActivity implements View.
         btn_change_info.setOnClickListener(this);
     }
 
+    private MyInfo_Data apData;
     /**
      * 此处获取认证进度信息返回的就是我的信息的字段
      */
@@ -69,7 +70,7 @@ public class AuthorizationProgressActivity extends BaseActivity implements View.
                     return;
                 }
                 MyInfoEntity apEntity = (MyInfoEntity) entity;
-                MyInfo_Data apData = apEntity.getData();
+                apData = apEntity.getData();
                 if(apData!=null){
                     String status = apData.getStatus(); //审核状态
                     String avatar = apData.getAvatar(); //技师头像地址URL
@@ -119,8 +120,19 @@ public class AuthorizationProgressActivity extends BaseActivity implements View.
                 finish();
                 break;
             case R.id.btn_change_info: //更改认证信息
+                if (apData == null){
+                    T.show(getContext(), R.string.info_load_failure);
+                    return;
+                }
                 Intent intent = new Intent(getContext(), AuthorizeActivity.class);
                 intent.putExtra("isAgain", true);
+                intent.putExtra("name", apData.getName());
+                intent.putExtra("headUrl", apData.getAvatar());
+                intent.putExtra("idNumber", apData.getIdNo());
+                intent.putExtra("skillArray", apData.getSkill());
+                intent.putExtra("idUrl", apData.getIdPhoto());
+                intent.putExtra("bankName", apData.getBank());
+                intent.putExtra("bankNo", apData.getBankCardNo());
                 startActivityForResult(intent, requestCode);
                 break;
         }

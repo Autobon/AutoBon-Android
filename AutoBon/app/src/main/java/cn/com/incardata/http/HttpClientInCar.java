@@ -4,13 +4,15 @@ import android.content.Context;
 import android.util.Log;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpException;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;
 import org.apache.http.NameValuePair;
 import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
@@ -20,11 +22,13 @@ import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
+import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 
 import java.io.File;
@@ -53,6 +57,7 @@ public class HttpClientInCar extends CustomHttpClient {
 	 * @return
 	 */
 	public static String postLoginHttpToken(Context context, String url, NameValuePair... nameValuePairs) throws Exception{
+		HttpClient client = getHttpClient(context);
 		try {
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			if (nameValuePairs != null) {
@@ -67,17 +72,16 @@ public class HttpClientInCar extends CustomHttpClient {
 			HttpPost httpPost = new HttpPost(url);
 			httpPost.setEntity(urlEncoded);
 
-			DefaultHttpClient client = getDefaultHttpClient();
 
 			HttpResponse response = client.execute(httpPost);
 			if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
 				throw new RuntimeException("请求失败");
 			}
 
-			List<Cookie> cookies = client.getCookieStore().getCookies();
+			List<Cookie> cookies = ((AbstractHttpClient)client).getCookieStore().getCookies();
 			for (Cookie cookie : cookies){
 				if (AutoCon.AUTOKEN.equals(cookie.getName())){
-					SharedPre.setSharedPreferences(context, AutoCon.AUTOKEN, cookie.getValue());
+					SharedPre.setSharedPreferences(context, AutoCon.AUTOKEN, AutoCon.AUTOKEN + "=\"" + cookie.getValue() + "\"");
 					break;
 				}
 			}
@@ -94,6 +98,8 @@ public class HttpClientInCar extends CustomHttpClient {
 			return null;
 		} catch (IOException e) {
 			throw new RuntimeException("连接失败", e);
+		}finally {
+			client.getConnectionManager().shutdown();
 		}
 	}
 
@@ -221,7 +227,6 @@ public class HttpClientInCar extends CustomHttpClient {
 			urlEncoded.setChunked(false);
 			HttpPost httpPost = new HttpPost(url);
 			httpPost.setEntity(urlEncoded);
-
 			DefaultHttpClient client = getDefaultHttpClient();
 
 			HttpResponse response = client.execute(httpPost);
@@ -418,8 +423,12 @@ public class HttpClientInCar extends CustomHttpClient {
 		DefaultHttpClient httpclient = new DefaultHttpClient();
 		HttpParams httpParameters = httpclient.getParams();
 
-		CookieStore token = MyApplication.getInstance().getCookieStore();
-		httpclient.setCookieStore(token);
+		httpclient.addRequestInterceptor(new HttpRequestInterceptor() {
+			@Override
+			public void process(HttpRequest httpRequest, HttpContext httpContext) throws HttpException, IOException {
+				httpRequest.setHeader("Cookie", MyApplication.getInstance().getCookie());
+			}
+		});
 
 		HttpConnectionParams.setConnectionTimeout(httpParameters, 10000);
 		HttpConnectionParams.setSoTimeout(httpParameters, 10000);
