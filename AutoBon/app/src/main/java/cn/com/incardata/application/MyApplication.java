@@ -7,17 +7,12 @@ import android.util.DisplayMetrics;
 
 import com.baidu.mapapi.SDKInitializer;
 
-import org.apache.http.client.CookieStore;
-import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.cookie.BasicClientCookie;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
 import cn.com.incardata.http.ImageLoaderCache;
-import cn.com.incardata.http.NetURL;
 import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.SharedPre;
 
@@ -26,7 +21,7 @@ import cn.com.incardata.utils.SharedPre;
  */
 public class MyApplication extends Application{
     private static MyApplication instance;
-    private CookieStore cookieStore;
+    private String cookie;
     private static HashMap<Integer, String> skillMap;
 
     public static synchronized MyApplication getInstance(){
@@ -98,22 +93,20 @@ public class MyApplication extends Application{
         return null;
     }
 
-    public synchronized void setCookieStore(String autoken){
+    public synchronized void setCookie(String autoken){
         if (autoken == null){
+            cookie = "";
             return;
         }
-        cookieStore = new BasicCookieStore();
-        BasicClientCookie clientCookie = new BasicClientCookie(AutoCon.AUTOKEN, autoken);
-        clientCookie.setDomain(NetURL.DOMAIN);
-        cookieStore.addCookie(clientCookie);
+        cookie = autoken;
     }
 
-    public synchronized CookieStore getCookieStore(){
-        if (this.cookieStore == null) {
+    public synchronized String getCookie(){
+        if (this.cookie == null) {
             String autoken = SharedPre.getString(this, AutoCon.AUTOKEN, "");
-            setCookieStore(autoken);
+            setCookie(autoken);
         }
-        return this.cookieStore;
+        return this.cookie;
     }
 
     public void switchLanguage(int language){

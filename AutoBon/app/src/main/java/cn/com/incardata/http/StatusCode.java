@@ -14,7 +14,7 @@ public class StatusCode {
 	/**
 	 * 账号未认证
 	 */
-	public final static String NOTVERIFIED = "NOTVERIFIED";
+	public final static String NEWLY_CREATED = "NEWLY_CREATED";
 	/**
 	 * 等待审核中
 	 */
