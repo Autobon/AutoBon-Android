@@ -13,6 +13,7 @@ import cn.com.incardata.http.response.BillEntity;
 
 /**
  * Created by zhangming on 2016/3/7.
+ * 账单
  */
 public class BillActivity extends BaseActivity implements View.OnClickListener{
     private ListView mList;

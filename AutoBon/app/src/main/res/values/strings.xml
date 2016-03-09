@@ -187,4 +187,22 @@
     <string name="bill_title">账单</string>
     <string name="info_load_failure">信息加载失败</string>
     <string name="again_authorization">再次认证</string>
+
+    <!--更多-->
+    <string name="qulify_cetification">资格认证</string>
+    <string name="free_training">免费培训</string>
+    <string name="service_center">服务中心</string>
+    <string name="message_notification">消息通知</string>
+    <string name="more_title">更多</string>
+    <string name="skill_project">能力项目:</string>
+    <string name="cetification_degree">认证等级:</string>
+    <string name="cetification_day">认证日期:</string>
+    <string name="cetification_other">其他:</string>
+    <string name="skill_text">技能:</string>
+    <string name="time_text">时间:</string>
+    <string name="address_text">地点:</string>
+    <string name="content_text">内容:</string>
+    <string name="telphone_str">电话:</string>
+    <string name="email_str">邮箱:</string>
+    <string name="address_str">地址:</string>
 </resources>
