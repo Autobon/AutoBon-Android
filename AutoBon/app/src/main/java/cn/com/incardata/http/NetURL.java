@@ -30,7 +30,7 @@ public class NetURL {
 	/** 查询技师 */
 	public static final String SEARCH_TECHNICIAN = BASE_URL + "technician/search";
 	/** 开始工作 */
-	public static final String START_WORK = BASE_URL + "technician/order/start";
+	public static final String START_WORK = BASE_URL + "technician/construct/start";
 	/** 签到*/
 	public static final String SIGN_IN_URL = BASE_URL + "technician/order/signIn";
 
@@ -45,8 +45,14 @@ public class NetURL {
 	/** 修改银行卡信息 */
 	public static final String MODIFY_BANK_CARD_INFO_URL = BASE_URL + "technician/changeBankCard";
 
+	/** 获取订单详情(动态地址) */
+	public static final String GET_ORDER_INFO = BASE_URL + "technician/order";
 
 	public static String inviteTechnician(String orderId,String partnerId){
 		return INVITE_TECHNICIAN+"/"+orderId+"/invite/"+partnerId;
+	}
+
+	public static String getOrderInfo(String orderId){
+		return GET_ORDER_INFO+"/"+orderId;
 	}
 }

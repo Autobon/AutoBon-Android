@@ -14,9 +14,12 @@ import android.widget.TextView;
 import org.apache.http.message.BasicNameValuePair;
 
 import cn.com.incardata.fragment.IndentMapFragment;
+import cn.com.incardata.getui.OrderMsg;
 import cn.com.incardata.http.Http;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.OnResult;
+import cn.com.incardata.http.response.OrderInfoEntity;
+import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.http.response.StartWorkEntity;
 import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.StringUtil;
@@ -40,7 +43,6 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
 
     private static final int ADD_CONTACT_CODE = 1;  //添加联系人的请求码requestCode
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +51,7 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
         init();
         initView();
         setListener();
+        getDataFromServer();
     }
 
     @Override
@@ -85,7 +88,6 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
 
     }
 
-
     @Override
     public void onClick(View v) {
         Intent intent;
@@ -104,6 +106,28 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
         }
     }
 
+    private void getDataFromServer(){
+        Http.getInstance().getTaskToken(NetURL.getOrderInfo(String.valueOf(AutoCon.orderId)), OrderInfoEntity.class, new OnResult() {
+            @Override
+            public void onResult(Object entity) {
+                if(entity == null){
+                    T.show(context,context.getString(R.string.request_failed));
+                    return;
+                }
+                OrderInfoEntity orderInfoEntity = (OrderInfoEntity) entity;
+                if(orderInfoEntity.isResult()){
+                    OrderInfo_Data data = orderInfoEntity.getData();
+                    OrderMsg.Order order = data.getOrder();
+                    mFragment.setData(order);
+                    if(data.getSecondTech()!=null){  //有次技师信息
+                        String username = data.getSecondTech().getName();
+                        showTechnician(username);
+                    }
+                }
+            }
+        });
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -111,20 +135,26 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
             switch (resultCode){
                 case RESULT_OK:
                     String username = data.getExtras().getString("username");  //技师姓名
-
                     if(StringUtil.isNotEmpty(username)){
-                        tv_username.setText(username);
-                        bt_line_view.setVisibility(View.VISIBLE);
-                        ll_add_contact.setVisibility(View.VISIBLE);
-                        ll_tab_bottom.setVisibility(View.GONE);
-                        tv_begin_work.setVisibility(View.VISIBLE);
-                        tv_begin_work.setOnClickListener(this);
+                        showTechnician(username);
                     }
                     break;
                 default:
                     break;
             }
         }
+    }
+
+    /**
+     * @param username 次技师姓名
+     */
+    public void showTechnician(String username){
+        tv_username.setText(username);
+        bt_line_view.setVisibility(View.VISIBLE);
+        ll_add_contact.setVisibility(View.VISIBLE);
+        ll_tab_bottom.setVisibility(View.GONE);
+        tv_begin_work.setVisibility(View.VISIBLE);
+        tv_begin_work.setOnClickListener(this);
     }
 
     private void startWork(){

@@ -93,6 +93,7 @@
     <string name="contact_text">合作人:</string>
     <string name="receiver_text">已接单</string>
     <string name="start_work_failed">开始工作失败</string>
+    <string name="request_failed">请求失败</string>
 
 
     <!--添加合作人-->
