@@ -116,6 +116,38 @@
             android:screenOrientation="portrait"
             android:theme="@style/SpinnerTheme">
         </activity>
+        <activity
+            android:name=".BillActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
+
+        <activity
+            android:name=".MoreActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
+        <activity
+            android:name=".QulifyCetificationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
+        <activity
+            android:name=".FreeTrainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
+        <activity
+            android:name=".NotificationMessageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
+        <activity
+            android:name=".ServiceCenterActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
+
 
         <!-- 百度地图的定位服务 -->
         <service
@@ -127,7 +159,7 @@
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="Yhevl1nChSCYAt6RnSnGOw5b" />
+            android:value="W12Nb7yu0uTcGAlowNN6CBOb" />
 
         <activity
             android:name=".MainAuthorizedActivity"

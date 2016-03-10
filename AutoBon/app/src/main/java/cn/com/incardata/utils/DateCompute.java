@@ -152,4 +152,16 @@ public class DateCompute {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		return sdf.format(d);
 	}
+
+	/**
+	 * 将时间戳转为日期字符串
+	 * @param timeStamp
+	 */
+	public static String timeStampToDate(long timeStamp){
+		Date date=new Date(timeStamp);
+		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String str=format.format(date);
+		return str;
+	}
+
 }

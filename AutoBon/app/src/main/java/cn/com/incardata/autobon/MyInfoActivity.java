@@ -28,7 +28,7 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
     private Context context;
     private RatingBar mRatingbar;
     private TextView tv_rate,tv_logout,tv_cost,tv_good_rate,tv_login_username;
-    private LinearLayout ll_my_package,ll_modify_pwd,ll_cost;
+    private LinearLayout ll_my_package,ll_modify_pwd,ll_cost,ll_order_num;
     private ImageView iv_back;
     private CircleImageView iv_circle;
     private boolean isVisible = false;
@@ -61,6 +61,7 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         ll_my_package = (LinearLayout) findViewById(R.id.ll_my_package);
         ll_modify_pwd = (LinearLayout) findViewById(R.id.ll_modify_pwd);
         ll_cost = (LinearLayout) findViewById(R.id.ll_cost);
+        ll_order_num = (LinearLayout) findViewById(R.id.ll_order_num);
         iv_back = (ImageView) findViewById(R.id.iv_back);
         iv_circle = (CircleImageView) findViewById(R.id.iv_circle);
         tv_good_rate = (TextView) findViewById(R.id.tv_good_rate);
@@ -77,6 +78,7 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         iv_back.setOnClickListener(this);
         tv_logout.setOnClickListener(this);
         ll_cost.setOnClickListener(this);
+        ll_order_num.setOnClickListener(this);
     }
 
     private void getDataFromServer(){
@@ -136,6 +138,9 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
                 bundle.putString("bank",bank);
                 bundle.putString("bankCardNumber",bankCardNumber);
                 startActivity(RestInfoActivity.class,bundle);
+                break;
+            case R.id.ll_order_num: //账单
+                startActivity(BillActivity.class);
                 break;
         }
     }
