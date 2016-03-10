@@ -26,9 +26,9 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.model.LatLng;
 
 import cn.com.incardata.autobon.R;
-import cn.com.incardata.getui.OrderMsg;
 import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetWorkHelper;
+import cn.com.incardata.http.response.Order;
 import cn.com.incardata.utils.BaiduMapUtil;
 import cn.com.incardata.utils.DateCompute;
 import cn.com.incardata.utils.L;
@@ -117,7 +117,7 @@ public class IndentMapFragment extends BaiduMapFragment{
         return rootView;
     }
 
-    public void setData(OrderMsg.Order order){
+    public void setData(Order order){
         if (order == null) return;
         positionLon = order.getPositionLon();
         positionLat = order.getPositionLat();

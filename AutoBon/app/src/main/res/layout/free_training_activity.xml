@@ -20,20 +20,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/bill_title"
+            android:text="@string/free_training"
             android:textSize="@dimen/sp18"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"/>
     </RelativeLayout>
-    <ListView
-        android:id="@+id/bill_list_view"
+    <ScrollView
+        android:id="@+id/ll_scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:listSelector="@android:color/transparent"
-        android:cacheColorHint="@android:color/transparent"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="5dp"
-        android:scrollbars="none"
-        android:fadingEdge="none"
-        android:fadeScrollbars="false">
-    </ListView>
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/ll_fill_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
