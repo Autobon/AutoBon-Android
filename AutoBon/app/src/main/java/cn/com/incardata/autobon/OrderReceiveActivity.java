@@ -14,10 +14,10 @@ import android.widget.TextView;
 import org.apache.http.message.BasicNameValuePair;
 
 import cn.com.incardata.fragment.IndentMapFragment;
-import cn.com.incardata.getui.OrderMsg;
 import cn.com.incardata.http.Http;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.OnResult;
+import cn.com.incardata.http.response.Order;
 import cn.com.incardata.http.response.OrderInfoEntity;
 import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.http.response.StartWorkEntity;
@@ -117,7 +117,7 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
                 OrderInfoEntity orderInfoEntity = (OrderInfoEntity) entity;
                 if(orderInfoEntity.isResult()){
                     OrderInfo_Data data = orderInfoEntity.getData();
-                    OrderMsg.Order order = data.getOrder();
+                    Order order = data.getOrder();
                     mFragment.setData(order);
                     if(data.getSecondTech()!=null){  //有次技师信息
                         String username = data.getSecondTech().getName();

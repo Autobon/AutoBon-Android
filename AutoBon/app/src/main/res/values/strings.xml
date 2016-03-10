@@ -206,4 +206,8 @@
     <string name="telphone_str">电话:</string>
     <string name="email_str">邮箱:</string>
     <string name="address_str">地址:</string>
+
+    <string name="into_order">进入订单</string>
+    <string name="order_serial_number">订单编号</string>
+    <string name="order_time">预约时间</string>
 </resources>

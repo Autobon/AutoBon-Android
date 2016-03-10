@@ -1,7 +1,5 @@
 package cn.com.incardata.http.response;
 
-import cn.com.incardata.getui.OrderMsg;
-
 /**
  * Created by zhangming on 2016/3/10.
  */
@@ -10,7 +8,7 @@ public class OrderInfo_Data {
     private MyInfo_Data secondTech;
     private OrderInfo_Construction construction;
     private String comment;
-    private OrderMsg.Order order;
+    private Order order;
 
     public MyInfo_Data getMainTech() {
         return mainTech;
@@ -44,11 +42,11 @@ public class OrderInfo_Data {
         this.comment = comment;
     }
 
-    public OrderMsg.Order getOrder() {
+    public Order getOrder() {
         return order;
     }
 
-    public void setOrder(OrderMsg.Order order) {
+    public void setOrder(Order order) {
         this.order = order;
     }
 }

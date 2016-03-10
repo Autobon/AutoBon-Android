@@ -12,6 +12,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.io.File;
 
+import cn.com.incardata.autobon.R;
 import cn.com.incardata.utils.SDCardUtils;
 
 /**
@@ -199,6 +200,30 @@ public class ImageLoaderCache {
         ImageLoader.getInstance().displayImage(imageUrl, imageView, getDisplayImageOptions(isCache));
     }
 
+    /**
+     * 加载图片（默认使用缓存）
+     * @param imageUrl
+     * @param imageView
+     * @param image_resId 0表示使用默认图片
+     */
+    public void loader(String imageUrl, ImageView imageView, int image_resId){
+        if (image_resId == 0){
+           loader(imageUrl, imageView, true, R.mipmap.load_image_failed);
+        }else {
+            loader(imageUrl, imageView, true, image_resId);
+        }
+
+    }
+
+    /**
+     * 加载图片
+     * @param imageUrl
+     * @param imageView
+     * @param isCache 是否使用缓存
+     */
+    public void loader(String imageUrl, ImageView imageView, boolean isCache, int image_resId){
+        ImageLoader.getInstance().displayImage(imageUrl, imageView, getDisplayImageOptions(image_resId, isCache));
+    }
     /**
      * 清除缓存
      * @param clearDisc SD卡上的缓存是否也清除
