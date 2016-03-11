@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/main_white"
+        android:visibility="visible"
         android:orientation="vertical">
         <RelativeLayout
             android:layout_width="match_parent"
@@ -33,6 +34,7 @@
                 android:textColor="@android:color/white"/>
 
             <ImageView
+                android:id="@+id/order_more"
                 android:layout_width="@dimen/dp45"
                 android:layout_height="match_parent"
                 android:padding="@dimen/dp10"
@@ -50,6 +52,7 @@
             android:layout_margin="@dimen/dp10">
 
             <TextView
+                android:id="@+id/today"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -164,11 +167,13 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/order_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
+        android:visibility="gone"
         android:background="#7E000000">
 
         <LinearLayout
@@ -190,7 +195,7 @@
                 android:layout_marginLeft="@dimen/dp15"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:textSize="@dimen/sp13"
+                android:textSize="@dimen/sp15"
                 android:text="demo"/>
 
             <FrameLayout
@@ -216,6 +221,7 @@
         </LinearLayout>
 
         <ImageButton
+            android:id="@+id/order_close_window"
             android:layout_width="@dimen/dp30"
             android:layout_height="@dimen/dp30"
             android:layout_marginRight="-13dp"

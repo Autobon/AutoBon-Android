@@ -175,7 +175,7 @@ public class IndentMapFragment extends BaiduMapFragment{
 
     private void setBaseData(){
         if (!TextUtils.isEmpty(photoUrl)){
-            ImageLoaderCache.getInstance().loader(photoUrl, indentImage, false);
+            ImageLoaderCache.getInstance().loader(photoUrl, indentImage, false, R.mipmap.load_image_failed);
             indentText.setVisibility(View.GONE);
         }
         if (workTime != null){

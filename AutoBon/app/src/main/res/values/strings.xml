@@ -211,4 +211,7 @@
     <string name="order_serial_number">订单编号</string>
     <string name="order_time">预约时间</string>
     <string name="immediate_order">立即抢单</string>
+    <string name="immediate_order_failed">抢单失败</string>
+    <string name="immediate_order_success">抢单成功</string>
+    <string name="order_canceled">订单已取消</string>
 </resources>

@@ -47,6 +47,8 @@ public class NetURL {
 
 	/** 获取订单详情(动态地址) */
 	public static final String GET_ORDER_INFO = BASE_URL + "technician/order";
+	/** 抢单 */
+	public static final String TAKEUP = BASE_URL + "technician/order/takeup";
 
 	public static String inviteTechnician(String orderId,String partnerId){
 		return INVITE_TECHNICIAN+"/"+orderId+"/invite/"+partnerId;

@@ -8,13 +8,26 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 
+import org.apache.http.message.BasicNameValuePair;
+
+import cn.com.incardata.application.MyApplication;
 import cn.com.incardata.fragment.IndentMapFragment;
 import cn.com.incardata.getui.ActionType;
 import cn.com.incardata.getui.CustomIntentFilter;
 import cn.com.incardata.getui.OrderMsg;
+import cn.com.incardata.http.Http;
+import cn.com.incardata.http.NetURL;
+import cn.com.incardata.http.OnResult;
+import cn.com.incardata.http.response.TakeupEntity;
+import cn.com.incardata.utils.T;
+import cn.com.incardata.view.PullToRefreshView;
 
 /**
  * 已认证的
@@ -24,6 +37,15 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
     private FragmentManager fragmentManager;
     private IndentMapFragment mFragment;
 
+    private TextView today;
+    private PullToRefreshView mPull;
+    private ListView mListView;
+    private RelativeLayout orderLayout;
+    private TextView orderType;
+    private Button immediateOrder;
+
+    private int orderId = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +54,17 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
     }
 
     private void init() {
+        today = (TextView) findViewById(R.id.today);
+        mPull = (PullToRefreshView) findViewById(R.id.order_pull);
+        mListView = (ListView) findViewById(R.id.unfinished_order_list);
+        orderLayout = (RelativeLayout) findViewById(R.id.order_layout);
+        orderType = (TextView) findViewById(R.id.order_type);
+        immediateOrder = (Button) findViewById(R.id.immediate_order);
+
         findViewById(R.id.personal).setOnClickListener(this);
+        findViewById(R.id.order_more).setOnClickListener(this);
+        findViewById(R.id.order_close_window).setOnClickListener(this);
+        immediateOrder.setOnClickListener(this);
 
         fragmentManager = getFragmentManager();
         mFragment = new IndentMapFragment();
@@ -46,7 +78,54 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
             case R.id.personal:
                 startActivity(MyInfoActivity.class);
                 break;
+            case R.id.order_more:
+                break;
+            case R.id.order_close_window:
+                closeWindow();
+                break;
+            case R.id.immediate_order:
+                immediateOrder();
+                closeWindow();
+                break;
         }
+    }
+
+    private void immediateOrder() {
+        Http.getInstance().postTaskToken(NetURL.TAKEUP, TakeupEntity.class, new OnResult() {
+            @Override
+            public void onResult(Object entity) {
+                if (entity == null) {
+                    T.show(getContext(), R.string.immediate_order_failed);
+                    return;
+                }
+                if (entity instanceof TakeupEntity){
+                    TakeupEntity takeup = (TakeupEntity) entity;
+                    if (takeup.isResult()){
+                        T.show(getContext(), R.string.immediate_order_success);
+                        return;
+                    }
+                    if ("ORDER_CANCELED".equals(takeup.getError())){
+                        T.show(getContext(), R.string.order_canceled);
+                        return;
+                    }else {
+                        T.show(getContext(), R.string.immediate_order_failed);
+                        return;
+                    }
+                }
+            }
+        }, new BasicNameValuePair("orderId", String.valueOf(orderId)));
+    }
+
+    private void closeWindow(){
+        orderLayout.setVisibility(View.GONE);
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.hide(mFragment).commit();
+    }
+
+    private void showWindow(){
+        orderLayout.setVisibility(View.VISIBLE);
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.show(mFragment).commit();
     }
 
     private final BroadcastReceiver mOrderReceiver = new BroadcastReceiver() {
@@ -58,9 +137,11 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
                     String json = intent.getStringExtra(ActionType.NEW_ORDER);
                     OrderMsg orderMsg = JSON.parseObject(json, OrderMsg.class);
                     mFragment.setData(orderMsg.getOrder());
+                    orderId = orderMsg.getOrder().getId();
+                    orderType.setText(MyApplication.getInstance().getSkill(orderMsg.getOrder().getOrderType()));
+                    showWindow();
                 }
             }
-
         }
     };
 
