@@ -9,7 +9,6 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -174,10 +173,9 @@ public class IndentMapFragment extends BaiduMapFragment{
     }
 
     private void setBaseData(){
-        if (!TextUtils.isEmpty(photoUrl)){
-            ImageLoaderCache.getInstance().loader(photoUrl, indentImage, false, R.mipmap.load_image_failed);
-            indentText.setVisibility(View.GONE);
-        }
+        ImageLoaderCache.getInstance().loader(photoUrl, indentImage, false, R.mipmap.load_image_failed);
+        indentText.setVisibility(View.GONE);
+
         if (workTime != null){
             workTime.setText(workTimeStr);
         }

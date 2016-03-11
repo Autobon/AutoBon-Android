@@ -13,8 +13,7 @@ import java.util.ArrayList;
 
 import cn.com.incardata.autobon.R;
 import cn.com.incardata.http.ImageLoaderCache;
-import cn.com.incardata.http.NetURL;
-import cn.com.incardata.http.response.Order;
+import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.utils.DateCompute;
 
 /**
@@ -22,9 +21,9 @@ import cn.com.incardata.utils.DateCompute;
  */
 public class OrderUnfinishedAdapter extends BaseAdapter{
     private Context context;
-    private ArrayList<Order> mList;
+    private ArrayList<OrderInfo_Data> mList;
 
-    public OrderUnfinishedAdapter(Context context, ArrayList<Order> mList){
+    public OrderUnfinishedAdapter(Context context, ArrayList<OrderInfo_Data> mList){
         this.context = context;
         this.mList = mList;
     }
@@ -46,7 +45,7 @@ public class OrderUnfinishedAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(final int i, View view, ViewGroup viewGroup) {
         Holder holder = null;
         if (view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.list_unfinished_item, viewGroup, false);
@@ -68,17 +67,17 @@ public class OrderUnfinishedAdapter extends BaseAdapter{
         holder.orderTime.setText(R.string.order_time);
         holder.orderTime.append(DateCompute.getDate(mList.get(i).getOrderTime()));
 
-        final long id = mList.get(i).getId();
         holder.operate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mListener != null){
-                    mListener.onClickOrder(id);
+                    mListener.onClickOrder(i);
                 }
             }
         });
 
-        ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + mList.get(i).getPhoto(), holder.orderImage, 0);
+//        ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + mList.get(i).getPhoto(), holder.orderImage, 0);
+        ImageLoaderCache.getInstance().loader(mList.get(i).getPhoto(), holder.orderImage, 0);
         return view;
     }
 
@@ -97,6 +96,6 @@ public class OrderUnfinishedAdapter extends BaseAdapter{
     }
 
     public interface OnClickOrderListener{
-        public void onClickOrder(long orderId);
+        public void onClickOrder(int position);
     }
 }

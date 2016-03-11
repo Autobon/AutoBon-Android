@@ -11,7 +11,7 @@ public class ListUnfinished_Data {
     private int totalPages;
     private int pageSize;
     private int count;
-    private List<Order> list;
+    private List<OrderInfo_Data> list;
 
     public int getPage() {
         return page;
@@ -53,11 +53,11 @@ public class ListUnfinished_Data {
         this.count = count;
     }
 
-    public List<Order> getList() {
+    public List<OrderInfo_Data> getList() {
         return list;
     }
 
-    public void setList(List<Order> list) {
+    public void setList(List<OrderInfo_Data> list) {
         this.list = list;
     }
 }

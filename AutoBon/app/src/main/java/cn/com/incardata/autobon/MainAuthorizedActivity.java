@@ -17,6 +17,9 @@ import com.alibaba.fastjson.JSON;
 
 import org.apache.http.message.BasicNameValuePair;
 
+import java.util.ArrayList;
+
+import cn.com.incardata.adapter.OrderUnfinishedAdapter;
 import cn.com.incardata.application.MyApplication;
 import cn.com.incardata.fragment.IndentMapFragment;
 import cn.com.incardata.getui.ActionType;
@@ -25,6 +28,8 @@ import cn.com.incardata.getui.OrderMsg;
 import cn.com.incardata.http.Http;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.OnResult;
+import cn.com.incardata.http.response.ListUnfinishedEntity;
+import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.http.response.TakeupEntity;
 import cn.com.incardata.utils.T;
 import cn.com.incardata.view.PullToRefreshView;
@@ -34,6 +39,7 @@ import cn.com.incardata.view.PullToRefreshView;
  * @author wanghao
  */
 public class MainAuthorizedActivity extends BaseActivity implements View.OnClickListener, IndentMapFragment.OnFragmentInteractionListener{
+    private final static String pageSize = "20";
     private FragmentManager fragmentManager;
     private IndentMapFragment mFragment;
 
@@ -44,13 +50,16 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
     private TextView orderType;
     private Button immediateOrder;
 
-    private int orderId = -1;
+    private int orderId = -1;//订单ID－
+    private OrderUnfinishedAdapter mAdapter;
+    private ArrayList<OrderInfo_Data> mList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_authorized);
         init();
+        initListView();
     }
 
     private void init() {
@@ -90,6 +99,42 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
         }
     }
 
+    private void initListView() {
+        mList = new ArrayList<OrderInfo_Data>();
+        mAdapter = new OrderUnfinishedAdapter(this, mList);
+        mListView.setAdapter(mAdapter);
+        mAdapter.setOnClickOrderListener(new OrderUnfinishedAdapter.OnClickOrderListener() {
+            @Override
+            public void onClickOrder(int position) {
+
+            }
+        });
+
+        getpageList(1);
+    }
+
+    private void getpageList(int page) {
+                Http.getInstance().getTaskToken(NetURL.UNFINISHED_ORDER_LIST, "page=" + page + "&pageSize=20", ListUnfinishedEntity.class, new OnResult() {
+                    @Override
+                    public void onResult(Object entity) {
+                        if (entity == null){
+                            T.show(getContext(), R.string.loading_data_failure);
+                            return;
+                        }
+                        if (entity instanceof ListUnfinishedEntity){
+                            ListUnfinishedEntity list = (ListUnfinishedEntity) entity;
+                            if (list.isResult()){
+                                mList.addAll(list.getData().getList());
+                                mAdapter.notifyDataSetChanged();
+                            }else {
+                                T.show(getContext(), R.string.loading_data_failure);
+                                return;
+                            }
+                        }
+                    }
+                });
+    }
+
     private void immediateOrder() {
         Http.getInstance().postTaskToken(NetURL.TAKEUP, TakeupEntity.class, new OnResult() {
             @Override
@@ -104,7 +149,10 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
                         T.show(getContext(), R.string.immediate_order_success);
                         return;
                     }
-                    if ("ORDER_CANCELED".equals(takeup.getError())){
+                    if ("ORDER_TAKEN_UP".equals(takeup.getError())){
+                        T.show(getContext(), R.string.order_taken_up);
+                        return;
+                    }else if ("ORDER_CANCELED".equals(takeup.getError())){
                         T.show(getContext(), R.string.order_canceled);
                         return;
                     }else {

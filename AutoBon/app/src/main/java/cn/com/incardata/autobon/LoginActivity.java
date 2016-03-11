@@ -31,6 +31,7 @@ import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.http.StatusCode;
 import cn.com.incardata.http.response.LoginEntity;
+import cn.com.incardata.service.AutobonService;
 import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.SharedPre;
 import cn.com.incardata.utils.StringUtil;
@@ -238,6 +239,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
             if(loginEntity.isResult()){  //成功
                 SharedPre.setSharedPreferences(context,AutoCon.FLAG_PHONE,this.phone);
                 SharedPre.setSharedPreferences(context, AutoCon.FLAG_PASSWORD,this.password);  //保存密码
+
+                MyApplication.getInstance().setUserId(loginEntity.getData().getId());
                 //TODO 跳转主页
                 String status = loginEntity.getData().getStatus();
                 if (StatusCode.VERIFIED.equals(status)){
@@ -259,6 +262,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                     startActivity(MainUnauthorizedActivity.class, bundle);
                     //startActivity(OrderReceiveActivity.class);
                 }
+                startService(new Intent(getContext(), AutobonService.class));
                 finish();
             }else{  //失败
                 if("NO_SUCH_USER".equals(loginEntity.getError())){

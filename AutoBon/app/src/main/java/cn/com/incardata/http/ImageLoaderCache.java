@@ -165,6 +165,7 @@ public class ImageLoaderCache {
     private DisplayImageOptions getDisplayImageOptions(int showImageFail_resid, boolean isCache){
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 .showImageOnFail(showImageFail_resid)              //加载失败时的图片
+                .showImageForEmptyUri(showImageFail_resid)
                 .cacheInMemory(isCache)                               //启用内存缓存
                 .cacheOnDisk(isCache)                                 //启用外存缓存
                 .considerExifParams(true)                          //启用EXIF和JPEG图像格式

@@ -17,7 +17,6 @@ import cn.com.incardata.fragment.IndentMapFragment;
 import cn.com.incardata.http.Http;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.OnResult;
-import cn.com.incardata.http.response.Order;
 import cn.com.incardata.http.response.OrderInfoEntity;
 import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.http.response.StartWorkEntity;
@@ -117,8 +116,7 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
                 OrderInfoEntity orderInfoEntity = (OrderInfoEntity) entity;
                 if(orderInfoEntity.isResult()){
                     OrderInfo_Data data = orderInfoEntity.getData();
-                    Order order = data.getOrder();
-                    mFragment.setData(order);
+                    mFragment.setData(data.getPositionLon(), data.getPositionLat(), data.getPhoto(), data.getOrderTime(), data.getRemark(), data.getCreatorName());
                     if(data.getSecondTech()!=null){  //有次技师信息
                         String username = data.getSecondTech().getName();
                         showTechnician(username);
