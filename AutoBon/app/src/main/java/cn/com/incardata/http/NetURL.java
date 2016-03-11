@@ -48,6 +48,11 @@ public class NetURL {
 	/** 获取订单详情(动态地址) */
 	public static final String GET_ORDER_INFO = BASE_URL + "technician/order";
 
+	/**上传施工图片*/
+	public static final String UPLOAD_WORK_PHOTO = BASE_URL + "technician/construct/uploadPhoto";
+	/** 工作前上传照片 **/
+	public static final String UPLOAD_BEFORE_WORK_PHOTO = BASE_URL + "technician/construct/beforePhoto";
+
 	public static String inviteTechnician(String orderId,String partnerId){
 		return INVITE_TECHNICIAN+"/"+orderId+"/invite/"+partnerId;
 	}

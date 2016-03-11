@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_white"
-    android:orientation="vertical">
-
+    android:background="@color/main_white">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp45"
@@ -32,6 +30,7 @@
             android:textSize="@dimen/sp18" />
 
         <ImageView
+            android:id="@+id/iv_enter_more_page"
             android:layout_width="@dimen/dp50"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
@@ -41,10 +40,9 @@
             android:scaleType="centerInside"
             android:src="@mipmap/emit" />
     </RelativeLayout>
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp50"
+        android:layout_height="@dimen/dp45"
         android:gravity="center_vertical">
 
         <TextView
@@ -70,52 +68,28 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/dp15"
-            android:text="@string/work_model_text"
+            android:text="@string/finish_mode_text"
             android:textColor="@color/darkgray"
             android:textSize="@dimen/sp15" />
     </RelativeLayout>
-
-    <com.baidu.mapapi.map.MapView
-        android:id="@+id/bmapView"
-        android:layout_width="fill_parent"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/lightgray"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="@dimen/dp200"
-        android:clickable="true"
-        android:focusable="true"
-        android:focusableInTouchMode="true" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp60"
-        android:gravity="center">
-
-        <TextView
+        android:background="@android:color/white">
+        <GridView
+            android:id="@+id/gv_single_pic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/distance_text"
-            android:textColor="@color/darkgray"
-            android:textSize="@dimen/sp15" />
-
-        <TextView
-            android:id="@+id/tv_distance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp5"
-            android:textColor="@color/darkgray"
-            android:textSize="@dimen/sp15" />
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/sign_in_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp30"
-        android:layout_marginRight="@dimen/dp30"
-        android:background="@drawable/sign_in"
-        android:clickable="false"
-        android:gravity="center"
-        android:paddingBottom="@dimen/dp10"
-        android:paddingTop="@dimen/dp10"
-        android:text="@string/sign_in_text"
-        android:textColor="@color/line_color"
-        android:textSize="@dimen/sp15" />
+            android:numColumns="3"
+            android:verticalSpacing="@dimen/dp20"
+            android:listSelector="@android:color/transparent"
+            android:gravity="center"
+            android:stretchMode="columnWidth"
+            android:horizontalSpacing="@dimen/dp20">
+        </GridView>
+    </RelativeLayout>
 </LinearLayout>

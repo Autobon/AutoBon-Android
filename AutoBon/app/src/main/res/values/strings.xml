@@ -210,4 +210,12 @@
     <string name="into_order">进入订单</string>
     <string name="order_serial_number">订单编号</string>
     <string name="order_time">预约时间</string>
+
+    <!--施工-->
+    <string name="work_make_time">已用时:</string>
+    <string name="default_time">0分0秒</string>
+    <string name="upload_work_photo">上传未开始贴膜车辆照片</string>
+    <string name="less_three_page_tips">不少于3张</string>
+    <string name="next_btn">继续</string>
+    <string name="finish_mode_text">即将完成模式</string>
 </resources>
