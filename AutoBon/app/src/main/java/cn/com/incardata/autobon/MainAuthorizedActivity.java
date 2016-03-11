@@ -31,6 +31,7 @@ import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.ListUnfinishedEntity;
 import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.http.response.TakeupEntity;
+import cn.com.incardata.utils.DateCompute;
 import cn.com.incardata.utils.T;
 import cn.com.incardata.view.PullToRefreshView;
 
@@ -50,7 +51,9 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
     private TextView orderType;
     private Button immediateOrder;
 
-    private int orderId = -1;//订单ID－
+    private int orderId = -1;//订单ID－抢单
+    private int page = 1;
+    private boolean isRefresh = false;
     private OrderUnfinishedAdapter mAdapter;
     private ArrayList<OrderInfo_Data> mList;
 
@@ -74,6 +77,8 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
         findViewById(R.id.order_more).setOnClickListener(this);
         findViewById(R.id.order_close_window).setOnClickListener(this);
         immediateOrder.setOnClickListener(this);
+
+        today.setText(DateCompute.getWeekOfDate());
 
         fragmentManager = getFragmentManager();
         mFragment = new IndentMapFragment();
@@ -106,7 +111,21 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
         mAdapter.setOnClickOrderListener(new OrderUnfinishedAdapter.OnClickOrderListener() {
             @Override
             public void onClickOrder(int position) {
+            }
+        });
 
+        mPull.setOnHeaderRefreshListener(new PullToRefreshView.OnHeaderRefreshListener() {
+            @Override
+            public void onHeaderRefresh(PullToRefreshView view) {
+                page = 1;
+                isRefresh = true;
+                getpageList(1);
+            }
+        });
+        mPull.setOnFooterRefreshListener(new PullToRefreshView.OnFooterRefreshListener() {
+            @Override
+            public void onFooterRefresh(PullToRefreshView view) {
+                getpageList(++page);
             }
         });
 
@@ -114,27 +133,35 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
     }
 
     private void getpageList(int page) {
-                Http.getInstance().getTaskToken(NetURL.UNFINISHED_ORDER_LIST, "page=" + page + "&pageSize=20", ListUnfinishedEntity.class, new OnResult() {
-                    @Override
-                    public void onResult(Object entity) {
-                        if (entity == null){
-                            T.show(getContext(), R.string.loading_data_failure);
-                            return;
+        Http.getInstance().getTaskToken(NetURL.UNFINISHED_ORDER_LIST, "page=" + page + "&pageSize=5", ListUnfinishedEntity.class, new OnResult() {
+            @Override
+            public void onResult(Object entity) {
+                mPull.loadedCompleted();
+                if (entity == null){
+                    T.show(getContext(), R.string.loading_data_failure);
+                    return;
+                }
+                if (entity instanceof ListUnfinishedEntity){
+                    ListUnfinishedEntity list = (ListUnfinishedEntity) entity;
+                    if (list.isResult()){
+                        if (isRefresh) {
+                            mList.clear();
+                            isRefresh = false;
                         }
-                        if (entity instanceof ListUnfinishedEntity){
-                            ListUnfinishedEntity list = (ListUnfinishedEntity) entity;
-                            if (list.isResult()){
-                                mList.addAll(list.getData().getList());
-                                mAdapter.notifyDataSetChanged();
-                            }else {
-                                T.show(getContext(), R.string.loading_data_failure);
-                                return;
-                            }
-                        }
+                        mList.addAll(list.getData().getList());
+                        mAdapter.notifyDataSetChanged();
+                    }else {
+                        T.show(getContext(), R.string.loading_data_failure);
+                        return;
                     }
-                });
+                }
+            }
+        });
     }
 
+    /**
+     * 抢单
+     */
     private void immediateOrder() {
         Http.getInstance().postTaskToken(NetURL.TAKEUP, TakeupEntity.class, new OnResult() {
             @Override
@@ -147,6 +174,9 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
                     TakeupEntity takeup = (TakeupEntity) entity;
                     if (takeup.isResult()){
                         T.show(getContext(), R.string.immediate_order_success);
+                        page = 1;
+                        isRefresh = true;
+                        getpageList(1);
                         return;
                     }
                     if ("ORDER_TAKEN_UP".equals(takeup.getError())){

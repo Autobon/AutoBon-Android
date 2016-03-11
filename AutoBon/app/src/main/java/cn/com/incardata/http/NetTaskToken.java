@@ -39,17 +39,41 @@ public class NetTaskToken implements Runnable {
 		try {
 			String json = null;
 			switch (httpMode) {
-			case Http.POST:
-				json = HttpClientInCar.postHttpToken(strUrl, params);
-				break;
-			case Http.GET:
-				json = HttpClientInCar.getHttpToken(strUrl, params);
-				break;
-			case Http.PUT:
-				json = HttpClientInCar.PutHttpToken(strUrl, params);
-				break;
-			default:
-				break;
+				case Http.POST:
+					if (param != null){
+						json = HttpClientInCar.postHttpToken(strUrl, param);
+						break;
+					}
+					if (params != null) {
+						json = HttpClientInCar.postHttpToken(strUrl, params);
+						break;
+					}
+					handler.sendEmptyMessage(what);
+					return;
+				case Http.GET:
+					if (param != null){
+						json = HttpClientInCar.getHttpToken(strUrl, param);
+						break;
+					}
+					if (params != null){
+						json = HttpClientInCar.getHttpToken(strUrl, params);
+						break;
+					}
+					handler.sendEmptyMessage(what);
+					return;
+				case Http.PUT:
+					if (param != null){
+						json = HttpClientInCar.PutHttpToken(strUrl, param);
+						break;
+					}
+					if (params != null){
+						json = HttpClientInCar.PutHttpToken(strUrl, params);
+						break;
+					}
+					handler.sendEmptyMessage(what);
+					return;
+				default:
+					break;
 			}
 			Message msg = handler.obtainMessage(what);
 			msg.obj = JSON.parseObject(json, cls);

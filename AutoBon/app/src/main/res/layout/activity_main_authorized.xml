@@ -160,6 +160,7 @@
                 android:id="@+id/unfinished_order_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:scrollbarStyle="outsideInset"
                 android:divider="#F0F0F0"
                 android:dividerHeight="1dp"/>
 
