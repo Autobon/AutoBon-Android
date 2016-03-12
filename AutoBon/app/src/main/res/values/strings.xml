@@ -218,4 +218,6 @@
     <string name="less_three_page_tips">不少于3张</string>
     <string name="next_btn">继续</string>
     <string name="finish_mode_text">即将完成模式</string>
+    <string name="no_pic_tips">你当前尚未上传图片</string>
+    <string name="upload_work_before_failed_tips">上传施工前图像失败</string>
 </resources>

@@ -21,16 +21,24 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 
+import org.apache.http.message.BasicNameValuePair;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Map;
 
 import cn.com.incardata.adapter.PictureGridAdapter;
+import cn.com.incardata.http.Http;
 import cn.com.incardata.http.HttpClientInCar;
 import cn.com.incardata.http.NetURL;
+import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.IdPhotoEntity;
+import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.BitmapHelper;
 import cn.com.incardata.utils.DateCompute;
 import cn.com.incardata.utils.SDCardUtils;
@@ -119,6 +127,7 @@ public class WorkBeforeActivity extends Activity implements View.OnClickListener
                 uploadWorkPhoto();
                 break;
             case R.id.next_btn:
+                submitWorkBeforePhotoURL();
                 break;
         }
     }
@@ -177,6 +186,45 @@ public class WorkBeforeActivity extends Activity implements View.OnClickListener
         startActivityForResult(intent, CROP_PHOTO_CODE);
     }
 
+    /**
+     * 提交施工前图片地址
+     */
+    private void submitWorkBeforePhotoURL(){
+        Map<Integer,String> picMap = mAdapter.getPicMap();
+        if(picMap.size()<1){  //图片数量为0,提示用户
+            T.show(this,getString(R.string.no_pic_tips));
+            return;
+        }
+        BasicNameValuePair bv_orderId = new BasicNameValuePair("orderId", String.valueOf(AutoCon.orderId));
+        Collection<String> colUrls =  picMap.values();
+        StringBuilder sb = new StringBuilder();
+        Iterator<String> iterator = colUrls.iterator();
+        while (iterator.hasNext()){
+            sb.append(iterator.next()).append(",");
+        }
+        String urls = sb.toString();
+        urls = urls.substring(0,urls.length()-1);
+        Log.i("test","urls======>"+urls);
+        BasicNameValuePair bv_urls = new BasicNameValuePair("urls",urls);
+
+        Http.getInstance().postTaskToken(NetURL.SUBMIT_BEFORE_WORK_PHOTO_URL, IdPhotoEntity.class, new OnResult() {
+            @Override
+            public void onResult(Object entity) {
+                if(entity == null){
+                    T.show(context,context.getString(R.string.upload_work_before_failed_tips));
+                    return;
+                }
+                IdPhotoEntity idPhotoEntity = (IdPhotoEntity) entity;
+                if(idPhotoEntity.isResult()){ //跳转
+                    Intent intent = new Intent(context,WorkFinishActivity.class);
+                    startActivity(intent);
+                }else{
+                    T.show(context,idPhotoEntity.getMessage());
+                }
+            }
+        },bv_orderId,bv_urls);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -233,7 +281,7 @@ public class WorkBeforeActivity extends Activity implements View.OnClickListener
                         //iv_car_upload_photo.setImageBitmap(bitmap);
                         rl_default_pic.setVisibility(View.GONE);
                         rl_single_pic.setVisibility(View.VISIBLE);
-                        mAdapter.addPic(bitmap);  //添加图片
+                        mAdapter.addPic(bitmap,idPhotoEntity.getData());  //添加图片
                     }else {
                         T.show(context,getString(R.string.upload_image_failed));
                         return;

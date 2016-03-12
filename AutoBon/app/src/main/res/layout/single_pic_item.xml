@@ -6,7 +6,8 @@
         android:id="@+id/iv_single_pic"
         android:layout_width="@dimen/dp60"
         android:layout_height="@dimen/dp60"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:layout_centerInParent="true"/>
     <ImageView
         android:id="@+id/iv_delete_single_pic"
         android:layout_width="@dimen/dp15"

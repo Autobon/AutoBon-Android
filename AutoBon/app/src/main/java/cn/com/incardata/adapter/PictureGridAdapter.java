@@ -10,7 +10,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.com.incardata.autobon.R;
 
@@ -20,14 +22,22 @@ import cn.com.incardata.autobon.R;
  */
 public class PictureGridAdapter extends BaseAdapter {
     public List<Bitmap> picList = new ArrayList<Bitmap>();
+    private Map<Integer,String> picMap = new HashMap<Integer,String>();  //key为bitmap对象的hashcode值,value为bitmap图像的url除去ip和端口号后的地址
+
     private Context mContext;
     private int maxPic;
     private boolean reachMax = false;
     private static Bitmap addButton = null;
 
+
     public Bitmap getAddPic() {
         return addButton;
     }
+
+    public Map<Integer,String> getPicMap(){
+        return picMap;
+    }
+
 
     public PictureGridAdapter(Context mContext) {
         this.mContext = mContext;
@@ -107,7 +117,7 @@ public class PictureGridAdapter extends BaseAdapter {
         return bitmap;
     }
 
-    public void addPic(Bitmap pic) {
+    public void addPic(Bitmap pic,String picUrl) {
         int idx = getCount() - 1;
         if (idx < 0) {
             idx = 0;
@@ -117,6 +127,7 @@ public class PictureGridAdapter extends BaseAdapter {
             reachMax = true;
         }
         picList.add(idx, pic);
+        picMap.put(pic.hashCode(),picUrl);  //存储bitmap对象及其图片url地址
         notifyDataSetChanged();
     }
 
@@ -125,11 +136,12 @@ public class PictureGridAdapter extends BaseAdapter {
     }
 
     public void removePic(int idx) {
+        picMap.remove(picList.get(idx).hashCode());
         picList.remove(idx);
-        if (idx + 1 == this.maxPic) {
+        if (idx + 1 == this.maxPic) {  //点击最后一张图片显示添加按钮
             picList.add(idx, getAddPic());
             reachMax = false;
-        } else if ((getCount() + 1 == this.maxPic) && isReachMax()) {
+        } else if ((getCount() + 1 == this.maxPic) && isReachMax()) {  //点击非最后一张图片，但数目为最大值减一时，显示添加按钮
             picList.add(getCount(), getAddPic());
             reachMax = false;
         }

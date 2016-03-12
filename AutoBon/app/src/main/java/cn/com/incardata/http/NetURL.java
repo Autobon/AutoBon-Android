@@ -50,8 +50,8 @@ public class NetURL {
 
 	/**上传施工图片*/
 	public static final String UPLOAD_WORK_PHOTO = BASE_URL + "technician/construct/uploadPhoto";
-	/** 工作前上传照片 **/
-	public static final String UPLOAD_BEFORE_WORK_PHOTO = BASE_URL + "technician/construct/beforePhoto";
+	/** 提交施工前图片地址 **/
+	public static final String SUBMIT_BEFORE_WORK_PHOTO_URL = BASE_URL + "technician/construct/beforePhoto";
 
 	public static String inviteTechnician(String orderId,String partnerId){
 		return INVITE_TECHNICIAN+"/"+orderId+"/invite/"+partnerId;

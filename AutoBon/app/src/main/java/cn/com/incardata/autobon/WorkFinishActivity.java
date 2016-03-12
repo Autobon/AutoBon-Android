@@ -121,7 +121,7 @@ public class WorkFinishActivity extends Activity{
 
                     // 这样就不会内存溢出了
                     bitmap = BitmapFactory.decodeFile(fileName, options);
-                    mAdapter.addPic(bitmap);
+                    mAdapter.addPic(bitmap,"");
                 }catch (Exception e) {
                     e.printStackTrace();
                 }
