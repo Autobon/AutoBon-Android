@@ -166,6 +166,7 @@ public class DateCompute {
 
 
 	/**
+	 * 当前时间
 	 * @return 年月日 星期几
 	 */
 	public static String getWeekOfDate() {

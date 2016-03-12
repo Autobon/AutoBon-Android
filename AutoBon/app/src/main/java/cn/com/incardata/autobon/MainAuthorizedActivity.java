@@ -29,6 +29,7 @@ import cn.com.incardata.http.Http;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.ListUnfinishedEntity;
+import cn.com.incardata.http.response.OrderInfo_Construction;
 import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.http.response.TakeupEntity;
 import cn.com.incardata.utils.DateCompute;
@@ -93,6 +94,7 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
                 startActivity(MyInfoActivity.class);
                 break;
             case R.id.order_more:
+                startActivity(MoreActivity.class);
                 break;
             case R.id.order_close_window:
                 closeWindow();
@@ -111,6 +113,7 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
         mAdapter.setOnClickOrderListener(new OrderUnfinishedAdapter.OnClickOrderListener() {
             @Override
             public void onClickOrder(int position) {
+                intoOrder(position);
             }
         });
 
@@ -130,6 +133,33 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
         });
 
         getpageList(1);
+    }
+
+    private void intoOrder(int position){
+        OrderInfo_Data orderInfo = mList.get(position);
+        OrderInfo_Construction construction = null;
+        if (MyApplication.getInstance().getUserId() == orderInfo.getMainTech().getId()){
+            construction = orderInfo.getMainConstruct();
+        }else {
+            construction = orderInfo.getSecondConstruct();
+        }
+
+        if (construction == null){
+            Intent intent = new Intent(this, OrderReceiveActivity.class);
+            intent.putExtra("OrderInfo", orderInfo);
+            startActivity(intent);
+        }else if (construction.getSigninTime() == null){
+            Intent intent = new Intent(this, WorkSignInActivity.class);
+            startActivity(intent);
+        }else if (construction.getBeforePhotos() == null){
+            //进入工作前照片上传
+            Intent intent = new Intent(this, WorkSignInActivity.class);
+            startActivity(intent);
+        }else if (construction.getAfterPhotos() == null){
+            //进入工作后照片上传
+            Intent intent = new Intent(this, WorkSignInActivity.class);
+            startActivity(intent);
+        }
     }
 
     private void getpageList(int page) {

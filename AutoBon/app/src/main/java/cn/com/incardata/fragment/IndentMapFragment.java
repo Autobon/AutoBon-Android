@@ -168,11 +168,12 @@ public class IndentMapFragment extends BaiduMapFragment{
         mMapView.showScaleControl(true);  //默认是true,显示标尺
 
         BaiduMapUtil.initData();
-        setBaseData();
+//        setBaseData();
         setListener();
     }
 
     private void setBaseData(){
+        if (indentImage == null) return;
         ImageLoaderCache.getInstance().loader(photoUrl, indentImage, false, R.mipmap.load_image_failed);
         indentText.setVisibility(View.GONE);
 

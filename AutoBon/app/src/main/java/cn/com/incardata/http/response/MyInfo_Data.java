@@ -1,9 +1,12 @@
 package cn.com.incardata.http.response;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by zhangming on 2016/2/29.
  */
-public class MyInfo_Data {
+public class MyInfo_Data implements Parcelable {
     private int id;
     private String phone;
     private String name;
@@ -193,4 +196,72 @@ public class MyInfo_Data {
     public void setVerifyMsg(String verifyMsg) {
         this.verifyMsg = verifyMsg;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.phone);
+        dest.writeString(this.name);
+        dest.writeString(this.gender);
+        dest.writeString(this.avatar);
+        dest.writeString(this.idNo);
+        dest.writeString(this.idPhoto);
+        dest.writeString(this.bank);
+        dest.writeString(this.bankAddress);
+        dest.writeString(this.bankCardNo);
+        dest.writeString(this.verifyAt);
+        dest.writeLong(this.requestVerifyAt);
+        dest.writeString(this.verifyMsg);
+        dest.writeLong(this.lastLoginAt);
+        dest.writeString(this.lastLoginIp);
+        dest.writeLong(this.createAt);
+        dest.writeInt(this.star);
+        dest.writeInt(this.voteRate);
+        dest.writeString(this.skill);
+        dest.writeString(this.pushId);
+        dest.writeString(this.status);
+    }
+
+    public MyInfo_Data() {
+    }
+
+    protected MyInfo_Data(Parcel in) {
+        this.id = in.readInt();
+        this.phone = in.readString();
+        this.name = in.readString();
+        this.gender = in.readString();
+        this.avatar = in.readString();
+        this.idNo = in.readString();
+        this.idPhoto = in.readString();
+        this.bank = in.readString();
+        this.bankAddress = in.readString();
+        this.bankCardNo = in.readString();
+        this.verifyAt = in.readString();
+        this.requestVerifyAt = in.readLong();
+        this.verifyMsg = in.readString();
+        this.lastLoginAt = in.readLong();
+        this.lastLoginIp = in.readString();
+        this.createAt = in.readLong();
+        this.star = in.readInt();
+        this.voteRate = in.readInt();
+        this.skill = in.readString();
+        this.pushId = in.readString();
+        this.status = in.readString();
+    }
+
+    public static final Parcelable.Creator<MyInfo_Data> CREATOR = new Parcelable.Creator<MyInfo_Data>() {
+        public MyInfo_Data createFromParcel(Parcel source) {
+            return new MyInfo_Data(source);
+        }
+
+        public MyInfo_Data[] newArray(int size) {
+            return new MyInfo_Data[size];
+        }
+    };
 }
