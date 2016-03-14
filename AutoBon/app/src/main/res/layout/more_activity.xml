@@ -23,8 +23,7 @@
             android:layout_centerInParent="true"
             android:text="@string/more_title"
             android:textSize="@dimen/sp18"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"/>
+            android:textColor="@android:color/white"/>
     </RelativeLayout>
 
     <View
