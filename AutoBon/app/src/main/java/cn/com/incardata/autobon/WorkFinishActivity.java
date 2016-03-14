@@ -1,36 +1,45 @@
 package cn.com.incardata.autobon;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import java.io.File;
+import java.util.Random;
 
 import cn.com.incardata.adapter.PictureGridAdapter;
+import cn.com.incardata.fragment.BaseStandardFragment;
+import cn.com.incardata.fragment.FiveCarRadioFragment;
+import cn.com.incardata.fragment.SevenCarRadioFragment;
+import cn.com.incardata.utils.BitmapHelper;
+import cn.com.incardata.utils.DateCompute;
 import cn.com.incardata.utils.SDCardUtils;
-import cn.com.incardata.utils.T;
 
 /**
  * Created by zhangming on 2016/3/11.
  */
-public class WorkFinishActivity extends Activity{
+public class WorkFinishActivity extends Activity implements BaseStandardFragment.OnFragmentInteractionListener{
     private GridView gv_single_pic;
+    private RadioGroup rg_tab;
+    private TextView tv_day;
     private PictureGridAdapter mAdapter;
     private static final int MAX_PICS = 6; //图片数上限
 
-    private File tempFile;
-    private String fileName = "";
-    private static final int OPEN_GALLERY_CODE = 1;
-    private static final int CROP_PHOTO_CODE = 2;
-    private static final int CROP = 120;
+    private File tempDir;
+    private Uri carPhotoUri;
+    private static final int CAR_PHOTO = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,87 +49,97 @@ public class WorkFinishActivity extends Activity{
     }
 
     private void initView() {
+        tv_day = (TextView) findViewById(R.id.tv_day);
         gv_single_pic = (GridView)findViewById(R.id.gv_single_pic);
+        rg_tab = (RadioGroup)findViewById(R.id.rg_tab);
+
+        tv_day.setText(DateCompute.getWeekOfDate());
         mAdapter = new PictureGridAdapter(this,MAX_PICS);
         gv_single_pic.setAdapter(mAdapter);
+        replaceFragment(FiveCarRadioFragment.class);  //默认是五座车的Fragment
 
         gv_single_pic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.i("test","position===>"+position+","+"count===>"+mAdapter.getCount());
                 if(position == mAdapter.getCount()-1 && !mAdapter.isReachMax()){
-                    initFile();
-                    openGallery(); //从相册选取照片,显示到界面上
+                    if(tempDir==null){
+                        tempDir = new File(SDCardUtils.getGatherDir());
+                        carPhotoUri = Uri.fromFile(new File(tempDir,"car_photo.jpeg"));
+                    }
+                    capture(CAR_PHOTO,carPhotoUri);
+                }
+            }
+        });
+
+        rg_tab.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId == R.id.five_radio_btn){  //选中五座车的RadioButton
+                    replaceFragment(FiveCarRadioFragment.class);
+                }else if(checkedId == R.id.seven_radio_btn){  //选中七座车的RadioButton
+                    replaceFragment(SevenCarRadioFragment.class);
                 }
             }
         });
     }
 
-    private void initFile() {
-        if(fileName.equals("")) {
-            if(SDCardUtils.isExistSDCard()) {
-                String path = Environment.getExternalStorageDirectory() + File.separator + "my_picture";
-                File dir = new File(path);
-                if(!dir.exists()){
-                    dir.mkdirs();
-                }
-                fileName = path + File.separator +"my_photo.jpg";
-                tempFile = new File(fileName);
-            } else {
-                T.show(this,getString(R.string.uninstalled_sdcard));
+    private <T> void replaceFragment(Class<T> cls){
+        try{
+            T fragment = BaseStandardFragment.newInstance(cls);
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            if(fragment instanceof BaseStandardFragment){
+                BaseStandardFragment bs_fragment = (BaseStandardFragment) fragment;
+                transaction.replace(R.id.fragment_container,bs_fragment);
             }
+            transaction.commit();
+        }catch(Exception e){
+            e.printStackTrace();
         }
     }
 
-    private void openGallery(){
-        Intent intent = new Intent(Intent.ACTION_PICK);// 打开相册
-        intent.setDataAndType(MediaStore.Images.Media.INTERNAL_CONTENT_URI, "image/*");
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempFile)); //将选中的相册的图像结果写入到临时文件tempFile
-        startActivityForResult(intent, OPEN_GALLERY_CODE);
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+        // TODO Auto-generated method stub
     }
 
-    /**
-     * 裁剪图片
-     * @param uri
-     * @param crop 裁剪大小
-     */
-    public void cropPhoto(Uri uri,int crop) {
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(uri, "image/*");
-        intent.putExtra("output", Uri.fromFile(tempFile));
-        intent.putExtra("crop", true);
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
-        intent.putExtra("outputX",crop);
-        intent.putExtra("outputY",crop);
-        startActivityForResult(intent, CROP_PHOTO_CODE);
+    private void capture(int requestCode, Uri imageUri){
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra("return-data", false);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+        intent.putExtra("noFaceDetection", true);
+        startActivityForResult(intent, requestCode);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == 1){
-            return;
-        }
+        if (resultCode != RESULT_OK) return;
         switch (requestCode) {
-            case OPEN_GALLERY_CODE:
-                if(data!=null){
-                    cropPhoto(data.getData(),CROP);
-                }
-                break;
-            case CROP_PHOTO_CODE:
+            case CAR_PHOTO:
                 try{
+                    //Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(carPhotoUri));
+                    //bitmap = BitmapHelper.resizeImage(bitmap, 0.5f);
+                    //BitmapHelper.saveBitmap(carPhotoUri, bitmap, false);
+                    //Log.i("test","carPhotoUri_path===>"+carPhotoUri.getPath());
+
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inJustDecodeBounds = true;  // 先设置为TRUE不加载到内存中，但可以得到宽和高
-
-                    Bitmap bitmap = BitmapFactory.decodeFile(fileName,options);
+                    Bitmap bitmap = BitmapFactory.decodeFile(carPhotoUri.getPath(),options);
                     options.inJustDecodeBounds = false;
                     int be = (int) (options.outHeight / (float) 200);  // 计算缩放比
                     if (be <= 0){
                         be = 1;
                     }
                     options.inSampleSize = be;
+                    bitmap = BitmapFactory.decodeFile(carPhotoUri.getPath(), options);
+                    bitmap = BitmapHelper.resizeImage(bitmap, 0.5f);
+                    Uri uri = Uri.fromFile(new File(tempDir,new Random().nextInt(10000)+".jpeg")); //产生不同的uri
+                    Log.i("test","uri===>"+uri.getPath());
+                    BitmapHelper.saveBitmap(uri,bitmap,false);
 
-                    // 这样就不会内存溢出了
-                    bitmap = BitmapFactory.decodeFile(fileName, options);
+                    //TODO 上传图片
                     mAdapter.addPic(bitmap,"");
                 }catch (Exception e) {
                     e.printStackTrace();
@@ -133,12 +152,15 @@ public class WorkFinishActivity extends Activity{
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        if(tempDir!=null && tempDir.exists()){
+            SDCardUtils.deleteAllFileInFolder(tempDir);
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        //清除临时图片文件
-        if(tempFile!=null && tempFile.exists()){
-            tempFile.delete();
-            tempFile = null;
-        }
     }
 }

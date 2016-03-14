@@ -17,4 +17,8 @@ public class AutoCon {
     public static final String IS_AUTHORIZED = "isAuthorized";
 
     public static final int orderId = 1;
+    public static final int orderType = 3; //测试使用
+
+    public static final int five_canSeat = 5;
+    public static final int seven_canSeat = 7;
 }

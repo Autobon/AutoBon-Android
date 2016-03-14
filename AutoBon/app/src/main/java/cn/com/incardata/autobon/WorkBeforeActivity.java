@@ -51,7 +51,7 @@ import cn.com.incardata.utils.T;
 public class WorkBeforeActivity extends Activity implements View.OnClickListener{
     private Context context;
     private ImageView iv_my_info,iv_enter_more_page,iv_camera,iv_car_upload_photo;
-    private TextView tv_day,tv_week_day;
+    private TextView tv_day;
     private Button next_btn;
     private RelativeLayout rl_single_pic,rl_default_pic;
 
@@ -82,7 +82,6 @@ public class WorkBeforeActivity extends Activity implements View.OnClickListener
         iv_camera = (ImageView) findViewById(R.id.iv_camera);
         iv_car_upload_photo = (ImageView) findViewById(R.id.iv_car_upload_photo);
         tv_day = (TextView) findViewById(R.id.tv_day);
-        tv_week_day = (TextView) findViewById(R.id.tv_week_day);
         next_btn = (Button) findViewById(R.id.next_btn);
         rl_single_pic = (RelativeLayout) findViewById(R.id.rl_single_pic);
         rl_default_pic = (RelativeLayout) findViewById(R.id.rl_default_pic);
@@ -97,7 +96,7 @@ public class WorkBeforeActivity extends Activity implements View.OnClickListener
         Date date=new Date();
         SimpleDateFormat dateFm = new SimpleDateFormat("EEEE");
         dateFm.format(date);
-        tv_week_day.setText(DateCompute.getWeekOfDate(date)); //获取当前日期是星期几
+        tv_day.setText(DateCompute.getWeekOfDate());
     }
 
     private void setListener(){
@@ -154,7 +153,7 @@ public class WorkBeforeActivity extends Activity implements View.OnClickListener
             return;
         }
         if (carPhotoUri == null) {
-            carPhotoUri = Uri.fromFile(new File(SDCardUtils.getGatherDir() + File.separator + "idPhoto.jpeg"));
+            carPhotoUri = Uri.fromFile(new File(SDCardUtils.getGatherDir() + File.separator + "car_photo.jpeg"));
         }
         initFile();
         capture(CAR_PHOTO,carPhotoUri);
@@ -177,7 +176,7 @@ public class WorkBeforeActivity extends Activity implements View.OnClickListener
     public void cropPhoto(Uri uri,int crop) {
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(uri, "image/*");
-        intent.putExtra("output", Uri.fromFile(tempFile));
+        intent.putExtra("output",Uri.fromFile(tempFile));
         intent.putExtra("crop", true);
         intent.putExtra("aspectX", 1);
         intent.putExtra("aspectY", 1);

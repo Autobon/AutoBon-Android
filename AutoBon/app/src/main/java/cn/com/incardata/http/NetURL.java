@@ -57,6 +57,9 @@ public class NetURL {
 	/** 提交施工前图片地址 **/
 	public static final String SUBMIT_BEFORE_WORK_PHOTO_URL = BASE_URL + "technician/construct/beforePhoto";
 
+	/** 获取订单工作项 **/
+	public static final String GET_WORK_ITEM = BASE_URL + "pub/technician/workItems";
+
 	public static String inviteTechnician(String orderId,String partnerId){
 		return INVITE_TECHNICIAN+"/"+orderId+"/invite/"+partnerId;
 	}
