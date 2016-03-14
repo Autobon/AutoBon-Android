@@ -122,8 +122,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 startActivity(intent);
                 break;
             case R.id.login_btn: //登陆
-                //login();
-                startActivity(WorkFinishActivity.class);
+                login();
                 break;
             case R.id.tv_language: //双语切换
                 switchLang();

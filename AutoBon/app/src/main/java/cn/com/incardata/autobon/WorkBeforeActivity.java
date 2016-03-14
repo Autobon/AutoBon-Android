@@ -213,13 +213,16 @@ public class WorkBeforeActivity extends Activity implements View.OnClickListener
                     T.show(context,context.getString(R.string.upload_work_before_failed_tips));
                     return;
                 }
+                /**
                 IdPhotoEntity idPhotoEntity = (IdPhotoEntity) entity;
                 if(idPhotoEntity.isResult()){ //跳转
                     Intent intent = new Intent(context,WorkFinishActivity.class);
                     startActivity(intent);
                 }else{
                     T.show(context,idPhotoEntity.getMessage());
-                }
+                }**/
+                Intent intent = new Intent(context,WorkFinishActivity.class);
+                startActivity(intent);
             }
         },bv_orderId,bv_urls);
     }
