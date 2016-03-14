@@ -52,6 +52,11 @@ public class NetURL {
 	/** 未完成订单列表 */
 	public final static String UNFINISHED_ORDER_LIST = BASE_URL + "technician/order/listUnfinished";
 
+	/**上传施工图片*/
+	public static final String UPLOAD_WORK_PHOTO = BASE_URL + "technician/construct/uploadPhoto";
+	/** 提交施工前图片地址 **/
+	public static final String SUBMIT_BEFORE_WORK_PHOTO_URL = BASE_URL + "technician/construct/beforePhoto";
+
 	public static String inviteTechnician(String orderId,String partnerId){
 		return INVITE_TECHNICIAN+"/"+orderId+"/invite/"+partnerId;
 	}

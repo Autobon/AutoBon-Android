@@ -245,8 +245,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 String status = loginEntity.getData().getStatus();
                 if (StatusCode.VERIFIED.equals(status)){
                     SharedPre.setSharedPreferences(getContext(), AutoCon.IS_AUTHORIZED, true);
-                    startActivity(MainAuthorizedActivity.class);
+                    //startActivity(MainAuthorizedActivity.class);
                     //startActivity(OrderReceiveActivity.class);
+                    startActivity(WorkBeforeActivity.class);
                 }else if(StatusCode.BANNED.equals(status)){
                     T.show(getContext(), R.string.banned);
                     SharedPre.setSharedPreferences(getContext(), AutoCon.IS_AUTHORIZED, false);
@@ -259,8 +260,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                     }else {
                         bundle.putBoolean("isVerifying", true);//是否正在审核
                     }
-                    startActivity(MainUnauthorizedActivity.class, bundle);
+                    //startActivity(MainUnauthorizedActivity.class, bundle);
                     //startActivity(OrderReceiveActivity.class);
+                    startActivity(WorkBeforeActivity.class);
                 }
                 startService(new Intent(getContext(), AutobonService.class));
                 finish();
