@@ -148,7 +148,6 @@ public class PullToRefreshView extends LinearLayout {
 	 * init
 	 * 
 	 * @description
-	 * @param context
 	 *            hylin 2012-7-26上午10:08:33
 	 */
 	private void init() {
@@ -562,6 +561,18 @@ public class PullToRefreshView extends LinearLayout {
 		mFooterProgressBar.setVisibility(View.GONE);
 		// mHeaderUpdateTextView.setText("");
 		mFooterState = PULL_TO_REFRESH;
+	}
+
+	/**
+	 * 加载完成，恢复状态
+	 */
+	public void loadedCompleted(){
+		if (mFooterState != PULL_TO_REFRESH){
+			onFooterRefreshComplete();
+		}
+		if (mHeaderState != PULL_TO_REFRESH){
+			onHeaderRefreshComplete();
+		}
 	}
 
 	/**

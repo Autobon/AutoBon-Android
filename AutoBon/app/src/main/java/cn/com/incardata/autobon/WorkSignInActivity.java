@@ -24,9 +24,7 @@ import com.baidu.mapapi.model.LatLng;
 
 import org.apache.http.message.BasicNameValuePair;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import cn.com.incardata.http.Http;
@@ -46,7 +44,7 @@ import cn.com.incardata.utils.T;
  * 工作签到
  */
 public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnClickListener{
-    private TextView tv_day,tv_week_day;
+    private TextView tv_day;
     private Context context;
     private Button sign_in_btn;
     private ImageView iv_my_info;
@@ -96,16 +94,11 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
     private void initView(){
         context = this;
         tv_day = (TextView) findViewById(R.id.tv_day);
-        tv_week_day = (TextView) findViewById(R.id.tv_week_day);
         super.tv_distance = (TextView) findViewById(R.id.tv_distance);
         sign_in_btn = (Button) findViewById(R.id.sign_in_btn);
         iv_my_info = (ImageView) findViewById(R.id.iv_my_info);
 
-        tv_day.setText(DateCompute.getCurrentYearMonthDay());
-        Date date=new Date();
-        SimpleDateFormat dateFm = new SimpleDateFormat("EEEE");
-        dateFm.format(date);
-        tv_week_day.setText(DateCompute.getWeekOfDate(date)); //获取当前日期是星期几
+        tv_day.setText(DateCompute.getWeekOfDate());
     }
 
     private void initData(){

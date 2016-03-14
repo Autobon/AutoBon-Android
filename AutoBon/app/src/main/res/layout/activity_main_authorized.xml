@@ -1,142 +1,238 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/main_white"
-    android:orientation="vertical"
-    tools:context="cn.com.incardata.autobon.MainAuthorizedActivity">
+<!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--xmlns:tools="http://schemas.android.com/tools"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="match_parent"-->
+<!--android:background="@color/main_white"-->
+<!--tools:context="cn.com.incardata.autobon.MainAuthorizedActivity">-->
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp45"
-        android:background="@color/main_orange">
-        <ImageView
-            android:id="@+id/personal"
-            android:layout_width="@dimen/dp35"
-            android:layout_height="match_parent"
-            android:padding="@dimen/dp10"
-            android:src="@mipmap/img_account_white"
-            android:scaleType="centerInside"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/app_name"
-            android:textSize="@dimen/sp18"
-            android:textColor="@android:color/white"/>
-
-        <ImageView
-            android:layout_width="@dimen/dp45"
-            android:layout_height="match_parent"
-            android:padding="@dimen/dp10"
-            android:src="@mipmap/emit"
-            android:scaleType="centerInside"
-            android:clickable="true"
-            android:focusable="true"
-            android:layout_alignParentRight="true"/>
-    </RelativeLayout>
-
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="@dimen/dp10">
+        android:layout_height="match_parent"
+        android:background="@color/main_white"
+        android:visibility="visible"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp45"
+            android:background="@color/main_orange">
+            <ImageView
+                android:id="@+id/personal"
+                android:layout_width="@dimen/dp35"
+                android:layout_height="match_parent"
+                android:padding="@dimen/dp10"
+                android:src="@mipmap/img_account_white"
+                android:scaleType="centerInside"/>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/sp13"
-            android:textColor="@color/darkgray"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="2015-01-05 星期二"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/app_name"
+                android:textSize="@dimen/sp18"
+                android:textColor="@android:color/white"/>
 
-        <TextView
-            android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/order_more"
+                android:layout_width="@dimen/dp45"
+                android:layout_height="match_parent"
+                android:padding="@dimen/dp10"
+                android:src="@mipmap/emit"
+                android:scaleType="centerInside"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/sp13"
-            android:textColor="@color/darkgray"
-            android:text="@string/order_mode"/>
+            android:orientation="horizontal"
+            android:layout_margin="@dimen/dp10">
+
+            <TextView
+                android:id="@+id/today"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp13"
+                android:textColor="@color/darkgray"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="2015-01-05 星期二"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp13"
+                android:textColor="@color/darkgray"
+                android:text="@string/order_mode"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#F0F0F0"/>
+
+        <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="@dimen/dp15"-->
+        <!--android:layout_marginBottom="@dimen/dp15"-->
+        <!--android:layout_marginLeft="@dimen/dp10"-->
+        <!--android:layout_marginRight="@dimen/dp10">-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/r1"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textSize="@dimen/sp15"-->
+        <!--android:textColor="@color/darkgray"-->
+        <!--android:text="@string/unfinished_order_number"/>-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/unfinished_order_number"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textSize="@dimen/sp15"-->
+        <!--android:layout_toRightOf="@id/r1"-->
+        <!--android:textColor="@color/darkgray"-->
+        <!--android:text="5"/>-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/r2"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/r1"-->
+        <!--android:textSize="@dimen/sp15"-->
+        <!--android:layout_marginTop="@dimen/dp5"-->
+        <!--android:textColor="@color/darkgray"-->
+        <!--android:text="@string/today_finish_order_number"/>-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/finished_order_number"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textSize="@dimen/sp15"-->
+        <!--android:layout_toRightOf="@id/r2"-->
+        <!--android:layout_alignBaseline="@id/r2"-->
+        <!--android:textColor="@color/darkgray"-->
+        <!--android:text="5"/>-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/r3"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textSize="@dimen/sp15"-->
+        <!--android:layout_marginTop="@dimen/dp5"-->
+        <!--android:layout_toRightOf="@id/finished_order_number"-->
+        <!--android:layout_marginLeft="@dimen/dp20"-->
+        <!--android:layout_alignBaseline="@id/r2"-->
+        <!--android:textColor="@color/darkgray"-->
+        <!--android:text="@string/amount"/>-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/amount"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textSize="@dimen/sp15"-->
+        <!--android:layout_toRightOf="@id/r3"-->
+        <!--android:layout_alignBaseline="@id/r2"-->
+        <!--android:textColor="@color/darkgray"-->
+        <!--android:text="25"/>-->
+        <!--</RelativeLayout>-->
+
+        <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:background="#F0F0F0"/>-->
+
+        <cn.com.incardata.view.PullToRefreshView
+            android:id="@+id/order_pull"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dp10"
+            android:layout_marginRight="@dimen/dp10"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/unfinished_order_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbarStyle="outsideInset"
+                android:divider="#F0F0F0"
+                android:dividerHeight="1dp"/>
+
+        </cn.com.incardata.view.PullToRefreshView>
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#F0F0F0"/>
-
     <RelativeLayout
+        android:id="@+id/order_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp15"
-        android:layout_marginBottom="@dimen/dp15"
-        android:layout_marginLeft="@dimen/dp10"
-        android:layout_marginRight="@dimen/dp10">
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:visibility="gone"
+        android:background="#7E000000">
 
-        <TextView
-            android:id="@+id/r1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/sp15"
-            android:textColor="@color/darkgray"
-            android:text="@string/unfinished_order_number"/>
+        <LinearLayout
+            android:id="@+id/l1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp60"
+            android:layout_marginLeft="@dimen/dp15"
+            android:layout_marginRight="@dimen/dp15"
+            android:layout_marginBottom="@dimen/dp5"
+            android:orientation="vertical"
+            android:background="@drawable/check_btn">
 
-        <TextView
-            android:id="@+id/unfinished_order_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/sp15"
-            android:layout_toRightOf="@id/r1"
-            android:textColor="@color/darkgray"
-            android:text="5"/>
+            <TextView
+                android:id="@+id/order_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/darkgray"
+                android:layout_marginLeft="@dimen/dp15"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="@dimen/sp15"
+                android:text="demo"/>
 
-        <TextView
-            android:id="@+id/r2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/r1"
-            android:textSize="@dimen/sp15"
-            android:layout_marginTop="@dimen/dp5"
-            android:textColor="@color/darkgray"
-            android:text="@string/today_finish_order_number"/>
+            <FrameLayout
+                android:id="@+id/order_container"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
 
-        <TextView
-            android:id="@+id/finished_order_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/sp15"
-            android:layout_toRightOf="@id/r2"
-            android:layout_alignBaseline="@id/r2"
-            android:textColor="@color/darkgray"
-            android:text="5"/>
+            <Button
+                android:id="@+id/immediate_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp5"
+                android:paddingTop="@dimen/dp5"
+                android:paddingBottom="@dimen/dp5"
+                android:paddingLeft="@dimen/dp15"
+                android:paddingRight="@dimen/dp15"
+                android:textSize="@dimen/sp15"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/login_btn_selector"
+                android:textColor="@android:color/white"
+                android:text="@string/immediate_order"/>
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/r3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/sp15"
-            android:layout_marginTop="@dimen/dp5"
-            android:layout_toRightOf="@id/finished_order_number"
-            android:layout_marginLeft="@dimen/dp20"
-            android:layout_alignBaseline="@id/r2"
-            android:textColor="@color/darkgray"
-            android:text="@string/amount"/>
+        <ImageButton
+            android:id="@+id/order_close_window"
+            android:layout_width="@dimen/dp30"
+            android:layout_height="@dimen/dp30"
+            android:layout_marginRight="-13dp"
+            android:layout_marginTop="-13dp"
+            android:layout_alignTop="@id/l1"
+            android:layout_alignRight="@id/l1"
+            android:background="@null"
+            android:scaleType="centerInside"
+            android:src="@mipmap/order_window_close"/>
 
-        <TextView
-            android:id="@+id/amount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/sp15"
-            android:layout_toRightOf="@id/r3"
-            android:layout_alignBaseline="@id/r2"
-            android:textColor="@color/darkgray"
-            android:text="25"/>
     </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#F0F0F0"/>
-</LinearLayout>
+</merge>
+    <!--</FrameLayout>-->

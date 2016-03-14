@@ -23,6 +23,7 @@ public class MyApplication extends Application{
     private static MyApplication instance;
     private String cookie;
     private static HashMap<Integer, String> skillMap;
+    private int userId;
 
     public static synchronized MyApplication getInstance(){
         return instance;
@@ -107,6 +108,14 @@ public class MyApplication extends Application{
             setCookie(autoken);
         }
         return this.cookie;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public void switchLanguage(int language){
