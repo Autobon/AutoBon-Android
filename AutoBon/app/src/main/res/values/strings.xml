@@ -220,4 +220,5 @@
     <string name="finish_mode_text">即将完成模式</string>
     <string name="no_pic_tips">你当前尚未上传图片</string>
     <string name="upload_work_before_failed_tips">上传施工前图像失败</string>
+    <string name="choose_work_item_text">选择本次负责的工作项</string>
 </resources>
