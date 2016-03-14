@@ -41,6 +41,7 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
     private ImageView iv_back;
 
     private static final int ADD_CONTACT_CODE = 1;  //添加联系人的请求码requestCode
+    private OrderInfo_Data orderInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,14 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
         init();
         initView();
         setListener();
-        getDataFromServer();
+
+//        getDataFromServer();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        initializeData();
     }
 
     @Override
@@ -60,7 +68,7 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
 
     private void init() {
         transaction = fragmentManager.beginTransaction();
-        mFragment = IndentMapFragment.newInstance("2月25日 14:35", "哈哈哈哈哈");
+        mFragment = new IndentMapFragment();
         transaction.replace(R.id.fragment_container, mFragment);
         transaction.commit();
     }
@@ -74,12 +82,21 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
         ll_tab_bottom = (LinearLayout) findViewById(R.id.ll_tab_bottom);
         iv_back = (ImageView) findViewById(R.id.iv_back);
         bt_line_view = findViewById(R.id.bt_line_view);
+
+        orderInfo = getIntent().getParcelableExtra("OrderInfo");
+    }
+
+    private void initializeData() {
+        if (mFragment != null && orderInfo != null) {
+            mFragment.setData(orderInfo.getPositionLon(), orderInfo.getPositionLat(), orderInfo.getPhoto(), orderInfo.getOrderTime(), orderInfo.getRemark(), orderInfo.getCreatorName());
+        }
     }
 
     private void setListener(){
         iv_back.setOnClickListener(this);
         tv_add_contact.setOnClickListener(this);
         tv_begin_work.setOnClickListener(this);
+        findViewById(R.id.begin_work).setOnClickListener(this);
     }
 
     @Override
@@ -98,6 +115,7 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
             case R.id.iv_back:
                 finish();
                 break;
+            case R.id.begin_work:
             case R.id.tv_begin_work:
                 //发起开始工作请求
                 startWork();
@@ -116,7 +134,7 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
                 OrderInfoEntity orderInfoEntity = (OrderInfoEntity) entity;
                 if(orderInfoEntity.isResult()){
                     OrderInfo_Data data = orderInfoEntity.getData();
-                    mFragment.setData(data.getPositionLon(),data.getPositionLat(),data.getPhoto(),data.getOrderTime(),data.getRemark(),null);
+                    mFragment.setData(data.getPositionLon(), data.getPositionLat(), data.getPhoto(), data.getOrderTime(), data.getRemark(), data.getCreatorName());
                     if(data.getSecondTech()!=null){  //有次技师信息
                         String username = data.getSecondTech().getName();
                         showTechnician(username);
@@ -152,11 +170,10 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
         ll_add_contact.setVisibility(View.VISIBLE);
         ll_tab_bottom.setVisibility(View.GONE);
         tv_begin_work.setVisibility(View.VISIBLE);
-        tv_begin_work.setOnClickListener(this);
     }
 
     private void startWork(){
-        BasicNameValuePair bv_orderId = new BasicNameValuePair("orderId",String.valueOf(AutoCon.orderId));
+        BasicNameValuePair bv_orderId = new BasicNameValuePair("orderId", String.valueOf(orderInfo.getId()));
         Http.getInstance().postTaskToken(NetURL.START_WORK, StartWorkEntity.class, new OnResult() {
             @Override
             public void onResult(Object entity) {

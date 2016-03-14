@@ -37,8 +37,8 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:text="@string/receive_indent"
-            android:paddingTop="@dimen/dp15"
-            android:paddingBottom="@dimen/dp15"
+            android:paddingTop="@dimen/dp10"
+            android:paddingBottom="@dimen/dp10"
             android:textSize="@dimen/sp15"
             android:gravity="center"
             android:enabled="false"
@@ -55,8 +55,8 @@
             android:text="@string/start_authorization"
             android:gravity="center"
             android:textSize="@dimen/sp15"
-            android:paddingTop="@dimen/dp15"
-            android:paddingBottom="@dimen/dp15"
+            android:paddingTop="@dimen/dp10"
+            android:paddingBottom="@dimen/dp10"
             android:textColor="#a3a3a3"
             android:layout_height="wrap_content" />
     </LinearLayout>

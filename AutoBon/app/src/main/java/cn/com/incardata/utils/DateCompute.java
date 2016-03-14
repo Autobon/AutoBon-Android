@@ -164,4 +164,15 @@ public class DateCompute {
 		return str;
 	}
 
+
+	/**
+	 * 当前时间
+	 * @return 年月日 星期几
+	 */
+	public static String getWeekOfDate() {
+		Date date = new Date();
+		//格式化日期，EEEE为星期几格式化
+		SimpleDateFormat dateFm = new SimpleDateFormat("yyyy-MM-dd EEEE");
+		return dateFm.format(date);
+	}
 }

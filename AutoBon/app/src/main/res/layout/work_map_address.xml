@@ -56,15 +56,6 @@
             android:textSize="@dimen/sp15" />
 
         <TextView
-            android:id="@+id/tv_week_day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp5"
-            android:layout_toRightOf="@id/tv_day"
-            android:textColor="@color/darkgray"
-            android:textSize="@dimen/sp15" />
-
-        <TextView
             android:id="@+id/tv_model"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

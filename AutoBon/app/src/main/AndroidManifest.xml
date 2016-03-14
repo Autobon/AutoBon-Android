@@ -35,7 +35,7 @@
     <uses-permission android:name="getui.permission.GetuiService.cn.com.incardata.autobon" /> <!-- 替换为第三方应用的包名 -->
     <permission
         android:name="getui.permission.GetuiService.cn.com.incardata.autobon"
-        android:protectionLevel="normal"></permission> <!-- 替换为第三方应用的包名 -->
+        android:protectionLevel="normal" /> <!-- 替换为第三方应用的包名 -->
     <!-- 个推SDK权限配置结束 -->
 
     <supports-screens
@@ -60,17 +60,11 @@
             android:name=".LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".RegisterActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity
             android:name=".ServiceProtocalActivity"
             android:screenOrientation="portrait"
@@ -82,8 +76,7 @@
         <activity
             android:name=".OrderReceiveActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar">
-        </activity>
+            android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity
             android:name=".BaseBaiduMapActivity"
             android:screenOrientation="portrait"
@@ -108,67 +101,55 @@
         <activity
             android:name=".MyInfoActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar">
-        </activity>.
+            android:theme="@android:style/Theme.NoTitleBar"></activity>
+        .
         <activity
             android:name=".ModifyPasswordActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar">
-        </activity>
+            android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity
             android:name=".RestInfoActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar">
-        </activity>
+            android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity
             android:name=".ModifyBankCardInfoActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/SpinnerTheme">
-        </activity>
+            android:theme="@style/SpinnerTheme"></activity>
         <activity
             android:name=".BillActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar">
-        </activity>
-
+            android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity
             android:name=".MoreActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar">
-        </activity>
+            android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity
             android:name=".QulifyCetificationActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar">
-        </activity>
+            android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity
             android:name=".FreeTrainActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar">
-        </activity>
+            android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity
             android:name=".NotificationMessageActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar">
-        </activity>
+            android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity
             android:name=".ServiceCenterActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar">
-        </activity>
-
+            android:theme="@android:style/Theme.NoTitleBar"></activity>
 
         <!-- 百度地图的定位服务 -->
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote"
-            android:permission="android.permission.BAIDU_LOCATION_SERVICE">
-        </service>
+            android:permission="android.permission.BAIDU_LOCATION_SERVICE"
+            android:process=":remote"></service>
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="W12Nb7yu0uTcGAlowNN6CBOb" />
+            android:value="Yhevl1nChSCYAt6RnSnGOw5b" /> <!-- Yhevl1nChSCYAt6RnSnGOw5b -->
 
         <activity
             android:name=".MainAuthorizedActivity"
@@ -292,20 +273,29 @@
         <service
             android:name="cn.com.incardata.service.AutobonService"
             android:enabled="true"
-            android:exported="true">
-        </service>
+            android:exported="true"></service>
+
         <receiver
             android:name="cn.com.incardata.receiver.RestartReceiver"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="com.car.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
+        <activity android:name=".WelcomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:configChanges="orientation|keyboard|keyboardHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

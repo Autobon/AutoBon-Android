@@ -1,16 +1,19 @@
 package cn.com.incardata.http.response;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by zhangming on 2016/3/10.
  */
-public class OrderInfo_Construction {
+public class OrderInfo_Construction implements Parcelable {
     private int id;
     private int orderId;
     private int techId;
     private String positionLon;
     private String positionLat;
-    private long startTime;
-    private long signinTime;
+    private Long startTime;
+    private Long signinTime;
     private long endTime;
     private String beforePhotos;
     private String afterPhotos;
@@ -19,7 +22,7 @@ public class OrderInfo_Construction {
     private double workPercent;
     private int carSeat;
 
-    public long getStartTime() {
+    public Long getStartTime() {
         return startTime;
     }
 
@@ -67,7 +70,7 @@ public class OrderInfo_Construction {
         this.positionLat = positionLat;
     }
 
-    public long getSigninTime() {
+    public Long getSigninTime() {
         return signinTime;
     }
 
@@ -130,4 +133,58 @@ public class OrderInfo_Construction {
     public void setCarSeat(int carSeat) {
         this.carSeat = carSeat;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeInt(this.orderId);
+        dest.writeInt(this.techId);
+        dest.writeString(this.positionLon);
+        dest.writeString(this.positionLat);
+        dest.writeLong(this.startTime);
+        dest.writeLong(this.signinTime);
+        dest.writeLong(this.endTime);
+        dest.writeString(this.beforePhotos);
+        dest.writeString(this.afterPhotos);
+        dest.writeInt(this.payment);
+        dest.writeString(this.workItems);
+        dest.writeDouble(this.workPercent);
+        dest.writeInt(this.carSeat);
+    }
+
+    public OrderInfo_Construction() {
+    }
+
+    protected OrderInfo_Construction(Parcel in) {
+        this.id = in.readInt();
+        this.orderId = in.readInt();
+        this.techId = in.readInt();
+        this.positionLon = in.readString();
+        this.positionLat = in.readString();
+        this.startTime = in.readLong();
+        this.signinTime = in.readLong();
+        this.endTime = in.readLong();
+        this.beforePhotos = in.readString();
+        this.afterPhotos = in.readString();
+        this.payment = in.readInt();
+        this.workItems = in.readString();
+        this.workPercent = in.readDouble();
+        this.carSeat = in.readInt();
+    }
+
+    public static final Parcelable.Creator<OrderInfo_Construction> CREATOR = new Parcelable.Creator<OrderInfo_Construction>() {
+        public OrderInfo_Construction createFromParcel(Parcel source) {
+            return new OrderInfo_Construction(source);
+        }
+
+        public OrderInfo_Construction[] newArray(int size) {
+            return new OrderInfo_Construction[size];
+        }
+    };
 }

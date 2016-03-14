@@ -109,9 +109,9 @@ public class ImageLoaderCache {
 
 // 建立
 // .build();
-/**
- * DisplayImageOptions所有配置简介
- */
+    /**
+     * DisplayImageOptions所有配置简介
+     */
 // 设置图片加载时的默认图片
 // .showImageOnLoading(R.drawable.ic_chat_def_pic)
 // 设置图片加载失败的默认图片
@@ -165,6 +165,7 @@ public class ImageLoaderCache {
     private DisplayImageOptions getDisplayImageOptions(int showImageFail_resid, boolean isCache){
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 .showImageOnFail(showImageFail_resid)              //加载失败时的图片
+                .showImageForEmptyUri(showImageFail_resid)
                 .cacheInMemory(isCache)                               //启用内存缓存
                 .cacheOnDisk(isCache)                                 //启用外存缓存
                 .considerExifParams(true)                          //启用EXIF和JPEG图像格式
@@ -187,7 +188,7 @@ public class ImageLoaderCache {
      * @param imageView
      */
     public void loader(String imageUrl, ImageView imageView){
-       loader(imageUrl, imageView, true);
+        loader(imageUrl, imageView, true);
     }
 
     /**
@@ -208,7 +209,7 @@ public class ImageLoaderCache {
      */
     public void loader(String imageUrl, ImageView imageView, int image_resId){
         if (image_resId == 0){
-           loader(imageUrl, imageView, true, R.mipmap.load_image_failed);
+            loader(imageUrl, imageView, true, R.mipmap.load_image_failed);
         }else {
             loader(imageUrl, imageView, true, image_resId);
         }
