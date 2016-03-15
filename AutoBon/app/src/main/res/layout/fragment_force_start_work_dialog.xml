@@ -1,0 +1,54 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="@dimen/dp300"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/dp30"
+    android:paddingBottom="@dimen/dp50"
+    android:background="@drawable/force_start_bg_shape"
+    tools:context="cn.com.incardata.fragment.ForceStartWorkDialogFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/no_response_to_partners"
+        android:singleLine="true"
+        android:textSize="@dimen/sp18"
+        android:gravity="center"
+        android:textColor="@color/darkgray"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp20"
+        android:layout_marginRight="@dimen/dp20"
+        android:layout_marginTop="@dimen/dp30"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/dp10"
+            android:paddingBottom="@dimen/dp10"
+            android:background="@drawable/force_start_bg_shape"
+            android:textSize="@dimen/sp18"
+            android:textColor="@color/darkgray"
+            android:text="@string/continue_wait"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:paddingTop="@dimen/dp10"
+            android:paddingBottom="@dimen/dp10"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp15"
+            android:background="@drawable/force_start_bg_shape"
+            android:textSize="@dimen/sp18"
+            android:textColor="@color/main_orange"
+            android:text="@string/force_start"/>
+
+    </LinearLayout>
+
+</LinearLayout>

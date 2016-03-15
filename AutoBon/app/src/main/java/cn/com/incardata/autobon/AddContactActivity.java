@@ -55,6 +55,7 @@ public class AddContactActivity extends BaseActivity implements View.OnClickList
         mList = new ArrayList<AddContact_data_list>();
         mAdapter = new MyContactAdapter(AddContactActivity.this,mList);
         technician_list.setAdapter(mAdapter);
+        mAdapter.setOrderId(getIntent().getIntExtra("OrderId", -1));
     }
 
     public void initView(){

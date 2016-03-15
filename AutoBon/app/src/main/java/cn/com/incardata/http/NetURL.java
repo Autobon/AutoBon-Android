@@ -61,7 +61,7 @@ public class NetURL {
 		return INVITE_TECHNICIAN+"/"+orderId+"/invite/"+partnerId;
 	}
 
-	public static String getOrderInfo(String orderId){
+	public static String getOrderInfo(int orderId){
 		return GET_ORDER_INFO+"/"+orderId;
 	}
 }

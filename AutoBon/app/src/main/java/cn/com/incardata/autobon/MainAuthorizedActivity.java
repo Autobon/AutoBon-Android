@@ -147,17 +147,18 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
         if (construction == null){
             Intent intent = new Intent(this, OrderReceiveActivity.class);
             intent.putExtra("OrderInfo", orderInfo);
+            intent.putExtra(OrderReceiveActivity.IsLocalData, true);
             startActivity(intent);
         }else if (construction.getSigninTime() == null){
             Intent intent = new Intent(this, WorkSignInActivity.class);
             startActivity(intent);
         }else if (construction.getBeforePhotos() == null){
             //进入工作前照片上传
-            Intent intent = new Intent(this, WorkSignInActivity.class);
+            Intent intent = new Intent(this, WorkBeforeActivity.class);
             startActivity(intent);
         }else if (construction.getAfterPhotos() == null){
             //进入工作后照片上传
-            Intent intent = new Intent(this, WorkSignInActivity.class);
+            Intent intent = new Intent(this, WorkFinishActivity.class);
             startActivity(intent);
         }
     }
@@ -203,10 +204,14 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
                 if (entity instanceof TakeupEntity){
                     TakeupEntity takeup = (TakeupEntity) entity;
                     if (takeup.isResult()){
-                        T.show(getContext(), R.string.immediate_order_success);
+//                        T.show(getContext(), R.string.immediate_order_success);
                         page = 1;
                         isRefresh = true;
                         getpageList(1);
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("OrderId", takeup.getData().getId());
+                        bundle.putString("OrderNum", takeup.getData().getOrderNum());
+                        startActivity(ImmediateSuccessedActivity.class, bundle);
                         return;
                     }
                     if ("ORDER_TAKEN_UP".equals(takeup.getError())){

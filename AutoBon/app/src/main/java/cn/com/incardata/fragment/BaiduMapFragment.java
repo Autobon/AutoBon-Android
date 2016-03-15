@@ -15,7 +15,7 @@ public class BaiduMapFragment extends BaseFragment{
     protected LocationClient mLocationClient;
 
     protected static final String mAddress = "门店";  //测试地址,可以更改
-    protected static final int scanTime = 10*1000;  //设置10s定位一次
+    public static final int scanTime = 10*1000;  //设置10s定位一次
 
 
     @Override

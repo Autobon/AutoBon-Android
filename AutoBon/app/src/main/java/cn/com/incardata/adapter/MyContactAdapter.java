@@ -10,6 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.apache.http.message.BasicNameValuePair;
+
 import java.util.List;
 
 import cn.com.incardata.autobon.R;
@@ -19,7 +21,6 @@ import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.AddContact_data_list;
 import cn.com.incardata.http.response.InviteTechnicainEntity;
-import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.T;
 import cn.com.incardata.view.CircleImageView;
 
@@ -82,14 +83,14 @@ public class MyContactAdapter extends BaseAdapter{
         holder.btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addTechnician(AutoCon.orderId,technicianName); //添加技师
+                addTechnician(); //添加技师
             }
         });
 
         return convertView;
     }
 
-    public void addTechnician(int orderId,final String technicianName){
+    public void addTechnician(){
         //TODO 发送合作邀请
         Http.getInstance().postTaskToken(NetURL.inviteTechnician(String.valueOf(orderId), String.valueOf(technicianId)), InviteTechnicainEntity.class, new OnResult() {
             @Override
@@ -110,7 +111,7 @@ public class MyContactAdapter extends BaseAdapter{
                     T.show(activity,inviteTechnicainEntity.getMessage());
                 }
             }
-        });
+        }, new BasicNameValuePair("orderId", String.valueOf(orderId)), new BasicNameValuePair("partnerId", String.valueOf(technicianId)));
     }
 
     static class ViewHolder{
@@ -118,5 +119,15 @@ public class MyContactAdapter extends BaseAdapter{
         TextView tv_username;
         TextView tv_phone;
         Button btn_submit;
+    }
+
+    private int orderId;
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
     }
 }
