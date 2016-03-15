@@ -6,13 +6,13 @@
     android:padding="@dimen/dp10" >
     <GridView
         android:id="@+id/gv_tag"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:horizontalSpacing="1dip"
+        android:horizontalSpacing="@dimen/dp5"
         android:listSelector="@android:color/transparent"
         android:numColumns="4"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="10dp" >
+        android:verticalSpacing="@dimen/dp10" >
     </GridView>
 </LinearLayout>

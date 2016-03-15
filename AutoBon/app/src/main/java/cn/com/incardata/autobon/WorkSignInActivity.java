@@ -194,6 +194,8 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
                 SignInEntity signInEntity = (SignInEntity) entity;
                 if(signInEntity.isResult()){
                     T.show(context,context.getString(R.string.sign_in_success));
+                    //TODO 开始计时
+
                 }else{
                     T.show(context,signInEntity.getMessage());
                 }

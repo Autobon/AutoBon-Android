@@ -50,7 +50,7 @@ import cn.com.incardata.utils.T;
  */
 public class WorkBeforeActivity extends Activity implements View.OnClickListener{
     private Context context;
-    private ImageView iv_my_info,iv_enter_more_page,iv_camera,iv_car_upload_photo;
+    private ImageView iv_my_info,iv_enter_more_page,iv_camera;
     private TextView tv_day;
     private Button next_btn;
     private RelativeLayout rl_single_pic,rl_default_pic;
@@ -80,7 +80,6 @@ public class WorkBeforeActivity extends Activity implements View.OnClickListener
         iv_my_info = (ImageView) findViewById(R.id.iv_my_info);
         iv_enter_more_page =(ImageView) findViewById(R.id.iv_enter_more_page);
         iv_camera = (ImageView) findViewById(R.id.iv_camera);
-        iv_car_upload_photo = (ImageView) findViewById(R.id.iv_car_upload_photo);
         tv_day = (TextView) findViewById(R.id.tv_day);
         next_btn = (Button) findViewById(R.id.next_btn);
         rl_single_pic = (RelativeLayout) findViewById(R.id.rl_single_pic);
@@ -218,11 +217,13 @@ public class WorkBeforeActivity extends Activity implements View.OnClickListener
                 if(idPhotoEntity.isResult()){ //跳转
                     Intent intent = new Intent(context,WorkFinishActivity.class);
                     startActivity(intent);
+                    finish();
                 }else{
                     T.show(context,idPhotoEntity.getMessage());
                 }**/
                 Intent intent = new Intent(context,WorkFinishActivity.class);
                 startActivity(intent);
+                finish();
             }
         },bv_orderId,bv_urls);
     }

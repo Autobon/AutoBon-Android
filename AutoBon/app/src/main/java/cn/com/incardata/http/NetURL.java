@@ -60,6 +60,9 @@ public class NetURL {
 	/** 获取订单工作项 **/
 	public static final String GET_WORK_ITEM = BASE_URL + "pub/technician/workItems";
 
+	/** 完成施工 **/
+	public static final String WORK_FINISH_URL = BASE_URL + "technician/construct/finish";
+
 	public static String inviteTechnician(String orderId,String partnerId){
 		return INVITE_TECHNICIAN+"/"+orderId+"/invite/"+partnerId;
 	}

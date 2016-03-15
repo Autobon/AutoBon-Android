@@ -233,4 +233,8 @@
     <string name="five_car_tab_text">五座车</string>
     <string name="seven_car_tab_text">七座车</string>
     <string name="finish_btn">完成工作</string>
+    <string name="operate_failed_tips">操作失败</string>
+    <string name="tv_hour">时</string>
+    <string name="tv_minute">分</string>
+    <string name="tv_second">秒</string>
 </resources>

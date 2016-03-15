@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_white">
+    android:background="@color/main_white"
+    android:orientation="vertical">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp45"
@@ -40,6 +42,7 @@
             android:scaleType="centerInside"
             android:src="@mipmap/emit" />
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp35"
@@ -63,122 +66,157 @@
             android:textColor="@color/darkgray"
             android:textSize="@dimen/sp15" />
     </RelativeLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/lightgray"/>
+        android:background="@color/lightgray" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/white"
         android:gravity="center"
-        android:paddingTop="@dimen/dp5"
         android:paddingBottom="@dimen/dp5"
-        android:background="@android:color/white">
+        android:paddingTop="@dimen/dp5">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/work_make_time"
-            android:textSize="@dimen/sp15"
-            android:textColor="@color/darkgray"/>
+            android:textColor="@color/darkgray"
+            android:textSize="@dimen/sp15" />
+
         <TextView
             android:id="@+id/has_use_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/sp15"
-            android:textColor="@color/darkgray"
+            android:layout_marginLeft="@dimen/dp10"
             android:text="@string/default_time"
-            android:layout_marginLeft="@dimen/dp10"/>
+            android:textColor="@color/darkgray"
+            android:textSize="@dimen/sp15" />
     </LinearLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp120"
+        android:layout_height="@dimen/dp150"
         android:background="@android:color/white">
+
         <GridView
             android:id="@+id/gv_single_pic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:numColumns="3"
-            android:verticalSpacing="@dimen/dp20"
-            android:listSelector="@android:color/transparent"
             android:gravity="center"
+            android:horizontalSpacing="@dimen/dp20"
+            android:listSelector="@android:color/transparent"
+            android:numColumns="3"
             android:stretchMode="columnWidth"
-            android:horizontalSpacing="@dimen/dp20">
-        </GridView>
+            android:verticalSpacing="@dimen/dp10"></GridView>
     </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp40"
-        android:orientation="horizontal"
         android:layout_marginTop="@dimen/dp10"
-        android:background="@android:color/white">
+        android:background="@android:color/white"
+        android:orientation="horizontal">
 
         <View
             android:layout_width="5dp"
             android:layout_height="match_parent"
-            android:background="@color/main_orange"/>
+            android:background="@color/main_orange" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/darkgray"
-            android:textSize="@dimen/sp15"
-            android:layout_marginLeft="@dimen/dp10"
             android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dp10"
+            android:singleLine="true"
             android:text="@string/choose_work_item_text"
-            android:singleLine="true"/>
-    </LinearLayout>
-    <RadioGroup
-        android:id="@+id/rg_tab"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp30"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:background="@android:color/white">
-        <RadioButton
-            android:id="@+id/five_radio_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/five_car_tab_text"
-            android:button="@drawable/radio_selector"
-            android:textSize="@dimen/sp15"
             android:textColor="@color/darkgray"
-            android:checked="true"
-            android:layout_marginLeft="@dimen/dp15"/>
-        <RadioButton
-            android:id="@+id/seven_radio_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/seven_car_tab_text"
-            android:button="@drawable/radio_selector"
-            android:layout_marginLeft="@dimen/dp20"
-            android:textSize="@dimen/sp15"
-            android:textColor="@color/darkgray"/>
-    </RadioGroup>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/lightgray"/>
-    <FrameLayout
-        android:id="@+id/fragment_container"
+            android:textSize="@dimen/sp15" />
+    </LinearLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@android:color/white">
-    </FrameLayout>
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/ll_other"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RadioGroup
+                android:id="@+id/rg_tab"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp30"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/five_radio_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp15"
+                    android:button="@drawable/radio_selector"
+                    android:checked="true"
+                    android:text="@string/five_car_tab_text"
+                    android:textColor="@color/darkgray"
+                    android:textSize="@dimen/sp15" />
+                <RadioButton
+                    android:id="@+id/seven_radio_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp20"
+                    android:button="@drawable/radio_selector"
+                    android:text="@string/seven_car_tab_text"
+                    android:textColor="@color/darkgray"
+                    android:textSize="@dimen/sp15" />
+            </RadioGroup>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/lightgray" />
+            <FrameLayout
+                android:id="@+id/fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@android:color/white">
+            </FrameLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_clean"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:background="@android:color/white"
+            android:visibility="gone">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </RelativeLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
 
     <Button
         android:id="@+id/finish_work_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft ="@dimen/dp35"
+        android:layout_marginBottom="@dimen/dp20"
+        android:layout_marginLeft="@dimen/dp35"
         android:layout_marginRight="@dimen/dp40"
         android:layout_marginTop="@dimen/dp20"
-        android:layout_marginBottom="@dimen/dp20"
-        android:paddingTop="@dimen/dp12"
-        android:paddingBottom="@dimen/dp12"
-        android:text="@string/finish_btn"
-        android:gravity="center"
-        android:textSize="@dimen/sp18"
         android:background="@drawable/login_btn_selector"
-        android:textColor="@android:color/white"/>
+        android:gravity="center"
+        android:paddingBottom="@dimen/dp12"
+        android:paddingTop="@dimen/dp12"
+        android:text="@string/finish_btn"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp18" />
 </LinearLayout>

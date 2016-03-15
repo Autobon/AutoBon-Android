@@ -8,6 +8,20 @@ public class WorkItem_Data {
     private String name;
     private int id;
 
+    private boolean isFocus;  //增加是否选中状态标志
+
+    public WorkItem_Data(){
+        setFocus(false);
+    }
+
+    public boolean isFocus() {
+        return isFocus;
+    }
+
+    public void setFocus(boolean focus) {
+        isFocus = focus;
+    }
+
     public int getSeat() {
         return seat;
     }

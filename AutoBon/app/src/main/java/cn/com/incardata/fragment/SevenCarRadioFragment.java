@@ -58,7 +58,7 @@ public class SevenCarRadioFragment extends BaseStandardFragment{
 
 	private void initData(){
 		BasicNameValuePair bv_orderType = new BasicNameValuePair("orderType", String.valueOf(AutoCon.orderType));
-		BasicNameValuePair bv_carSeat = new BasicNameValuePair("carSeat",String.valueOf(AutoCon.seven_canSeat));  //七座车
+		BasicNameValuePair bv_carSeat = new BasicNameValuePair("carSeat",String.valueOf(AutoCon.seven_carSeat));  //七座车
 		Http.getInstance().getTaskToken(NetURL.GET_WORK_ITEM, WorkItemEntity.class, new OnResult() {
 			@Override
 			public void onResult(Object entity) {
