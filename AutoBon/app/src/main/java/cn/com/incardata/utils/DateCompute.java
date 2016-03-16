@@ -164,7 +164,6 @@ public class DateCompute {
 		return str;
 	}
 
-
 	/**
 	 * 当前时间
 	 * @return 年月日 星期几

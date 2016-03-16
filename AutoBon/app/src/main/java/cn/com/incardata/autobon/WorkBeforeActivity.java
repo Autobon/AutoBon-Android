@@ -1,6 +1,5 @@
 package cn.com.incardata.autobon;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -8,7 +7,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -24,11 +24,8 @@ import com.alibaba.fastjson.JSON;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -36,22 +33,24 @@ import cn.com.incardata.adapter.PictureGridAdapter;
 import cn.com.incardata.http.Http;
 import cn.com.incardata.http.HttpClientInCar;
 import cn.com.incardata.http.NetURL;
+import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.IdPhotoEntity;
 import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.BitmapHelper;
 import cn.com.incardata.utils.DateCompute;
 import cn.com.incardata.utils.SDCardUtils;
+import cn.com.incardata.utils.SharedPre;
 import cn.com.incardata.utils.T;
 
 /**
  * Created by zhangming on 2016/3/11.
  * 工作前上传图像
  */
-public class WorkBeforeActivity extends Activity implements View.OnClickListener{
+public class WorkBeforeActivity extends BaseActivity implements View.OnClickListener{
     private Context context;
-    private ImageView iv_my_info,iv_enter_more_page,iv_camera,iv_car_upload_photo;
-    private TextView tv_day,tv_week_day;
+    private ImageView iv_my_info,iv_enter_more_page,iv_camera;
+    private TextView tv_day,tv_has_time;
     private Button next_btn;
     private RelativeLayout rl_single_pic,rl_default_pic;
 
@@ -60,11 +59,12 @@ public class WorkBeforeActivity extends Activity implements View.OnClickListener
     private File tempFile;
     private String fileName = "";
     private static final int MAX_PICS = 6; //图片数上限
-    private static final int CROP_SIZE = 200;
 
     private Uri carPhotoUri;
     private static final int CAR_PHOTO = 1;
-    private static final int CROP_PHOTO_CODE = 2;
+    private static final int COUNT_TIME_FLAG = 1;
+
+    private boolean isRunning = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +73,60 @@ public class WorkBeforeActivity extends Activity implements View.OnClickListener
         initView();
         initData();
         setListener();
+        new Thread(new MyThread()).start();
+    }
+
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case COUNT_TIME_FLAG:
+                    Bundle bundle = msg.getData();
+                    int hour = bundle.getInt("hour");
+                    int minute = bundle.getInt("minute");
+                    int second = bundle.getInt("second");
+
+                    tv_has_time.setText(hour+context.getString(R.string.tv_hour)+
+                            minute+context.getString(R.string.tv_minute)+second+context.getString(R.string.tv_second));
+                    break;
+            }
+        }
+    };
+
+    private class MyThread implements Runnable{
+        @Override
+        public void run() {
+            while (isRunning){
+                try{
+                    Thread.sleep(1000);
+                }catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+
+                String startWorkTime = SharedPre.getString(context,AutoCon.START_WORK_TIMER);
+                long useTime = 0L;
+                try{
+                    long currentTime = System.currentTimeMillis();
+                    useTime = currentTime - Long.parseLong(startWorkTime);
+                    //Log.i("test","currentTime===>"+currentTime+",useTime===>"+useTime);
+                }catch (Exception e){
+                    useTime = 0L;
+                    e.printStackTrace();
+                }
+                final int hour = (int)(useTime / (1000*3600));
+                final int minute =(int)((useTime - hour*(1000*3600)) / (1000*60));
+                final int second = (int)((useTime - hour*(1000*3600) - minute*(1000*60)) / 1000);
+
+                Message msg = Message.obtain();
+                msg.what = COUNT_TIME_FLAG;
+                Bundle bundle = new Bundle();
+                bundle.putInt("hour",hour);
+                bundle.putInt("minute",minute);
+                bundle.putInt("second",second);
+                msg.setData(bundle);
+                handler.sendMessage(msg);
+            }
+        }
     }
 
     private void initView(){
@@ -80,9 +134,8 @@ public class WorkBeforeActivity extends Activity implements View.OnClickListener
         iv_my_info = (ImageView) findViewById(R.id.iv_my_info);
         iv_enter_more_page =(ImageView) findViewById(R.id.iv_enter_more_page);
         iv_camera = (ImageView) findViewById(R.id.iv_camera);
-        iv_car_upload_photo = (ImageView) findViewById(R.id.iv_car_upload_photo);
         tv_day = (TextView) findViewById(R.id.tv_day);
-        tv_week_day = (TextView) findViewById(R.id.tv_week_day);
+        tv_has_time = (TextView) findViewById(R.id.has_use_time);
         next_btn = (Button) findViewById(R.id.next_btn);
         rl_single_pic = (RelativeLayout) findViewById(R.id.rl_single_pic);
         rl_default_pic = (RelativeLayout) findViewById(R.id.rl_default_pic);
@@ -93,11 +146,7 @@ public class WorkBeforeActivity extends Activity implements View.OnClickListener
     }
 
     private void initData(){
-        tv_day.setText(DateCompute.getCurrentYearMonthDay());
-        Date date=new Date();
-        SimpleDateFormat dateFm = new SimpleDateFormat("EEEE");
-        dateFm.format(date);
-        tv_week_day.setText(DateCompute.getWeekOfDate(date)); //获取当前日期是星期几
+        tv_day.setText(DateCompute.getWeekOfDate());
     }
 
     private void setListener(){
@@ -120,8 +169,10 @@ public class WorkBeforeActivity extends Activity implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.iv_my_info:
+                startActivity(MyInfoActivity.class);
                 break;
             case R.id.iv_enter_more_page:
+                startActivity(MoreActivity.class);
                 break;
             case R.id.iv_camera:
                 uploadWorkPhoto();
@@ -135,7 +186,7 @@ public class WorkBeforeActivity extends Activity implements View.OnClickListener
     private void initFile() {
         if(fileName.equals("")) {
             if(SDCardUtils.isExistSDCard()) {
-                String path = Environment.getExternalStorageDirectory() + File.separator + "my_picture";
+                String path = SDCardUtils.getGatherDir() + File.separator + "my_picture";
                 File dir = new File(path);
                 if(!dir.exists()){
                     dir.mkdirs();
@@ -154,7 +205,7 @@ public class WorkBeforeActivity extends Activity implements View.OnClickListener
             return;
         }
         if (carPhotoUri == null) {
-            carPhotoUri = Uri.fromFile(new File(SDCardUtils.getGatherDir() + File.separator + "idPhoto.jpeg"));
+            carPhotoUri = Uri.fromFile(new File(SDCardUtils.getGatherDir() + File.separator + "car_photo.jpeg"));
         }
         initFile();
         capture(CAR_PHOTO,carPhotoUri);
@@ -167,23 +218,6 @@ public class WorkBeforeActivity extends Activity implements View.OnClickListener
         intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
         intent.putExtra("noFaceDetection", true);
         startActivityForResult(intent, requestCode);
-    }
-
-    /**
-     * 裁剪图片
-     * @param uri
-     * @param crop 裁剪大小
-     */
-    public void cropPhoto(Uri uri,int crop) {
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(uri, "image/*");
-        intent.putExtra("output", Uri.fromFile(tempFile));
-        intent.putExtra("crop", true);
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
-        intent.putExtra("outputX",crop);
-        intent.putExtra("outputY",crop);
-        startActivityForResult(intent, CROP_PHOTO_CODE);
     }
 
     /**
@@ -215,9 +249,10 @@ public class WorkBeforeActivity extends Activity implements View.OnClickListener
                     return;
                 }
                 IdPhotoEntity idPhotoEntity = (IdPhotoEntity) entity;
-                if(idPhotoEntity.isResult()){ //跳转
+                if(idPhotoEntity.isResult()){  //跳转
                     Intent intent = new Intent(context,WorkFinishActivity.class);
                     startActivity(intent);
+                    finish();
                 }else{
                     T.show(context,idPhotoEntity.getMessage());
                 }
@@ -230,20 +265,20 @@ public class WorkBeforeActivity extends Activity implements View.OnClickListener
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK) return;
         if(requestCode == CAR_PHOTO){
-            if(data!=null){
-                cropPhoto(data.getData(),CROP_SIZE); //裁剪
-            }else{
-                if(carPhotoUri!=null){
-                   cropPhoto(carPhotoUri,CROP_SIZE); //裁剪
-                }
-            }
-        }else if(requestCode == CROP_PHOTO_CODE){
             try {
-                Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(tempFile));
+                Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(carPhotoUri));
                 bitmap = BitmapHelper.resizeImage(bitmap, 0.5f);
-                BitmapHelper.saveBitmap(carPhotoUri, bitmap, true);
-                Log.i("test","carPhotoUri_path===>"+carPhotoUri.getPath());
-                uploadCarPhoto();
+                Uri uri = Uri.fromFile(tempFile);
+                boolean isSuccess = BitmapHelper.saveBitmap(uri, bitmap, true);  //压缩图片保存到新地址
+
+                if(isSuccess){
+                    if(NetWorkHelper.isNetworkAvailable(context)){
+                        uploadCarPhoto(uri);
+                    }else{
+                        T.show(context,context.getString(R.string.no_network_tips));
+                        return;
+                    }
+                }
             }catch (FileNotFoundException e) {
                 e.printStackTrace();
             }catch (NullPointerException e){
@@ -255,7 +290,7 @@ public class WorkBeforeActivity extends Activity implements View.OnClickListener
     /**
      * 上传车辆图片
      */
-    private void uploadCarPhoto(){
+    private void uploadCarPhoto(Uri uri){
         new AsyncTask<String, Void, String>() {
             @Override
             protected String doInBackground(String... params) {
@@ -288,7 +323,7 @@ public class WorkBeforeActivity extends Activity implements View.OnClickListener
                     }
                 }
             }
-        }.execute(carPhotoUri.getPath(), NetURL.UPLOAD_WORK_PHOTO);
+        }.execute(uri.getPath(), NetURL.UPLOAD_WORK_PHOTO);
     }
 
     @Override
@@ -304,5 +339,6 @@ public class WorkBeforeActivity extends Activity implements View.OnClickListener
                 dir.delete();
             }
         }
+        isRunning = false; //关闭计时线程
     }
 }

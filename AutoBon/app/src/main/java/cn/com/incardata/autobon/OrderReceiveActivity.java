@@ -21,6 +21,7 @@ import cn.com.incardata.http.response.OrderInfoEntity;
 import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.http.response.StartWorkEntity;
 import cn.com.incardata.utils.AutoCon;
+import cn.com.incardata.utils.SharedPre;
 import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
 
@@ -51,8 +52,7 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
         init();
         initView();
         setListener();
-
-//        getDataFromServer();
+//      getDataFromServer();
     }
 
     @Override
@@ -183,6 +183,9 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
                 }
                 StartWorkEntity startWorkEntity = (StartWorkEntity) entity;
                 if(startWorkEntity.isResult()){  //成功后跳转签到界面
+                    long startTimeStamp = startWorkEntity.getData().getStartTime(); //开始工作的时间戳
+                    SharedPre.setSharedPreferences(context,AutoCon.START_WORK_TIMER,String.valueOf(startTimeStamp)); //保存
+
                     Intent intent = new Intent(context,WorkSignInActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);

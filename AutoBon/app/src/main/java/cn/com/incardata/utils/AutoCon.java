@@ -15,6 +15,12 @@ public class AutoCon {
     public static final String FLAG_PASSWORD = "password";
     /** 缓存账号是否已认证 */
     public static final String IS_AUTHORIZED = "isAuthorized";
+    /** 记录开始工作的时间戳 */
+    public static final String START_WORK_TIMER = "startWorkTime";
 
     public static final int orderId = 1;
+    public static final int orderType = 3; //测试使用
+
+    public static final int five_carSeat = 5;
+    public static final int seven_carSeat = 7;
 }
