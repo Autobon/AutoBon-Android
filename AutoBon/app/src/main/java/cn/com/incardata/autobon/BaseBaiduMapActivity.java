@@ -1,6 +1,5 @@
 package cn.com.incardata.autobon;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,7 +23,7 @@ import cn.com.incardata.utils.T;
  * Created by zhangming on 2016/2/24.
  * 有关百度地图页面的基类
  */
-public class BaseBaiduMapActivity extends Activity{
+public class BaseBaiduMapActivity extends BaseActivity{
     protected BroadcastReceiver receiver;
     protected BaiduMap baiduMap;
     protected MapView mMapView;
@@ -32,7 +31,7 @@ public class BaseBaiduMapActivity extends Activity{
     protected TextView tv_distance;
 
     protected static LatLng mLatLng = new LatLng(30.511869,114.405746);
-    protected static String mAddress = "门店";  //测试地址,可以更改
+    protected static String mAddress = "4S";  //测试地址,可以更改
     protected static int scanTime = 10*1000;  //设置10s定位一次
 
 

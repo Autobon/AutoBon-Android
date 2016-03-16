@@ -22,6 +22,7 @@ import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.AddContactEntity;
 import cn.com.incardata.http.response.AddContact_data_list;
+import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
 import cn.com.incardata.view.PullToRefreshView;
@@ -55,6 +56,7 @@ public class AddContactActivity extends BaseActivity implements View.OnClickList
         mList = new ArrayList<AddContact_data_list>();
         mAdapter = new MyContactAdapter(AddContactActivity.this,mList);
         technician_list.setAdapter(mAdapter);
+        mAdapter.setOrderId(getIntent().getIntExtra(AutoCon.ORDER_ID, -1));
     }
 
     public void initView(){

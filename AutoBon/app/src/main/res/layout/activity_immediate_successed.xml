@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="cn.com.incardata.autobon.ImmediateSuccessedActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp45"
+        android:background="@color/main_orange">
+        <ImageView
+            android:id="@+id/personal"
+            android:layout_width="@dimen/dp35"
+            android:layout_height="match_parent"
+            android:padding="@dimen/dp10"
+            android:src="@mipmap/img_account_white"
+            android:scaleType="centerInside"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/app_name"
+            android:textSize="@dimen/sp18"
+            android:textColor="@android:color/white"/>
+
+        <ImageView
+            android:id="@+id/more"
+            android:layout_width="@dimen/dp45"
+            android:layout_height="match_parent"
+            android:padding="@dimen/dp10"
+            android:src="@mipmap/emit"
+            android:scaleType="centerInside"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/dp10">
+
+        <TextView
+            android:id="@+id/today"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp13"
+            android:textColor="@color/darkgray"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="2015-01-05 星期二"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp13"
+            android:textColor="@color/darkgray"
+            android:text="@string/order_mode"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#F0F0F0"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/darkgray"
+        android:textSize="@dimen/sp25"
+        android:text="@string/immediate_order_success"
+        android:layout_marginTop="@dimen/dp30"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/order_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#a3a3a3"
+        android:textSize="@dimen/sp18"
+        android:text="@string/order_serial_number"
+        android:layout_marginTop="@dimen/dp10"
+        android:gravity="center"/>
+
+    <Button
+        android:id="@+id/start_work"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft ="@dimen/dp35"
+        android:layout_marginRight="@dimen/dp40"
+        android:layout_marginTop="@dimen/dp50"
+        android:layout_marginBottom="@dimen/dp20"
+        android:paddingTop="@dimen/dp12"
+        android:paddingBottom="@dimen/dp12"
+        android:text="@string/tab_two_text"
+        android:gravity="center"
+        android:textSize="@dimen/sp18"
+        android:background="@drawable/login_btn_selector"
+        android:textColor="@android:color/white"/>
+
+</LinearLayout>
