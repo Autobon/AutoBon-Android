@@ -9,6 +9,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -42,6 +44,7 @@ import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.BitmapHelper;
 import cn.com.incardata.utils.DateCompute;
 import cn.com.incardata.utils.SDCardUtils;
+import cn.com.incardata.utils.SharedPre;
 import cn.com.incardata.utils.T;
 
 /**
@@ -51,7 +54,7 @@ import cn.com.incardata.utils.T;
 public class WorkBeforeActivity extends Activity implements View.OnClickListener{
     private Context context;
     private ImageView iv_my_info,iv_enter_more_page,iv_camera;
-    private TextView tv_day;
+    private TextView tv_day,tv_has_time;
     private Button next_btn;
     private RelativeLayout rl_single_pic,rl_default_pic;
 
@@ -65,6 +68,9 @@ public class WorkBeforeActivity extends Activity implements View.OnClickListener
     private Uri carPhotoUri;
     private static final int CAR_PHOTO = 1;
     private static final int CROP_PHOTO_CODE = 2;
+    private static final int COUNT_TIME_FLAG = 1;
+
+    private boolean isRunning = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +79,60 @@ public class WorkBeforeActivity extends Activity implements View.OnClickListener
         initView();
         initData();
         setListener();
+        new Thread(new MyThread()).start();
+    }
+
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case COUNT_TIME_FLAG:
+                    Bundle bundle = msg.getData();
+                    int hour = bundle.getInt("hour");
+                    int minute = bundle.getInt("minute");
+                    int second = bundle.getInt("second");
+
+                    tv_has_time.setText(hour+context.getString(R.string.tv_hour)+
+                            minute+context.getString(R.string.tv_minute)+second+context.getString(R.string.tv_second));
+                    break;
+            }
+        }
+    };
+
+    private class MyThread implements Runnable{
+        @Override
+        public void run() {
+            while (isRunning){
+                try{
+                    Thread.sleep(1000);
+                }catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+
+                String startWorkTime = SharedPre.getString(context,AutoCon.START_WORK_TIMER);
+                long useTime = 0L;
+                try{
+                    long currentTime = System.currentTimeMillis();
+                    useTime = currentTime - Long.parseLong(startWorkTime);
+                    //Log.i("test","currentTime===>"+currentTime+",useTime===>"+useTime);
+                }catch (Exception e){
+                    useTime = 0L;
+                    e.printStackTrace();
+                }
+                final int hour = (int)(useTime / (1000*3600));
+                final int minute =(int)((useTime - hour*(1000*3600)) / (1000*60));
+                final int second = (int)((useTime - hour*(1000*3600) - minute*(1000*60)) / 1000);
+
+                Message msg = Message.obtain();
+                msg.what = COUNT_TIME_FLAG;
+                Bundle bundle = new Bundle();
+                bundle.putInt("hour",hour);
+                bundle.putInt("minute",minute);
+                bundle.putInt("second",second);
+                msg.setData(bundle);
+                handler.sendMessage(msg);
+            }
+        }
     }
 
     private void initView(){
@@ -81,6 +141,7 @@ public class WorkBeforeActivity extends Activity implements View.OnClickListener
         iv_enter_more_page =(ImageView) findViewById(R.id.iv_enter_more_page);
         iv_camera = (ImageView) findViewById(R.id.iv_camera);
         tv_day = (TextView) findViewById(R.id.tv_day);
+        tv_has_time = (TextView) findViewById(R.id.has_use_time);
         next_btn = (Button) findViewById(R.id.next_btn);
         rl_single_pic = (RelativeLayout) findViewById(R.id.rl_single_pic);
         rl_default_pic = (RelativeLayout) findViewById(R.id.rl_default_pic);
@@ -307,5 +368,6 @@ public class WorkBeforeActivity extends Activity implements View.OnClickListener
                 dir.delete();
             }
         }
+        isRunning = false; //关闭计时线程
     }
 }

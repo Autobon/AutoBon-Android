@@ -135,7 +135,9 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
                 startActivity(intent);
                 break;
             case R.id.sign_in_btn:
-                signIn();
+                //signIn();
+                Intent i = new Intent(this,WorkBeforeActivity.class);
+                startActivity(i);
                 break;
         }
     }
@@ -194,8 +196,6 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
                 SignInEntity signInEntity = (SignInEntity) entity;
                 if(signInEntity.isResult()){
                     T.show(context,context.getString(R.string.sign_in_success));
-                    //TODO 开始计时
-
                 }else{
                     T.show(context,signInEntity.getMessage());
                 }

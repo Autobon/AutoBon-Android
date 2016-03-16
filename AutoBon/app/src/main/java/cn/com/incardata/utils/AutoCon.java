@@ -19,7 +19,7 @@ public class AutoCon {
     public static final String START_WORK_TIMER = "startWorkTime";
 
     public static final int orderId = 1;
-    public static final int orderType = 3; //测试使用
+    public static final int orderType = 4; //测试使用
 
     public static final int five_carSeat = 5;
     public static final int seven_carSeat = 7;

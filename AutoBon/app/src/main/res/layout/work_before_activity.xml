@@ -81,6 +81,7 @@
             android:textSize="@dimen/sp15"
             android:textColor="@color/darkgray"/>
         <TextView
+            android:id="@+id/has_use_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/sp15"

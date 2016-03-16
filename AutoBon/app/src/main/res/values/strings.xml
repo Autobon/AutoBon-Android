@@ -237,4 +237,5 @@
     <string name="tv_hour">时</string>
     <string name="tv_minute">分</string>
     <string name="tv_second">秒</string>
+    <string name="compute_percent_tips">按百分比计算(%)</string>
 </resources>

@@ -52,8 +52,7 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
         init();
         initView();
         setListener();
-
-//        getDataFromServer();
+//      getDataFromServer();
     }
 
     @Override
@@ -119,7 +118,15 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
             case R.id.begin_work:
             case R.id.tv_begin_work:
                 //发起开始工作请求
-                startWork();
+                //startWork();
+
+                long startTimeStamp = 1456977763488L; //开始工作的时间戳
+                SharedPre.setSharedPreferences(context,AutoCon.START_WORK_TIMER,String.valueOf(startTimeStamp)); //保存
+
+                Intent i = new Intent(context,WorkSignInActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(i);
+                finish();
                 break;
         }
     }

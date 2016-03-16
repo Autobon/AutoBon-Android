@@ -11,12 +11,14 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -58,18 +60,19 @@ import cn.com.incardata.utils.T;
 public class WorkFinishActivity extends Activity implements BaseStandardFragment.OnFragmentInteractionListener{
     private GridView gv_single_pic;
     private RadioGroup rg_tab;
-    private TextView tv_day,tv_has_time;
+    private TextView tv_day,tv_has_time,tv_content;
     private PictureGridAdapter mAdapter;
     private LinearLayout ll_other,ll_clean;
     private Button finish_work_btn;
+    private ImageView iv_left,iv_right;
     private Context context;
     private static final int MAX_PICS = 6; //图片数上限
 
     private File tempDir;
     private Uri carPhotoUri;
     private static final int CAR_PHOTO = 1;
+    private static final int COUNT_TIME_FLAG = 1;
 
-    private Handler handler = new Handler();
     private boolean isRunning = true;
 
     @Override
@@ -77,27 +80,61 @@ public class WorkFinishActivity extends Activity implements BaseStandardFragment
         super.onCreate(savedInstanceState);
         setContentView(R.layout.work_finish_activity);
         initView();
-        //handler.postDelayed(runnable,1000);
+        new Thread(new MyThread()).start();
     }
 
-    private Runnable runnable = new Runnable() {
+    private Handler handler = new Handler(){
         @Override
-        public void run() {
-            while (isRunning){
-                String startWorkTime = SharedPre.getString(context,AutoCon.START_WORK_TIMER);
-                long currentTime = System.currentTimeMillis();
-                long useTime = currentTime - Long.parseLong(startWorkTime);
-                Log.i("test","currentTime===>"+currentTime+",useTime===>"+useTime);
-                final long hour = useTime / (1000*3600);
-                final long minute = useTime / (1000*60);
-                final long second = useTime / 1000;
-                tv_has_time.setText(hour+context.getString(R.string.tv_hour)+
-                        minute+context.getString(R.string.tv_minute)+second+context.getString(R.string.tv_second));
-                handler.postDelayed(runnable,1000);
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case COUNT_TIME_FLAG:
+                    Bundle bundle = msg.getData();
+                    int hour = bundle.getInt("hour");
+                    int minute = bundle.getInt("minute");
+                    int second = bundle.getInt("second");
+
+                    tv_has_time.setText(hour+context.getString(R.string.tv_hour)+
+                            minute+context.getString(R.string.tv_minute)+second+context.getString(R.string.tv_second));
+                    break;
             }
         }
     };
 
+    private class MyThread implements Runnable{
+        @Override
+        public void run() {
+            while (isRunning){
+                try{
+                    Thread.sleep(1000);
+                }catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+
+                String startWorkTime = SharedPre.getString(context,AutoCon.START_WORK_TIMER);
+                long useTime = 0L;
+                try{
+                    long currentTime = System.currentTimeMillis();
+                    useTime = currentTime - Long.parseLong(startWorkTime);
+                    Log.i("test","currentTime===>"+currentTime+",useTime===>"+useTime);
+                }catch (Exception e){
+                    useTime = 0L;
+                    e.printStackTrace();
+                }
+                final int hour = (int)(useTime / (1000*3600));
+                final int minute =(int)((useTime - hour*(1000*3600)) / (1000*60));
+                final int second = (int)((useTime - hour*(1000*3600) - minute*(1000*60)) / 1000);
+
+                Message msg = Message.obtain();
+                msg.what = COUNT_TIME_FLAG;
+                Bundle bundle = new Bundle();
+                bundle.putInt("hour",hour);
+                bundle.putInt("minute",minute);
+                bundle.putInt("second",second);
+                msg.setData(bundle);
+                handler.sendMessage(msg);
+            }
+        }
+    }
 
     private void initView() {
         context = this;
@@ -111,31 +148,42 @@ public class WorkFinishActivity extends Activity implements BaseStandardFragment
         ll_clean = (LinearLayout) findViewById(R.id.ll_clean);
         finish_work_btn = (Button) findViewById(R.id.finish_work_btn);
 
+        iv_left = (ImageView) findViewById(R.id.iv_left);
+        iv_right = (ImageView) findViewById(R.id.iv_right);
+        tv_content = (TextView) findViewById(R.id.tv_content);
+
         if(AutoCon.orderType == 4){  //订单类型为美容清洁
             ll_clean.setVisibility(View.VISIBLE);
             ll_other.setVisibility(View.GONE);
-            //TODO
+
+            iv_left.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String percent = tv_content.getText().toString().trim();
+                    try{
+                        int work_percent = Integer.parseInt(percent) - 1;
+                        tv_content.setText(String.valueOf(work_percent));
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            });
+            iv_right.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String percent = tv_content.getText().toString().trim();
+                    try{
+                        int work_percent = Integer.parseInt(percent) + 1;
+                        tv_content.setText(String.valueOf(work_percent));
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            });
         }else{
             ll_clean.setVisibility(View.GONE);
             ll_other.setVisibility(View.VISIBLE);
 
-            mAdapter = new PictureGridAdapter(this,MAX_PICS);
-            gv_single_pic.setAdapter(mAdapter);
-            replaceFragment(FiveCarRadioFragment.class);  //默认是五座车的Fragment
-
-            gv_single_pic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Log.i("test","position===>"+position+","+"count===>"+mAdapter.getCount());
-                    if(position == mAdapter.getCount()-1 && !mAdapter.isReachMax()){
-                        if(tempDir==null){
-                            tempDir = new File(SDCardUtils.getGatherDir());
-                            carPhotoUri = Uri.fromFile(new File(tempDir,"car_photo.jpeg"));
-                        }
-                        capture(CAR_PHOTO,carPhotoUri);
-                    }
-                }
-            });
             rg_tab.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup roup, int checkedId) {
@@ -149,19 +197,37 @@ public class WorkFinishActivity extends Activity implements BaseStandardFragment
                     }
                 }
             });
-
-            finish_work_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(NetWorkHelper.isNetworkAvailable(context)){
-                        submitFinishWorkInfo();
-                    }else{
-                        T.show(context,context.getString(R.string.no_network_error));
-                        return;
-                    }
-                }
-            });
         }
+
+        mAdapter = new PictureGridAdapter(this,MAX_PICS);
+        gv_single_pic.setAdapter(mAdapter);
+        replaceFragment(FiveCarRadioFragment.class);  //默认是五座车的Fragment
+
+        gv_single_pic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.i("test","position===>"+position+","+"count===>"+mAdapter.getCount());
+                if(position == mAdapter.getCount()-1 && !mAdapter.isReachMax()){
+                    if(tempDir==null){
+                        tempDir = new File(SDCardUtils.getGatherDir());
+                        carPhotoUri = Uri.fromFile(new File(tempDir,"car_photo.jpeg"));
+                    }
+                    capture(CAR_PHOTO,carPhotoUri);
+                }
+            }
+        });
+
+        finish_work_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(NetWorkHelper.isNetworkAvailable(context)){
+                    submitFinishWorkInfo();
+                }else{
+                    T.show(context,context.getString(R.string.no_network_error));
+                    return;
+                }
+            }
+        });
     }
 
     private <T> void replaceFragment(Class<T> cls){
@@ -208,6 +274,27 @@ public class WorkFinishActivity extends Activity implements BaseStandardFragment
         BasicNameValuePair bv_afterPhotos = new BasicNameValuePair("afterPhotos",urls);
 
         if(AutoCon.orderType==4){  //美容清洁
+            String percent = tv_content.getText().toString().trim();
+            int work_percent = Integer.parseInt(percent);
+            double per = ((double) work_percent)/100.0;  //确保浮点类型
+            BasicNameValuePair bv_work_percent = new BasicNameValuePair("percent",String.valueOf(per));
+
+            Http.getInstance().postTaskToken(NetURL.WORK_FINISH_URL, FinishWorkEntity.class, new OnResult() {
+                @Override
+                public void onResult(Object entity) {
+                    if(entity == null){
+                        T.show(context,context.getString(R.string.operate_failed_tips));
+                        return;
+                    }
+                    FinishWorkEntity finishWorkEntity = (FinishWorkEntity)entity;
+                    if(finishWorkEntity.isResult()){
+                        //TODO 跳转页面
+                        T.show(context,"orderId===>"+finishWorkEntity.getData().getOrderId());
+                    }else{
+                        T.show(context,finishWorkEntity.getMessage());
+                    }
+                }
+            },bv_orderId,bv_afterPhotos,bv_work_percent);
 
         }else{
             BasicNameValuePair bv_carSeat = null;
@@ -289,7 +376,12 @@ public class WorkFinishActivity extends Activity implements BaseStandardFragment
                     BitmapHelper.saveBitmap(uri,bitmap,false);
 
                     //TODO 上传压缩后的图片
-                    uploadCarPhoto(uri);
+                    if(NetWorkHelper.isNetworkAvailable(context)){
+                        uploadCarPhoto(uri);
+                    }else{
+                        T.show(context,context.getString(R.string.no_network_tips));
+                        return;
+                    }
                 }catch (Exception e) {
                     e.printStackTrace();
                 }
