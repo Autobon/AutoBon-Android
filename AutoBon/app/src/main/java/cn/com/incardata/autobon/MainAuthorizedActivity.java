@@ -32,6 +32,7 @@ import cn.com.incardata.http.response.ListUnfinishedEntity;
 import cn.com.incardata.http.response.OrderInfo_Construction;
 import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.http.response.TakeupEntity;
+import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.DateCompute;
 import cn.com.incardata.utils.T;
 import cn.com.incardata.view.PullToRefreshView;
@@ -131,7 +132,6 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
                 getpageList(++page);
             }
         });
-
         getpageList(1);
     }
 
@@ -146,11 +146,12 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
 
         if (construction == null){
             Intent intent = new Intent(this, OrderReceiveActivity.class);
-            intent.putExtra("OrderInfo", orderInfo);
+            intent.putExtra(AutoCon.ORDER_INFO, orderInfo);
             intent.putExtra(OrderReceiveActivity.IsLocalData, true);
             startActivity(intent);
         }else if (construction.getSigninTime() == null){
             Intent intent = new Intent(this, WorkSignInActivity.class);
+            intent.putExtra(AutoCon.ORDER_INFO, orderInfo);
             startActivity(intent);
         }else if (construction.getBeforePhotos() == null){
             //进入工作前照片上传
@@ -170,6 +171,7 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
                 mPull.loadedCompleted();
                 if (entity == null){
                     T.show(getContext(), R.string.loading_data_failure);
+                    isRefresh = false;
                     return;
                 }
                 if (entity instanceof ListUnfinishedEntity){
@@ -177,14 +179,13 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
                     if (list.isResult()){
                         if (isRefresh) {
                             mList.clear();
-                            isRefresh = false;
                         }
                         mList.addAll(list.getData().getList());
                         mAdapter.notifyDataSetChanged();
                     }else {
                         T.show(getContext(), R.string.loading_data_failure);
-                        return;
                     }
+                    isRefresh = false;
                 }
             }
         });
@@ -209,7 +210,7 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
                         isRefresh = true;
                         getpageList(1);
                         Bundle bundle = new Bundle();
-                        bundle.putInt("OrderId", takeup.getData().getId());
+                        bundle.putInt(AutoCon.ORDER_ID, takeup.getData().getId());
                         bundle.putString("OrderNum", takeup.getData().getOrderNum());
                         startActivity(ImmediateSuccessedActivity.class, bundle);
                         return;

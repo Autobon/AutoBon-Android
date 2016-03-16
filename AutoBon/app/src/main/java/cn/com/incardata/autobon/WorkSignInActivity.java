@@ -31,6 +31,7 @@ import cn.com.incardata.http.Http;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.http.OnResult;
+import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.http.response.ReportLocationEntity;
 import cn.com.incardata.http.response.SignInEntity;
 import cn.com.incardata.utils.AutoCon;
@@ -44,6 +45,7 @@ import cn.com.incardata.utils.T;
  * 工作签到
  */
 public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnClickListener{
+    private static final int SIGN = 100;//允许签到距离
     private TextView tv_day;
     private Context context;
     private Button sign_in_btn;
@@ -57,6 +59,8 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
     protected static String[] windowInfo;  //窗体信息记录
 
     private int count;  //计数单位
+    private OrderInfo_Data orderInfo;
+    private boolean isSign = false;//是否可以签到
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +70,14 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
         initView();
         initData();
         setListener();
+        //data
+        orderInfo = getIntent().getParcelableExtra(AutoCon.ORDER_INFO);
+        try {
+            mLatLng = new LatLng(Double.parseDouble(orderInfo.getPositionLat()), Double.parseDouble(orderInfo.getPositionLon()));
+            mAddress = orderInfo.getCreatorName();
+        }catch(NumberFormatException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -175,10 +187,15 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
      * 签到
      */
     public void signIn(){
+        if (!isSign){
+            T.show(this, "到达工作地点，才能签到");
+            return;
+        }
+
         List<BasicNameValuePair> bvList = new ArrayList<BasicNameValuePair>();
         BasicNameValuePair bv_one = new BasicNameValuePair("positionLon",String.valueOf(latLngArray[0].longitude)); //经度
         BasicNameValuePair bv_two = new BasicNameValuePair("positionLat",String.valueOf(latLngArray[0].latitude)); //纬度
-        BasicNameValuePair bv_three = new BasicNameValuePair("orderId",String.valueOf(AutoCon.orderId));  //订单id
+        BasicNameValuePair bv_three = new BasicNameValuePair("orderId",String.valueOf(orderInfo.getId()));  //订单id
 
         bvList.add(bv_one);
         bvList.add(bv_two);
@@ -275,10 +292,11 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
                     double distance = BaiduMapUtil.getDistance(latLngArray[0],mLatLng); //单位为m
 
                     if(sign_in_btn!=null){  //签到界面有提示框,并且改变Button样式
-                        if(Math.abs(distance)<=20){  //到达(有误差)
+                        if(Math.abs(distance)<=SIGN){  //到达(有误差)
                             tv_distance.setText(R.string.arrive_text);
                             sign_in_btn.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.default_btn));  //兼容api14
                             sign_in_btn.setTextColor(context.getResources().getColor(android.R.color.white));
+                            isSign = true;
                         }else{
                             //Toast toast = Toast.makeText(context.getApplicationContext(),context.getString(R.string.not_arrive_text),Toast.LENGTH_LONG);
                             //toast.setGravity(Gravity.CENTER,0,0);

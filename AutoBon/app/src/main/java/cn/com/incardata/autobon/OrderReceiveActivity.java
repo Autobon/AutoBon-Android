@@ -23,6 +23,7 @@ import cn.com.incardata.http.response.MyInfo_Data;
 import cn.com.incardata.http.response.OrderInfoEntity;
 import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.http.response.StartWorkEntity;
+import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
 
@@ -67,10 +68,10 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
         super.onStart();
         if (isFirst) {
             if (isLocalData){
-                orderInfo = getIntent().getParcelableExtra("OrderInfo");
+                orderInfo = getIntent().getParcelableExtra(AutoCon.ORDER_INFO);
                 initializeData();
             }else {
-                getDataFromServer(getIntent().getIntExtra("OrderId", -1));
+                getDataFromServer(getIntent().getIntExtra(AutoCon.ORDER_ID, -1));
             }
             isFirst = false;
         }
@@ -121,13 +122,13 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
                 MyInfo_Data tech = orderInfo.getMainTech();
                 if (ActionType.SEND_INVITATION.equals(orderInfo.getStatus())){//待确认
                     Intent intent = new Intent(this , InvitationActivity.class);
-                    intent.putExtra("OrderInfo", orderInfo);
+                    intent.putExtra(AutoCon.ORDER_INFO, orderInfo);
                     startActivity(intent);
                     finish();
                 }else if (ActionType.INVITATION_ACCEPTED.equals(orderInfo.getStatus())){//已接单
                     showScheme(3);
                     tv_username.setText(tech.getName());
-                    accept_order.setText(R.string.send_invitation);
+                    accept_order.setText(R.string.receiver_text);
                 }
             }
         }
@@ -166,7 +167,7 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
         switch (v.getId()){
             case R.id.tv_add_contact:
                 intent = new Intent(this,AddContactActivity.class);
-                intent.putExtra("OrderId", orderInfo.getId());
+                intent.putExtra(AutoCon.ORDER_ID, orderInfo.getId());
                 startActivityForResult(intent,ADD_CONTACT_CODE);
                 break;
             case R.id.iv_back:
@@ -174,7 +175,7 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
                 break;
             case R.id.begin_work:
                 //发起开始工作请求
-                startWork();
+                startWork(false);
                 break;
         }
     }
@@ -224,10 +225,13 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
     public void showTechnician(String username){
         showScheme(2);
         tv_username.setText(username);
+        accept_order.setText(R.string.send_invitation);
     }
 
-    private void startWork(){
+    private void startWork(boolean isForce){
         BasicNameValuePair bv_orderId = new BasicNameValuePair("orderId", String.valueOf(orderInfo.getId()));
+        BasicNameValuePair ignoreInvitation = new BasicNameValuePair("ignoreInvitation", String.valueOf(isForce));
+
         Http.getInstance().postTaskToken(NetURL.START_WORK, StartWorkEntity.class, new OnResult() {
             @Override
             public void onResult(Object entity) {
@@ -238,6 +242,7 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
                 StartWorkEntity startWorkEntity = (StartWorkEntity) entity;
                 if(startWorkEntity.isResult()){  //成功后跳转签到界面
                     Intent intent = new Intent(getContext(), WorkSignInActivity.class);
+                    intent.putExtra(AutoCon.ORDER_INFO, orderInfo);
 //                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     finish();
@@ -251,11 +256,11 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
                     T.show(getContext(), startWorkEntity.getMessage());
                 }
             }
-        },bv_orderId);
+        },bv_orderId, ignoreInvitation);
     }
 
     @Override
     public void onForce() {
-
+       startWork(true);
     }
 }

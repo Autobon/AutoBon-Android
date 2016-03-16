@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.DateCompute;
 
 public class ImmediateSuccessedActivity extends BaseActivity implements View.OnClickListener{
@@ -63,7 +64,7 @@ public class ImmediateSuccessedActivity extends BaseActivity implements View.OnC
             case R.id.start_work:
                 Intent intent = new Intent(getContext(), OrderReceiveActivity.class);
                 intent.putExtra(OrderReceiveActivity.IsLocalData, false);
-                intent.putExtra("OrderId", bundle.getInt("OrderId"));
+                intent.putExtra(AutoCon.ORDER_ID, bundle.getInt(AutoCon.ORDER_ID));
                 startActivity(intent);
                 finish();
                 break;

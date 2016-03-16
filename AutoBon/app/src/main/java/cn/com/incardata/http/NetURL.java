@@ -32,7 +32,7 @@ public class NetURL {
 	/** 开始工作 */
 	public static final String START_WORK = BASE_URL + "technician/construct/start";
 	/** 签到*/
-	public static final String SIGN_IN_URL = BASE_URL + "technician/order/signIn";
+	public static final String SIGN_IN_URL = BASE_URL + "technician/construct/signIn";
 
 	/** 更新个推ID */
 	public static final String PUSH_ID = BASE_URL + "technician/pushId";

@@ -42,7 +42,19 @@ public class ForceStartWorkDialogFragment extends DialogFragment {
     }
 
     private void initViews() {
-
+        rootView.findViewById(R.id.continue_wait).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+        rootView.findViewById(R.id.force_start).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onForce();
+                dismiss();
+            }
+        });
     }
 
     @Override

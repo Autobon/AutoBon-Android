@@ -147,8 +147,8 @@ public class OrderInfo_Construction implements Parcelable {
         dest.writeInt(this.techId);
         dest.writeString(this.positionLon);
         dest.writeString(this.positionLat);
-        dest.writeLong(this.startTime);
-        dest.writeLong(this.signinTime);
+        dest.writeLong(this.startTime == null ? -1 : this.startTime);
+        dest.writeLong(this.signinTime == null ? -1 : this.signinTime);
         dest.writeLong(this.endTime);
         dest.writeString(this.beforePhotos);
         dest.writeString(this.afterPhotos);
