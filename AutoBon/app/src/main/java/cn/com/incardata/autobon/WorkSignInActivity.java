@@ -135,9 +135,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
                 startActivity(intent);
                 break;
             case R.id.sign_in_btn:
-                //signIn();
-                Intent i = new Intent(this,WorkBeforeActivity.class);
-                startActivity(i);
+                signIn();
                 break;
         }
     }

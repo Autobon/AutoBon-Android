@@ -1,6 +1,5 @@
 package cn.com.incardata.autobon;
 
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -31,7 +30,6 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 
 import cn.com.incardata.adapter.PictureGridAdapter;
@@ -57,19 +55,21 @@ import cn.com.incardata.utils.T;
 /**
  * Created by zhangming on 2016/3/11.
  */
-public class WorkFinishActivity extends Activity implements BaseStandardFragment.OnFragmentInteractionListener{
+public class WorkFinishActivity extends BaseActivity implements BaseStandardFragment.OnFragmentInteractionListener{
     private GridView gv_single_pic;
     private RadioGroup rg_tab;
     private TextView tv_day,tv_has_time,tv_content;
     private PictureGridAdapter mAdapter;
     private LinearLayout ll_other,ll_clean;
     private Button finish_work_btn;
-    private ImageView iv_left,iv_right;
+    private ImageView iv_left,iv_right,iv_my_info,iv_enter_more_page;
     private Context context;
     private static final int MAX_PICS = 6; //图片数上限
 
+    private File tempFile;
+    private String fileName = "";  //my_picture目录
     private File tempDir;
-    private Uri carPhotoUri;
+    private Uri carPhotoUri;  //temp目录
     private static final int CAR_PHOTO = 1;
     private static final int COUNT_TIME_FLAG = 1;
 
@@ -80,6 +80,7 @@ public class WorkFinishActivity extends Activity implements BaseStandardFragment
         super.onCreate(savedInstanceState);
         setContentView(R.layout.work_finish_activity);
         initView();
+        initFile();
         new Thread(new MyThread()).start();
     }
 
@@ -151,6 +152,9 @@ public class WorkFinishActivity extends Activity implements BaseStandardFragment
         iv_left = (ImageView) findViewById(R.id.iv_left);
         iv_right = (ImageView) findViewById(R.id.iv_right);
         tv_content = (TextView) findViewById(R.id.tv_content);
+
+        iv_my_info = (ImageView) findViewById(R.id.iv_my_info);
+        iv_enter_more_page = (ImageView) findViewById(R.id.iv_enter_more_page);
 
         if(AutoCon.orderType == 4){  //订单类型为美容清洁
             ll_clean.setVisibility(View.VISIBLE);
@@ -228,6 +232,36 @@ public class WorkFinishActivity extends Activity implements BaseStandardFragment
                 }
             }
         });
+
+        iv_my_info.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                startActivity(MyInfoActivity.class);
+            }
+        });
+
+        iv_enter_more_page.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                startActivity(MoreActivity.class);
+            }
+        });
+    }
+
+    private void initFile() {
+        if(fileName.equals("")) {
+            if(SDCardUtils.isExistSDCard()) {
+                String path = SDCardUtils.getGatherDir() + File.separator + "my_picture";
+                File dir = new File(path);
+                if(!dir.exists()){
+                    dir.mkdirs();
+                }
+                fileName = path + File.separator +"my_photo.jpg";
+                tempFile = new File(fileName);
+            } else {
+                T.show(this,getString(R.string.uninstalled_sdcard));
+            }
+        }
     }
 
     private <T> void replaceFragment(Class<T> cls){
@@ -355,32 +389,18 @@ public class WorkFinishActivity extends Activity implements BaseStandardFragment
         switch (requestCode) {
             case CAR_PHOTO:
                 try{
-                    //Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(carPhotoUri));
-                    //bitmap = BitmapHelper.resizeImage(bitmap, 0.5f);
-                    //BitmapHelper.saveBitmap(carPhotoUri, bitmap, false);
-                    //Log.i("test","carPhotoUri_path===>"+carPhotoUri.getPath());
-
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inJustDecodeBounds = true;  // 先设置为TRUE不加载到内存中，但可以得到宽和高
-                    Bitmap bitmap = BitmapFactory.decodeFile(carPhotoUri.getPath(),options);
-                    options.inJustDecodeBounds = false;
-                    int be = (int) (options.outHeight / (float) 200);  // 计算缩放比
-                    if (be <= 0){
-                        be = 1;
-                    }
-                    options.inSampleSize = be;
-                    bitmap = BitmapFactory.decodeFile(carPhotoUri.getPath(), options);
+                    Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(carPhotoUri));
                     bitmap = BitmapHelper.resizeImage(bitmap, 0.5f);
-                    Uri uri = Uri.fromFile(new File(tempDir,new Random().nextInt(10000)+".jpeg")); //产生不同的uri
-                    Log.i("test","uri===>"+uri.getPath());
-                    BitmapHelper.saveBitmap(uri,bitmap,false);
+                    Uri uri = Uri.fromFile(tempFile);
+                    boolean isSuccess = BitmapHelper.saveBitmap(uri, bitmap, false);
 
-                    //TODO 上传压缩后的图片
-                    if(NetWorkHelper.isNetworkAvailable(context)){
-                        uploadCarPhoto(uri);
-                    }else{
-                        T.show(context,context.getString(R.string.no_network_tips));
-                        return;
+                    if(isSuccess){  //成功保存后上传压缩后的图片
+                        if(NetWorkHelper.isNetworkAvailable(context)){
+                            uploadCarPhoto(uri);
+                        }else{
+                            T.show(context,context.getString(R.string.no_network_tips));
+                            return;
+                        }
                     }
                 }catch (Exception e) {
                     e.printStackTrace();
@@ -414,7 +434,7 @@ public class WorkFinishActivity extends Activity implements BaseStandardFragment
                 }else {
                     IdPhotoEntity idPhotoEntity = JSON.parseObject(s, IdPhotoEntity.class);
                     if (idPhotoEntity.isResult()){
-                        Bitmap bitmap = BitmapFactory.decodeFile(carCompressUri.getPath());
+                        Bitmap bitmap = BitmapFactory.decodeFile(Uri.fromFile(tempFile).getPath());
                         mAdapter.addPic(bitmap,idPhotoEntity.getData());  //添加图片
                         Log.i("test","上传压缩后的图片成功,width===>"+bitmap.getWidth()+",height===>"+bitmap.getHeight()
                                 +",size===>"+(bitmap.getByteCount()/1024)+"KB"+",url===>"+idPhotoEntity.getData());
@@ -430,9 +450,17 @@ public class WorkFinishActivity extends Activity implements BaseStandardFragment
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i("test","onDestroy...");
+        if(tempFile!=null && tempFile.exists()){
+            File dir = tempFile.getParentFile();
+            Log.i("test","dir===>"+dir.getPath());
+            tempFile.delete();
+            tempFile = null;
+            if(dir.exists()){
+                dir.delete();
+            }
+        }
         if(tempDir!=null && tempDir.exists()){
-            SDCardUtils.deleteAllFileInFolder(tempDir);
+            SDCardUtils.deleteAllFileInFolder(tempDir);  //销毁临时目录及文件
         }
         isRunning = false; //关闭计时线程
     }
