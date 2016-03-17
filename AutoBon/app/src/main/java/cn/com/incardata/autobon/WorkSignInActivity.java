@@ -210,7 +210,11 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
                 }
                 SignInEntity signInEntity = (SignInEntity) entity;
                 if(signInEntity.isResult()){
-                    T.show(context,context.getString(R.string.sign_in_success));
+//                    T.show(context,context.getString(R.string.sign_in_success));
+                    Intent intent = new Intent(getContext(), WorkBeforeActivity.class);
+                    intent.putExtra(AutoCon.ORDER_INFO, orderInfo);
+                    startActivity(intent);
+                    finish();
                 }else{
                     T.show(context,signInEntity.getMessage());
                 }

@@ -215,10 +215,10 @@
                     android:layout_width="@dimen/dp120"
                     android:layout_height="match_parent"
                     android:layout_toRightOf="@id/iv_left"
-                    android:background="@mipmap/ic_launcher"
+                    android:background="@drawable/work_content"
                     android:gravity="center"
-                    android:text="70"
                     android:textSize="@dimen/sp15"
+                    android:text="00"
                     android:textColor="@color/darkgray"/>
                 <ImageView
                     android:id="@+id/iv_right"

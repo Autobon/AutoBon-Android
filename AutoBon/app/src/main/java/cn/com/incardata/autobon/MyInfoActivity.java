@@ -27,11 +27,10 @@ import cn.com.incardata.view.CircleImageView;
 public class MyInfoActivity extends BaseActivity implements View.OnClickListener{
     private Context context;
     private RatingBar mRatingbar;
-    private TextView tv_rate,tv_logout,tv_cost,tv_good_rate,tv_login_username;
-    private LinearLayout ll_my_package,ll_modify_pwd,ll_cost,ll_order_num;
+    private TextView tv_rate,tv_logout,tv_cost,tv_login_username,tv_order_num,tv_my_order_num;
+    private LinearLayout ll_modify_pwd,ll_cost,ll_order_num;
     private ImageView iv_back;
     private CircleImageView iv_circle;
-    private boolean isVisible = false;
 
     private String name;  //技师姓名
     private String bank;
@@ -58,13 +57,13 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         tv_rate = (TextView) findViewById(R.id.tv_rate);
         tv_logout = (TextView) findViewById(R.id.tv_logout);
         tv_cost = (TextView) findViewById(R.id.tv_cost);
-        ll_my_package = (LinearLayout) findViewById(R.id.ll_my_package);
+        tv_order_num = (TextView) findViewById(R.id.order_num);
+        tv_my_order_num = (TextView) findViewById(R.id.tv_my_order_num);
         ll_modify_pwd = (LinearLayout) findViewById(R.id.ll_modify_pwd);
         ll_cost = (LinearLayout) findViewById(R.id.ll_cost);
         ll_order_num = (LinearLayout) findViewById(R.id.ll_order_num);
         iv_back = (ImageView) findViewById(R.id.iv_back);
         iv_circle = (CircleImageView) findViewById(R.id.iv_circle);
-        tv_good_rate = (TextView) findViewById(R.id.tv_good_rate);
         tv_login_username = (TextView)findViewById(R.id.tv_login_username);
     }
 
@@ -95,9 +94,36 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
 
                     String avatar = data.getAvatar(); //技师头像url尾部
                     name = data.getName(); //技师姓名
-                    int star = data.getStar();  //星级
+                    String star = data.getStarRate();  //星级
                     bank = data.getBank(); //银行字典
                     bankCardNumber = data.getBankCardNo(); //银行卡号
+
+                    if(StringUtil.isNotEmpty(data.getTotalOrders())){
+                        try{
+                            int totalOrders = Integer.parseInt(data.getTotalOrders());  //订单数
+                            tv_order_num.setText(String.valueOf(totalOrders));
+                        }catch (NumberFormatException e){
+                            tv_order_num.setText("0");
+                        }
+                    }
+
+                    if(StringUtil.isNotEmpty(data.getTotalOrders())){
+                        try{
+                            double balance = Double.parseDouble(data.getBalance());  //余额
+                            tv_cost.setText(String.valueOf(balance));
+                        }catch (NumberFormatException e){
+                            tv_cost.setText("0");
+                        }
+                    }
+
+                    if(StringUtil.isNotEmpty(data.getUnpaidOrders())){
+                        try{
+                            int unpadOrders = Integer.parseInt(data.getUnpaidOrders());  //账单数
+                            tv_my_order_num.setText(String.valueOf(unpadOrders));
+                        }catch (NumberFormatException e){
+                            tv_my_order_num.setText("0");
+                        }
+                    }
 
                     if(StringUtil.isNotEmpty(avatar)){
                         ImageLoaderCache.getInstance().loader(NetURL.IP_PORT+avatar,iv_circle);
@@ -105,9 +131,14 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
                     if(StringUtil.isNotEmpty(name)){
                         tv_login_username.setText(name);
                     }
-                    mRatingbar.setRating(star);
-                    tv_rate.setText(String.valueOf(star));
-                    tv_good_rate.setText((star/5)*100+"%");
+                    try {
+                        float starNum = Float.parseFloat(star);
+                        mRatingbar.setRating((int)Math.floor(starNum));  //取整设置星级
+                        tv_rate.setText(String.valueOf(DecimalUtil.FloatDecimal1(starNum)));  //设置保留一位小数
+                    }catch (Exception e){
+                        mRatingbar.setRating(0);
+                        tv_rate.setText("0");
+                    }
                 }
             });
         }else{
