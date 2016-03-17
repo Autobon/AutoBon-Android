@@ -68,21 +68,20 @@ public class MyContactAdapter extends BaseAdapter{
         }else{
             holder = (ViewHolder)convertView.getTag();
         }
-        if(getCount() > 0){
-            AddContact_data_list data = mList.get(position);
-            if(data.getAvatar()!=null){
-                String imageUrl = NetURL.IP_PORT+data.getAvatar();
-                Log.i("test","imageUrl=======>"+imageUrl);
-                ImageLoaderCache.getInstance().loader(imageUrl,holder.circleImageView);
-            }
-            holder.tv_username.setText(data.getName());
-            holder.tv_phone.setText(data.getPhone());
-            technicianName = data.getName();
-            technicianId = data.getId();
+        final AddContact_data_list data = mList.get(position);
+        if(data.getAvatar()!=null){
+            String imageUrl = NetURL.IP_PORT+data.getAvatar();
+            Log.i("test","imageUrl=======>"+imageUrl);
+            ImageLoaderCache.getInstance().loader(imageUrl,holder.circleImageView);
         }
+        holder.tv_username.setText(data.getName());
+        holder.tv_phone.setText(data.getPhone());
+
         holder.btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                technicianName = data.getName();
+                technicianId = data.getId();
                 addTechnician(); //添加技师
             }
         });

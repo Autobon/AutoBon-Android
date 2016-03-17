@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
+ * 技师信息
  * Created by zhangming on 2016/2/29.
  */
 public class MyInfo_Data implements Parcelable {

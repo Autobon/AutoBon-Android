@@ -96,9 +96,6 @@
     <string name="send_invitation">待确认</string>
     <string name="start_work_failed">开始工作失败</string>
     <string name="request_failed">请求失败</string>
-    <string name="reject">拒绝</string>
-    <string name="accept">接受</string>
-
 
     <!--添加合作人-->
     <string name="add_contact_failed">添加失败</string>
@@ -247,4 +244,13 @@
     <string name="no_response_to_partners">合作人暂无回应</string>
     <string name="continue_wait">继续等待</string>
     <string name="force_start">强制开始</string>
+    <string name="arrival_to_sign">到达工作地点才能签到</string>
+
+    <!-- 订单信息 -->
+    <string name="reject">拒绝</string>
+    <string name="accept">接受</string>
+    <string name="order_info">订单信息</string>
+    <string name="main_technician">主技师：</string>
+    <string name="rejected">已拒绝</string>
+    <string name="accepted">已接受</string>
 </resources>

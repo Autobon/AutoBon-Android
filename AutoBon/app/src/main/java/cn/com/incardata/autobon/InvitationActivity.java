@@ -20,10 +20,18 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.model.LatLng;
 
+import org.apache.http.message.BasicNameValuePair;
+
 import cn.com.incardata.fragment.BaiduMapFragment;
+import cn.com.incardata.http.Http;
 import cn.com.incardata.http.ImageLoaderCache;
+import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.NetWorkHelper;
+import cn.com.incardata.http.OnResult;
+import cn.com.incardata.http.response.InvitationEntity;
 import cn.com.incardata.http.response.Order;
+import cn.com.incardata.http.response.OrderInfo_Data;
+import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.BaiduMapUtil;
 import cn.com.incardata.utils.DateCompute;
 import cn.com.incardata.utils.L;
@@ -32,7 +40,7 @@ import cn.com.incardata.utils.T;
 /**
  * 被邀请确认
  */
-public class InvitationActivity extends BaseActivity {
+public class InvitationActivity extends BaseActivity implements View.OnClickListener {
 
     private final static String TAG = "InvitationActivity";
     protected BaiduMap baiduMap;
@@ -47,13 +55,14 @@ public class InvitationActivity extends BaseActivity {
     private String shopName;
 
     private BDLocationListener myBDLocationListener;
-    private View rootView;
     private TextView distance;
     private ImageView indentImage;
     private TextView indentText;
     private TextView workTime;
     private TextView workNotes;
+    private TextView mainTech;
 
+    private OrderInfo_Data orderInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,12 +100,15 @@ public class InvitationActivity extends BaseActivity {
     }
 
     private void initViews() {
-        mMapView = (MapView) rootView.findViewById(R.id.bdmapView);
-        distance = (TextView) rootView.findViewById(R.id.distance);
-        indentImage = (ImageView) rootView.findViewById(R.id.indent_image);
-        indentText = (TextView) rootView.findViewById(R.id.indent_text);
-        workTime = (TextView) rootView.findViewById(R.id.work_time);
-        workNotes = (TextView) rootView.findViewById(R.id.work_notes);
+        orderInfo = getIntent().getParcelableExtra(AutoCon.ORDER_INFO);
+
+        mainTech = (TextView) findViewById(R.id.main_tech);
+        mMapView = (MapView) findViewById(R.id.bdmapView);
+        distance = (TextView) findViewById(R.id.distance);
+        indentImage = (ImageView) findViewById(R.id.indent_image);
+        indentText = (TextView) findViewById(R.id.indent_text);
+        workTime = (TextView) findViewById(R.id.work_time);
+        workNotes = (TextView) findViewById(R.id.work_notes);
 
         baiduMap = mMapView.getMap();  //管理具体的某一个MapView对象,缩放,旋转,平移
         MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.zoomTo(BaiduMapUtil.defaultLevel);  //默认级别12
@@ -107,13 +119,19 @@ public class InvitationActivity extends BaseActivity {
         mMapView.showScaleControl(true);  //默认是true,显示标尺
 
         BaiduMapUtil.initData();
-        setBaseData();
         setListener();
+
+        if (orderInfo == null){
+            T.show(this , R.string.loading_data_failure);
+            return;
+        }
+        mainTech.setText(orderInfo.getMainTech().getName());
+        setData(orderInfo.getPositionLon(), orderInfo.getPositionLat(), orderInfo.getPhoto(), orderInfo.getOrderTime(), orderInfo.getRemark(), orderInfo.getCreatorName());
     }
 
     private void setBaseData(){
         if (!TextUtils.isEmpty(photoUrl)){
-            ImageLoaderCache.getInstance().loader(photoUrl, indentImage, false);
+            ImageLoaderCache.getInstance().loader(photoUrl, indentImage, false, R.mipmap.load_image_failed);
             indentText.setVisibility(View.GONE);
         }
         if (workTime != null){
@@ -143,6 +161,10 @@ public class InvitationActivity extends BaseActivity {
                 BaiduMapUtil.locate(baiduMap, BaiduMapFragment.scanTime, new LocationClient(getContext()),myBDLocationListener);
             }
         });
+
+        findViewById(R.id.iv_back).setOnClickListener(this);
+        findViewById(R.id.reject).setOnClickListener(this);
+        findViewById(R.id.accept).setOnClickListener(this);
     }
 
     @Override
@@ -202,4 +224,43 @@ public class InvitationActivity extends BaseActivity {
             }
         }
     };
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.iv_back:
+                finish();
+                break;
+            case R.id.reject:
+                postInvitation(false);
+                break;
+            case R.id.accept:
+                postInvitation(true);
+                break;
+        }
+    }
+
+   private void postInvitation(final boolean accepted){
+       Http.getInstance().postTaskToken(NetURL.getInvitation(orderInfo.getId()), InvitationEntity.class, new OnResult() {
+           @Override
+           public void onResult(Object entity) {
+                if (entity == null){
+                    T.show(getContext(), R.string.operate_failed_agen);
+                    return;
+                }
+               if (entity instanceof InvitationEntity){
+                   if (((InvitationEntity) entity).isResult()){
+                       if (accepted){
+                           T.show(getContext(), R.string.accepted);
+                       }else {
+                           T.show(getContext(), R.string.rejected);
+                       }
+                       finish();
+                   }else {
+                       T.show(getContext(), ((InvitationEntity) entity).getMessage());
+                   }
+               }
+           }
+       }, new BasicNameValuePair("accepted", String.valueOf(accepted)));
+    }
 }

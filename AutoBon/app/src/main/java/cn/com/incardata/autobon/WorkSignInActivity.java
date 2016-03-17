@@ -45,7 +45,7 @@ import cn.com.incardata.utils.T;
  * 工作签到
  */
 public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnClickListener{
-    private static final int SIGN = 100;//允许签到距离
+    private static final int SIGN = 100;//允许签到距离m
     private TextView tv_day;
     private Context context;
     private Button sign_in_btn;
@@ -130,7 +130,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
             public void onMapLoaded() {
                 registerMyLocation();
                 //BaiduMapUtil.closeLocationClient(baiduMap,mLocationClient);
-                //myBDLocationListener = new BaiduMapUtil.MyListener(context,baiduMap,tv_distance,mLatLng,mAddress,sign_in_btn);
+                myBDLocationListener = new BaiduMapUtil.MyListener(context,baiduMap,tv_distance,mLatLng,mAddress,sign_in_btn);
                 //tv_distance为下方显示距离的TextView控件,mAddress为另一个点的位置,定位扫描时间为5s,true代表是签到界面
                 //BaiduMapUtil.locate(baiduMap,scanTime, mLocationClient,myBDLocationListener);
             }
@@ -188,7 +188,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
      */
     public void signIn(){
         if (!isSign){
-            T.show(this, "到达工作地点，才能签到");
+            T.show(this, R.string.arrival_to_sign);
             return;
         }
 
@@ -210,7 +210,10 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
                 }
                 SignInEntity signInEntity = (SignInEntity) entity;
                 if(signInEntity.isResult()){
-                    T.show(context,context.getString(R.string.sign_in_success));
+                    Intent intent = new Intent(getContext(), WorkBeforeActivity.class);
+                    intent.putExtra(AutoCon.ORDER_INFO, orderInfo);
+                    startActivity(intent);
+                    finish();
                 }else{
                     T.show(context,signInEntity.getMessage());
                 }

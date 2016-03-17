@@ -142,6 +142,12 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
             construction = orderInfo.getMainConstruct();
         }else {
             construction = orderInfo.getSecondConstruct();
+            if (orderInfo.getSecondTech() != null && ActionType.SEND_INVITATION.equals(orderInfo.getStatus())){
+                Intent intent = new Intent(this, InvitationActivity.class);
+                intent.putExtra(AutoCon.ORDER_INFO, orderInfo);
+                startActivity(intent);
+                return;
+            }
         }
 
         if (construction == null){
@@ -156,10 +162,12 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
         }else if (construction.getBeforePhotos() == null){
             //进入工作前照片上传
             Intent intent = new Intent(this, WorkBeforeActivity.class);
+            intent.putExtra(AutoCon.ORDER_INFO, orderInfo);
             startActivity(intent);
         }else if (construction.getAfterPhotos() == null){
             //进入工作后照片上传
             Intent intent = new Intent(this, WorkFinishActivity.class);
+            intent.putExtra(AutoCon.ORDER_INFO, orderInfo);
             startActivity(intent);
         }
     }
@@ -222,7 +230,7 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
                         T.show(getContext(), R.string.order_canceled);
                         return;
                     }else {
-                        T.show(getContext(), R.string.immediate_order_failed);
+                        T.show(getContext(), takeup.getMessage());
                         return;
                     }
                 }

@@ -27,6 +27,7 @@ public class AuthorizationProgressActivity extends BaseActivity implements View.
     private final static int requestCode = 0x11;
     private ImageView iv_back,iv_circle,iv_card_photo;
     private LinearLayout ll_failed_reason;
+    private TextView failedReason;
     private Button btn_change_info;
     private Context context;
     private TextView tv_status,tv_username,tv_id_number,tv_bank_number,tv_bank,tv_skill;
@@ -45,6 +46,7 @@ public class AuthorizationProgressActivity extends BaseActivity implements View.
         iv_circle = (ImageView) findViewById(R.id.iv_circle);
         iv_card_photo = (ImageView) findViewById(R.id.iv_card_photo);
         ll_failed_reason = (LinearLayout)findViewById(R.id.ll_failed_reason);
+        failedReason = (TextView) findViewById(R.id.failed_reason);
         btn_change_info = (Button) findViewById(R.id.btn_change_info);
         tv_status = (TextView) findViewById(R.id.tv_status);
         tv_username = (TextView) findViewById(R.id.tv_username);
@@ -100,6 +102,7 @@ public class AuthorizationProgressActivity extends BaseActivity implements View.
                     }else if("REJECTED".equals(status)){  //审核失败
                         ll_failed_reason.setVisibility(View.VISIBLE);
                         btn_change_info.setVisibility(View.VISIBLE);
+                        failedReason.setText(apEntity.getData().getVerifyMsg());
                         tv_status.setText(context.getString(R.string.authorize_REJECTED));
                     }
                     tv_username.setText(name);
@@ -133,7 +136,8 @@ public class AuthorizationProgressActivity extends BaseActivity implements View.
                 intent.putExtra("idUrl", apData.getIdPhoto());
                 intent.putExtra("bankName", apData.getBank());
                 intent.putExtra("bankNo", apData.getBankCardNo());
-                startActivityForResult(intent, requestCode);
+                startActivity(intent);
+                finish();
                 break;
         }
     }

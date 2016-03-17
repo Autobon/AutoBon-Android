@@ -95,11 +95,7 @@ public class MyApplication extends Application{
     }
 
     public synchronized void setCookie(String autoken){
-        if (autoken == null){
-            cookie = "";
-            return;
-        }
-        cookie = autoken;
+        this.cookie = autoken;
     }
 
     public synchronized String getCookie(){
