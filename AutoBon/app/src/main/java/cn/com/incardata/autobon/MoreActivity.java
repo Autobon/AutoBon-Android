@@ -31,6 +31,7 @@ public class MoreActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void setListener(){
+        iv_back.setOnClickListener(this);
         ll_qulify_cetification.setOnClickListener(this);
         ll_free_training.setOnClickListener(this);
         ll_service_center.setOnClickListener(this);

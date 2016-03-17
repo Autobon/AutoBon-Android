@@ -156,10 +156,12 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
         }else if (construction.getBeforePhotos() == null){
             //进入工作前照片上传
             Intent intent = new Intent(this, WorkBeforeActivity.class);
+            intent.putExtra(AutoCon.ORDER_INFO,orderInfo);
             startActivity(intent);
         }else if (construction.getAfterPhotos() == null){
             //进入工作后照片上传
             Intent intent = new Intent(this, WorkFinishActivity.class);
+            intent.putExtra(AutoCon.ORDER_INFO,orderInfo);
             startActivity(intent);
         }
     }

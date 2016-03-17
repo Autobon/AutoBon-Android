@@ -36,11 +36,11 @@ import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.IdPhotoEntity;
+import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.BitmapHelper;
 import cn.com.incardata.utils.DateCompute;
 import cn.com.incardata.utils.SDCardUtils;
-import cn.com.incardata.utils.SharedPre;
 import cn.com.incardata.utils.T;
 
 /**
@@ -65,6 +65,7 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
     private static final int COUNT_TIME_FLAG = 1;
 
     private boolean isRunning = true;
+    private OrderInfo_Data orderInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +87,7 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
                     int minute = bundle.getInt("minute");
                     int second = bundle.getInt("second");
 
-                    tv_has_time.setText(hour+context.getString(R.string.tv_hour)+
-                            minute+context.getString(R.string.tv_minute)+second+context.getString(R.string.tv_second));
+                    tv_has_time.setText(hour+context.getString(R.string.tv_hour)+minute+context.getString(R.string.tv_minute)+second+context.getString(R.string.tv_second));
                     break;
             }
         }
@@ -103,12 +103,11 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
                     e.printStackTrace();
                 }
 
-                String startWorkTime = SharedPre.getString(context,AutoCon.START_WORK_TIMER);
                 long useTime = 0L;
                 try{
                     long currentTime = System.currentTimeMillis();
-                    useTime = currentTime - Long.parseLong(startWorkTime);
-                    //Log.i("test","currentTime===>"+currentTime+",useTime===>"+useTime);
+                    long startWorkTime = orderInfo.getMainConstruct().getStartTime();
+                    useTime = currentTime - startWorkTime;
                 }catch (Exception e){
                     useTime = 0L;
                     e.printStackTrace();
@@ -131,6 +130,8 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
 
     private void initView(){
         context = this;
+        orderInfo = getIntent().getParcelableExtra(AutoCon.ORDER_INFO);
+
         iv_my_info = (ImageView) findViewById(R.id.iv_my_info);
         iv_enter_more_page =(ImageView) findViewById(R.id.iv_enter_more_page);
         iv_camera = (ImageView) findViewById(R.id.iv_camera);
@@ -229,7 +230,7 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
             T.show(this,getString(R.string.no_pic_tips));
             return;
         }
-        BasicNameValuePair bv_orderId = new BasicNameValuePair("orderId", String.valueOf(AutoCon.orderId));
+        BasicNameValuePair bv_orderId = new BasicNameValuePair("orderId", String.valueOf(orderInfo.getId()));
         Collection<String> colUrls =  picMap.values();
         StringBuilder sb = new StringBuilder();
         Iterator<String> iterator = colUrls.iterator();
@@ -251,6 +252,7 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
                 IdPhotoEntity idPhotoEntity = (IdPhotoEntity) entity;
                 if(idPhotoEntity.isResult()){  //跳转
                     Intent intent = new Intent(context,WorkFinishActivity.class);
+                    intent.putExtra(AutoCon.ORDER_INFO,orderInfo);
                     startActivity(intent);
                     finish();
                 }else{
