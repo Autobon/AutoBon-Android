@@ -130,7 +130,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
             public void onMapLoaded() {
                 registerMyLocation();
                 //BaiduMapUtil.closeLocationClient(baiduMap,mLocationClient);
-                myBDLocationListener = new BaiduMapUtil.MyListener(context,baiduMap,tv_distance,mLatLng,mAddress,sign_in_btn);
+                //myBDLocationListener = new BaiduMapUtil.MyListener(context,baiduMap,tv_distance,mLatLng,mAddress,sign_in_btn);
                 //tv_distance为下方显示距离的TextView控件,mAddress为另一个点的位置,定位扫描时间为5s,true代表是签到界面
                 //BaiduMapUtil.locate(baiduMap,scanTime, mLocationClient,myBDLocationListener);
             }

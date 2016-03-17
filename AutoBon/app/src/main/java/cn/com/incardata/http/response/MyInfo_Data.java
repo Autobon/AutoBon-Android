@@ -24,8 +24,11 @@ public class MyInfo_Data implements Parcelable {
     private long lastLoginAt;
     private String lastLoginIp;
     private long createAt;
-    private int star;
-    private int voteRate;
+    private String starRate;
+    private String balance;
+    private String unpaidOrders;
+    private String totalOrders;
+    private String commentCount;
     private String skill;
     private String pushId;
     private String status;
@@ -142,22 +145,6 @@ public class MyInfo_Data implements Parcelable {
         this.createAt = createAt;
     }
 
-    public int getStar() {
-        return star;
-    }
-
-    public void setStar(int star) {
-        this.star = star;
-    }
-
-    public int getVoteRate() {
-        return voteRate;
-    }
-
-    public void setVoteRate(int voteRate) {
-        this.voteRate = voteRate;
-    }
-
     public String getSkill() {
         return skill;
     }
@@ -198,6 +185,45 @@ public class MyInfo_Data implements Parcelable {
         this.verifyMsg = verifyMsg;
     }
 
+    public String getStarRate() {
+        return starRate;
+    }
+
+    public void setStarRate(String starRate) {
+        this.starRate = starRate;
+    }
+
+    public String getBalance() {
+        return balance;
+    }
+
+    public void setBalance(String balance) {
+        this.balance = balance;
+    }
+
+    public String getUnpaidOrders() {
+        return unpaidOrders;
+    }
+
+    public void setUnpaidOrders(String unpaidOrders) {
+        this.unpaidOrders = unpaidOrders;
+    }
+
+    public String getTotalOrders() {
+        return totalOrders;
+    }
+
+    public void setTotalOrders(String totalOrders) {
+        this.totalOrders = totalOrders;
+    }
+
+    public String getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(String commentCount) {
+        this.commentCount = commentCount;
+    }
 
     @Override
     public int describeContents() {
@@ -222,8 +248,11 @@ public class MyInfo_Data implements Parcelable {
         dest.writeLong(this.lastLoginAt);
         dest.writeString(this.lastLoginIp);
         dest.writeLong(this.createAt);
-        dest.writeInt(this.star);
-        dest.writeInt(this.voteRate);
+        dest.writeString(this.starRate);
+        dest.writeString(this.balance);
+        dest.writeString(this.unpaidOrders);
+        dest.writeString(this.totalOrders);
+        dest.writeString(this.commentCount);
         dest.writeString(this.skill);
         dest.writeString(this.pushId);
         dest.writeString(this.status);
@@ -249,8 +278,11 @@ public class MyInfo_Data implements Parcelable {
         this.lastLoginAt = in.readLong();
         this.lastLoginIp = in.readString();
         this.createAt = in.readLong();
-        this.star = in.readInt();
-        this.voteRate = in.readInt();
+        this.starRate = in.readString();
+        this.balance = in.readString();
+        this.unpaidOrders  = in.readString();
+        this.totalOrders = in.readString();
+        this.commentCount = in.readString();
         this.skill = in.readString();
         this.pushId = in.readString();
         this.status = in.readString();

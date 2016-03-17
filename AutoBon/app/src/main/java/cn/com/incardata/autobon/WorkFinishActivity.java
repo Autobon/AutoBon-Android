@@ -44,11 +44,11 @@ import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.FinishWorkEntity;
 import cn.com.incardata.http.response.IdPhotoEntity;
+import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.BitmapHelper;
 import cn.com.incardata.utils.DateCompute;
 import cn.com.incardata.utils.SDCardUtils;
-import cn.com.incardata.utils.SharedPre;
 import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
 
@@ -74,6 +74,7 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
     private static final int COUNT_TIME_FLAG = 1;
 
     private boolean isRunning = true;
+    private OrderInfo_Data orderInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,9 +94,7 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                     int hour = bundle.getInt("hour");
                     int minute = bundle.getInt("minute");
                     int second = bundle.getInt("second");
-
-                    tv_has_time.setText(hour+context.getString(R.string.tv_hour)+
-                            minute+context.getString(R.string.tv_minute)+second+context.getString(R.string.tv_second));
+                    tv_has_time.setText(hour+context.getString(R.string.tv_hour)+ minute+context.getString(R.string.tv_minute)+second+context.getString(R.string.tv_second));
                     break;
             }
         }
@@ -111,11 +110,11 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                     e.printStackTrace();
                 }
 
-                String startWorkTime = SharedPre.getString(context,AutoCon.START_WORK_TIMER);
                 long useTime = 0L;
                 try{
                     long currentTime = System.currentTimeMillis();
-                    useTime = currentTime - Long.parseLong(startWorkTime);
+                    long startWorkTime = orderInfo.getMainConstruct().getStartTime();
+                    useTime = currentTime - startWorkTime;
                     Log.i("test","currentTime===>"+currentTime+",useTime===>"+useTime);
                 }catch (Exception e){
                     useTime = 0L;
@@ -139,6 +138,8 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
 
     private void initView() {
         context = this;
+        orderInfo = getIntent().getParcelableExtra(AutoCon.ORDER_INFO);
+
         tv_day = (TextView) findViewById(R.id.tv_day);
         tv_has_time = (TextView) findViewById(R.id.has_use_time);
         gv_single_pic = (GridView)findViewById(R.id.gv_single_pic);
@@ -156,7 +157,7 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
         iv_my_info = (ImageView) findViewById(R.id.iv_my_info);
         iv_enter_more_page = (ImageView) findViewById(R.id.iv_enter_more_page);
 
-        if(AutoCon.orderType == 4){  //订单类型为美容清洁
+        if(orderInfo.getOrderType() == 4){  //订单类型为美容清洁
             ll_clean.setVisibility(View.VISIBLE);
             ll_other.setVisibility(View.GONE);
 
@@ -165,8 +166,8 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                 public void onClick(View view) {
                     String percent = tv_content.getText().toString().trim();
                     try{
-                        int work_percent = Integer.parseInt(percent) - 1;
-                        tv_content.setText(String.valueOf(work_percent));
+                        int work_percent = Integer.parseInt(percent) - 10; //减十个百分比
+                        tv_content.setText(String.valueOf(work_percent)); //设置百分比
                     }catch (Exception e){
                         e.printStackTrace();
                     }
@@ -177,8 +178,8 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                 public void onClick(View view) {
                     String percent = tv_content.getText().toString().trim();
                     try{
-                        int work_percent = Integer.parseInt(percent) + 1;
-                        tv_content.setText(String.valueOf(work_percent));
+                        int work_percent = Integer.parseInt(percent) + 10; //加十个百分比
+                        tv_content.setText(String.valueOf(work_percent)); //设置百分比
                     }catch (Exception e){
                         e.printStackTrace();
                     }
@@ -266,7 +267,7 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
 
     private <T> void replaceFragment(Class<T> cls){
         try{
-            T fragment = BaseStandardFragment.newInstance(cls);  //获取fragment实例
+            T fragment = BaseStandardFragment.newInstance(cls,String.valueOf(orderInfo.getOrderType()));  //获取fragment实例,传递orderType参数到Fragment中
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             if(fragment instanceof BaseStandardFragment){
@@ -295,7 +296,7 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
             T.show(context,context.getString(R.string.no_pic_tips));
             return;
         }
-        BasicNameValuePair bv_orderId = new BasicNameValuePair("orderId", String.valueOf(AutoCon.orderId));
+        BasicNameValuePair bv_orderId = new BasicNameValuePair("orderId",String.valueOf(orderInfo.getId()));
         Collection<String> colUrls =  picMap.values();
         StringBuilder sb = new StringBuilder();
         Iterator<String> iterator = colUrls.iterator();
@@ -307,7 +308,7 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
         Log.i("test","urls======>"+urls);
         BasicNameValuePair bv_afterPhotos = new BasicNameValuePair("afterPhotos",urls);
 
-        if(AutoCon.orderType==4){  //美容清洁
+        if(orderInfo.getOrderType()==4){  //美容清洁
             String percent = tv_content.getText().toString().trim();
             int work_percent = Integer.parseInt(percent);
             double per = ((double) work_percent)/100.0;  //确保浮点类型
