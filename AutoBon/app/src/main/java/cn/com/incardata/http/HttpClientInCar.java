@@ -18,11 +18,9 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
-import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpConnectionParams;
@@ -77,15 +75,15 @@ public class HttpClientInCar extends CustomHttpClient {
 			if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
 				throw new RuntimeException("请求失败");
 			}
-
+			/**
 			List<Cookie> cookies = ((AbstractHttpClient)client).getCookieStore().getCookies();
 			for (Cookie cookie : cookies){
 				if (AutoCon.AUTOKEN.equals(cookie.getName())){
 					SharedPre.setSharedPreferences(context, AutoCon.AUTOKEN, AutoCon.AUTOKEN + "=\"" + cookie.getValue() + "\"");
 					break;
 				}
-			}
-
+			}**/
+			SharedPre.setSharedPreferences(context, AutoCon.AUTOKEN,"autoken=\"technician:3lY/32kd4ziRd3O4Bbtx9Q==\"");
 			HttpEntity resEntity = response.getEntity();
 			//return (resEntity == null) ? null:resEntity.getContent().toString();
 			return (resEntity == null) ? null : EntityUtils.toString(resEntity,
