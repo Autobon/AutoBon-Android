@@ -189,6 +189,8 @@
     <string name="bill_title">账单</string>
     <string name="info_load_failure">信息加载失败</string>
     <string name="again_authorization">再次认证</string>
+    <string name="unpay_text">未结算</string>
+    <string name="pay_text">结算</string>
 
     <!--更多-->
     <string name="qulify_cetification">资格认证</string>

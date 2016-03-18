@@ -86,7 +86,7 @@ public class HttpClientInCar extends CustomHttpClient {
 					break;
 				}
 			}
-
+			//SharedPre.setSharedPreferences(context, AutoCon.AUTOKEN,"autoken=\"technician:3lY/32kd4ziRd3O4Bbtx9Q==\"");
 			HttpEntity resEntity = response.getEntity();
 			//return (resEntity == null) ? null:resEntity.getContent().toString();
 			return (resEntity == null) ? null : EntityUtils.toString(resEntity,

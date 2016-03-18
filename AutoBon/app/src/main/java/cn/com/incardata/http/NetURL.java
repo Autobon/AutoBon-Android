@@ -65,6 +65,9 @@ public class NetURL {
 	/** 接受或拒绝邀请 **/
 	public static final String INVITATION = BASE_URL + "technician/order/";
 
+	/** 账单 **/
+	public static final String BILL_URL = BASE_URL + "technician/bill";
+
 	public static String inviteTechnician(String orderId,String partnerId){
 		return INVITE_TECHNICIAN+"/"+orderId+"/invite/"+partnerId;
 	}
