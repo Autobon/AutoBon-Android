@@ -14,12 +14,13 @@
         android:background="@android:color/white">
 
         <TextView
+            android:id="@+id/tv_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bill_unpay"
+            android:text="@string/unpay_text"
             android:gravity="center"
             android:textSize="@dimen/sp12"
-            android:text="未认证"
             android:paddingLeft="@dimen/dp10"
             android:paddingRight="@dimen/dp10"/>
 
