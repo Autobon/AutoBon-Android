@@ -23,6 +23,7 @@ import com.baidu.mapapi.model.LatLng;
 import org.apache.http.message.BasicNameValuePair;
 
 import cn.com.incardata.fragment.BaiduMapFragment;
+import cn.com.incardata.getui.InvitationMsg;
 import cn.com.incardata.http.Http;
 import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
@@ -63,6 +64,8 @@ public class InvitationActivity extends BaseActivity implements View.OnClickList
     private TextView mainTech;
 
     private OrderInfo_Data orderInfo;
+    private InvitationMsg invitation;
+    private int orderId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +104,7 @@ public class InvitationActivity extends BaseActivity implements View.OnClickList
 
     private void initViews() {
         orderInfo = getIntent().getParcelableExtra(AutoCon.ORDER_INFO);
+        invitation = getIntent().getParcelableExtra("INVITATION");
 
         mainTech = (TextView) findViewById(R.id.main_tech);
         mMapView = (MapView) findViewById(R.id.bdmapView);
@@ -121,12 +125,23 @@ public class InvitationActivity extends BaseActivity implements View.OnClickList
         BaiduMapUtil.initData();
         setListener();
 
-        if (orderInfo == null){
+        if (orderInfo != null){
+            orderId = orderInfo.getId();
+            mainTech.setText(orderInfo.getMainTech().getName());
+            setData(orderInfo.getPositionLon(), orderInfo.getPositionLat(), orderInfo.getPhoto(), orderInfo.getOrderTime(), orderInfo.getRemark(), orderInfo.getCreatorName());
+        }else if (invitation != null){
+            orderId = invitation.getOrder().getId();
+            mainTech.setText(invitation.getPartner().getName());
+            setData(invitation.getOrder().getPositionLon(),
+                    invitation.getOrder().getPositionLat(),
+                    invitation.getOrder().getPhoto(),
+                    invitation.getOrder().getOrderTime(),
+                    invitation.getOrder().getRemark(),
+                    invitation.getOrder().getCreatorName());
+        }else {
             T.show(this , R.string.loading_data_failure);
             return;
         }
-        mainTech.setText(orderInfo.getMainTech().getName());
-        setData(orderInfo.getPositionLon(), orderInfo.getPositionLat(), orderInfo.getPhoto(), orderInfo.getOrderTime(), orderInfo.getRemark(), orderInfo.getCreatorName());
     }
 
     private void setBaseData(){
@@ -241,7 +256,7 @@ public class InvitationActivity extends BaseActivity implements View.OnClickList
     }
 
    private void postInvitation(final boolean accepted){
-       Http.getInstance().postTaskToken(NetURL.getInvitation(orderInfo.getId()), InvitationEntity.class, new OnResult() {
+       Http.getInstance().postTaskToken(NetURL.getInvitation(orderId), InvitationEntity.class, new OnResult() {
            @Override
            public void onResult(Object entity) {
                 if (entity == null){

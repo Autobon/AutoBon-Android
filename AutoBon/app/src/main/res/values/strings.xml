@@ -253,4 +253,8 @@
     <string name="main_technician">主技师：</string>
     <string name="rejected">已拒绝</string>
     <string name="accepted">已接受</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="preview_order">查看订单</string>
 </resources>

@@ -6,6 +6,7 @@ package cn.com.incardata.getui;
  */
 public class ActionType {
     public final static String NAME = "action";
+    public static final String EXTRA_DATA = "extra_data";
 
     /**
      * 推送新订单

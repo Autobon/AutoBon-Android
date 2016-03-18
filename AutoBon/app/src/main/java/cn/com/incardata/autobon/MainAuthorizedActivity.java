@@ -22,8 +22,10 @@ import java.util.ArrayList;
 import cn.com.incardata.adapter.OrderUnfinishedAdapter;
 import cn.com.incardata.application.MyApplication;
 import cn.com.incardata.fragment.IndentMapFragment;
+import cn.com.incardata.fragment.InvitationDialogFragment;
 import cn.com.incardata.getui.ActionType;
 import cn.com.incardata.getui.CustomIntentFilter;
+import cn.com.incardata.getui.InvitationMsg;
 import cn.com.incardata.getui.OrderMsg;
 import cn.com.incardata.http.Http;
 import cn.com.incardata.http.NetURL;
@@ -45,6 +47,7 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
     private final static String pageSize = "20";
     private FragmentManager fragmentManager;
     private IndentMapFragment mFragment;
+    private InvitationDialogFragment invitationDialogFragment;
 
     private TextView today;
     private PullToRefreshView mPull;
@@ -254,15 +257,23 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
+            String json = intent.getStringExtra(ActionType.EXTRA_DATA);
             if (ActionType.ACTION_ORDER.equals(action)){
                 if (mFragment != null){
-                    String json = intent.getStringExtra(ActionType.NEW_ORDER);
                     OrderMsg orderMsg = JSON.parseObject(json, OrderMsg.class);
                     mFragment.setData(orderMsg.getOrder());
                     orderId = orderMsg.getOrder().getId();
                     orderType.setText(MyApplication.getInstance().getSkill(orderMsg.getOrder().getOrderType()));
                     showWindow();
                 }
+            }else if (ActionType.ACTION_INVITATION.equals(action)){
+                InvitationMsg invitation = JSON.parseObject(json, InvitationMsg.class);
+                if (invitationDialogFragment == null){
+                    invitationDialogFragment = new InvitationDialogFragment();
+                }
+
+                invitationDialogFragment.show(fragmentManager, "Invitation");
+                invitationDialogFragment.update(invitation);
             }
         }
     };
@@ -270,13 +281,18 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(mOrderReceiver, CustomIntentFilter.getOrderIntentFilter());
+        registerReceiver(mOrderReceiver, CustomIntentFilter.getInvitationIntentFilter());
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         unregisterReceiver(mOrderReceiver);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
     }
 
     @Override

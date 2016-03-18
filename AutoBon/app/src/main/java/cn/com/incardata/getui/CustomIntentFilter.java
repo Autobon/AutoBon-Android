@@ -18,12 +18,13 @@ public class CustomIntentFilter {
     }
 
     /**
-     * 邀请
+     * 订单＋邀请
      * @return
      */
     public static IntentFilter getInvitationIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ActionType.ACTION_INVITATION);
+        intentFilter.addAction(ActionType.ACTION_ORDER);
         return intentFilter;
     }
 }
