@@ -17,6 +17,8 @@ import com.igexin.sdk.PushManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.com.incardata.application.MyApplication;
+import cn.com.incardata.autobon.MainAuthorizedActivity;
 import cn.com.incardata.autobon.R;
 import cn.com.incardata.getui.ActionType;
 import cn.com.incardata.utils.L;
@@ -46,12 +48,11 @@ public class GeTuiPushReceiver extends BroadcastReceiver{
                 if (payload != null) {
                     String data = new String(payload);
                     if (TextUtils.isEmpty(data)){
-                        Log.d("Getui", "receiver payload : [data = null");
+                        Log.d("Getui", "receiver payload : data = null");
                         return;
                     }
-                    Log.d("Getui", "receiver payload : " + data);
                     processMessage(context, data);
-
+                    Log.d("Getui", "receiver payload : " + data);
                 }
                 break;
 
@@ -82,12 +83,30 @@ public class GeTuiPushReceiver extends BroadcastReceiver{
             JSONObject jsonObject = new JSONObject(msg);
             String action = jsonObject.getString(ActionType.NAME);
 
-            if (ActionType.NEW_ORDER.equals(action)){
-                Intent intent = new Intent(ActionType.ACTION_ORDER);
-                intent.putExtra(ActionType.NEW_ORDER, msg);
-                context.sendBroadcast(intent);
-//            }else if (ActionType.VERIFICATION_SUCCEED.equals(action)){
-                showNotification(context, "认证通知", "认证通过");
+            if (ActionType.NEW_ORDER.equals(action)){ //新订单
+                if (MyApplication.isMainForego() && MyApplication.isSkipNewOrder()){
+                    Intent intent = new Intent(ActionType.ACTION_ORDER);
+                    intent.putExtra(ActionType.EXTRA_DATA, msg);
+                    context.sendBroadcast(intent);
+                }else {
+                    showNotification(context, "新订单", jsonObject.getString("title"), 3, msg);
+                }
+            }else if (ActionType.INVITE_PARTNER.equals(action)){ //合作邀请
+                if (MyApplication.isMainForego()) {
+                    Intent intent = new Intent(ActionType.ACTION_INVITATION);
+                    intent.putExtra(ActionType.EXTRA_DATA, msg);
+                    context.sendBroadcast(intent);
+                }else {
+                    showNotification(context, "邀请消息", jsonObject.getString("title"), 2, msg);
+                }
+            }else if (ActionType.INVITATION_ACCEPTED.equals(action)){ //邀请已被接受
+                showNotification(context, "邀请消息", jsonObject.getString("title"), 1);
+            }else if (ActionType.INVITATION_REJECTED.equals(action)){ //邀请被拒绝
+                showNotification(context, "邀请消息", jsonObject.getString("title"), 1);
+            }else if (ActionType.VERIFICATION_SUCCEED.equals(action)){ //认证通过
+                showNotification(context, "认证消息", jsonObject.getString("title"), 0);
+            }else if (ActionType.VERIFICATION_FAILED.equals(action)){ //认证失败
+                showNotification(context, "认证消息", jsonObject.getString("title"), 0);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -95,11 +114,16 @@ public class GeTuiPushReceiver extends BroadcastReceiver{
         }
     }
 
-    private void showNotification(Context context, String title, String message) {
+    private void showNotification(Context context, String title, String message, int nID, String extraMsg) {
         Intent intent = new Intent();
-        intent.putExtra("notification", 0);
-        intent.putExtra("message", title);
-        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        intent.setClass(context, MainAuthorizedActivity.class);
+        intent.putExtra(ActionType.EXTRA_DATA, extraMsg);
+        if(nID == 3){
+            intent.setAction(ActionType.ACTION_ORDER);
+        }else {
+            intent.setAction(ActionType.ACTION_INVITATION);
+        }
+        PendingIntent contentIntent = PendingIntent.getActivity(context, nID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification.Builder builder = new Notification.Builder(context)
                 .setContentTitle(title)
@@ -107,7 +131,7 @@ public class GeTuiPushReceiver extends BroadcastReceiver{
                 .setContentIntent(contentIntent)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setAutoCancel(true)
-                .setTicker("您有一条新的消息！")
+                .setTicker("新的消息")
                 .setDefaults(Notification.DEFAULT_SOUND)
                 .setWhen(System.currentTimeMillis());
 
@@ -118,7 +142,29 @@ public class GeTuiPushReceiver extends BroadcastReceiver{
         } else {
             n = builder.build();
         }
-        n.number++;
-        mNotificationManager.notify(0, n);
+        mNotificationManager.notify(nID, n);
+    }
+
+    private void showNotification(Context context, String title, String message, int nId) {
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, nId, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Notification.Builder builder = new Notification.Builder(context)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .setTicker(title)
+                .setWhen(System.currentTimeMillis())
+                .setDefaults(Notification.DEFAULT_SOUND);
+
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification n = null;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+            n = builder.getNotification();
+        } else {
+            n = builder.build();
+        }
+        mNotificationManager.notify(nId, n);
     }
 }

@@ -10,6 +10,9 @@ import android.widget.TextView;
 import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.DateCompute;
 
+/**
+ * 抢单成功
+ */
 public class ImmediateSuccessedActivity extends BaseActivity implements View.OnClickListener{
     private TextView today;
     private TextView orderNumber;
