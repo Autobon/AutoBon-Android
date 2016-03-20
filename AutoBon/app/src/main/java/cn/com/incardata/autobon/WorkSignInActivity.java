@@ -77,6 +77,8 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
             mAddress = orderInfo.getCreatorName();
         }catch(NumberFormatException e){
             e.printStackTrace();
+        }catch (NullPointerException e){
+            e.printStackTrace();
         }
     }
 

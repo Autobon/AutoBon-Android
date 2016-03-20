@@ -57,7 +57,8 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
     private Button immediateOrder;
 
     private int orderId = -1;//订单ID－抢单
-    private int page = 1;
+    private int page = 1;//当前是第几页
+    private int totalPages;//总共多少页
     private boolean isRefresh = false;
     private OrderUnfinishedAdapter mAdapter;
     private ArrayList<OrderInfo_Data> mList;
@@ -88,7 +89,7 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
         fragmentManager = getFragmentManager();
         mFragment = new IndentMapFragment();
         FragmentTransaction ft = fragmentManager.beginTransaction();
-        ft.add(R.id.order_container, mFragment).commit();
+        ft.add(R.id.order_container, mFragment).hide(mFragment).commit();
     }
 
     @Override
@@ -132,6 +133,11 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
         mPull.setOnFooterRefreshListener(new PullToRefreshView.OnFooterRefreshListener() {
             @Override
             public void onFooterRefresh(PullToRefreshView view) {
+                if (page == totalPages){
+                    T.show(getContext(), R.string.has_load_all_label);
+                    mPull.loadedCompleted();
+                    return;
+                }
                 getpageList(++page);
             }
         });
@@ -187,6 +193,7 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
                 }
                 if (entity instanceof ListUnfinishedEntity){
                     ListUnfinishedEntity list = (ListUnfinishedEntity) entity;
+                    totalPages = list.getData().getTotalPages();
                     if (list.isResult()){
                         if (isRefresh) {
                             mList.clear();
@@ -243,12 +250,14 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
 
     private void closeWindow(){
         orderLayout.setVisibility(View.GONE);
+        MyApplication.setIsSkipNewOrder(true);
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.hide(mFragment).commit();
     }
 
     private void showWindow(){
         orderLayout.setVisibility(View.VISIBLE);
+        MyApplication.setIsSkipNewOrder(false);
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.show(mFragment).commit();
     }
@@ -256,42 +265,56 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
     private final BroadcastReceiver mOrderReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            final String action = intent.getAction();
-            String json = intent.getStringExtra(ActionType.EXTRA_DATA);
-            if (ActionType.ACTION_ORDER.equals(action)){
-                if (mFragment != null){
-                    OrderMsg orderMsg = JSON.parseObject(json, OrderMsg.class);
-                    mFragment.setData(orderMsg.getOrder());
-                    orderId = orderMsg.getOrder().getId();
-                    orderType.setText(MyApplication.getInstance().getSkill(orderMsg.getOrder().getOrderType()));
-                    showWindow();
-                }
-            }else if (ActionType.ACTION_INVITATION.equals(action)){
-                InvitationMsg invitation = JSON.parseObject(json, InvitationMsg.class);
-                if (invitationDialogFragment == null){
-                    invitationDialogFragment = new InvitationDialogFragment();
-                }
-
-                invitationDialogFragment.show(fragmentManager, "Invitation");
-                invitationDialogFragment.update(invitation);
-            }
+            if (mFragment != null && mFragment.isVisible()) return;
+           geTuiMsg(intent);
         }
     };
+
+    /**
+     * 个推的消息广播及通知处理
+     * @param intent
+     */
+    private void geTuiMsg(Intent intent){
+        final String action = intent.getAction();
+        String json = intent.getStringExtra(ActionType.EXTRA_DATA);
+        if (ActionType.ACTION_ORDER.equals(action)){
+            if (mFragment != null){
+                OrderMsg orderMsg = JSON.parseObject(json, OrderMsg.class);
+                mFragment.setData(orderMsg.getOrder());
+                orderId = orderMsg.getOrder().getId();
+                orderType.setText(MyApplication.getInstance().getSkill(orderMsg.getOrder().getOrderType()));
+                showWindow();
+            }
+        }else if (ActionType.ACTION_INVITATION.equals(action)){
+            InvitationMsg invitation = JSON.parseObject(json, InvitationMsg.class);
+            if (invitationDialogFragment == null){
+                invitationDialogFragment = new InvitationDialogFragment();
+            }
+
+            if (!invitationDialogFragment.isAdded()){
+                invitationDialogFragment.show(fragmentManager, "Invitation");
+            }
+            invitationDialogFragment.update(invitation);
+        }
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
+        MyApplication.getInstance().setMainForego(true);
         registerReceiver(mOrderReceiver, CustomIntentFilter.getInvitationIntentFilter());
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        MyApplication.getInstance().setMainForego(false);
         unregisterReceiver(mOrderReceiver);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
+        geTuiMsg(intent);
         super.onNewIntent(intent);
     }
 

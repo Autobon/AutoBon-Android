@@ -17,6 +17,7 @@ import com.igexin.sdk.PushManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.com.incardata.application.MyApplication;
 import cn.com.incardata.autobon.MainAuthorizedActivity;
 import cn.com.incardata.autobon.R;
 import cn.com.incardata.getui.ActionType;
@@ -83,14 +84,21 @@ public class GeTuiPushReceiver extends BroadcastReceiver{
             String action = jsonObject.getString(ActionType.NAME);
 
             if (ActionType.NEW_ORDER.equals(action)){ //新订单
-                Intent intent = new Intent(ActionType.ACTION_ORDER);
-                intent.putExtra(ActionType.EXTRA_DATA, msg);
-                context.sendBroadcast(intent);
+                if (MyApplication.isMainForego() && MyApplication.isSkipNewOrder()){
+                    Intent intent = new Intent(ActionType.ACTION_ORDER);
+                    intent.putExtra(ActionType.EXTRA_DATA, msg);
+                    context.sendBroadcast(intent);
+                }else {
+                    showNotification(context, "新订单", jsonObject.getString("title"), 3, msg);
+                }
             }else if (ActionType.INVITE_PARTNER.equals(action)){ //合作邀请
-                Intent intent = new Intent(ActionType.ACTION_INVITATION);
-                intent.putExtra(ActionType.EXTRA_DATA, msg);
-                context.sendBroadcast(intent);
-//                showNotification(context, "邀请消息", jsonObject.getString("title"), 2, msg);
+                if (MyApplication.isMainForego()) {
+                    Intent intent = new Intent(ActionType.ACTION_INVITATION);
+                    intent.putExtra(ActionType.EXTRA_DATA, msg);
+                    context.sendBroadcast(intent);
+                }else {
+                    showNotification(context, "邀请消息", jsonObject.getString("title"), 2, msg);
+                }
             }else if (ActionType.INVITATION_ACCEPTED.equals(action)){ //邀请已被接受
                 showNotification(context, "邀请消息", jsonObject.getString("title"), 1);
             }else if (ActionType.INVITATION_REJECTED.equals(action)){ //邀请被拒绝
@@ -110,7 +118,12 @@ public class GeTuiPushReceiver extends BroadcastReceiver{
         Intent intent = new Intent();
         intent.setClass(context, MainAuthorizedActivity.class);
         intent.putExtra(ActionType.EXTRA_DATA, extraMsg);
-        PendingIntent contentIntent = PendingIntent.getActivity(context, 2, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        if(nID == 3){
+            intent.setAction(ActionType.ACTION_ORDER);
+        }else {
+            intent.setAction(ActionType.ACTION_INVITATION);
+        }
+        PendingIntent contentIntent = PendingIntent.getActivity(context, nID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification.Builder builder = new Notification.Builder(context)
                 .setContentTitle(title)
@@ -133,7 +146,7 @@ public class GeTuiPushReceiver extends BroadcastReceiver{
     }
 
     private void showNotification(Context context, String title, String message, int nId) {
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, nId, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification.Builder builder = new Notification.Builder(context)
                 .setContentTitle(title)

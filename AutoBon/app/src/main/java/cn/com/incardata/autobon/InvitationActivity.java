@@ -131,7 +131,7 @@ public class InvitationActivity extends BaseActivity implements View.OnClickList
             setData(orderInfo.getPositionLon(), orderInfo.getPositionLat(), orderInfo.getPhoto(), orderInfo.getOrderTime(), orderInfo.getRemark(), orderInfo.getCreatorName());
         }else if (invitation != null){
             orderId = invitation.getOrder().getId();
-            mainTech.setText(invitation.getPartner().getName());
+            mainTech.setText(invitation.getOwner().getName());
             setData(invitation.getOrder().getPositionLon(),
                     invitation.getOrder().getPositionLat(),
                     invitation.getOrder().getPhoto(),

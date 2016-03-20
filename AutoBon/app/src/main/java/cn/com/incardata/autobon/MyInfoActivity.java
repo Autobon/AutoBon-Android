@@ -78,8 +78,11 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         tv_logout.setOnClickListener(this);
         ll_cost.setOnClickListener(this);
         ll_order_num.setOnClickListener(this);
+
+        findViewById(R.id.modify_info).setOnClickListener(this);
     }
 
+    private MyInfo_Data myInfo;
     private void getDataFromServer(){
         if(NetWorkHelper.isNetworkAvailable(context)) {
             Http.getInstance().getTaskToken(NetURL.MY_INFO_URL, MyInfoEntity.class, new OnResult() {
@@ -90,35 +93,35 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
                         return;
                     }
                     MyInfoEntity myInfoEntity = (MyInfoEntity) entity;
-                    MyInfo_Data data = myInfoEntity.getData();
+                     myInfo = myInfoEntity.getData();
 
-                    String avatar = data.getAvatar(); //技师头像url尾部
-                    name = data.getName(); //技师姓名
-                    String star = data.getStarRate();  //星级
-                    bank = data.getBank(); //银行字典
-                    bankCardNumber = data.getBankCardNo(); //银行卡号
+                    String avatar = myInfo.getAvatar(); //技师头像url尾部
+                    name = myInfo.getName(); //技师姓名
+                    String star = myInfo.getStarRate();  //星级
+                    bank = myInfo.getBank(); //银行字典
+                    bankCardNumber = myInfo.getBankCardNo(); //银行卡号
 
-                    if(StringUtil.isNotEmpty(data.getTotalOrders())){
+                    if(StringUtil.isNotEmpty(myInfo.getTotalOrders())){
                         try{
-                            int totalOrders = Integer.parseInt(data.getTotalOrders());  //订单数
+                            int totalOrders = Integer.parseInt(myInfo.getTotalOrders());  //订单数
                             tv_order_num.setText(String.valueOf(totalOrders));
                         }catch (NumberFormatException e){
                             tv_order_num.setText("0");
                         }
                     }
 
-                    if(StringUtil.isNotEmpty(data.getTotalOrders())){
+                    if(StringUtil.isNotEmpty(myInfo.getTotalOrders())){
                         try{
-                            double balance = Double.parseDouble(data.getBalance());  //余额
+                            double balance = Double.parseDouble(myInfo.getBalance());  //余额
                             tv_cost.setText(String.valueOf(balance));
                         }catch (NumberFormatException e){
                             tv_cost.setText("0");
                         }
                     }
 
-                    if(StringUtil.isNotEmpty(data.getUnpaidOrders())){
+                    if(StringUtil.isNotEmpty(myInfo.getUnpaidOrders())){
                         try{
-                            int unpadOrders = Integer.parseInt(data.getUnpaidOrders());  //账单数
+                            int unpadOrders = Integer.parseInt(myInfo.getUnpaidOrders());  //账单数
                             tv_my_order_num.setText(String.valueOf(unpadOrders));
                         }catch (NumberFormatException e){
                             tv_my_order_num.setText("0");
@@ -172,6 +175,18 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
                 break;
             case R.id.ll_order_num: //账单
                 startActivity(BillActivity.class);
+                break;
+            case R.id.modify_info:
+                Intent intent1 = new Intent(getContext(), AuthorizeActivity.class);
+                intent1.putExtra("isAgain", true);
+                intent1.putExtra("name", myInfo.getName());
+                intent1.putExtra("headUrl", myInfo.getAvatar());
+                intent1.putExtra("idNumber", myInfo.getIdNo());
+                intent1.putExtra("skillArray", myInfo.getSkill());
+                intent1.putExtra("idUrl", myInfo.getIdPhoto());
+                intent1.putExtra("bankName", myInfo.getBank());
+                intent1.putExtra("bankNo", myInfo.getBankCardNo());
+                startActivity(intent1);
                 break;
         }
     }

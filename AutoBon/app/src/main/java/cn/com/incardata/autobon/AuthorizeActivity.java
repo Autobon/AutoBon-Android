@@ -74,8 +74,8 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
         setContentView(R.layout.activity_authorize);
 
         initView();
-        checkStatus();
         initSpinner();
+        checkStatus();
     }
 
     /**
@@ -101,6 +101,14 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
                 isUploadIDImage = true;
             }
             ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + headUrl, headerImage, false);
+
+            String[] bankArray = getResources().getStringArray(R.array.bank_array);
+            for(int i=0;i<bankArray.length;i++){
+                if(bankNameStr.equals(bankArray[i])){
+                    bankSpinner.setSelection(i);
+                    break;
+                }
+            }
 
             if (TextUtils.isEmpty(skill)) return;
             String[] skillAr = skill.split(",");

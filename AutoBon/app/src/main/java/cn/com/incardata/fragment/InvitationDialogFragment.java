@@ -17,6 +17,7 @@ import cn.com.incardata.autobon.InvitationActivity;
 import cn.com.incardata.autobon.R;
 import cn.com.incardata.getui.InvitationMsg;
 import cn.com.incardata.http.ImageLoaderCache;
+import cn.com.incardata.http.NetURL;
 import cn.com.incardata.utils.DecimalUtil;
 import cn.com.incardata.view.CircleImageView;
 
@@ -93,12 +94,12 @@ public class InvitationDialogFragment extends DialogFragment implements View.OnC
     private void updateView(){
         if (header == null) return;
         if (invitation != null){
-            ImageLoaderCache.getInstance().loader(invitation.getPartner().getPhone(), header);
-            userName.setText(invitation.getPartner().getName());
-            orderNum.setText(invitation.getPartner().getTotalOrders());
+            ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + invitation.getOwner().getAvatar(), header);
+            userName.setText(invitation.getOwner().getName());
+            orderNum.setText(invitation.getOwner().getTotalOrders());
             orderInfo.setText("邀请您参与" + MyApplication.getInstance().getSkill(invitation.getOrder().getOrderType()) + "的订单，订单编号" + invitation.getOrder().getOrderNum());
             try {
-                float starNum = Float.parseFloat(invitation.getPartner().getStarRate());
+                float starNum = Float.parseFloat(invitation.getOwner().getStarRate());
                 ratingBar.setRating((int)Math.floor(starNum));  //取整设置星级
                 rate.setText(String.valueOf(DecimalUtil.FloatDecimal1(starNum)));  //设置保留一位小数
             }catch (Exception e){
