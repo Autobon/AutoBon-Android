@@ -214,13 +214,13 @@
     <string name="into_order">进入订单</string>
     <string name="order_serial_number">订单编号</string>
     <string name="order_time">预约时间</string>
-
     <string name="immediate_order">立即抢单</string>
     <string name="immediate_order_failed">抢单失败</string>
     <string name="immediate_order_success">抢单成功</string>
     <string name="order_canceled">订单已取消</string>
     <string name="loading_data_failure">数据加载失败</string>
     <string name="order_taken_up">已有人抢单</string>
+    <string name="preview_order">查看订单</string>
 
 
     <!--施工-->
@@ -256,7 +256,10 @@
     <string name="rejected">已拒绝</string>
     <string name="accepted">已接受</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="preview_order">查看订单</string>
+    <!-- 我的订单 -->
+    <string name="main_responsible">主责任人</string>
+    <string name="second_responsible">次责任人</string>
+    <string name="work_item_tv">施工部位：</string>
+    <string name="pay_done">已结算</string>
+    <string name="pay_wait">未结算</string>
 </resources>

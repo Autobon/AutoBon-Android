@@ -96,6 +96,6 @@ public class OrderUnfinishedAdapter extends BaseAdapter{
     }
 
     public interface OnClickOrderListener{
-        public void onClickOrder(int position);
+        void onClickOrder(int position);
     }
 }

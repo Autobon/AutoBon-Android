@@ -51,6 +51,10 @@ public class NetURL {
 	public static final String TAKEUP = BASE_URL + "technician/order/takeup";
 	/** 未完成订单列表 */
 	public final static String UNFINISHED_ORDER_LIST = BASE_URL + "technician/order/listUnfinished";
+	/** 已完成订单列表－主责任人 */
+	public final static String FINISHED_ORDER_LIST_MAIN = BASE_URL + "technician/order/listMain";
+	/** 已完成订单列表－次责任人 */
+	public final static String FINISHED_ORDER_LIST_SECOND = BASE_URL + "technician/order/listSecond";
 
 	/**上传施工图片*/
 	public static final String UPLOAD_WORK_PHOTO = BASE_URL + "technician/construct/uploadPhoto";
