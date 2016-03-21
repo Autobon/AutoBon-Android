@@ -295,12 +295,13 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
                     tv_distance.setText("0m");
                 }else{
                     double distance = BaiduMapUtil.getDistance(latLngArray[0],mLatLng); //单位为m
-
                     if(sign_in_btn!=null){  //签到界面有提示框,并且改变Button样式
                         if(Math.abs(distance)<=SIGN){  //到达(有误差)
                             tv_distance.setText(R.string.arrive_text);
-                            sign_in_btn.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.default_btn));  //兼容api14
+                            sign_in_btn.setBackgroundResource(R.drawable.default_btn);
                             sign_in_btn.setTextColor(context.getResources().getColor(android.R.color.white));
+                            int padding =  getResources().getDimensionPixelSize(R.dimen.dp10);
+                            sign_in_btn.setPadding(0,padding,0,padding);
                             isSign = true;
                         }else{
                             //Toast toast = Toast.makeText(context.getApplicationContext(),context.getString(R.string.not_arrive_text),Toast.LENGTH_LONG);

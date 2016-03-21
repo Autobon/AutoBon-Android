@@ -15,14 +15,6 @@
         <item>邮政储蓄银行</item>
     </string-array>
 
-    <string-array name="bank_address">
-        <item>北京</item>
-        <item>石家庄</item>
-        <item>郑州</item>
-        <item>武汉</item>
-        <item>广州</item>
-    </string-array>
-
     <string-array name="work_item">
         <!--<key>1</key>-->
         <item>前风挡</item>
@@ -205,4 +197,5 @@
         <!--<key>90</key>-->
         <item>右后视镜</item>
     </string-array>
+
 </resources>

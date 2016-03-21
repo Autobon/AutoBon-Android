@@ -40,7 +40,7 @@ public class RadioFragmentGridAdapter extends BaseAdapter{
 
 		if(workItem_data.isFocus()){
 			btn.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.corner_choice_btn));
-            btn.setTextColor(mActivity.getResources().getColor(R.color.main_white));  //选中字体白色
+			btn.setTextColor(mActivity.getResources().getColor(R.color.main_white));  //选中字体白色
 			workItemMap.put(workItem_data.getId(),workItem_data.getName());
 		}else {
 			btn.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.corner_default_btn));
@@ -54,10 +54,12 @@ public class RadioFragmentGridAdapter extends BaseAdapter{
                 boolean status = workItem_data.isFocus();
                 if(status){
                     btn.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.corner_default_btn));
+					btn.setTextColor(mActivity.getResources().getColor(R.color.darkgray));
                     workItemMap.remove(workItem_data.getId());
                 }else {
                     btn.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.corner_choice_btn));
-                    workItemMap.put(workItem_data.getId(),workItem_data.getName());
+					btn.setTextColor(mActivity.getResources().getColor(R.color.main_white));  //选中字体白色
+					workItemMap.put(workItem_data.getId(),workItem_data.getName());
                 }
 				workItem_data.setFocus(!status);
                 printWorkItemMap(workItemMap);
