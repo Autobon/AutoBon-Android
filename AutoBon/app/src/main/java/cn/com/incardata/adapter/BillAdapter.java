@@ -1,18 +1,22 @@
 package cn.com.incardata.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import cn.com.incardata.autobon.BillDetailActivity;
 import cn.com.incardata.autobon.R;
 import cn.com.incardata.http.response.Bill_Data_Info;
 import cn.com.incardata.utils.DateCompute;
@@ -23,10 +27,12 @@ import cn.com.incardata.utils.DateCompute;
  */
 public class BillAdapter extends BaseAdapter{
     private Context context;
+    private RelativeLayout rl_item;
     private Map<String,List<Bill_Data_Info>> mapList;  //key代表年份,value代表月份账单集合
     private List<Bill_Data_Info> allYearBills;  //所有的账单信息
     private int allSize;  //账单的条目,即构造的ListView的数目
     private List<String> mYear;  //记录年份
+    private Map<String,String> monthMap;
 
     public BillAdapter(Context context, Map<String,List<Bill_Data_Info>> mapList){
         this.context = context;
@@ -37,12 +43,27 @@ public class BillAdapter extends BaseAdapter{
     private void initData(){
         this.mYear = new ArrayList<String>();
         allYearBills = new ArrayList<Bill_Data_Info>();
+
         Set<Map.Entry<String,List<Bill_Data_Info>>> keySets = this.mapList.entrySet();
         for(Map.Entry<String,List<Bill_Data_Info>> entry : keySets){
             List<Bill_Data_Info> dataList = entry.getValue();
             allYearBills.addAll(dataList);
             allSize += dataList.size();
         }
+
+        monthMap = new HashMap<String,String>();
+        monthMap.put("01","一月");
+        monthMap.put("02","二月");
+        monthMap.put("03","三月");
+        monthMap.put("04","四月");
+        monthMap.put("05","五月");
+        monthMap.put("06","六月");
+        monthMap.put("07","七月");
+        monthMap.put("08","八月");
+        monthMap.put("09","九月");
+        monthMap.put("10","十月");
+        monthMap.put("11","十一月");
+        monthMap.put("12","十二月");
     }
 
     @Override
@@ -72,6 +93,8 @@ public class BillAdapter extends BaseAdapter{
             holder.tv_month = (TextView) convertView.findViewById(R.id.tv_month);
             holder.tv_money = (TextView) convertView.findViewById(R.id.tv_money);
             holder.tv_status = (TextView) convertView.findViewById(R.id.tv_status);
+            holder.tv_all_money = (TextView) convertView.findViewById(R.id.tv_all_money);
+            holder.rl_item = (RelativeLayout) convertView.findViewById(R.id.rl_item);
             convertView.setTag(holder);
         }
         long timeStamp = allYearBills.get(position).getBillMonth();  //时间戳
@@ -80,6 +103,12 @@ public class BillAdapter extends BaseAdapter{
         String year = dateTime.substring(0,4);  //年值取出
         if(!mYear.contains(year)){
             mYear.add(year);
+            List<Bill_Data_Info> mList = this.mapList.get(year);  //获取一年的账单集合
+            double sum = 0;
+            for(int i=0;i<mList.size();i++){
+                sum += mList.get(i).getSum();
+            }
+            holder.tv_all_money.setText("￥"+sum);
         }else{
             View view = convertView.findViewById(R.id.ll_bill_title); //第一个年份标题显示,后面隐藏
             view.setVisibility(View.GONE);
@@ -87,16 +116,29 @@ public class BillAdapter extends BaseAdapter{
         String month = dateTime.substring(5,7); //月值取出
         double money = allYearBills.get(position).getSum();  //获取价钱
 
-        holder.tv_year.setText(year);
-        holder.tv_month.setText(month);
-        holder.tv_money.setText(String.valueOf(money));
+        holder.tv_year.setText(year + context.getString(R.string.year_text));
+        holder.tv_month.setText(monthMap.get(month));
+        holder.tv_money.setText("￥"+String.valueOf(money));
         if(allYearBills.get(position).isPayed()){  //已结算
+            holder.tv_status.setBackgroundResource(R.drawable.bill_pay);
             holder.tv_status.setText(context.getString(R.string.pay_text));
-            holder.tv_status.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bill_pay));
+            holder.tv_status.setTextColor(context.getResources().getColor(R.color.main_white));
         }else{
+            holder.tv_status.setBackgroundResource(R.drawable.bill_unpay);
             holder.tv_status.setText(context.getString(R.string.unpay_text));
-            holder.tv_status.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bill_unpay));
+            holder.tv_status.setTextColor(context.getResources().getColor(R.color.lightgray));
         }
+        int padding = context.getResources().getDimensionPixelOffset(R.dimen.dp10);
+        holder.tv_status.setPadding(padding,0,padding,0);
+
+        holder.rl_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, BillDetailActivity.class);
+                context.startActivity(intent);
+            }
+        });
+
         return convertView;
     }
 
@@ -105,5 +147,7 @@ public class BillAdapter extends BaseAdapter{
         private TextView tv_month;
         private TextView tv_money;
         private TextView tv_status;
+        private TextView tv_all_money;
+        private RelativeLayout rl_item;
     }
 }

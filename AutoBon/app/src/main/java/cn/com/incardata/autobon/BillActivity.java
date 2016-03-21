@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +34,7 @@ public class BillActivity extends BaseActivity implements View.OnClickListener{
     private ImageView iv_back;
     private List<String> mYear;  //记录账单的年份
     private Map<String,List<Bill_Data_Info>> mapList;  //key代表年份,value代表月份账单集合
+    private RelativeLayout rl_item;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

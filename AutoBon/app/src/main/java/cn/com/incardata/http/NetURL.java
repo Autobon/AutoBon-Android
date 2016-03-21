@@ -79,4 +79,9 @@ public class NetURL {
 	public static String getInvitation(int orderId){
 		return INVITATION + orderId + "/invitation";
 	}
+
+	/** 拉取帐单下的订单列表 **/
+	public static String getBillOrderInfo(int billId){
+		return BILL_URL+"/"+billId+"/order";
+	}
 }

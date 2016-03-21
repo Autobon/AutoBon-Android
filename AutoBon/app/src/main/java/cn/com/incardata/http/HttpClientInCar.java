@@ -72,12 +72,10 @@ public class HttpClientInCar extends CustomHttpClient {
 			HttpPost httpPost = new HttpPost(url);
 			httpPost.setEntity(urlEncoded);
 
-
 			HttpResponse response = client.execute(httpPost);
 			if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
 				throw new RuntimeException("请求失败");
 			}
-
 			List<Cookie> cookies = ((AbstractHttpClient)client).getCookieStore().getCookies();
 			for (Cookie cookie : cookies){
 				if (AutoCon.AUTOKEN.equals(cookie.getName())){

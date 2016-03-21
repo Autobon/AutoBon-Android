@@ -14,12 +14,4 @@
         <item>交通银行</item>
         <item>邮政储蓄银行</item>
     </string-array>
-
-    <string-array name="bank_address">
-        <item>北京</item>
-        <item>石家庄</item>
-        <item>郑州</item>
-        <item>武汉</item>
-        <item>广州</item>
-    </string-array>
 </resources>
