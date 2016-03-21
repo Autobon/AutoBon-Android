@@ -236,6 +236,7 @@
         android:layout_height="1dp"
         android:background="@color/line_light_color"/>
     <LinearLayout
+        android:id="@+id/my_order_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp45"
         android:background="@android:color/white"

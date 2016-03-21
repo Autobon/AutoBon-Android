@@ -151,8 +151,8 @@
 
         <activity
             android:name=".MainAuthorizedActivity"
-            android:screenOrientation="portrait"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".AuthorizationProgressActivity"
@@ -297,7 +297,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ImmediateSuccessedActivity" />
-        <activity android:name=".InvitationActivity"></activity>
+        <activity android:name=".InvitationActivity" />
+        <activity android:name=".MyOrderActivity"></activity>
     </application>
 
 </manifest>

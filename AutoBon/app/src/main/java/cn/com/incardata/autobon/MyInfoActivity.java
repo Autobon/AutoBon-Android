@@ -80,6 +80,7 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         ll_order_num.setOnClickListener(this);
 
         findViewById(R.id.modify_info).setOnClickListener(this);
+        findViewById(R.id.my_order_layout).setOnClickListener(this);
     }
 
     private MyInfo_Data myInfo;
@@ -187,6 +188,9 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
                 intent1.putExtra("bankName", myInfo.getBank());
                 intent1.putExtra("bankNo", myInfo.getBankCardNo());
                 startActivity(intent1);
+                break;
+            case R.id.my_order_layout:
+                startActivity(MyOrderActivity.class);
                 break;
         }
     }
