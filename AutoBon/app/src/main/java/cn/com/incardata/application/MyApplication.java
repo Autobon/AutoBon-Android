@@ -24,6 +24,30 @@ public class MyApplication extends Application{
     private String cookie;
     private static HashMap<Integer, String> skillMap;
     private int userId;
+    /**
+     * 主页是否在前台运行（表示是否可以接收广播）
+     */
+    private static boolean isMainForego;
+    /**
+     * 跳过通知新订单
+     */
+    private static boolean isSkipNewOrder;
+
+    public static boolean isSkipNewOrder() {
+        return isSkipNewOrder;
+    }
+
+    public static void setIsSkipNewOrder(boolean isSkipNewOrder) {
+        MyApplication.isSkipNewOrder = isSkipNewOrder;
+    }
+
+    public static boolean isMainForego() {
+        return isMainForego;
+    }
+
+    public static void setMainForego(boolean mainForego) {
+        isMainForego = mainForego;
+    }
 
     public static synchronized MyApplication getInstance(){
         return instance;
@@ -95,11 +119,7 @@ public class MyApplication extends Application{
     }
 
     public synchronized void setCookie(String autoken){
-        if (autoken == null){
-            cookie = "";
-            return;
-        }
-        cookie = autoken;
+        this.cookie = autoken;
     }
 
     public synchronized String getCookie(){

@@ -6,6 +6,28 @@
     android:orientation="vertical"
     tools:context="cn.com.incardata.fragment.IndentMapFragment">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp45"
+        android:background="@color/main_orange">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="@dimen/dp35"
+            android:layout_height="match_parent"
+            android:padding="@dimen/dp10"
+            android:scaleType="centerInside"
+            android:src="@mipmap/default_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/order_info"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp18" />
+    </RelativeLayout>
+
     <com.baidu.mapapi.map.MapView
         android:id="@+id/bdmapView"
         android:layout_width="match_parent"
@@ -65,8 +87,7 @@
         <ImageView
             android:id="@+id/indent_image"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerInside"/>
+            android:layout_height="match_parent" />
 
         <TextView
             android:id="@+id/indent_text"
@@ -96,7 +117,7 @@
             android:textColor="@color/darkgray"
             android:layout_marginLeft="@dimen/dp15"
             android:textSize="@dimen/sp15"
-            android:text="主技师："/>
+            android:text="@string/main_technician"/>
         <TextView
             android:id="@+id/main_tech"
             android:layout_width="wrap_content"
@@ -178,7 +199,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="拒绝"
+            android:text="@string/reject"
             android:textColor="@color/lightgray"
             android:textSize="@dimen/sp15" />
 
@@ -189,7 +210,7 @@
             android:layout_weight="1"
             android:background="@color/main_orange"
             android:gravity="center"
-            android:text="接受"
+            android:text="@string/accept"
             android:textColor="@android:color/white"
             android:textSize="@dimen/sp15" />
 

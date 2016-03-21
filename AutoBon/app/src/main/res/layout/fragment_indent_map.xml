@@ -65,8 +65,7 @@
         <ImageView
             android:id="@+id/indent_image"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerInside"/>
+            android:layout_height="match_parent" />
 
         <TextView
             android:id="@+id/indent_text"

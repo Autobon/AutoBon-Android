@@ -6,6 +6,7 @@ package cn.com.incardata.getui;
  */
 public class ActionType {
     public final static String NAME = "action";
+    public static final String EXTRA_DATA = "extra_data";
 
     /**
      * 推送新订单
@@ -27,6 +28,10 @@ public class ActionType {
      * 合作邀请已拒绝
      */
     public final static String INVITATION_REJECTED = "INVITATION_REJECTED";
+    /**
+     * 邀请伙伴
+     */
+    public final static String INVITE_PARTNER = "INVITE_PARTNER";
     /**
      * 订单开始工作中
      */
@@ -57,5 +62,8 @@ public class ActionType {
      * 订单广播
      */
     public final static String ACTION_ORDER = "cn.com.incardata.ACTION_ORDER";
-
+    /**
+     * 邀请广播
+     */
+    public final static String ACTION_INVITATION = "cn.com.incardata.ACTION_INVITATION";
 }

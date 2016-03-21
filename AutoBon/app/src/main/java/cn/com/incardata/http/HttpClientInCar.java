@@ -82,6 +82,7 @@ public class HttpClientInCar extends CustomHttpClient {
 			for (Cookie cookie : cookies){
 				if (AutoCon.AUTOKEN.equals(cookie.getName())){
 					SharedPre.setSharedPreferences(context, AutoCon.AUTOKEN, AutoCon.AUTOKEN + "=\"" + cookie.getValue() + "\"");
+					MyApplication.getInstance().setCookie(null);
 					break;
 				}
 			}

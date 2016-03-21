@@ -1,10 +1,13 @@
 package cn.com.incardata.http.response;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * 订单
  * Created by wanghao on 16/3/9.
  */
-public class Order {
+public class Order implements Parcelable {
     private int id;
     private String orderNum;
     private int orderType;
@@ -149,4 +152,62 @@ public class Order {
     public void setStatus(String status) {
         this.status = status;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.orderNum);
+        dest.writeInt(this.orderType);
+        dest.writeString(this.photo);
+        dest.writeLong(this.orderTime);
+        dest.writeLong(this.addTime);
+        dest.writeInt(this.creatorType);
+        dest.writeInt(this.creatorId);
+        dest.writeString(this.creatorName);
+        dest.writeString(this.contactPhone);
+        dest.writeString(this.positionLon);
+        dest.writeString(this.positionLat);
+        dest.writeString(this.remark);
+        dest.writeInt(this.mainTechId);
+        dest.writeInt(this.secondTechId);
+        dest.writeString(this.status);
+    }
+
+    public Order() {
+    }
+
+    protected Order(Parcel in) {
+        this.id = in.readInt();
+        this.orderNum = in.readString();
+        this.orderType = in.readInt();
+        this.photo = in.readString();
+        this.orderTime = in.readLong();
+        this.addTime = in.readLong();
+        this.creatorType = in.readInt();
+        this.creatorId = in.readInt();
+        this.creatorName = in.readString();
+        this.contactPhone = in.readString();
+        this.positionLon = in.readString();
+        this.positionLat = in.readString();
+        this.remark = in.readString();
+        this.mainTechId = in.readInt();
+        this.secondTechId = in.readInt();
+        this.status = in.readString();
+    }
+
+    public static final Parcelable.Creator<Order> CREATOR = new Parcelable.Creator<Order>() {
+        public Order createFromParcel(Parcel source) {
+            return new Order(source);
+        }
+
+        public Order[] newArray(int size) {
+            return new Order[size];
+        }
+    };
 }

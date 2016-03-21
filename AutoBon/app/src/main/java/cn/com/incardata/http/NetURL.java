@@ -4,10 +4,10 @@ public class NetURL {
 	/** 基地址 */
 	public final static String BASE_URL = "http://121.40.157.200:12345/api/mobile/";
 	public final static String IP_PORT = "http://121.40.157.200:12345";
-	public final static String DOMAIN = "121.40.157.200";
+	public static final String PUB = "http://121.40.157.200:12345/api/pub/";
 
 	/** 发送验证短信 */
-	public static final String VERIFY_SMS = BASE_URL + "verifySms";
+	public static final String VERIFY_SMS = PUB + "verifySms";
 	/** 账户注册 */
 	public static final String REGISTER = BASE_URL + "technician/register";
 	/** 账户登录 */
@@ -58,10 +58,12 @@ public class NetURL {
 	public static final String SUBMIT_BEFORE_WORK_PHOTO_URL = BASE_URL + "technician/construct/beforePhoto";
 
 	/** 获取订单工作项 **/
-	public static final String GET_WORK_ITEM = BASE_URL + "pub/technician/workItems";
+	public static final String GET_WORK_ITEM = PUB + "pub/technician/workItems";
 
 	/** 完成施工 **/
 	public static final String WORK_FINISH_URL = BASE_URL + "technician/construct/finish";
+	/** 接受或拒绝邀请 **/
+	public static final String INVITATION = BASE_URL + "technician/order/";
 
 	/** 账单 **/
 	public static final String BILL_URL = BASE_URL + "technician/bill";
@@ -72,5 +74,9 @@ public class NetURL {
 
 	public static String getOrderInfo(int orderId){
 		return GET_ORDER_INFO+"/"+orderId;
+	}
+
+	public static String getInvitation(int orderId){
+		return INVITATION + orderId + "/invitation";
 	}
 }

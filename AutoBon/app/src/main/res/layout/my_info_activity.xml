@@ -28,6 +28,7 @@
             android:textSize="@dimen/sp18" />
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/my_info_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/dp15"
@@ -37,6 +38,7 @@
             android:layout_width="@dimen/dp50"
             android:layout_height="@dimen/dp50"
             android:layout_gravity="center_vertical"
+            android:src="@mipmap/user_hint"
             app:border_width="1dp"
             app:border_color="@color/line_color"/>
         <TextView
@@ -124,8 +126,9 @@
             android:visibility="invisible"/>
 
         <ImageView
+            android:id="@+id/modify_info"
             android:layout_width="@dimen/dp25"
-            android:layout_height="@dimen/dp25"
+            android:layout_height="@dimen/dp50"
             android:src="@mipmap/iv_row"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"

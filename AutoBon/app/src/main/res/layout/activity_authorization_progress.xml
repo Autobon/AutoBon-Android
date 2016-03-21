@@ -88,9 +88,8 @@
         android:layout_marginLeft="@dimen/dp15"
         android:layout_marginRight="@dimen/dp15"
         android:layout_marginTop="@dimen/dp20"
-        android:gravity="center_vertical"
-        android:paddingTop="@dimen/dp10"
-        android:paddingBottom="@dimen/dp10">
+        android:layout_marginBottom="@dimen/dp10"
+        android:gravity="center_vertical">
 
         <View
             android:layout_width="0dp"
@@ -125,7 +124,7 @@
             android:layout_width="@dimen/dp50"
             android:layout_height="@dimen/dp50"
             android:layout_gravity="center_vertical"
-            android:src="@mipmap/ic_launcher"
+            android:src="@mipmap/user_hint"
             app:border_color="@color/line_light_color"
             app:border_width="1dp" />
 
@@ -209,8 +208,8 @@
             android:background="@color/lightgray"
             android:layout_marginTop="@dimen/dp5"
             android:layout_marginBottom="@dimen/dp5"
-            android:layout_marginLeft="@dimen/dp15"
-            android:layout_marginRight="@dimen/dp15"/>
+            android:layout_marginLeft="@dimen/dp5"
+            android:layout_marginRight="@dimen/dp5"/>
         <TextView
             android:id="@+id/tv_bank"
             android:layout_width="wrap_content"

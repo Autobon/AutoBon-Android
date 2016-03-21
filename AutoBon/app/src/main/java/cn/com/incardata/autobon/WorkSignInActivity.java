@@ -45,7 +45,7 @@ import cn.com.incardata.utils.T;
  * 工作签到
  */
 public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnClickListener{
-    private static final int SIGN = 100;//允许签到距离
+    private static final int SIGN = 100;//允许签到距离m
     private TextView tv_day;
     private Context context;
     private Button sign_in_btn;
@@ -76,6 +76,8 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
             mLatLng = new LatLng(Double.parseDouble(orderInfo.getPositionLat()), Double.parseDouble(orderInfo.getPositionLon()));
             mAddress = orderInfo.getCreatorName();
         }catch(NumberFormatException e){
+            e.printStackTrace();
+        }catch (NullPointerException e){
             e.printStackTrace();
         }
     }
@@ -188,7 +190,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
      */
     public void signIn(){
         if (!isSign){
-            T.show(this, "到达工作地点，才能签到");
+            T.show(this, R.string.arrival_to_sign);
             return;
         }
 
@@ -210,7 +212,6 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
                 }
                 SignInEntity signInEntity = (SignInEntity) entity;
                 if(signInEntity.isResult()){
-//                    T.show(context,context.getString(R.string.sign_in_success));
                     Intent intent = new Intent(getContext(), WorkBeforeActivity.class);
                     intent.putExtra(AutoCon.ORDER_INFO, orderInfo);
                     startActivity(intent);
