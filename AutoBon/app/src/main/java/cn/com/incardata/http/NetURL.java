@@ -58,7 +58,7 @@ public class NetURL {
 	public static final String SUBMIT_BEFORE_WORK_PHOTO_URL = BASE_URL + "technician/construct/beforePhoto";
 
 	/** 获取订单工作项 **/
-	public static final String GET_WORK_ITEM = PUB + "pub/technician/workItems";
+	public static final String GET_WORK_ITEM = PUB + "technician/workItems";
 
 	/** 完成施工 **/
 	public static final String WORK_FINISH_URL = BASE_URL + "technician/construct/finish";
