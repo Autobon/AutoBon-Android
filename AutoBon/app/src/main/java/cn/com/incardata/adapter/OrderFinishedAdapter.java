@@ -27,12 +27,14 @@ public class OrderFinishedAdapter extends BaseAdapter{
 
     private int main_orange_color;
     private int darkgray_color;
+    private String RMB;
 
     public OrderFinishedAdapter(Context context, ArrayList<OrderInfo_Data> mList){
         this.context = context;
         this.mList = mList;
         main_orange_color =  context.getResources().getColor(R.color.main_orange);
         darkgray_color = context.getResources().getColor(R.color.darkgray);
+        RMB = context.getResources().getString(R.string.RMB);
     }
 
     @Override
@@ -62,7 +64,7 @@ public class OrderFinishedAdapter extends BaseAdapter{
             holder.moneyState = (TextView) convertView.findViewById(R.id.money_state);
             holder.orderNum = (TextView) convertView.findViewById(R.id.order_number);
             holder.orderImage = (ImageView) convertView.findViewById(R.id.order_image);
-            holder.workTime = (TextView) convertView.findViewById(R.id.work_item);
+            holder.workTime = (TextView) convertView.findViewById(R.id.work_time);
             holder.workItem = (TextView) convertView.findViewById(R.id.work_item);
 
             convertView.setTag(holder);
@@ -70,7 +72,7 @@ public class OrderFinishedAdapter extends BaseAdapter{
             holder = (Holder) convertView.getTag();
         }
 
-        holder.money.setText(mList.get(position).getMainConstruct().getPayment());
+        holder.money.setText(RMB + mList.get(position).getMainConstruct().getPayment());
         if (mList.get(position).getMainConstruct().getPayStatus() == 2){
             holder.moneyState.setText(R.string.pay_done);
             holder.moneyState.setTextColor(main_orange_color);
@@ -91,9 +93,9 @@ public class OrderFinishedAdapter extends BaseAdapter{
                 String[] items = item.split(",");
                 String tempItem = "";
                 for (String str : items){
-                    tempItem += MyOrderActivity.workItems[Integer.parseInt(str)];
+                    tempItem += MyOrderActivity.workItems[Integer.parseInt(str)] + ",";
                 }
-                holder.workItem.setText(tempItem);
+                holder.workItem.setText(tempItem.substring(0, tempItem.length() - 1));
             }else {
                 holder.workItem.setText(MyOrderActivity.workItems[1]);
             }

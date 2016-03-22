@@ -1,17 +1,20 @@
 package cn.com.incardata.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
 import cn.com.incardata.adapter.OrderFinishedAdapter;
+import cn.com.incardata.autobon.OrderInfoActivity;
 import cn.com.incardata.autobon.R;
 import cn.com.incardata.http.Http;
 import cn.com.incardata.http.NetURL;
@@ -34,7 +37,8 @@ public class MyOrderFragment extends BaseFragment {
 
     private OnMyOrderFragmentListener mListener;
     private View rootView;
-    private String orderId;
+    private boolean isMainResponsible;
+    private String url;
 
     private PullToRefreshView mPull;
     private ListView mListView;
@@ -55,10 +59,10 @@ public class MyOrderFragment extends BaseFragment {
      * @return A new instance of fragment MyOrderFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static MyOrderFragment newInstance(String orderId) {
+    public static MyOrderFragment newInstance(boolean isMainResponsible) {
         MyOrderFragment fragment = new MyOrderFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("OrderId", orderId);
+        bundle.putBoolean("isMainResponsible", isMainResponsible);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -67,7 +71,13 @@ public class MyOrderFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null){
-            this.orderId = getArguments().getString("OrderId");
+            this.isMainResponsible = getArguments().getBoolean("isMainResponsible");
+        }
+
+        if (isMainResponsible){
+            url = NetURL.FINISHED_ORDER_LIST_MAIN;
+        }else {
+            url = NetURL.FINISHED_ORDER_LIST_SECOND;
         }
     }
 
@@ -112,11 +122,24 @@ public class MyOrderFragment extends BaseFragment {
                 getpageList(++page);
             }
         });
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                startActivity(OrderInfoActivity.class, position);
+            }
+        });
+
         getpageList(1);
     }
 
+    private void startActivity(Class<?> cls, int position){
+        Intent intent = new Intent(getActivity(), cls);
+        startActivity(intent);
+    }
+
     private void getpageList(int page) {
-        Http.getInstance().getTaskToken(NetURL.FINISHED_ORDER_LIST_MAIN, "page=" + page + "&pageSize=5", ListUnfinishedEntity.class, new OnResult() {
+        Http.getInstance().getTaskToken(url, "page=" + page + "&pageSize=5", ListUnfinishedEntity.class, new OnResult() {
             @Override
             public void onResult(Object entity) {
                 mPull.loadedCompleted();

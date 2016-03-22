@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/pull_to_refresh_header"
-    android:background="#f5f5f5"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
@@ -27,7 +26,8 @@
         android:layout_marginLeft="30dip"
         android:layout_marginRight="20dip"
         android:gravity="center"
-        android:src="@drawable/rectangle_rrow_up"
+        android:src="@drawable/arrow_up"
+        android:scaleType="fitCenter"
         android:visibility="visible" />
 
     <TextView

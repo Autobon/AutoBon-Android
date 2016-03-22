@@ -43,11 +43,11 @@ public class MyOrderActivity extends BaseActivity implements View.OnClickListene
         mainResponsible.setOnClickListener(this);
         secondResponsible.setOnClickListener(this);
 
-        mainFragment = new MyOrderFragment();
-        secFragment = new MyOrderFragment();
+        mainFragment = MyOrderFragment.newInstance(true);
+        secFragment = MyOrderFragment.newInstance(false);
         fragmentManager = getFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
-        ft.add(R.id.responsible_container, secFragment).commit();
+        ft.add(R.id.responsible_container, secFragment).add(R.id.responsible_container, mainFragment).commit();
 
         workItems = getResources().getStringArray(R.array.work_item);
     }
@@ -63,12 +63,16 @@ public class MyOrderActivity extends BaseActivity implements View.OnClickListene
             secondResponsible.setTextColor(getResources().getColor(R.color.darkgray));
             secondBaseline.setVisibility(View.INVISIBLE);
 
-
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.hide(secFragment).show(mainFragment).commit();
         }else {
             secondResponsible.setTextColor(getResources().getColor(R.color.main_orange));
             secondBaseline.setVisibility(View.VISIBLE);
             mainResponsible.setTextColor(getResources().getColor(R.color.darkgray));
             mainBaseline.setVisibility(View.INVISIBLE);
+
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.hide(mainFragment).show(secFragment).commit();
         }
     }
 

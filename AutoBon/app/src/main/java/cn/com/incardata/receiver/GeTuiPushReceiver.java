@@ -123,7 +123,7 @@ public class GeTuiPushReceiver extends BroadcastReceiver{
         }else {
             intent.setAction(ActionType.ACTION_INVITATION);
         }
-        PendingIntent contentIntent = PendingIntent.getActivity(context, nID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, nID, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         Notification.Builder builder = new Notification.Builder(context)
                 .setContentTitle(title)

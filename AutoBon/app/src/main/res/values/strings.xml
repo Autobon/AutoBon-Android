@@ -268,4 +268,8 @@
     <string name="work_item_tv">施工部位：</string>
     <string name="pay_done">已结算</string>
     <string name="pay_wait">未结算</string>
+    <string name="RMB">￥</string>
+    <string name="work_duration">施工耗时：</string>
+    <string name="appraise">评价</string>
+    <string name="order_remark">下单备注：</string>
 </resources>

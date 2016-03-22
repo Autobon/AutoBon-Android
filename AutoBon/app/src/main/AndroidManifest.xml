@@ -120,7 +120,7 @@
         <activity
             android:name=".BillDetailActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"/>
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".MoreActivity"
             android:screenOrientation="portrait"
@@ -302,7 +302,8 @@
         </activity>
         <activity android:name=".ImmediateSuccessedActivity" />
         <activity android:name=".InvitationActivity" />
-        <activity android:name=".MyOrderActivity"></activity>
+        <activity android:name=".MyOrderActivity" />
+        <activity android:name=".OrderInfoActivity"></activity>
     </application>
 
 </manifest>

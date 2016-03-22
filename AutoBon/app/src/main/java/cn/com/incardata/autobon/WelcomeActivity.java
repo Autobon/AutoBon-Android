@@ -3,6 +3,8 @@ package cn.com.incardata.autobon;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 
+import cn.com.incardata.application.MyApplication;
+
 public class WelcomeActivity extends BaseActivity {
     private static final int DURATION = 2000;//持续时长（秒）
     @Override
@@ -10,6 +12,7 @@ public class WelcomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
+        MyApplication.setIsSkipNewOrder(true);
         startCount();
     }
 

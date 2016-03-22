@@ -13,11 +13,11 @@
 
     <TextView
         android:id="@+id/money"
-        android:layout_width="10dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/v1"
         android:layout_marginRight="@dimen/dp15"
-        android:textColor="@color/darkgray"
+        android:textColor="@color/gray_A3"
         android:textSize="@dimen/sp13"
         android:layout_alignParentRight="true" />
 
@@ -131,7 +131,7 @@
         android:id="@+id/v5"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/work_item_tv"
+        android:layout_below="@id/work_item"
         android:layout_marginTop="@dimen/dp5"
         android:background="#F0F0F0"/>
 </RelativeLayout>
