@@ -2,6 +2,7 @@
     <!--<string name="app_name">AutoBon</string>-->
     <string name="app_name">车邻邦</string>
     <string name="digits_indentify_number">0123456789X</string>
+    <string name="load_progress_tips">正在加载</string>
 
     <!--登陆界面-->
     <string name="text_language">语言</string>
