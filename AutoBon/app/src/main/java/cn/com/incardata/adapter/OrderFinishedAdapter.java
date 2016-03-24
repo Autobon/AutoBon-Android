@@ -15,6 +15,7 @@ import cn.com.incardata.autobon.MyOrderActivity;
 import cn.com.incardata.autobon.R;
 import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
+import cn.com.incardata.http.response.OrderInfo_Construction;
 import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.utils.DateCompute;
 
@@ -24,13 +25,15 @@ import cn.com.incardata.utils.DateCompute;
 public class OrderFinishedAdapter extends BaseAdapter{
     private Context context;
     private ArrayList<OrderInfo_Data> mList;
+    private boolean isMainResponsible;
 
     private int main_orange_color;
     private int darkgray_color;
     private String RMB;
 
-    public OrderFinishedAdapter(Context context, ArrayList<OrderInfo_Data> mList){
+    public OrderFinishedAdapter(Context context, boolean isMainResponsible, ArrayList<OrderInfo_Data> mList){
         this.context = context;
+        this.isMainResponsible = isMainResponsible;
         this.mList = mList;
         main_orange_color =  context.getResources().getColor(R.color.main_orange);
         darkgray_color = context.getResources().getColor(R.color.darkgray);
@@ -72,20 +75,27 @@ public class OrderFinishedAdapter extends BaseAdapter{
             holder = (Holder) convertView.getTag();
         }
 
-        holder.money.setText(RMB + mList.get(position).getMainConstruct().getPayment());
-        if (mList.get(position).getMainConstruct().getPayStatus() == 2){
+        holder.orderNum.setText(R.string.order_serial_number);
+        holder.orderNum.append(mList.get(position).getOrderNum());
+        ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + mList.get(position).getPhoto(), holder.orderImage, 0);
+        holder.workTime.setText(DateCompute.getDate(mList.get(position).getOrderTime()));
+
+        OrderInfo_Construction comment;
+        if (isMainResponsible) {
+            comment = mList.get(position).getMainConstruct();
+        }else {
+            comment = mList.get(position).getSecondConstruct();
+        }
+        holder.money.setText(RMB + comment.getPayment());
+        if (comment.getPayStatus() == 2){
             holder.moneyState.setText(R.string.pay_done);
             holder.moneyState.setTextColor(main_orange_color);
         }else {
             holder.moneyState.setText(R.string.pay_wait);
             holder.moneyState.setTextColor(darkgray_color);
         }
-        holder.orderNum.setText(R.string.order_serial_number);
-        holder.orderNum.append(mList.get(position).getOrderNum());
-        ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + mList.get(position).getPhoto(), holder.orderImage, 0);
-        holder.workTime.setText(DateCompute.getDate(mList.get(position).getOrderTime()));
 
-        String item = mList.get(position).getMainConstruct().getWorkItems();
+        String item = comment.getWorkItems();
         if (TextUtils.isEmpty(item)){
             holder.workItem.setText(null);
         }else {

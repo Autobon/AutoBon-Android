@@ -272,4 +272,11 @@
     <string name="work_duration">施工耗时：</string>
     <string name="appraise">评价</string>
     <string name="order_remark">下单备注：</string>
+    <string name="arrive_on_time">准时到达</string>
+    <string name="complete_on_time">准时完成</string>
+    <string name="professional">技术专业</string>
+    <string name="dress_neatly">着装整洁</string>
+    <string name="car_protect">车辆保护超级棒</string>
+    <string name="good_attitude">态度好</string>
+    <string name="order_infomation">详情</string>
 </resources>

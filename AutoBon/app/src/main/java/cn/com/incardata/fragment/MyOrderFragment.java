@@ -21,6 +21,7 @@ import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.ListUnfinishedEntity;
 import cn.com.incardata.http.response.OrderInfo_Data;
+import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.T;
 import cn.com.incardata.view.PullToRefreshView;
 
@@ -100,7 +101,7 @@ public class MyOrderFragment extends BaseFragment {
         mListView = (ListView) rootView.findViewById(R.id.finished_order_list);
 
         mList = new ArrayList<OrderInfo_Data>();
-        mAdapter = new OrderFinishedAdapter(getActivity(), mList);
+        mAdapter = new OrderFinishedAdapter(getActivity(), isMainResponsible, mList);
         mListView.setAdapter(mAdapter);
 
         mPull.setOnHeaderRefreshListener(new PullToRefreshView.OnHeaderRefreshListener() {
@@ -135,6 +136,8 @@ public class MyOrderFragment extends BaseFragment {
 
     private void startActivity(Class<?> cls, int position){
         Intent intent = new Intent(getActivity(), cls);
+        intent.putExtra(AutoCon.ORDER_INFO, mList.get(position));
+        intent.putExtra("isMain", isMainResponsible);
         startActivity(intent);
     }
 

@@ -1,0 +1,59 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="LoginButtonStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/dp40</item>
+        <item name="android:layout_marginRight">@dimen/dp40</item>
+        <item name="android:textSize">@dimen/sp18</item>
+        <item name="android:background">@drawable/login_btn_selector</item>
+        <item name="android:padding">@dimen/dp10</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="mRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/my_rating_bg_bar</item>
+        <item name="android:indeterminateDrawable">@drawable/my_rating_bg_bar</item>
+        <item name="android:minHeight">14dp</item>
+        <item name="android:maxHeight">14dp</item>
+    </style>
+
+    <style name="LargeRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/large_ratingbar_style</item>
+        <item name="android:indeterminateDrawable">@drawable/large_ratingbar_style</item>
+        <item name="android:minHeight">36dp</item>
+        <item name="android:maxHeight">36dp</item>
+    </style>
+
+    <style name="TipsDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="DialogFragment">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowCloseOnTouchOutside">false</item>
+    </style>
+
+    <style name="SpinnerTheme" parent="AppTheme">
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    
+    <style name="NoTitleBarStyle" parent="@android:style/Theme.NoTitleBar">
+        <item name="android:screenOrientation">portrait</item>
+        <item name="android:configChanges">orientation|screenSize|keyboardHidden</item>
+    </style>
+</resources>

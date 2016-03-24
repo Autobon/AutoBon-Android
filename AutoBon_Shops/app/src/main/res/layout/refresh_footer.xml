@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pull_to_refresh_header"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/dp30"
+    android:background="@color/main_white"
+    android:paddingBottom="1dip"
+    android:paddingTop="1dip" >
+
+    <TextView
+        android:id="@+id/pull_to_load_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/pull_to_refresh_footer_pull_label"
+        android:textColor="@color/lightgray"
+        android:textSize="@dimen/sp15" />
+    
+     <ProgressBar
+        android:id="@+id/pull_to_load_progress"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/pull_to_load_text"
+        android:layout_marginRight="@dimen/dp10"
+        android:layout_centerVertical="true"
+        android:indeterminate="true"
+        android:visibility="gone"/>
+    
+    <ImageView
+        android:id="@+id/pull_to_load_image"
+        android:layout_width="@dimen/dp25"
+        android:layout_height="@dimen/dp25"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/dp10"
+        android:layout_toLeftOf="@id/pull_to_load_text"
+        android:src="@mipmap/up_refresh_load"
+        android:visibility="visible" />
+
+</RelativeLayout>

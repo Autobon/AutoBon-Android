@@ -303,7 +303,8 @@
         <activity android:name=".ImmediateSuccessedActivity" />
         <activity android:name=".InvitationActivity" />
         <activity android:name=".MyOrderActivity" />
-        <activity android:name=".OrderInfoActivity"></activity>
+        <activity android:name=".OrderInfoActivity" />
+        <activity android:name=".WorkFinishedActivity"></activity>
     </application>
 
 </manifest>

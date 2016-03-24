@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 主题色begin -->
+    <color name="main_white">#FBFCFC</color>
+    <color name="main_orange">#EB6001</color>
+    <color name="lightgray">#D8D8D8</color>
+    <color name="darkgray">#282828</color>
+    <color name="gray_A3">#a3a3a3</color>
+    <!-- 主题色end -->
+
+    <color name="line_color">#a3a3a3</color>
+    <color name="line_light_color">#eeeeee</color>
+</resources>
