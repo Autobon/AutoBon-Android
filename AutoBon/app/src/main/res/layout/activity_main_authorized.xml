@@ -46,29 +46,29 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/dp10">
+
+        <TextView
+            android:id="@+id/today"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="@dimen/dp10">
+            android:textSize="@dimen/sp13"
+            android:textColor="@color/darkgray"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="2015-01-05 星期二"/>
 
-            <TextView
-                android:id="@+id/today"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/sp13"
-                android:textColor="@color/darkgray"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="2015-01-05 星期二"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/sp13"
-                android:textColor="@color/darkgray"
-                android:text="@string/order_mode"/>
-        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp13"
+            android:textColor="@color/darkgray"
+            android:text="@string/order_mode"/>
+    </LinearLayout>
 
         <View
             android:layout_width="match_parent"
@@ -152,15 +152,15 @@
             android:id="@+id/order_pull"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/dp10"
-            android:layout_marginRight="@dimen/dp10"
             android:orientation="vertical">
 
             <ListView
                 android:id="@+id/unfinished_order_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scrollbarStyle="outsideInset"
+                android:scrollbarStyle="outsideOverlay"
+                android:paddingLeft="@dimen/dp10"
+                android:paddingRight="@dimen/dp10"
                 android:divider="#F0F0F0"
                 android:dividerHeight="1dp"/>
 

@@ -262,6 +262,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                     startActivity(MainUnauthorizedActivity.class, bundle);
                     //startActivity(MyInfoActivity.class);
                 }
+
                 startService(new Intent(getContext(), AutobonService.class));
                 finish();
             }else{  //失败

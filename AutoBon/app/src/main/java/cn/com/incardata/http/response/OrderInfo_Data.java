@@ -24,7 +24,7 @@ public class OrderInfo_Data implements Parcelable {
     private MyInfo_Data secondTech;
     private OrderInfo_Construction mainConstruct;
     private OrderInfo_Construction secondConstruct;
-    private String comment;
+    private OrderInfo_Data_Comment comment;
     private String status;
 
     public int getId() {
@@ -163,11 +163,11 @@ public class OrderInfo_Data implements Parcelable {
         this.secondConstruct = secondConstruct;
     }
 
-    public String getComment() {
+    public OrderInfo_Data_Comment getComment() {
         return comment;
     }
 
-    public void setComment(String comment) {
+    public void setComment(OrderInfo_Data_Comment comment) {
         this.comment = comment;
     }
 
@@ -204,7 +204,7 @@ public class OrderInfo_Data implements Parcelable {
         dest.writeParcelable(this.secondTech, 0);
         dest.writeParcelable(this.mainConstruct, 0);
         dest.writeParcelable(this.secondConstruct, 0);
-        dest.writeString(this.comment);
+        dest.writeParcelable(this.comment, 0);
         dest.writeString(this.status);
     }
 
@@ -229,7 +229,7 @@ public class OrderInfo_Data implements Parcelable {
         this.secondTech = in.readParcelable(MyInfo_Data.class.getClassLoader());
         this.mainConstruct = in.readParcelable(OrderInfo_Construction.class.getClassLoader());
         this.secondConstruct = in.readParcelable(OrderInfo_Construction.class.getClassLoader());
-        this.comment = in.readString();
+        this.comment = in.readParcelable(OrderInfo_Data_Comment.class.getClassLoader());
         this.status = in.readString();
     }
 

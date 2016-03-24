@@ -3,6 +3,7 @@ package cn.com.incardata.http.response;
 import java.util.List;
 
 /**
+ * 未完成订单列表
  * Created by wanghao on 16/3/9.
  */
 public class ListUnfinished_Data {

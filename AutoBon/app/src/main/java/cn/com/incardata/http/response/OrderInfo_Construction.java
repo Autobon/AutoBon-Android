@@ -17,7 +17,8 @@ public class OrderInfo_Construction implements Parcelable {
     private long endTime;
     private String beforePhotos;
     private String afterPhotos;
-    private int payment;
+    private int payStatus;//支付状态(0-未出账，1-已出账，未支付，2-已支付)
+    private int payment;//支付金额
     private String workItems;
     private double workPercent;
     private int carSeat;
@@ -102,6 +103,14 @@ public class OrderInfo_Construction implements Parcelable {
         this.afterPhotos = afterPhotos;
     }
 
+    public int getPayStatus() {
+        return payStatus;
+    }
+
+    public void setPayStatus(int payStatus) {
+        this.payStatus = payStatus;
+    }
+
     public int getPayment() {
         return payment;
     }
@@ -152,6 +161,7 @@ public class OrderInfo_Construction implements Parcelable {
         dest.writeLong(this.endTime);
         dest.writeString(this.beforePhotos);
         dest.writeString(this.afterPhotos);
+        dest.writeInt(this.payStatus);
         dest.writeInt(this.payment);
         dest.writeString(this.workItems);
         dest.writeDouble(this.workPercent);
@@ -172,6 +182,7 @@ public class OrderInfo_Construction implements Parcelable {
         this.endTime = in.readLong();
         this.beforePhotos = in.readString();
         this.afterPhotos = in.readString();
+        this.payStatus = in.readInt();
         this.payment = in.readInt();
         this.workItems = in.readString();
         this.workPercent = in.readDouble();

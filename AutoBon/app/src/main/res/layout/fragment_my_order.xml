@@ -1,0 +1,16 @@
+<cn.com.incardata.view.PullToRefreshView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/order_pull"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/main_white">
+
+    <ListView
+        android:id="@+id/finished_order_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbarStyle="outsideOverlay"
+        android:divider="@color/main_white"
+        android:dividerHeight="@dimen/dp10"/>
+
+</cn.com.incardata.view.PullToRefreshView>

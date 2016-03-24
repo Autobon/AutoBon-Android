@@ -32,6 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/dp15"
+        android:gravity="center_vertical"
         android:background="@android:color/white">
         <cn.com.incardata.view.CircleImageView
             android:id="@+id/iv_circle"
@@ -47,9 +48,9 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/iv_circle"
             android:layout_marginLeft="@dimen/dp15"
+            android:layout_marginTop="@dimen/dp5"
+            android:layout_marginBottom="@dimen/dp5"
             android:textSize="@dimen/sp15"
-            android:paddingTop="@dimen/dp5"
-            android:paddingBottom="@dimen/dp5"
             android:textColor="@color/darkgray"/>
 
         <RatingBar
@@ -59,9 +60,8 @@
             android:layout_height="wrap_content"
             android:numStars="5"
             android:rating="0"
-            android:layout_marginTop="@dimen/dp5"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
+            android:paddingTop="3dp"
+            android:layout_alignTop="@id/tv_login_username"
             android:layout_marginLeft="@dimen/dp10"
             android:layout_toRightOf="@id/tv_login_username"
             android:gravity="center_vertical"
