@@ -193,6 +193,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         }
 
         if(NetWorkHelper.isNetworkAvailable(context)){
+            showDialog(getString(R.string.load_progress_tips));  //显示加载框
             MyAsyncTask myAsyncTask = new MyAsyncTask(phone,password);
             myAsyncTask.execute();
         }else{
@@ -218,6 +219,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
             BasicNameValuePair bv_password = new BasicNameValuePair("password",this.password);
             try{
                 String result = HttpClientInCar.postLoginHttpToken(context,NetURL.LOGIN,bv_phone,bv_password);
+                Thread.sleep(3000);
                 return result;
             }catch (Exception e){
                 return null;
@@ -227,6 +229,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+            cancelDialog();  //关闭加载框
             if (StringUtil.isEmpty(result)) {
                 T.show(context,context.getString(R.string.login_failed));
                 return;
