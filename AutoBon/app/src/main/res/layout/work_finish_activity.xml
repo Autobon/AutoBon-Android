@@ -208,8 +208,7 @@
                     android:id="@+id/iv_left"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@drawable/work_left"
-                    android:scaleType="centerCrop"/>
+                    android:background="@drawable/work_left" />
                 <TextView
                     android:id="@+id/tv_content"
                     android:layout_width="@dimen/dp120"
@@ -224,8 +223,7 @@
                     android:id="@+id/iv_right"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@drawable/work_right"
-                    android:scaleType="centerCrop"
+                    android:background="@drawable/work_right"
                     android:layout_toRightOf="@id/tv_content"/>
             </RelativeLayout>
             <TextView

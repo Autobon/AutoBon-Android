@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@android:color/white"
-    android:paddingLeft="@dimen/dp20"
-    android:paddingRight="@dimen/dp20"
-    android:paddingTop="@dimen/dp10"
-    android:paddingBottom="@dimen/dp10"
+    android:background="@drawable/force_start_bg_shape"
+    android:paddingLeft="@dimen/dp30"
+    android:paddingRight="@dimen/dp30"
+    android:paddingTop="@dimen/dp20"
+    android:paddingBottom="@dimen/dp20"
     android:gravity="center" >
 
     <ImageView

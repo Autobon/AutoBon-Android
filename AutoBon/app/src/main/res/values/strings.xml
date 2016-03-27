@@ -2,7 +2,7 @@
     <!--<string name="app_name">AutoBon</string>-->
     <string name="app_name">车邻邦</string>
     <string name="digits_indentify_number">0123456789X</string>
-    <string name="load_progress_tips">正在加载</string>
+    <string name="load_progress_tips">正在加载…</string>
 
     <!--登陆界面-->
     <string name="text_language">语言</string>
@@ -79,6 +79,7 @@
     <string name="card_number_photo">手持身份证正面照</string>
     <string name="change_authorize_info">更改认证信息</string>
     <string name="get_info_failed">获取信息失败</string>
+    <string name="please_verify_bank_card_number">＊请仔细核对银行卡号</string>
 
     <!--接单,开始工作-->
     <string name="text_distance">距离: </string>
@@ -280,4 +281,8 @@
     <string name="car_protect">车辆保护超级棒</string>
     <string name="good_attitude">态度好</string>
     <string name="order_infomation">详情</string>
+    <string name="order_finished_note">恭喜，您已顺利完成本次编号为%1$s的订单，分享可获得奖励噢！</string>
+    <string name="work_finished_mode">工作完成模式</string>
+    <string name="continue_immediate">继续接单</string>
+
 </resources>

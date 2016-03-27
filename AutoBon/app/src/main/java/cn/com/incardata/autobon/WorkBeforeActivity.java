@@ -30,12 +30,14 @@ import java.util.Iterator;
 import java.util.Map;
 
 import cn.com.incardata.adapter.PictureGridAdapter;
+import cn.com.incardata.application.MyApplication;
 import cn.com.incardata.http.Http;
 import cn.com.incardata.http.HttpClientInCar;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.IdPhotoEntity;
+import cn.com.incardata.http.response.OrderInfo_Construction;
 import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.BitmapHelper;
@@ -66,6 +68,7 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
 
     private boolean isRunning = true;
     private OrderInfo_Data orderInfo;
+    private OrderInfo_Construction construction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +109,7 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
                 long useTime = 0L;
                 try{
                     long currentTime = System.currentTimeMillis();
-                    long startWorkTime = orderInfo.getMainConstruct().getStartTime();
+                    long startWorkTime = construction.getSigninTime();
                     useTime = currentTime - startWorkTime;
                 }catch (Exception e){
                     useTime = 0L;
@@ -144,6 +147,12 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
         gv_single_pic = (GridView)findViewById(R.id.gv_single_pic);
         mAdapter = new PictureGridAdapter(this,MAX_PICS);
         gv_single_pic.setAdapter(mAdapter);
+
+        if (orderInfo.getMainTech().getId() == MyApplication.getInstance().getUserId()){
+            construction = orderInfo.getMainConstruct();
+        }else{
+            construction = orderInfo.getSecondConstruct();
+        }
     }
 
     private void initData(){

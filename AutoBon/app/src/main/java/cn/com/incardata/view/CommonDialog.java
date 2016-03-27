@@ -18,16 +18,15 @@ import cn.com.incardata.autobon.R;
  */
 public class CommonDialog extends Dialog{
     private Context context;
-    private String msg;
     private boolean cancelable;
     private AnimationDrawable animation;
     private ImageView image;
+    private TextView message;
     private int color = Color.BLACK;
 
-    public CommonDialog(Context context, String msg){
+    public CommonDialog(Context context){
         super(context, R.style.TipsDialog);
         this.context = context;
-        this.msg = msg;
     }
 
     protected CommonDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
@@ -35,6 +34,10 @@ public class CommonDialog extends Dialog{
         super(context, cancelable, cancelListener);
         this.context = context;
         this.cancelable = cancelable;
+    }
+
+    public void setMsg(String msg){
+        message.setText(msg);
     }
 
     /**
@@ -48,15 +51,15 @@ public class CommonDialog extends Dialog{
 
     public void setColor(int textColor) {
         color  = textColor;
+        message.setTextColor(color);
     }
 
     private void setDialogView(int gravity) {
         setContentView(R.layout.common_dialog);
         image = (ImageView) findViewById(R.id.iv_progress);
         animation = (AnimationDrawable) image.getBackground();
-        TextView message = (TextView)findViewById(R.id.message);
+        message = (TextView)findViewById(R.id.message);
         message.setTextColor(color);
-        message.setText(msg);
 
         Window dialogWindow = this.getWindow();
         /**获取对话框参数设置对象，可修改对话框显示位置、大小、透明度等属性*/
@@ -76,6 +79,7 @@ public class CommonDialog extends Dialog{
         if (animation != null && !animation.isRunning()) {
             animation.start(); 	//启动帧动画
         }
+
     }
 
     @Override

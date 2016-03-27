@@ -239,7 +239,6 @@ public class IndentMapFragment extends BaiduMapFragment{
         }
     }
 
-
     @Override
     public void onDestroy() {
         if(myBDLocationListener!=null){
@@ -260,6 +259,14 @@ public class IndentMapFragment extends BaiduMapFragment{
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden){
+//            baiduMap.
+        }
     }
 
     /**

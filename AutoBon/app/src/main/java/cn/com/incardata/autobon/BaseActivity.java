@@ -32,7 +32,7 @@ public class BaseActivity extends Activity{
     /**=== 封装对话框调用方法 ===**/
     public void showDialog(String message){
         if (dialog == null) {
-            dialog = new CommonDialog(this,message);
+            dialog = new CommonDialog(this);
             dialog.setDisplay(Gravity.CENTER);
             return;
         }
@@ -44,7 +44,14 @@ public class BaseActivity extends Activity{
     public void cancelDialog(){
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
-            dialog = null;
+//            dialog = null;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        cancelDialog();
+        dialog = null;
     }
 }

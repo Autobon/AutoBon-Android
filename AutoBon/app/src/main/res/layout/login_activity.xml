@@ -152,7 +152,7 @@
             android:id="@+id/login_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft ="@dimen/dp35"
+            android:layout_marginLeft ="@dimen/dp40"
             android:layout_marginRight="@dimen/dp40"
             android:layout_marginTop="@dimen/dp20"
             android:layout_marginBottom="@dimen/dp20"

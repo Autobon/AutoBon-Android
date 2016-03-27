@@ -532,7 +532,7 @@ public class PullToRefreshView extends LinearLayout {
 	public void onHeaderRefreshComplete() {
 		setHeaderTopMargin(-mHeaderViewHeight);
 		mHeaderImageView.setVisibility(View.VISIBLE);
-		mHeaderImageView.setImageResource(R.drawable.arrow_up);
+		mHeaderImageView.setImageResource(R.drawable.arrow_down);
 		mHeaderTextView.setText(R.string.pull_to_refresh_pull_label);
 		mHeaderProgressBar.setVisibility(View.GONE);
 		mHeaderState = PULL_TO_REFRESH;
@@ -586,7 +586,7 @@ public class PullToRefreshView extends LinearLayout {
 		}
 		setHeaderTopMargin(-mHeaderViewHeight);
 		mFooterImageView.setVisibility(View.VISIBLE);
-		mFooterImageView.setImageResource(R.drawable.rectangle_rrow_up);
+		mFooterImageView.setImageResource(R.drawable.up_refresh_load);
 		mFooterTextView.setText(R.string.pull_to_refresh_footer_pull_label);
 		mFooterProgressBar.setVisibility(View.GONE);
 		// mHeaderUpdateTextView.setText("");

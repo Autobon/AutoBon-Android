@@ -27,6 +27,7 @@ import org.apache.http.message.BasicNameValuePair;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.com.incardata.application.MyApplication;
 import cn.com.incardata.http.Http;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.NetWorkHelper;
@@ -45,7 +46,7 @@ import cn.com.incardata.utils.T;
  * 工作签到
  */
 public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnClickListener{
-    private static final int SIGN = 100;//允许签到距离m
+    private static final int SIGN = 10000000;//允许签到距离m
     private TextView tv_day;
     private Context context;
     private Button sign_in_btn;
@@ -212,6 +213,11 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
                 }
                 SignInEntity signInEntity = (SignInEntity) entity;
                 if(signInEntity.isResult()){
+                    if (orderInfo.getMainTech().getId() == MyApplication.getInstance().getUserId()){
+                        orderInfo.getMainConstruct().setSigninTime(System.currentTimeMillis());
+                    }else {
+                        orderInfo.getSecondConstruct().setSigninTime(System.currentTimeMillis());
+                    }
                     Intent intent = new Intent(getContext(), WorkBeforeActivity.class);
                     intent.putExtra(AutoCon.ORDER_INFO, orderInfo);
                     startActivity(intent);

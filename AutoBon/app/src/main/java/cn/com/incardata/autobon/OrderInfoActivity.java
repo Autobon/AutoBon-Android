@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import cn.com.incardata.application.MyApplication;
 import cn.com.incardata.http.Http;
 import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
@@ -106,7 +107,7 @@ public class OrderInfoActivity extends BaseActivity {
         remark.setText(data.getRemark());
         workTime.setText(DateCompute.getDate(data.getOrderTime()));
         orderNum.setText(getResources().getString(R.string.order_serial_number) + data.getOrderNum());
-        ImageLoaderCache.getInstance().loader(data.getPhoto(), orderImage, false, R.mipmap.load_image_failed);
+        ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + data.getPhoto(), orderImage, false, R.mipmap.load_image_failed);
 
         OrderInfo_Data_Comment comment = data.getComment();
         if (comment != null) {
@@ -154,6 +155,10 @@ public class OrderInfoActivity extends BaseActivity {
         }
         workDuration.setText(duration(construct.getStartTime(), construct.getEndTime()));
 
+        if (data.getOrderType() == 4) {//美容清洁
+            workItem.setText(MyApplication.getInstance().getSkill(4));
+            return;
+        }
         String item = construct.getWorkItems();
         if (TextUtils.isEmpty(item)){
             workItem.setText(null);
@@ -176,7 +181,6 @@ public class OrderInfoActivity extends BaseActivity {
         try{
             useTime = endTime - startTime;
         }catch (Exception e){
-            useTime = 0L;
             e.printStackTrace();
             return "0分钟";
         }
