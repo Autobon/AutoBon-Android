@@ -26,7 +26,7 @@
         android:layout_marginLeft="30dip"
         android:layout_marginRight="20dip"
         android:gravity="center"
-        android:src="@drawable/arrow_up"
+        android:src="@drawable/arrow_down"
         android:scaleType="fitCenter"
         android:visibility="visible" />
 
