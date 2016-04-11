@@ -7,15 +7,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 
+import cn.com.incardata.application.MyApplication;
 import cn.com.incardata.fragment.IndentMapFragment;
 import cn.com.incardata.getui.ActionType;
 import cn.com.incardata.getui.CustomIntentFilter;
 import cn.com.incardata.getui.OrderMsg;
+import cn.com.incardata.utils.T;
 
 /**
  * 未认证主页
@@ -28,15 +31,20 @@ public class MainUnauthorizedActivity extends BaseActivity implements IndentMapF
     private IndentMapFragment mFragment;
 
     private TextView mAuthorization;
-    private boolean isVerifying;
+    private boolean isVerifying;//是否正在审核
+    /**
+     * 认证通过
+     */
+    private boolean isVerified;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_unauthorized);
-
+        MyApplication.setMainForego(true);
         fragmentManager = getFragmentManager();
         isVerifying = getIntent().getExtras().getBoolean("isVerifying", false);
+        isVerified = false;
         init();
     }
 
@@ -59,6 +67,12 @@ public class MainUnauthorizedActivity extends BaseActivity implements IndentMapF
     }
 
     private void onClickInvoke(){
+        if (isVerified){
+            startActivity(MainAuthorizedActivity.class);
+            finish();
+            return;
+        }
+
         if (isVerifying){
             startActivity(AuthorizationProgressActivity.class);
         }else {
@@ -77,6 +91,8 @@ public class MainUnauthorizedActivity extends BaseActivity implements IndentMapF
                     OrderMsg orderMsg = JSON.parseObject(json, OrderMsg.class);
                     mFragment.setData(orderMsg.getOrder());
                 }
+            }else if (ActionType.ACTION_VERIFIED.equals(action)){
+                isVerified = true;
             }
 
         }
@@ -85,7 +101,7 @@ public class MainUnauthorizedActivity extends BaseActivity implements IndentMapF
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(mOrderReceiver, CustomIntentFilter.getOrderIntentFilter());
+        registerReceiver(mOrderReceiver, CustomIntentFilter.getOrderAndVerifiedIntentFilter());
     }
 
     @Override
@@ -98,7 +114,7 @@ public class MainUnauthorizedActivity extends BaseActivity implements IndentMapF
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == this.requestCode && resultCode == RESULT_OK){
-           isVerifying = true;
+            isVerifying = true;
             mAuthorization.setText(R.string.authorization_progress);
         }
     }
@@ -106,5 +122,22 @@ public class MainUnauthorizedActivity extends BaseActivity implements IndentMapF
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    private long exitTime;
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                T.show(this, getString(R.string.again_to_exit));
+                exitTime = System.currentTimeMillis();
+            } else {
+                finish();
+            }
+            return true;
+        } else {
+            return super.onKeyDown(keyCode, event);
+        }
     }
 }

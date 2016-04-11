@@ -9,6 +9,8 @@ import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.utils.DiskCacheUtils;
+import com.nostra13.universalimageloader.utils.MemoryCacheUtils;
 
 import java.io.File;
 
@@ -148,6 +150,8 @@ public class ImageLoaderCache {
     public void init(Context context){
         File cacheDir = SDCardUtils.getCacheDir();
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
+                .memoryCacheExtraOptions(480, 480)
+                .diskCacheExtraOptions(1200, 1200, null)
                 .threadPoolSize(3) // default
                 .denyCacheImageMultipleSizesInMemory()
                 .memoryCache(new LruMemoryCache(memoryCacheSize))
@@ -235,4 +239,9 @@ public class ImageLoaderCache {
             ImageLoader.getInstance().clearDiskCache();
         }
     }
+
+     public static void remove(String uri){
+         MemoryCacheUtils.removeFromCache(uri, ImageLoader.getInstance().getMemoryCache());
+         DiskCacheUtils.removeFromCache(uri,  ImageLoader.getInstance().getDiskCache());
+     }
 }

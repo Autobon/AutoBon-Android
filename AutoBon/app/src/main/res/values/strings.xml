@@ -3,6 +3,7 @@
     <string name="app_name">车邻邦</string>
     <string name="digits_indentify_number">0123456789X</string>
     <string name="load_progress_tips">正在加载…</string>
+    <string name="uploading_image">上传中…</string>
 
     <!--登陆界面-->
     <string name="text_language">语言</string>
@@ -64,7 +65,7 @@
     <string name="old_length_tips">旧密码长度不能小于8位</string>
     <string name="new_length_tips">新密码长度不能小于8位</string>
     <string name="modify_pwd_success">修改密码成功</string>
-    <string name="modify_pwd_failed">修改密码</string>
+    <string name="modify_pwd_failed">修改密码失败</string>
     <string name="old_pwd_error_tips">原密码错误</string>
 
     <!--认证进度-->
@@ -80,6 +81,7 @@
     <string name="change_authorize_info">更改认证信息</string>
     <string name="get_info_failed">获取信息失败</string>
     <string name="please_verify_bank_card_number">＊请仔细核对银行卡号</string>
+    <string name="again_to_exit">再按一次退出应用</string>
 
     <!--接单,开始工作-->
     <string name="text_distance">距离: </string>
@@ -147,6 +149,7 @@
     <string name="submit">提交</string>
     <string name="authorize_agreement_1">点击“提交”代表您已阅读并同意</string>
     <string name="authorize_agreement_2">《车邻邦技师认证协议》</string>
+    <string name="authorize_agreement">认证协议</string>
     <string name="name_error">姓名不能为空</string>
     <string name="identify_number_error">身份证号不能为空</string>
     <string name="bank_number_error">银行卡号不能为空</string>
@@ -234,7 +237,7 @@
     <!--施工-->
     <string name="work_make_time">已用时:</string>
     <string name="default_time">0分0秒</string>
-    <string name="upload_work_photo">上传未开始贴膜车辆照片</string>
+    <string name="upload_work_photo">上传未开始工作前车辆照片</string>
     <string name="less_three_page_tips">不少于3张</string>
     <string name="next_btn">继续</string>
     <string name="finish_mode_text">即将完成模式</string>
@@ -284,5 +287,9 @@
     <string name="order_finished_note">恭喜，您已顺利完成本次编号为%1$s的订单，分享可获得奖励噢！</string>
     <string name="work_finished_mode">工作完成模式</string>
     <string name="continue_immediate">继续接单</string>
+
+    <!-- TODO: ImageChooseDialogfragment -->
+    <string name="capture">拍照</string>
+    <string name="choose_gallery">从相册中选择</string>
 
 </resources>

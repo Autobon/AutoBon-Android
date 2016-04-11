@@ -44,7 +44,7 @@ public class WorkFinishedActivity extends BaseActivity implements View.OnClickLi
         finishedNote.setText(getResources().getString(R.string.order_finished_note, orderNum));
 
         findViewById(R.id.personal).setOnClickListener(this);
-        findViewById(R.id.finished_note).setOnClickListener(this);
+        findViewById(R.id.continue_immediate).setOnClickListener(this);
         findViewById(R.id.more).setOnClickListener(this);
     }
 
@@ -54,8 +54,9 @@ public class WorkFinishedActivity extends BaseActivity implements View.OnClickLi
             case R.id.personal:
                 startActivity(MyInfoActivity.class);
                 break;
-            case R.id.finished_note:
+            case R.id.continue_immediate:
                 finish();
+                break;
             case R.id.more:
                 showSharePopWindow();
                 break;

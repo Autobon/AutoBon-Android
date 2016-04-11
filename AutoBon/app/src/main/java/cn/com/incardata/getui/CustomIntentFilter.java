@@ -8,12 +8,13 @@ import android.content.IntentFilter;
 public class CustomIntentFilter {
 
     /**
-     * 订单
+     * 订单 + 认证通过
      * @return
      */
-    public static IntentFilter getOrderIntentFilter() {
+    public static IntentFilter getOrderAndVerifiedIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ActionType.ACTION_ORDER);
+        intentFilter.addAction(ActionType.ACTION_VERIFIED);
         return intentFilter;
     }
 

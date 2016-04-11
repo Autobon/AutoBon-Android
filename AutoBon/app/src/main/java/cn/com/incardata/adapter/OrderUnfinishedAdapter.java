@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import cn.com.incardata.autobon.R;
 import cn.com.incardata.http.ImageLoaderCache;
+import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.utils.DateCompute;
 
@@ -76,8 +77,8 @@ public class OrderUnfinishedAdapter extends BaseAdapter{
             }
         });
 
-//        ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + mList.get(i).getPhoto(), holder.orderImage, 0);
-        ImageLoaderCache.getInstance().loader(mList.get(i).getPhoto(), holder.orderImage, 0);
+        ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + mList.get(i).getPhoto(), holder.orderImage, 0);
+//        ImageLoaderCache.getInstance().loader(mList.get(i).getPhoto(), holder.orderImage, 0);
         return view;
     }
 

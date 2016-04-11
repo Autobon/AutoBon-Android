@@ -29,13 +29,25 @@ public class BaseActivity extends Activity{
     }
 
 
-    /**=== 封装对话框调用方法 ===**/
+    /**=== 封装对话框调用方法(默认提示：正在加载…) ===**/
+    public void showDialog(){
+        if (dialog == null) {
+            dialog = new CommonDialog(this);
+            dialog.setDisplay(Gravity.CENTER);
+            return;
+        }
+        if (!dialog.isShowing()) {
+            dialog.show();
+        }
+    }
+
     public void showDialog(String message){
         if (dialog == null) {
             dialog = new CommonDialog(this);
             dialog.setDisplay(Gravity.CENTER);
             return;
         }
+        dialog.setMsg(message);
         if (!dialog.isShowing()) {
             dialog.show();
         }

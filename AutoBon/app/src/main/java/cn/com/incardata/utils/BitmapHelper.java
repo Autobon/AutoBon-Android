@@ -76,6 +76,13 @@ public class BitmapHelper {
 		return resizedBitmap;
 	}
 
+	/**
+	 * 质量压缩到80%存储
+	 * @param bitmapUri
+	 * @param bitmap
+	 * @param isRecycle
+	 * @return
+	 */
 	public static boolean saveBitmap(Uri bitmapUri, Bitmap bitmap, boolean isRecycle){
 		File file = new File(bitmapUri.getPath());
 		if (file.exists()){

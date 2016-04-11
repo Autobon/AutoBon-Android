@@ -45,7 +45,12 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowCloseOnTouchOutside">false</item>
+        <!--<item name="android:windowCloseOnTouchOutside">false</item>-->
+    </style>
+
+    <!-- 点击外部可取消 -->
+    <style name="DialogFragment_Cancelable" parent="DialogFragment">
+        <item name="android:windowCloseOnTouchOutside">true</item>
     </style>
 
     <style name="SpinnerTheme" parent="AppTheme">

@@ -381,7 +381,11 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                     FinishWorkEntity finishWorkEntity = (FinishWorkEntity)entity;
                     if(finishWorkEntity.isResult()){
                         //TODO 跳转页面
-                        T.show(context,"orderId===>"+finishWorkEntity.getData().getOrderId());
+                        Intent intent = new Intent(getContext(), WorkFinishedActivity.class);
+                        intent.putExtra(AutoCon.ORDER_ID, orderInfo.getId());
+                        intent.putExtra("OrderNum", orderInfo.getOrderNum());
+                        startActivity(intent);
+                        finish();
                     }else{
                         T.show(context,finishWorkEntity.getMessage());
                     }

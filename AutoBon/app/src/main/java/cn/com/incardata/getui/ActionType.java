@@ -57,7 +57,7 @@ public class ActionType {
      */
     public final static String VERIFICATION_FAILED = "VERIFICATION_FAILED";
 
-
+    //--------------------------消息广播---------------------------------------
     /**
      * 订单广播
      */
@@ -66,4 +66,8 @@ public class ActionType {
      * 邀请广播
      */
     public final static String ACTION_INVITATION = "cn.com.incardata.ACTION_INVITATION";
+    /**
+     * 认证通过
+     */
+    public final static String ACTION_VERIFIED = "cn.com.incardata.ACTION_VERIFIED";
 }

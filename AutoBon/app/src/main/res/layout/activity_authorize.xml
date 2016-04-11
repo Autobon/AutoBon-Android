@@ -334,7 +334,7 @@
                     android:textColor="@color/darkgray"
                     android:textSize="@dimen/sp15"
                     android:background="@null"
-                    android:maxLength="18"
+                    android:maxLength="19"
                     android:singleLine="true"
                     android:inputType="number"
                     android:paddingTop="@dimen/dp5"

@@ -98,6 +98,7 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
                     ChangePasswordEntity changePasswordEntity = (ChangePasswordEntity) entity;
                     if (changePasswordEntity.isResult()) {
                         T.show(context, context.getString(R.string.modify_pwd_success));
+                        finish();
                         return;
                     } else {
                         if("ILLEGAL_PARAM".equals(changePasswordEntity.getError())){

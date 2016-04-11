@@ -105,6 +105,7 @@ public class GeTuiPushReceiver extends BroadcastReceiver{
                 showNotification(context, "邀请消息", jsonObject.getString("title"), 1);
             }else if (ActionType.VERIFICATION_SUCCEED.equals(action)){ //认证通过
                 showNotification(context, "认证消息", jsonObject.getString("title"), 0);
+                context.sendBroadcast(new Intent(ActionType.ACTION_VERIFIED));
             }else if (ActionType.VERIFICATION_FAILED.equals(action)){ //认证失败
                 showNotification(context, "认证消息", jsonObject.getString("title"), 0);
             }

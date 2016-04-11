@@ -120,7 +120,7 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
         mAdapter.setOnClickOrderListener(new OrderUnfinishedAdapter.OnClickOrderListener() {
             @Override
             public void onClickOrder(int position) {
-                showDialog(null);
+                showDialog();
                 Http.getInstance().getTaskToken(NetURL.getOrderInfo(mList.get(position).getId()), "", OrderInfoEntity.class, new OnResult() {
                     @Override
                     public void onResult(Object entity) {

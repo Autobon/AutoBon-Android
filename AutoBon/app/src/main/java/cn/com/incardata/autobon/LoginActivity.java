@@ -197,7 +197,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         }
 
         if(NetWorkHelper.isNetworkAvailable(context)){
-            showDialog(getString(R.string.load_progress_tips));  //显示加载框
+            showDialog();  //显示加载框
             MyAsyncTask myAsyncTask = new MyAsyncTask(phone,password);
             myAsyncTask.execute();
         }else{
