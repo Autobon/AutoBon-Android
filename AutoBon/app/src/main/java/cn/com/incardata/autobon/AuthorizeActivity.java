@@ -27,6 +27,7 @@ import java.util.ArrayList;
 
 import cn.com.incardata.adapter.BankNameAdapter;
 import cn.com.incardata.customfun.GatherImage;
+import cn.com.incardata.fragment.ImageChooseFragment;
 import cn.com.incardata.http.Http;
 import cn.com.incardata.http.HttpClientInCar;
 import cn.com.incardata.http.ImageLoaderCache;
@@ -35,6 +36,7 @@ import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.AvatarEntity;
 import cn.com.incardata.http.response.CommitCertificateEntity;
 import cn.com.incardata.http.response.IdPhotoEntity;
+import cn.com.incardata.utils.BankUtil;
 import cn.com.incardata.utils.BitmapHelper;
 import cn.com.incardata.utils.SDCardUtils;
 import cn.com.incardata.utils.T;
@@ -43,7 +45,7 @@ import cn.com.incardata.utils.T;
  * 认证
  * @author wanghao
  */
-public class AuthorizeActivity extends BaseActivity implements View.OnClickListener{
+public class AuthorizeActivity extends BaseActivity implements View.OnClickListener, ImageChooseFragment.OnFragmentInteractionListener{
 
     private ImageView headerImage;
     private EditText name;
@@ -61,12 +63,18 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
     private String bankNumStr; //银行卡号
     private String bankNameStr; //银行卡所属银行
     private boolean isUploadIDImage = false;//身份证照片是否已上传
+    private String IDImageUrl;
 
     private Uri imageUri; //头像拍照
     private Uri imageCorpUri; //头像裁剪
     private Uri idPhotoUri; //身份证照片
 
     private boolean isAgain = false;//再次认证／修改认证信息
+    private ImageChooseFragment mFragment;
+    /**
+     * 是否需要裁剪
+     */
+    private boolean isCrop = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,6 +174,7 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
                 finish();
                 break;
             case R.id.header_image:
+                isCrop = true;
                 onClickHeaderImage();
                 break;
             case R.id.skill_item_1:
@@ -181,6 +190,7 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
                 onClickSkillItem(3);
                 break;
             case R.id.identify_photo:
+                isCrop = false;
                 onClickIdentifyPhoto();
                 break;
             case R.id.submit:
@@ -193,6 +203,10 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void onClickHeaderImage() {
+        if (mFragment == null){
+            mFragment = new ImageChooseFragment();
+        }
+
         if (!SDCardUtils.isExistSDCard()){
             T.show(this, R.string.uninstalled_sdcard);
             return;
@@ -212,7 +226,8 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
             imageCorpUri = Uri.fromFile(file2);
         }
 
-        capture(GatherImage.CAPTURE_REQUEST, imageUri);
+        mFragment.show(getFragmentManager(), "Choose");
+//        capture(GatherImage.CAPTURE_REQUEST, imageUri);
     }
 
     private void onClickSkillItem(int item) {
@@ -231,6 +246,10 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void onClickIdentifyPhoto() {
+        if (mFragment == null){
+            mFragment = new ImageChooseFragment();
+        }
+
         if (!SDCardUtils.isExistSDCard()){
             T.show(this, R.string.uninstalled_sdcard);
             return;
@@ -239,7 +258,7 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
         if (idPhotoUri == null) {
             idPhotoUri = Uri.fromFile(new File(SDCardUtils.getGatherDir() + File.separator + "idPhoto.jpeg"));
         }
-        capture(GatherImage.CAPTURE_ID_REQUEST, idPhotoUri);
+        mFragment.show(getFragmentManager(), "Choose");
     }
 
     private void onClickSubmit() {
@@ -248,17 +267,19 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
             T.show(this, R.string.name_error);
             return;
         }
+
         if (TextUtils.isEmpty(idNumStr)){
             T.show(this, R.string.identify_number_error);
             return;
         }
+
         if (!idNumStr.matches("^(\\d{14}|\\d{17})(\\d|[xX])$")){
             T.show(this, getString(R.string.please_check_identify));
             return;
         }
 
-        if (TextUtils.isEmpty(bankNumStr)){
-            T.show(this, R.string.bank_number_error);
+        if (!(skillArray[0] || skillArray[1] || skillArray[2] || skillArray[3])){
+            T.show(this, R.string.skill_item_empty);
             return;
         }
 
@@ -267,8 +288,13 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
             return;
         }
 
-        if (!(skillArray[0] || skillArray[1] || skillArray[2] || skillArray[3])){
-            T.show(this, R.string.skill_item_empty);
+        if (TextUtils.isEmpty(bankNumStr)){
+            T.show(this, R.string.bank_number_error);
+            return;
+        }
+
+        if (!(bankNumStr.trim().length() >= 16 && BankUtil.checkBankCard(bankNumStr))){
+            T.show(this, "请检查银行卡号");
             return;
         }
 
@@ -284,7 +310,7 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
         params.add(new BasicNameValuePair("name", nameStr));
         params.add(new BasicNameValuePair("idNo", idNumStr));
         params.add(new BasicNameValuePair("skills", skillArray));
-//        params.add(new BasicNameValuePair("idPhoto", "photo/url"));//暂不要该字段
+        params.add(new BasicNameValuePair("idPhoto", IDImageUrl));
         params.add(new BasicNameValuePair("bank", bankNameStr));
         params.add(new BasicNameValuePair("bankAddress", "china"));
         params.add(new BasicNameValuePair("bankCardNo", bankNumStr));
@@ -325,25 +351,43 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK) return;
-        if (requestCode == GatherImage.CAPTURE_REQUEST){
-            crop();
-            return;
+
+        switch (requestCode){
+            case GatherImage.CAPTURE_REQUEST:
+                crop();
+                break;
+            case GatherImage.CROP_REQUEST:
+                uploadHeadImage();
+                break;
+            case GatherImage.CAPTURE_ID_REQUEST:
+                idPhotoProcess(idPhotoUri);
+                break;
+            case GatherImage.GALLERY_REQUEST:
+                if (isCrop){
+                    if (data != null){
+                        imageUri = data.getData();
+                        crop();
+                    }else {
+                        T.show(getContext(), R.string.operate_failed_agen);
+                        break;
+                    }
+                }else {
+                    idPhotoProcess(data.getData());
+                }
+                break;
         }
-        if (requestCode == GatherImage.CROP_REQUEST){
-            uploadHeadImage();
-            return;
-        }
-        if (requestCode == GatherImage.CAPTURE_ID_REQUEST){
-            try {
-                Bitmap bitmap = BitmapFactory.decodeStream(getContext().getContentResolver().openInputStream(idPhotoUri));
-                bitmap = BitmapHelper.resizeImage(bitmap, 0.5f);
-                BitmapHelper.saveBitmap(idPhotoUri, bitmap, true);
-                uploadIdPhoto();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }catch (NullPointerException e){
-                e.printStackTrace();
-            }
+    }
+
+    private void idPhotoProcess(Uri uri){
+        try {
+            Bitmap bitmap = BitmapFactory.decodeStream(getContext().getContentResolver().openInputStream(uri));
+            bitmap = BitmapHelper.resizeImage(bitmap, 0.5f);
+            BitmapHelper.saveBitmap(this.idPhotoUri, bitmap, true);
+            uploadIdPhoto();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }catch (NullPointerException e){
+            e.printStackTrace();
         }
     }
 
@@ -372,6 +416,8 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void uploadHeadImage(){
+        showDialog(getString(R.string.uploading_image));
+        ImageLoaderCache.remove(NetURL.IP_PORT + getIntent().getStringExtra("headUrl"));
         new AsyncTask<String, Void, String>() {
             @Override
             protected String doInBackground(String... params) {
@@ -387,6 +433,7 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
+                cancelDialog();
                 if (s == null) {
                     T.show(getContext(), getString(R.string.upload_image_failed));
                     return;
@@ -409,6 +456,7 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
     }
 
     private void uploadIdPhoto(){
+        showDialog(getString(R.string.uploading_image));
         new AsyncTask<String, Void, String>() {
             @Override
             protected String doInBackground(String... params) {
@@ -424,6 +472,7 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
+                cancelDialog();
                 if (s == null) {
                     isUploadIDImage = false;
                     T.show(getContext(), getString(R.string.upload_image_failed));
@@ -432,6 +481,7 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
                     IdPhotoEntity idPhotoEntity = JSON.parseObject(s, IdPhotoEntity.class);
                     if (idPhotoEntity.isResult()){
                         isUploadIDImage = true;
+                        IDImageUrl = idPhotoEntity.getData();
                         Bitmap bitmap = BitmapFactory.decodeFile(idPhotoUri.getPath());
                         identifyPhoto.setImageBitmap(bitmap);
                     }else {
@@ -441,5 +491,27 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
                 }
             }
         }.execute(idPhotoUri.getPath(), NetURL.ID_PHOTO);
+    }
+
+    /**
+     * 选图对话框
+     * @param type 操作类型
+     */
+    @Override
+    public void onFragmentInteraction(int type) {
+        switch (type){
+            case GatherImage.CAPTURE:
+                if (isCrop){
+                    capture(GatherImage.CAPTURE_REQUEST, imageUri);
+                }else {
+                    capture(GatherImage.CAPTURE_ID_REQUEST, idPhotoUri);
+                }
+                break;
+            case GatherImage.GALLERY:
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                startActivityForResult(intent, GatherImage.GALLERY_REQUEST);
+                break;
+        }
     }
 }

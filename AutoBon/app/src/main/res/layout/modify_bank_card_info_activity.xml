@@ -37,7 +37,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="@dimen/dp10"
+            android:layout_width="@dimen/dp5"
             android:layout_height="match_parent"
             android:background="@color/main_orange" />
 
@@ -118,6 +118,17 @@
             android:layout_marginTop="@dimen/dp10"
             android:layout_marginLeft="@dimen/dp60"
             android:layout_marginRight="@dimen/dp60"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp60"
+            android:layout_marginRight="@dimen/dp60"
+            android:gravity="left"
+            android:textSize="@dimen/sp10"
+            android:textColor="@color/gray_A3"
+            android:text="@string/please_verify_bank_card_number"/>
+
     </TableLayout>
 
     <Button

@@ -65,6 +65,7 @@ public class BaiduMapUtil {
         mLocationClient.registerLocationListener(myListener);
         mLocationClient.setLocOption(option);
         mLocationClient.start();
+        mLocationClient.requestLocation();
         baiduMap.setMyLocationEnabled(true);// 打开定位图层
         baiduMap.getUiSettings().setCompassEnabled(false);  //不显示指南针
         locate(baiduMap);
@@ -86,10 +87,12 @@ public class BaiduMapUtil {
     }
 
     public static void initData() {
-        markOverlay = new Overlay[length];
-        popOverlay = new Overlay[length];
-        latLngArray = new LatLng[length];
-        windowInfo = new String[length];
+        if (markOverlay == null) {
+            markOverlay = new Overlay[length];
+            popOverlay = new Overlay[length];
+            latLngArray = new LatLng[length];
+            windowInfo = new String[length];
+        }
     }
 
     /**
@@ -120,10 +123,10 @@ public class BaiduMapUtil {
         }
         markOverlay[1] = drawMarker(baiduMap,latLng,BitmapDescriptorFactory.fromResource(R.mipmap.shop),markZIndex);
         popOverlay[1] = drawPopWindow(baiduMap,context,latLng,shopName,popZIndex);
+        zoomByTwoPoint(baiduMap, latLngArray[0], latLng);
 
         latLngArray[1] = latLng;
         windowInfo[1] = shopName;
-
     }
 
     public static Overlay drawMarker(BaiduMap baiduMap,LatLng latLng, BitmapDescriptor descriptor, int zIndex) {
@@ -205,8 +208,9 @@ public class BaiduMapUtil {
         private BaiduMap baiduMap;
         private TextView tv_distance; //代表底部距离的TextView控件
         private String mAddress; //另一个点的位置
-        private LatLng latLng;  //另一个点的经纬度
+        public LatLng latLng;  //另一个点的经纬度
         private Button sign_in_btn; //签到界面Button
+        private boolean isFirst;
 
         public MyListener(Context context, BaiduMap baiduMap, TextView tv_distance, LatLng latLng,String mOhterTitle, Button sign_in_btn){
             initData();
@@ -216,6 +220,7 @@ public class BaiduMapUtil {
             this.latLng = latLng;
             this.mAddress = mOhterTitle;
             this.sign_in_btn = sign_in_btn;
+            this.isFirst = true;
         }
 
         @Override
@@ -224,11 +229,8 @@ public class BaiduMapUtil {
                 final double latitude = result.getLatitude();
                 final double longitude = result.getLongitude();
                 latLng = new LatLng(latitude, longitude);
-                if(markOverlay[0]!=null){
-                    View pop = BaiduMapUtil.initPop(context,null,false);
-                    TextView tv = (TextView) pop.findViewById(R.id.title);
-                    tv.setText(result.getAddrStr());
-                }else{
+                latLngArray[0] = latLng;
+                if(isFirst){
                     if(!NetWorkHelper.isNetworkAvailable(context)) {  //无网络不显示
                         return;
                     }
@@ -241,12 +243,19 @@ public class BaiduMapUtil {
                     //drawOnePoint(mAddress,new MyGeoCoderListener(context,this.baiduMap));
                     //drawAnotherPointByGeo(context,this.baiduMap,this.latLng,this.mAddress);
                     zoomByOneCenterPoint(baiduMap, this.latLng, BaiduMapUtil.defaultLevel);
-//                    zoomByTwoPoint(baiduMap,latLngArray[0], latLngArray[1]);
+                    if (latLngArray[1] != null){
+                        zoomByTwoPoint(baiduMap,latLngArray[0], latLngArray[1]);
+                    }
+                    isFirst = false;
+                }else{
+                    View pop = BaiduMapUtil.initPop(context,null,false);
+                    TextView tv = (TextView) pop.findViewById(R.id.title);
+                    tv.setText(result.getAddrStr());
                 }
                 if(markOverlay[1] == null){
                     tv_distance.setText("0m");
                 }else{
-                    double distance = BaiduMapUtil.getDistance(latLngArray[0],this.latLng); //单位为m
+                    double distance = BaiduMapUtil.getDistance(this.latLng, latLngArray[1]); //单位为m
 
                     if(sign_in_btn!=null){  //签到界面有提示框,并且改变Button样式
                         if(Math.abs(distance)<=100){  //到达(有误差)

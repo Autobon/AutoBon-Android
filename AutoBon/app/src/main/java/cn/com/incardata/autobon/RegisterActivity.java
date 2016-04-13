@@ -191,16 +191,16 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             T.show(context,context.getString(R.string.error_phone));
             return;
         }
-        if(StringUtil.isEmpty(password)){
-            T.show(context,context.getString(R.string.empty_password));
-            return;
-        }
         if(StringUtil.isEmpty(code)){
             T.show(context,context.getString(R.string.empty_code));
             return;
         }
         if(code.length()!=6){  //验证码的长度不为6位,提示用户
             T.show(context,context.getResources().getString(R.string.code_length_tips));
+            return;
+        }
+        if(StringUtil.isEmpty(password)){
+            T.show(context,context.getString(R.string.empty_password));
             return;
         }
 

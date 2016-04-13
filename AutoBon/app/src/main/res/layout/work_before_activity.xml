@@ -105,6 +105,7 @@
             android:background="@color/main_orange"/>
 
         <TextView
+            android:id="@+id/order_type_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/darkgray"

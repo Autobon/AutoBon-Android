@@ -26,6 +26,7 @@ import com.baidu.mapapi.model.LatLng;
 
 import cn.com.incardata.autobon.R;
 import cn.com.incardata.http.ImageLoaderCache;
+import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.http.response.Order;
 import cn.com.incardata.utils.BaiduMapUtil;
@@ -92,19 +93,13 @@ public class IndentMapFragment extends BaiduMapFragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            positionLon = getArguments().getString("PositionLon", "0.0");
-            positionLat =  getArguments().getString("PositionLat", "0.0");
-            photoUrl =  getArguments().getString("Photo", "http:");
-            workTimeStr =  getArguments().getString("OrderTime", "2016-03-02 02:14");
-            remark =  getArguments().getString("Remark", "");
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (null == rootView) {
             rootView = inflater.inflate(R.layout.fragment_indent_map, container, false);
+            initViews();
         }
         if(null != rootView) {
             ViewGroup parent = (ViewGroup) rootView.getParent();
@@ -112,7 +107,6 @@ public class IndentMapFragment extends BaiduMapFragment{
                 parent.removeView(rootView);
             }
         }
-        initViews();
         return rootView;
     }
 
@@ -163,7 +157,6 @@ public class IndentMapFragment extends BaiduMapFragment{
         MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.zoomTo(BaiduMapUtil.defaultLevel);  //默认级别12
         baiduMap.setMapStatus(mapStatusUpdate);  //设置缩放级别
 
-        BaiduMapUtil.hiddenBaiduLogo(mMapView);  //隐藏百度广告图标
         mMapView.showZoomControls(false);
         mMapView.showScaleControl(true);  //默认是true,显示标尺
 
@@ -174,7 +167,7 @@ public class IndentMapFragment extends BaiduMapFragment{
 
     private void setBaseData(){
         if (indentImage == null) return;
-        ImageLoaderCache.getInstance().loader(photoUrl, indentImage, false, R.mipmap.load_image_failed);
+        ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + photoUrl, indentImage, false, R.mipmap.load_image_failed);
         indentText.setVisibility(View.GONE);
 
         if (workTime != null){
@@ -201,7 +194,7 @@ public class IndentMapFragment extends BaiduMapFragment{
             public void onMapLoaded() {
                 myBDLocationListener = new BaiduMapUtil.MyListener(getActivity(),baiduMap,distance, null, "4S店", null);
                 //tv_distance为下方显示距离的TextView控件,mAddress为另一个点的位置
-                BaiduMapUtil.locate(baiduMap,scanTime, new LocationClient(getActivity()),myBDLocationListener);
+                BaiduMapUtil.locate(baiduMap,scanTime, new LocationClient(getActivity().getApplicationContext()),myBDLocationListener);
             }
         });
     }
@@ -239,7 +232,6 @@ public class IndentMapFragment extends BaiduMapFragment{
         }
     }
 
-
     @Override
     public void onDestroy() {
         if(myBDLocationListener!=null){
@@ -260,6 +252,14 @@ public class IndentMapFragment extends BaiduMapFragment{
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden){
+//            baiduMap.
+        }
     }
 
     /**

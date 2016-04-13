@@ -30,7 +30,7 @@ public class SDCardUtils {
     }
 
     /**
-     * 采集的图片临时目录
+     * 采集的图片临时目录temp
      * @return
      */
     public static String getGatherDir(){

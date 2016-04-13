@@ -4,13 +4,13 @@ package cn.com.incardata.http.response;
  * Created by zhangming on 2016/3/6.
  */
 public class StartWorkEntity extends BaseEntity{
-    private StartWork_Data data;
+    private OrderInfo_Construction data;
 
-    public StartWork_Data getData() {
+    public OrderInfo_Construction getData() {
         return data;
     }
 
-    public void setData(StartWork_Data data) {
+    public void setData(OrderInfo_Construction data) {
         this.data = data;
     }
 }

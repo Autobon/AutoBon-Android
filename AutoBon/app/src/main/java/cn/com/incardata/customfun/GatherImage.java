@@ -15,19 +15,19 @@ public class GatherImage {
     public final static int GALLERY = 2;
 
     /**
-     *拍照
+     *拍照结果
      */
     public final static int CAPTURE_REQUEST = 10;
     /**
-     *图库选择
+     *图库选择结果
      */
     public final static int GALLERY_REQUEST = 11;
     /**
-     *裁剪
+     *裁剪结果
      */
     public final static int CROP_REQUEST = 12;
     /**
-     *身份证拍照
+     *身份证拍照结果
      */
     public final static int CAPTURE_ID_REQUEST = 13;
     /**

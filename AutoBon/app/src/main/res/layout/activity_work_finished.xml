@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_white"
+    android:orientation="vertical"
     tools:context="cn.com.incardata.autobon.WorkFinishedActivity">
 
     <RelativeLayout
@@ -27,7 +29,7 @@
             android:textColor="@android:color/white"/>
 
         <ImageView
-            android:id="@+id/order_more"
+            android:id="@+id/more"
             android:layout_width="@dimen/dp45"
             android:layout_height="match_parent"
             android:padding="@dimen/dp10"
@@ -38,4 +40,56 @@
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/dp10">
+
+        <TextView
+            android:id="@+id/today"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp13"
+            android:textColor="@color/darkgray"
+            android:ellipsize="end"
+            android:maxLines="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp13"
+            android:textColor="@color/darkgray"
+            android:text="@string/work_finished_mode"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#F0F0F0"/>
+
+    <TextView
+        android:id="@+id/finished_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp40"
+        android:textSize="@dimen/sp15"
+        android:textColor="@color/darkgray"
+        android:text="@string/order_finished_note"/>
+
+    <Button
+        android:id="@+id/continue_immediate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft ="@dimen/dp40"
+        android:layout_marginRight="@dimen/dp40"
+        android:paddingTop="@dimen/dp12"
+        android:paddingBottom="@dimen/dp12"
+        android:text="@string/continue_immediate"
+        android:gravity="center"
+        android:textSize="@dimen/sp18"
+        android:background="@drawable/login_btn_selector"
+        android:textColor="@android:color/white"/>
+
+</LinearLayout>

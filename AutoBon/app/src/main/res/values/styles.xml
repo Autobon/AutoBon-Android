@@ -45,10 +45,22 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowCloseOnTouchOutside">false</item>
+        <!--<item name="android:windowCloseOnTouchOutside">false</item>-->
+    </style>
+
+    <!-- 点击外部可取消 -->
+    <style name="DialogFragment_Cancelable" parent="DialogFragment">
+        <item name="android:windowCloseOnTouchOutside">true</item>
     </style>
 
     <style name="SpinnerTheme" parent="AppTheme">
         <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="SharePop" parent="@android:style/Animation.Dialog">
+        <!-- 指定显示的动画xml -->
+        <item name="android:windowEnterAnimation">@anim/popshow_anim</item>
+        <!-- 指定消失的动画xml -->
+        <item name="android:windowExitAnimation">@anim/pophidden_anim</item>
     </style>
 </resources>

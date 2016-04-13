@@ -28,15 +28,16 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <!-- 支持个推3.0 电子围栏功能 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- 浮动通知权限 -->
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- 自定义权限 -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="getui.permission.GetuiService.cn.com.incardata.autobon" /> <!-- 替换为第三方应用的包名 -->
+    <!-- 个推SDK权限配置结束 -->
+
     <permission
         android:name="getui.permission.GetuiService.cn.com.incardata.autobon"
         android:protectionLevel="normal" /> <!-- 替换为第三方应用的包名 -->
-    <!-- 个推SDK权限配置结束 -->
 
     <supports-screens
         android:anyDensity="true"
@@ -166,7 +167,6 @@
             android:name=".AuthorizeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SpinnerTheme" />
-        <activity android:name=".AuthorizeAgreementActivity" />
 
         <!-- 个推SDK配置开始 -->
         <!-- 配置的第三方参数属性 -->
@@ -300,11 +300,52 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ImmediateSuccessedActivity" />
-        <activity android:name=".InvitationActivity" />
-        <activity android:name=".MyOrderActivity" />
-        <activity android:name=".OrderInfoActivity" />
-        <activity android:name=".WorkFinishedActivity"></activity>
+        <activity
+            android:name=".ImmediateSuccessedActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".InvitationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".MyOrderActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".OrderInfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".WorkFinishedActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name="com.mob.tools.MobUIShell"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <data android:scheme="tencent1105028016" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <!-- 调用新浪原生SDK，需要注册的回调activity -->
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".AuthorizeAgreementActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar"></activity>
     </application>
 
 </manifest>

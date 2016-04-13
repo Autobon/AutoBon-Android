@@ -241,6 +241,12 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
                 }
                 StartWorkEntity startWorkEntity = (StartWorkEntity) entity;
                 if(startWorkEntity.isResult()){  //成功后跳转签到界面
+                    if (orderInfo.getMainTech().getId() == MyApplication.getInstance().getUserId()){
+                        orderInfo.setMainConstruct(startWorkEntity.getData());
+                    }else {
+                        orderInfo.setSecondConstruct(startWorkEntity.getData());
+                    }
+
                     Intent intent = new Intent(getContext(), WorkSignInActivity.class);
                     intent.putExtra(AutoCon.ORDER_INFO, orderInfo);
 //                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

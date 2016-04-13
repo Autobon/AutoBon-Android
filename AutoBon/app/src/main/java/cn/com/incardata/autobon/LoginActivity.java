@@ -122,6 +122,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 startActivity(intent);
                 break;
             case R.id.login_btn: //登陆
+//                Intent i2 = new Intent(getContext(), WorkFinishedActivity.class);
+//                i2.putExtra(AutoCon.ORDER_ID, -1);
+//                i2.putExtra("OrderNum","37834");
+//                startActivity(i2);
                 login();
                 break;
             case R.id.tv_language: //双语切换
@@ -193,7 +197,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         }
 
         if(NetWorkHelper.isNetworkAvailable(context)){
-            showDialog(getString(R.string.load_progress_tips));  //显示加载框
+            showDialog();  //显示加载框
             MyAsyncTask myAsyncTask = new MyAsyncTask(phone,password);
             myAsyncTask.execute();
         }else{

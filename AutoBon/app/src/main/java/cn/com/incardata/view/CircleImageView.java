@@ -22,7 +22,7 @@ import cn.com.incardata.autobon.R;
  * Created by Administrator on 2016/2/19.
  */
 public class CircleImageView extends ImageView {
-    private static final ScaleType SCALE_TYPE = ScaleType.CENTER_CROP;
+    private static final ScaleType SCALE_TYPE = ScaleType.CENTER_INSIDE;
 
     private static final Bitmap.Config BITMAP_CONFIG = Bitmap.Config.ARGB_8888;
     private static final int COLORDRAWABLE_DIMENSION = 1;

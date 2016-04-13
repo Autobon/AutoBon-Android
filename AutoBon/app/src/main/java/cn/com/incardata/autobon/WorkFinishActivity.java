@@ -34,6 +34,7 @@ import java.util.Set;
 
 import cn.com.incardata.adapter.PictureGridAdapter;
 import cn.com.incardata.adapter.RadioFragmentGridAdapter;
+import cn.com.incardata.application.MyApplication;
 import cn.com.incardata.fragment.BaseStandardFragment;
 import cn.com.incardata.fragment.FiveCarRadioFragment;
 import cn.com.incardata.fragment.SevenCarRadioFragment;
@@ -44,6 +45,7 @@ import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.FinishWorkEntity;
 import cn.com.incardata.http.response.IdPhotoEntity;
+import cn.com.incardata.http.response.OrderInfo_Construction;
 import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.BitmapHelper;
@@ -53,6 +55,7 @@ import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
 
 /**
+ * 施工完成
  * Created by zhangming on 2016/3/11.
  */
 public class WorkFinishActivity extends BaseActivity implements BaseStandardFragment.OnFragmentInteractionListener{
@@ -75,6 +78,7 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
 
     private boolean isRunning = true;
     private OrderInfo_Data orderInfo;
+    private OrderInfo_Construction construction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +117,7 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                 long useTime = 0L;
                 try{
                     long currentTime = System.currentTimeMillis();
-                    long startWorkTime = orderInfo.getMainConstruct().getStartTime();
+                    long startWorkTime = construction.getSigninTime();
                     useTime = currentTime - startWorkTime;
                     Log.i("test","currentTime===>"+currentTime+",useTime===>"+useTime);
                 }catch (Exception e){
@@ -139,6 +143,12 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
     private void initView() {
         context = this;
         orderInfo = getIntent().getParcelableExtra(AutoCon.ORDER_INFO);
+
+        if (orderInfo.getMainTech().getId() == MyApplication.getInstance().getUserId()){
+            construction = orderInfo.getMainConstruct();
+        }else{
+            construction = orderInfo.getSecondConstruct();
+        }
 
         tv_day = (TextView) findViewById(R.id.tv_day);
         tv_has_time = (TextView) findViewById(R.id.has_use_time);
@@ -166,6 +176,7 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                 public void onClick(View view) {
                     String percent = tv_content.getText().toString().trim();
                     try{
+                        if (Integer.parseInt(percent) == 0) return;
                         int work_percent = Integer.parseInt(percent) - 10; //减十个百分比
                         tv_content.setText(String.valueOf(work_percent)); //设置百分比
                     }catch (Exception e){
@@ -178,6 +189,7 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                 public void onClick(View view) {
                     String percent = tv_content.getText().toString().trim();
                     try{
+                        if (Integer.parseInt(percent) == 100) return;
                         int work_percent = Integer.parseInt(percent) + 10; //加十个百分比
                         tv_content.setText(String.valueOf(work_percent)); //设置百分比
                     }catch (Exception e){
@@ -257,7 +269,7 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                 if(!dir.exists()){
                     dir.mkdirs();
                 }
-                fileName = path + File.separator +"my_photo.jpg";
+                fileName = path + File.separator +"my_photo.jpeg";
                 tempFile = new File(fileName);
             } else {
                 T.show(this,getString(R.string.uninstalled_sdcard));
@@ -324,7 +336,11 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                     FinishWorkEntity finishWorkEntity = (FinishWorkEntity)entity;
                     if(finishWorkEntity.isResult()){
                         //TODO 跳转页面
-                        T.show(context,"orderId===>"+finishWorkEntity.getData().getOrderId());
+                        Intent intent = new Intent(getContext(), WorkFinishedActivity.class);
+                        intent.putExtra(AutoCon.ORDER_ID, orderInfo.getId());
+                        intent.putExtra("OrderNum", orderInfo.getOrderNum());
+                        startActivity(intent);
+                        finish();
                     }else{
                         T.show(context,finishWorkEntity.getMessage());
                     }
@@ -365,7 +381,11 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                     FinishWorkEntity finishWorkEntity = (FinishWorkEntity)entity;
                     if(finishWorkEntity.isResult()){
                         //TODO 跳转页面
-                        T.show(context,"orderId===>"+finishWorkEntity.getData().getOrderId());
+                        Intent intent = new Intent(getContext(), WorkFinishedActivity.class);
+                        intent.putExtra(AutoCon.ORDER_ID, orderInfo.getId());
+                        intent.putExtra("OrderNum", orderInfo.getOrderNum());
+                        startActivity(intent);
+                        finish();
                     }else{
                         T.show(context,finishWorkEntity.getMessage());
                     }
@@ -451,18 +471,15 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(tempFile!=null && tempFile.exists()){
-            File dir = tempFile.getParentFile();
-            Log.i("test","dir===>"+dir.getPath());
-            tempFile.delete();
-            tempFile = null;
-            if(dir.exists()){
-                dir.delete();
-            }
-        }
+        isRunning = false; //关闭计时线程
         if(tempDir!=null && tempDir.exists()){
             SDCardUtils.deleteAllFileInFolder(tempDir);  //销毁临时目录及文件
         }
-        isRunning = false; //关闭计时线程
+        if(tempFile!=null && tempFile.exists()){
+            File dir = tempFile.getParentFile();
+            SDCardUtils.deleteAllFileInFolder(dir);
+            Log.i("test","dir===>"+dir.getPath());
+            tempFile = null;
+        }
     }
 }

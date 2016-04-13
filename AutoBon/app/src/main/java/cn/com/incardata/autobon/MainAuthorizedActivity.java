@@ -32,6 +32,7 @@ import cn.com.incardata.http.Http;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.ListUnfinishedEntity;
+import cn.com.incardata.http.response.OrderInfoEntity;
 import cn.com.incardata.http.response.OrderInfo_Construction;
 import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.http.response.TakeupEntity;
@@ -119,7 +120,19 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
         mAdapter.setOnClickOrderListener(new OrderUnfinishedAdapter.OnClickOrderListener() {
             @Override
             public void onClickOrder(int position) {
-                intoOrder(position);
+                showDialog();
+                Http.getInstance().getTaskToken(NetURL.getOrderInfo(mList.get(position).getId()), "", OrderInfoEntity.class, new OnResult() {
+                    @Override
+                    public void onResult(Object entity) {
+                        cancelDialog();
+                        if (entity == null){
+                             return;
+                        }
+                        if (entity instanceof OrderInfoEntity && ((OrderInfoEntity) entity).isResult()){
+                            intoOrder(((OrderInfoEntity) entity).getData());
+                        }
+                    }
+                });
             }
         });
 
@@ -145,8 +158,8 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
         getpageList(1);
     }
 
-    private void intoOrder(int position){
-        OrderInfo_Data orderInfo = mList.get(position);
+    private void intoOrder(OrderInfo_Data orderInfo){
+        if (orderInfo == null) return;
         OrderInfo_Construction construction = null;
         if (MyApplication.getInstance().getUserId() == orderInfo.getMainTech().getId()){
             construction = orderInfo.getMainConstruct();
@@ -179,6 +192,8 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
             Intent intent = new Intent(this, WorkFinishActivity.class);
             intent.putExtra(AutoCon.ORDER_INFO, orderInfo);
             startActivity(intent);
+        }else if (ActionType.IN_PROGRESS.equals(orderInfo.getStatus())){
+            T.show(getContext(), "您已完成此单，等待合伙人提交");
         }
     }
 
@@ -296,6 +311,17 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
                 invitationDialogFragment.show(fragmentManager, "Invitation");
             }
             invitationDialogFragment.update(invitation);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (MyApplication.isRefresh){
+            page = 1;
+            isRefresh = true;
+            getpageList(1);
+            MyApplication.isRefresh = false;
         }
     }
 
