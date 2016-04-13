@@ -21,8 +21,8 @@ import cn.com.incardata.utils.SDCardUtils;
  * Created by wanghao on 16/3/1.
  */
 public class ImageLoaderCache {
-    private final static int memoryCacheSize = 5 * 1024 * 1024;//5M
-    private final static int discCacheSize = 50 * 1024 * 1024;//50M
+    private static final int memoryCacheSize = 5 * 1024 * 1024;//5M
+    private static final int discCacheSize = 50 * 1024 * 1024;//50M
 
     private static ImageLoaderCache instance;
     private ImageLoader imageloder;

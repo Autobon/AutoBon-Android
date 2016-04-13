@@ -19,6 +19,7 @@ import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationConfiguration;
+import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.model.LatLng;
 
@@ -59,7 +60,6 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
     protected static LatLng[] latLngArray;  //位置信息记录
     protected static String[] windowInfo;  //窗体信息记录
 
-    private int count;  //计数单位
     private OrderInfo_Data orderInfo;
     private boolean isSign = false;//是否可以签到
 
@@ -87,7 +87,6 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
     protected void onRestart() {
         super.onRestart();
         Log.i("test","再次启动定位图层......");
-        count = 1;
         if(mLocationClient!=null){
             mLocationClient.start();
             baiduMap.setMyLocationEnabled(true);
@@ -99,9 +98,8 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
         baiduMap = mMapView.getMap();  //管理具体的某一个MapView对象,缩放,旋转,平移
         MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.zoomTo(BaiduMapUtil.defaultLevel);  //默认级别12
         baiduMap.setMapStatus(mapStatusUpdate);  //设置缩放级别
-        mLocationClient = new LocationClient(this);
+        mLocationClient = new LocationClient(getApplicationContext());
 
-        BaiduMapUtil.hiddenBaiduLogo(mMapView);  //隐藏百度广告图标
         mMapView.showZoomControls(false);
         mMapView.showScaleControl(true);  //默认是true,显示标尺
     }
@@ -117,7 +115,6 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
     }
 
     private void initData(){
-        count = 1;
         markOverlay = new Overlay[4];
         popOverlay = new Overlay[4];
         latLngArray = new LatLng[4];
@@ -247,7 +244,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
         baiduMap.setMyLocationEnabled(true);// 打开定位图层
         baiduMap.getUiSettings().setCompassEnabled(false);  //不显示指南针
         MyLocationConfiguration configuration = new MyLocationConfiguration(
-                MyLocationConfiguration.LocationMode.FOLLOWING, true,
+                MyLocationConfiguration.LocationMode.NORMAL, true,
                 BitmapDescriptorFactory.fromResource(R.mipmap.here));
         baiduMap.setMyLocationConfigeration(configuration);// 设置定位显示的模式
         baiduMap.setMapStatus(MapStatusUpdateFactory.zoomTo(baiduMap.getMapStatus().zoom));  //定位后更新缩放级别
@@ -276,26 +273,24 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
                 final double latitude = result.getLatitude();
                 final double longitude = result.getLongitude();
                 final LatLng latLng = new LatLng(latitude, longitude);
-                if(count == 1 || count % 60 == 0){
-                    reportLocation(latLng);  //报告实时位置
-                }
-                count++;
 
-                if(markOverlay[0]!=null){
-                    View pop = BaiduMapUtil.initPop(context,null,false);
-                    TextView tv = (TextView) pop.findViewById(R.id.title);
-                    tv.setText(result.getAddrStr());
-                }else{
-                    if(!NetWorkHelper.isNetworkAvailable(context)) {  //无网络不显示
-                        return;
-                    }
-                    markOverlay[0] =BaiduMapUtil.drawMarker(baiduMap,latLng, BitmapDescriptorFactory.fromResource(R.mipmap.here),BaiduMapUtil.markZIndex);
+                if(baiduMap != null){
+                    baiduMap.setMyLocationData(new MyLocationData.Builder()
+                            .accuracy(0)
+                            // 此处设置开发者获取到的方向信息，顺时针0-360
+                            .direction(result.getRadius())
+                            .latitude(result.getLatitude())
+                            .longitude(result.getLongitude())
+                            .build());
+//                    markOverlay[0] =BaiduMapUtil.drawMarker(baiduMap,latLng, BitmapDescriptorFactory.fromResource(R.mipmap.here),BaiduMapUtil.markZIndex);
                     /** 暂时隐藏pop **/
                     //popOverlay[0] = BaiduMapUtil.drawPopWindow(baiduMap,context,latLng,result.getAddrStr(),BaiduMapUtil.popZIndex);
                     latLngArray[0] = latLng;
                     windowInfo[0] = result.getAddrStr();
-                    drawAnotherPointByGeo(context,baiduMap,mLatLng,mAddress);
-                    BaiduMapUtil.zoomByTwoPoint(baiduMap,latLng,mLatLng);
+                    if (markOverlay[1] == null){
+                        drawAnotherPointByGeo(context,baiduMap,mLatLng,mAddress);
+                        BaiduMapUtil.zoomByTwoPoint(baiduMap,latLng,mLatLng);
+                    }
                 }
                 if(markOverlay[1] == null){
                     tv_distance.setText("0m");

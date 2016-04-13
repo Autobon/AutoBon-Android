@@ -269,7 +269,7 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                 if(!dir.exists()){
                     dir.mkdirs();
                 }
-                fileName = path + File.separator +"my_photo.jpg";
+                fileName = path + File.separator +"my_photo.jpeg";
                 tempFile = new File(fileName);
             } else {
                 T.show(this,getString(R.string.uninstalled_sdcard));
@@ -471,18 +471,15 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(tempFile!=null && tempFile.exists()){
-            File dir = tempFile.getParentFile();
-            Log.i("test","dir===>"+dir.getPath());
-            tempFile.delete();
-            tempFile = null;
-            if(dir.exists()){
-                dir.delete();
-            }
-        }
+        isRunning = false; //关闭计时线程
         if(tempDir!=null && tempDir.exists()){
             SDCardUtils.deleteAllFileInFolder(tempDir);  //销毁临时目录及文件
         }
-        isRunning = false; //关闭计时线程
+        if(tempFile!=null && tempFile.exists()){
+            File dir = tempFile.getParentFile();
+            SDCardUtils.deleteAllFileInFolder(dir);
+            Log.i("test","dir===>"+dir.getPath());
+            tempFile = null;
+        }
     }
 }

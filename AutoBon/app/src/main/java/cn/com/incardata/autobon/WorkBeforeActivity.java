@@ -201,7 +201,7 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
                 if(!dir.exists()){
                     dir.mkdirs();
                 }
-                fileName = path + File.separator +"my_photo.jpg";
+                fileName = path + File.separator +"my_photo.jpeg";
                 tempFile = new File(fileName);
             } else {
                 T.show(this,getString(R.string.uninstalled_sdcard));
@@ -340,16 +340,13 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        isRunning = false; //关闭计时线程
         //清除临时图片文件及目录
         if(tempFile!=null && tempFile.exists()){
             File dir = tempFile.getParentFile();
+            SDCardUtils.deleteAllFileInFolder(dir);
             Log.i("test","dir===>"+dir.getPath());
-            tempFile.delete();
             tempFile = null;
-            if(dir.exists()){
-                dir.delete();
-            }
         }
-        isRunning = false; //关闭计时线程
     }
 }

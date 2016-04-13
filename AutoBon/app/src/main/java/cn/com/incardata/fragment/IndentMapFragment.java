@@ -157,7 +157,6 @@ public class IndentMapFragment extends BaiduMapFragment{
         MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.zoomTo(BaiduMapUtil.defaultLevel);  //默认级别12
         baiduMap.setMapStatus(mapStatusUpdate);  //设置缩放级别
 
-        BaiduMapUtil.hiddenBaiduLogo(mMapView);  //隐藏百度广告图标
         mMapView.showZoomControls(false);
         mMapView.showScaleControl(true);  //默认是true,显示标尺
 

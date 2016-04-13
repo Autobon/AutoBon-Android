@@ -133,7 +133,6 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
                         }
                     }
                 });
-//                intoOrder(position);
             }
         });
 
@@ -312,6 +311,17 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
                 invitationDialogFragment.show(fragmentManager, "Invitation");
             }
             invitationDialogFragment.update(invitation);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (MyApplication.isRefresh){
+            page = 1;
+            isRefresh = true;
+            getpageList(1);
+            MyApplication.isRefresh = false;
         }
     }
 

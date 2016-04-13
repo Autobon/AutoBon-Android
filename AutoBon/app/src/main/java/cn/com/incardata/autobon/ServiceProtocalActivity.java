@@ -29,7 +29,7 @@ public class ServiceProtocalActivity extends BaseActivity{
         });
 
         webView = (WebView) findViewById(R.id.webview);
-        mUrl = "file:///android_asset/serviceagreement.html";
+        mUrl = "file:///android_asset/technicianServiceProtocol.html";
         webViewSettings = webView.getSettings();
         webView.loadUrl(mUrl);
         webViewSettings.setJavaScriptEnabled(true);

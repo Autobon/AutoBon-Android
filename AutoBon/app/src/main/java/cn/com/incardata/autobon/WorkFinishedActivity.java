@@ -5,6 +5,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
+import cn.com.incardata.application.MyApplication;
 import cn.com.incardata.sharesdk.custom.OnClickSharePlatfornSelect;
 import cn.com.incardata.sharesdk.custom.ShareConstant;
 import cn.com.incardata.sharesdk.custom.SharePlatform;
@@ -55,6 +56,7 @@ public class WorkFinishedActivity extends BaseActivity implements View.OnClickLi
                 startActivity(MyInfoActivity.class);
                 break;
             case R.id.continue_immediate:
+                MyApplication.isRefresh = true;
                 finish();
                 break;
             case R.id.more:

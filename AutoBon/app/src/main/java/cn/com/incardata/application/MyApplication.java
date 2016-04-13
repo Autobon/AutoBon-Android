@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.util.DisplayMetrics;
 
 import com.baidu.mapapi.SDKInitializer;
+import com.baidu.mapapi.model.LatLng;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -13,6 +14,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import cn.com.incardata.http.ImageLoaderCache;
+import cn.com.incardata.service.AutobonService;
 import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.SharedPre;
 
@@ -32,6 +34,11 @@ public class MyApplication extends Application{
      * 跳过通知新订单
      */
     private static boolean isSkipNewOrder;
+
+    /**
+     * 主页订单列表是否需要刷新
+     */
+    public static boolean isRefresh;
 
     public static boolean isSkipNewOrder() {
         return isSkipNewOrder;
@@ -57,10 +64,10 @@ public class MyApplication extends Application{
     public void onCreate() {
         super.onCreate();
         instance = this;
-        //在使用百度地图SDK各组件之前初始化context信息,传入ApplicationContext
-        SDKInitializer.initialize(getApplicationContext());
         //初始化ImageLoaderCache
         ImageLoaderCache.getInstance().init(getApplicationContext());
+        //在使用百度地图SDK各组件之前初始化context信息,传入ApplicationContext
+        SDKInitializer.initialize(getApplicationContext());
 
         if (skillMap == null){
             skillMap = new HashMap<Integer, String>();
@@ -70,6 +77,28 @@ public class MyApplication extends Application{
             skillMap.put(4, "美容清洁");
         }
         //initState();
+    }
+
+    private static AutobonService mService;
+
+    public static AutobonService getService() {
+        return mService;
+    }
+
+    public static void setService(AutobonService mService) {
+        MyApplication.mService = mService;
+    }
+
+    /**
+     * @return 当前位置经纬度LatLng
+     */
+    public LatLng getLocalLatLng(){
+        if (MyApplication.mService != null){
+            LatLng latLng = new LatLng(MyApplication.mService.mLocationClient.getLastKnownLocation().getLatitude(),
+                    MyApplication.mService.mLocationClient.getLastKnownLocation().getLongitude());
+            return latLng;
+        }
+        return null;
     }
 
     private void initState(){

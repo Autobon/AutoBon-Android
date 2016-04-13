@@ -26,7 +26,7 @@ public class AuthorizeAgreementActivity extends BaseActivity {
         });
 
         webView = (WebView) findViewById(R.id.webview);
-        mUrl = "file:///android_asset/serviceagreement.html";
+        mUrl = "file:///android_asset/technicianAuthriozeProtocol.html";
         webViewSettings = webView.getSettings();
         webView.loadUrl(mUrl);
         webViewSettings.setJavaScriptEnabled(true);

@@ -123,6 +123,7 @@ public class BaiduMapUtil {
         }
         markOverlay[1] = drawMarker(baiduMap,latLng,BitmapDescriptorFactory.fromResource(R.mipmap.shop),markZIndex);
         popOverlay[1] = drawPopWindow(baiduMap,context,latLng,shopName,popZIndex);
+        zoomByTwoPoint(baiduMap, latLngArray[0], latLng);
 
         latLngArray[1] = latLng;
         windowInfo[1] = shopName;
@@ -207,7 +208,7 @@ public class BaiduMapUtil {
         private BaiduMap baiduMap;
         private TextView tv_distance; //代表底部距离的TextView控件
         private String mAddress; //另一个点的位置
-        private LatLng latLng;  //另一个点的经纬度
+        public LatLng latLng;  //另一个点的经纬度
         private Button sign_in_btn; //签到界面Button
         private boolean isFirst;
 
@@ -228,6 +229,7 @@ public class BaiduMapUtil {
                 final double latitude = result.getLatitude();
                 final double longitude = result.getLongitude();
                 latLng = new LatLng(latitude, longitude);
+                latLngArray[0] = latLng;
                 if(isFirst){
                     if(!NetWorkHelper.isNetworkAvailable(context)) {  //无网络不显示
                         return;
@@ -241,7 +243,9 @@ public class BaiduMapUtil {
                     //drawOnePoint(mAddress,new MyGeoCoderListener(context,this.baiduMap));
                     //drawAnotherPointByGeo(context,this.baiduMap,this.latLng,this.mAddress);
                     zoomByOneCenterPoint(baiduMap, this.latLng, BaiduMapUtil.defaultLevel);
-//                    zoomByTwoPoint(baiduMap,latLngArray[0], latLngArray[1]);
+                    if (latLngArray[1] != null){
+                        zoomByTwoPoint(baiduMap,latLngArray[0], latLngArray[1]);
+                    }
                     isFirst = false;
                 }else{
                     View pop = BaiduMapUtil.initPop(context,null,false);
