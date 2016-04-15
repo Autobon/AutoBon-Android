@@ -36,6 +36,7 @@
             android:scaleType="centerInside"
             android:clickable="true"
             android:focusable="true"
+            android:visibility="invisible"
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
 

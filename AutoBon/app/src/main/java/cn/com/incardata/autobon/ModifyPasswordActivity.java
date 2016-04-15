@@ -62,25 +62,25 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
             T.show(this,getString(R.string.old_empty_tips));
             return;
         }
-        if(StringUtil.isEmpty(new_pwd)){
-            T.show(this,getString(R.string.new_empty_tips));
+        if(old_pwd.length()<8){
+            T.show(this,getString(R.string.old_length_tips));
+            return;
+        }
+        if(!old_pwd.matches(".*[a-zA-Z].*[0-9]|.*[0-9].*[a-zA-Z]")){
+            T.show(this,getString(R.string.old_error_password));
             return;
         }
 
-        if(old_pwd.length()<8){
-            T.show(this,getString(R.string.old_length_tips));
+        if(StringUtil.isEmpty(new_pwd)){
+            T.show(this,getString(R.string.new_empty_tips));
             return;
         }
         if(new_pwd.length()<8){
             T.show(this,getString(R.string.new_length_tips));
             return;
         }
-        if(!old_pwd.matches(".*[a-zA-Z].*[0-9]|.*[0-9].*[a-zA-Z]")){
-            T.show(this,getString(R.string.error_password));
-            return;
-        }
         if(!new_pwd.matches(".*[a-zA-Z].*[0-9]|.*[0-9].*[a-zA-Z]")){  //密码长度至少为8位,且为数字或字母组合
-            T.show(context,context.getString(R.string.error_password));
+            T.show(context,context.getString(R.string.new_error_password));
             return;
         }
 

@@ -44,7 +44,7 @@ public class RadioFragmentGridAdapter extends BaseAdapter{
 			workItemMap.put(workItem_data.getId(),workItem_data.getName());
 		}else {
 			btn.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.corner_default_btn));
-            btn.setTextColor(mActivity.getResources().getColor(R.color.darkgray));
+            btn.setTextColor(mActivity.getResources().getColor(R.color.gray_A3));
 			workItemMap.remove(workItem_data.getId());
 		}
 
@@ -54,7 +54,7 @@ public class RadioFragmentGridAdapter extends BaseAdapter{
                 boolean status = workItem_data.isFocus();
                 if(status){
                     btn.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.corner_default_btn));
-					btn.setTextColor(mActivity.getResources().getColor(R.color.darkgray));
+					btn.setTextColor(mActivity.getResources().getColor(R.color.gray_A3));
                     workItemMap.remove(workItem_data.getId());
                 }else {
                     btn.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.corner_choice_btn));

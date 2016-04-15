@@ -30,7 +30,7 @@ public class WorkFinishedActivity extends BaseActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work_finished);
-
+        MyApplication.isRefresh = true;
         initView();
     }
 
@@ -46,7 +46,7 @@ public class WorkFinishedActivity extends BaseActivity implements View.OnClickLi
 
         findViewById(R.id.personal).setOnClickListener(this);
         findViewById(R.id.continue_immediate).setOnClickListener(this);
-        findViewById(R.id.more).setOnClickListener(this);
+        findViewById(R.id.share).setOnClickListener(this);
     }
 
     @Override
@@ -56,10 +56,9 @@ public class WorkFinishedActivity extends BaseActivity implements View.OnClickLi
                 startActivity(MyInfoActivity.class);
                 break;
             case R.id.continue_immediate:
-                MyApplication.isRefresh = true;
                 finish();
                 break;
-            case R.id.more:
+            case R.id.share:
                 showSharePopWindow();
                 break;
         }
@@ -86,7 +85,7 @@ public class WorkFinishedActivity extends BaseActivity implements View.OnClickLi
     }
     protected void share(SharePlatform paltforn) {
 
-        String content = "车邻邦，技师的创业平台";
+        String content = "车邻邦，专业的汽车保养团队，技师的创业平台";
 
         WShare wShare = new WShare(this);
         switch (paltforn) {

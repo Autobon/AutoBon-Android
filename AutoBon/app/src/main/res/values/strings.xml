@@ -19,6 +19,8 @@
     <string name="empty_password">密码不能为空</string>
     <string name="password_length_tips">密码至少为8位</string>
     <string name="error_password">密码必须为数字和字母的组合</string>
+    <string name="old_error_password">旧密码必须为数字和字母的组合</string>
+    <string name="new_error_password">新密码必须为数字和字母的组合</string>
     <string name="no_network_tips">手机未联网,请联网后重试</string>
     <string name="login_failed">登陆失败</string>
     <string name="phone_no_register_tips">手机号未注册</string>
@@ -197,7 +199,6 @@
     <string name="unpay_text">未结算</string>
     <string name="pay_text">已结算</string>
     <string name="bill_detail">账单详情</string>
-    <string name="bill_order_text">订单编号</string>
     <string name="bill_order_picture">订单图片</string>
     <string name="order_time_text">施工时间:</string>
     <string name="work_item_text">施工部位:</string>
@@ -241,7 +242,7 @@
     <string name="less_three_page_tips">不少于3张</string>
     <string name="next_btn">继续</string>
     <string name="finish_mode_text">即将完成模式</string>
-    <string name="no_pic_tips">你当前尚未上传图片</string>
+    <string name="no_pic_tips">请上传不少于3张工作后的照片</string>
     <string name="upload_work_before_failed_tips">上传施工前图像失败</string>
     <string name="choose_work_item_text">选择本次负责的工作项</string>
     <string name="five_car_tab_text">五座车</string>
@@ -252,6 +253,7 @@
     <string name="tv_minute">分</string>
     <string name="tv_second">秒</string>
     <string name="compute_percent_tips">按百分比计算(%)</string>
+    <string name="please_chooice_work_item">请选择本次完成的工作项</string>
 
     <!-- 强制开始对话框 -->
     <string name="no_response_to_partners">合作人暂无回应</string>
@@ -291,5 +293,7 @@
     <!-- TODO: ImageChooseDialogfragment -->
     <string name="capture">拍照</string>
     <string name="choose_gallery">从相册中选择</string>
+    <string name="notification_list">通知列表</string>
+    <string name="server_conter">服务中心</string>
 
 </resources>

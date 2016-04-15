@@ -31,7 +31,7 @@ public class BillAdapter extends BaseAdapter{
     private Map<String,List<Bill_Data_Info>> mapList;  //key代表年份,value代表月份账单集合
     private List<Bill_Data_Info> allYearBills;  //所有的账单信息
     private int allSize;  //账单的条目,即构造的ListView的数目
-    private List<String> mYear;  //记录年份
+    private Map<String, Integer> mYear;  //记录年份
     private Map<String,String> monthMap;
 
     public BillAdapter(Context context, Map<String,List<Bill_Data_Info>> mapList){
@@ -41,7 +41,7 @@ public class BillAdapter extends BaseAdapter{
     }
 
     private void initData(){
-        this.mYear = new ArrayList<String>();
+        this.mYear = new HashMap<String, Integer>();
         allYearBills = new ArrayList<Bill_Data_Info>();
 
         Set<Map.Entry<String,List<Bill_Data_Info>>> keySets = this.mapList.entrySet();
@@ -82,7 +82,7 @@ public class BillAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView != null) {
             holder = (ViewHolder) convertView.getTag();
@@ -101,17 +101,21 @@ public class BillAdapter extends BaseAdapter{
         String dateTime = DateCompute.timeStampToDate(timeStamp);  //年月日(yyyy-MM-dd HH:mm:ss)
         Log.i("test","dateTime===>"+dateTime);
         String year = dateTime.substring(0,4);  //年值取出
-        if(!mYear.contains(year)){
-            mYear.add(year);
+
+        if(mYear.containsKey(year)) {
+            if (mYear.get(year) == position){
+                convertView.findViewById(R.id.ll_bill_title).setVisibility(View.VISIBLE);
+            }else{
+                convertView.findViewById(R.id.ll_bill_title).setVisibility(View.GONE); //第一个年份标题显示,后面隐藏
+            }
+        }else{
+            mYear.put(year, position);
             List<Bill_Data_Info> mList = this.mapList.get(year);  //获取一年的账单集合
             double sum = 0;
             for(int i=0;i<mList.size();i++){
                 sum += mList.get(i).getSum();
             }
             holder.tv_all_money.setText("￥"+sum);
-        }else{
-            View view = convertView.findViewById(R.id.ll_bill_title); //第一个年份标题显示,后面隐藏
-            view.setVisibility(View.GONE);
         }
         String month = dateTime.substring(5,7); //月值取出
         double money = allYearBills.get(position).getSum();  //获取价钱
@@ -128,13 +132,14 @@ public class BillAdapter extends BaseAdapter{
             holder.tv_status.setText(context.getString(R.string.unpay_text));
             holder.tv_status.setTextColor(context.getResources().getColor(R.color.lightgray));
         }
-        int padding = context.getResources().getDimensionPixelOffset(R.dimen.dp10);
+        final int padding = context.getResources().getDimensionPixelOffset(R.dimen.dp10);
         holder.tv_status.setPadding(padding,0,padding,0);
 
         holder.rl_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, BillDetailActivity.class);
+                intent.putExtra("BillID", allYearBills.get(position).getId());
                 context.startActivity(intent);
             }
         });

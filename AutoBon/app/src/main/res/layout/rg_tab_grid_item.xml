@@ -10,5 +10,5 @@
         android:background="@drawable/corner_default_btn"
         android:padding="@dimen/dp5"
         android:textSize="@dimen/sp10"
-        android:textColor="@color/darkgray"/>
+        android:textColor="@color/lightgray"/>
 </LinearLayout>

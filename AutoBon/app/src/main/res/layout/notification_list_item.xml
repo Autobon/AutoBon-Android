@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@color/main_white"
     android:orientation="vertical">
 
     <View
@@ -15,37 +15,40 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp120"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp10"
         android:layout_marginRight="@dimen/dp10">
         <TextView
+            android:id="@+id/message_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/darkgray"
             android:textSize="@dimen/sp15"
             android:layout_marginTop="@dimen/dp15"
-            android:layout_marginLeft="@dimen/dp10"
-            android:singleLine="true"
-            android:text="dasdasd"/>
+            android:layout_marginLeft="@dimen/dp10" />
+
         <TextView
+            android:id="@+id/message_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/darkgray"
-            android:textSize="@dimen/sp15"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dp10"
-            android:text="dashkdddddddddddaskdaaaadddddddddddddddddddddddddd"/>
+            android:layout_below="@id/message_title"
+            android:layout_marginTop="@dimen/dp10"
+            android:textColor="@color/gray_A3"
+            android:textSize="@dimen/sp13"
+            android:layout_marginLeft="@dimen/dp10" />
+
         <TextView
+            android:id="@+id/message_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/message_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:layout_marginRight="@dimen/dp5"
             android:layout_marginBottom="@dimen/dp5"
-            android:textSize="@dimen/sp15"
+            android:textSize="@dimen/sp12"
             android:textColor="@color/lightgray"
-            android:singleLine="true"
-            android:text="2016-02-07"/>
+            android:singleLine="true" />
     </RelativeLayout>
 
     <View

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_white">
     <RelativeLayout
@@ -24,16 +25,22 @@
             android:textSize="@dimen/sp18"
             android:textColor="@android:color/white" />
     </RelativeLayout>
-    <ListView
-        android:id="@+id/bill_detail_list_view"
+    <cn.com.incardata.view.PullToRefreshView
+        android:id="@+id/bill_detail_list_pull"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:listSelector="@android:color/transparent"
-        android:cacheColorHint="@android:color/transparent"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="@dimen/dp10"
-        android:scrollbars="none"
-        android:fadingEdge="none"
-        android:fadeScrollbars="false">
-    </ListView>
+        android:orientation="vertical">
+        <ListView
+            android:id="@+id/bill_detail_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:listSelector="@android:color/transparent"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="@dimen/dp10"
+            android:scrollbars="none"
+            android:fadingEdge="none"
+            android:fadeScrollbars="false">
+        </ListView>
+    </cn.com.incardata.view.PullToRefreshView>
 </LinearLayout>
