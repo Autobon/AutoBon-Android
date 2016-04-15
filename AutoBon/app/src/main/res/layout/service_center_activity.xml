@@ -45,7 +45,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="000-80000009"
+            android:text="400-187-1500"
+            android:textSize="@dimen/sp15"
             android:layout_marginLeft="@dimen/dp15"/>
     </LinearLayout>
     <View
@@ -69,8 +70,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="contact@incardata.com.cn"
+            android:textSize="@dimen/sp15"
             android:layout_marginLeft="@dimen/dp15"/>
     </LinearLayout>
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:background="@color/line_light_color"/>-->
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:paddingTop="@dimen/dp10"-->
+        <!--android:paddingBottom="@dimen/dp10"-->
+        <!--android:orientation="horizontal">-->
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text=""-->
+            <!--android:layout_marginLeft="@dimen/dp15"-->
+            <!--android:textSize="@dimen/sp15"-->
+            <!--android:textColor="@color/darkgray"/>-->
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="dasdas"-->
+            <!--android:layout_marginLeft="@dimen/dp15"/>-->
+    <!--</LinearLayout>-->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -91,7 +116,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="dasdas"
+            android:text="湖北省武汉市光谷软件园"
+            android:textSize="@dimen/sp15"
             android:layout_marginLeft="@dimen/dp15"/>
     </LinearLayout>
     <View

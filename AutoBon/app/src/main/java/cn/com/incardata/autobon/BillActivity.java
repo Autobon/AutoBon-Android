@@ -55,11 +55,13 @@ public class BillActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void initData(){
-        Http.getInstance().getTaskToken(NetURL.BILL_URL, BillEntity.class, new OnResult() {
+        showDialog();
+        Http.getInstance().getTaskToken(NetURL.BILL_URL, "page=1&pageSize=36", BillEntity.class, new OnResult() {//第一版可查看最多36个月（3年）的数据
             @Override
             public void onResult(Object entity) {
                 if(entity == null){
                     T.show(context,context.getString(R.string.info_load_failure));
+                    cancelDialog();
                     return;
                 }
                 BillEntity billEntity = (BillEntity) entity;
@@ -83,8 +85,10 @@ public class BillActivity extends BaseActivity implements View.OnClickListener{
                         mapData.put(mYear.get(i),yearBillList);
                     }
                     setInitData(mapData);
+                    cancelDialog();
                 }else{
                     T.show(context,billEntity.getMessage());
+                    cancelDialog();
                     return;
                 }
             }

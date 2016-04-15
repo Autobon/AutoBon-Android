@@ -10,7 +10,7 @@
         android:layout_marginTop="@dimen/dp10"
         android:background="@color/lightgray" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -18,33 +18,37 @@
         android:paddingTop="@dimen/dp10">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp10"
-            android:text="@string/bill_order_text"
-            android:textColor="@color/darkgray"
-            android:textSize="@dimen/sp15"
-            android:textStyle="bold"/>
-        <TextView
-            android:id="@+id/tv_order_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/darkgray"
-            android:textSize="@dimen/sp15"
-            android:textStyle="bold"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <TextView
             android:id="@+id/tv_order_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/dp10"
+            android:layout_marginLeft="@dimen/dp15"
+            android:layout_marginTop="@dimen/dp10"
+            android:layout_alignParentRight="true"
             android:textColor="@color/line_color"
+            android:text="￥0"
             android:textSize="@dimen/sp13"/>
-    </LinearLayout>
+
+        <TextView
+            android:id="@+id/order_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp10"
+            android:textColor="@color/darkgray"
+            android:layout_toLeftOf="@id/tv_order_money"
+            android:textSize="@dimen/sp15" />
+
+        <TextView
+            android:id="@+id/tv_order_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/order_type"
+            android:textColor="@color/darkgray"
+            android:layout_alignLeft="@id/order_type"
+            android:layout_alignRight="@id/order_type"
+            android:textSize="@dimen/sp15" />
+
+    </RelativeLayout>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -60,17 +64,16 @@
             android:id="@+id/iv_order_img"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/lightgray"
             android:layout_marginLeft="@dimen/dp10"
             android:layout_marginRight="@dimen/dp10"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/sp15"
-            android:textColor="@color/line_color"
-            android:text="@string/bill_order_picture"
-            android:gravity="center"
-            android:layout_centerInParent="true"/>
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="@dimen/sp15"-->
+            <!--android:textColor="@color/line_color"-->
+            <!--android:text="@string/bill_order_picture"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_centerInParent="true"/>-->
     </RelativeLayout>
     <View
         android:layout_width="match_parent"
@@ -90,14 +93,14 @@
             android:text="@string/order_time_text"
             android:layout_marginLeft="@dimen/dp10"
             android:textColor="@color/darkgray"
-            android:textSize="@dimen/sp15"/>
+            android:textSize="@dimen/sp13"/>
         <TextView
             android:id="@+id/tv_order_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp10"
+            android:layout_marginLeft="@dimen/dp5"
             android:textColor="@color/darkgray"
-            android:textSize="@dimen/sp15"/>
+            android:textSize="@dimen/sp13"/>
     </LinearLayout>
     <View
         android:layout_width="match_parent"
@@ -109,27 +112,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/dp10"
-        android:layout_marginBottom="@dimen/dp10">
+        android:layout_margin="@dimen/dp10">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/work_item_text"
-            android:layout_marginLeft="@dimen/dp10"
             android:textColor="@color/darkgray"
-            android:textSize="@dimen/sp15"/>
+            android:textSize="@dimen/sp13"/>
         <TextView
             android:id="@+id/tv_work_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp10"
+            android:layout_marginLeft="@dimen/dp5"
             android:textColor="@color/darkgray"
-            android:textSize="@dimen/sp15"/>
+            android:textSize="@dimen/sp13"/>
     </LinearLayout>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/lightgray"
-        android:layout_marginLeft="@dimen/dp10"
-        android:layout_marginRight="@dimen/dp10"/>
+        android:background="@color/lightgray" />
 </LinearLayout>

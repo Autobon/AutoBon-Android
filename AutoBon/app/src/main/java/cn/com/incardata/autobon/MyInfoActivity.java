@@ -79,8 +79,10 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         ll_cost.setOnClickListener(this);
         ll_order_num.setOnClickListener(this);
 
-        findViewById(R.id.modify_info).setOnClickListener(this);
+        findViewById(R.id.my_info_layout).setOnClickListener(this);
         findViewById(R.id.my_order_layout).setOnClickListener(this);
+        findViewById(R.id.notification_list_layout).setOnClickListener(this);
+        findViewById(R.id.server_conter_layout).setOnClickListener(this);
     }
 
     private MyInfo_Data myInfo;
@@ -177,7 +179,7 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
             case R.id.ll_order_num: //账单
                 startActivity(BillActivity.class);
                 break;
-            case R.id.modify_info:
+            case R.id.my_info_layout:
                 Intent intent1 = new Intent(getContext(), AuthorizeActivity.class);
                 intent1.putExtra("isAgain", true);
                 intent1.putExtra("name", myInfo.getName());
@@ -191,6 +193,12 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
                 break;
             case R.id.my_order_layout:
                 startActivity(MyOrderActivity.class);
+                break;
+            case R.id.notification_list_layout:
+                startActivity(NotificationMessageActivity.class);
+                break;
+            case R.id.server_conter_layout:
+                startActivity(ServiceCenterActivity.class);
                 break;
         }
     }

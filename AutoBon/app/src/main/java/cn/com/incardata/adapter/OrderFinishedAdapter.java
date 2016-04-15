@@ -80,14 +80,17 @@ public class OrderFinishedAdapter extends BaseAdapter{
         ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + mList.get(position).getPhoto(), holder.orderImage, 0);
         holder.workTime.setText(DateCompute.getDate(mList.get(position).getOrderTime()));
 
-        OrderInfo_Construction comment;
+        OrderInfo_Construction cons;
         if (isMainResponsible) {
-            comment = mList.get(position).getMainConstruct();
+            cons = mList.get(position).getMainConstruct();
         }else {
-            comment = mList.get(position).getSecondConstruct();
+            cons = mList.get(position).getSecondConstruct();
         }
-        holder.money.setText(RMB + comment.getPayment());
-        if (comment.getPayStatus() == 2){
+
+        if (cons == null) return convertView;
+
+        holder.money.setText(RMB + cons.getPayment());
+        if (cons.getPayStatus() == 2){
             holder.moneyState.setText(R.string.pay_done);
             holder.moneyState.setTextColor(main_orange_color);
         }else {
@@ -95,7 +98,9 @@ public class OrderFinishedAdapter extends BaseAdapter{
             holder.moneyState.setTextColor(darkgray_color);
         }
 
-        String item = comment.getWorkItems();
+        if (TextUtils.isEmpty(cons.getWorkItems())) return convertView;
+
+        String item = cons.getWorkItems();
         if (TextUtils.isEmpty(item)){
             holder.workItem.setText(null);
         }else {

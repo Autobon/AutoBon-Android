@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -51,7 +52,6 @@ import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.BitmapHelper;
 import cn.com.incardata.utils.DateCompute;
 import cn.com.incardata.utils.SDCardUtils;
-import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
 
 /**
@@ -304,7 +304,7 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
     private void submitFinishWorkInfo(){
         //TODO 获取上传的图片
         Map<Integer,String> picMap = mAdapter.getPicMap();
-        if(picMap.size()<1){  //图片数量为0,提示用户
+        if(picMap.size()<3){  //图片数量为0,提示用户
             T.show(context,context.getString(R.string.no_pic_tips));
             return;
         }
@@ -365,9 +365,12 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                 s.append(entry.getKey()).append(",");
             }
             String workItemStr = s.toString();
-            if(StringUtil.isNotEmpty(workItemStr)){
+            if(!TextUtils.isEmpty(workItemStr)){
                 workItemStr = workItemStr.substring(0,workItemStr.length()-1);
                 Log.i("test","workItemStr===>"+workItemStr);
+            }else {
+                T.show(getContext(), R.string.please_chooice_work_item);
+                return;
             }
             BasicNameValuePair bv_workItems = new BasicNameValuePair("workItems",workItemStr);
 

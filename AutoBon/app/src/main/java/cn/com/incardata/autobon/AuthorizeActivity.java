@@ -97,15 +97,15 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
             idNumStr = getIntent().getStringExtra("idNumber");
             String headUrl = getIntent().getStringExtra("headUrl");
             String skill = getIntent().getStringExtra("skillArray");
-            String idUrl = getIntent().getStringExtra("idUrl");
+            IDImageUrl = getIntent().getStringExtra("idUrl");
             bankNumStr = getIntent().getStringExtra("bankNo");
             bankNameStr = getIntent().getStringExtra("bankName");
 
             name.setText(nameStr);
             identifyNumber.setText(idNumStr);
             bankNumber.setText(bankNumStr);
-            if (!TextUtils.isEmpty(idUrl)){
-                ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + idUrl, identifyPhoto, false);
+            if (!TextUtils.isEmpty(IDImageUrl)){
+                ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + IDImageUrl, identifyPhoto, false);
                 isUploadIDImage = true;
             }
             ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + headUrl, headerImage, false);

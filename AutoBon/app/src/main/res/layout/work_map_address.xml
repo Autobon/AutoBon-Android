@@ -38,6 +38,7 @@
             android:clickable="true"
             android:focusable="true"
             android:padding="@dimen/dp10"
+            android:visibility="invisible"
             android:scaleType="centerInside"
             android:src="@mipmap/emit" />
     </RelativeLayout>
