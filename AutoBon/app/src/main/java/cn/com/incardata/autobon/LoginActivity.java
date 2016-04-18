@@ -122,11 +122,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 startActivity(intent);
                 break;
             case R.id.login_btn: //登陆
-                Intent i2 = new Intent(getContext(), WorkFinishedActivity.class);
-                i2.putExtra(AutoCon.ORDER_ID, -1);
-                i2.putExtra("OrderNum","37834");
-                startActivity(i2);
-//                login();
+//                Intent i2 = new Intent(getContext(), WorkFinishedActivity.class);
+//                i2.putExtra(AutoCon.ORDER_ID, -1);
+//                i2.putExtra("OrderNum","37834");
+//                startActivity(i2);
+                login();
                 break;
             case R.id.tv_language: //双语切换
                 switchLang();
