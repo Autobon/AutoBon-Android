@@ -351,8 +351,9 @@ public class PullToRefreshView extends LinearLayout {
 				}
 				View child = mAdapterView.getChildAt(0);
 				if (child == null) {
-					// 如果mAdapterView中没有数据,不拦截
-					return false;
+					// 如果mAdapterView中没有数据,拦截
+					mPullState = PULL_DOWN_STATE;
+					return true;
 				}
 				if (mAdapterView.getFirstVisiblePosition() == 0 && child.getTop() == 0) {
 					mPullState = PULL_DOWN_STATE;
@@ -373,8 +374,7 @@ public class PullToRefreshView extends LinearLayout {
 				View lastChild = mAdapterView.getChildAt(mAdapterView.getChildCount() - 1);
 				if (lastChild == null) {
 					// 如果mAdapterView中没有数据,不拦截
-//					return false;
-					return true;
+					return false;
 				}
 				// 最后一个子view的Bottom小于父View的高度说明mAdapterView的数据没有填满父view,
 				// 等于父View的高度说明mAdapterView已经滑动到最后

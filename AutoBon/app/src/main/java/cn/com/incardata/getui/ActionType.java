@@ -56,6 +56,10 @@ public class ActionType {
      * 认证失败
      */
     public final static String VERIFICATION_FAILED = "VERIFICATION_FAILED";
+    /**
+     * 通知消息
+     */
+    public final static String NEW_MESSAGE = "NEW_MESSAGE";
 
     //--------------------------消息广播---------------------------------------
     /**

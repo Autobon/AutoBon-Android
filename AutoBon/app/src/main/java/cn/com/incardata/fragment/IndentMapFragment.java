@@ -161,7 +161,7 @@ public class IndentMapFragment extends BaiduMapFragment{
         mMapView.showScaleControl(true);  //默认是true,显示标尺
 
         BaiduMapUtil.initData();
-//        setBaseData();
+        setBaseData();
         setListener();
     }
 
@@ -252,14 +252,6 @@ public class IndentMapFragment extends BaiduMapFragment{
     @Override
     public void onResume() {
         super.onResume();
-    }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (hidden){
-//            baiduMap.
-        }
     }
 
     /**

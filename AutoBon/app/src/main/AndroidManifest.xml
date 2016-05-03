@@ -145,7 +145,7 @@
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="Yhevl1nChSCYAt6RnSnGOw5b" /> <!-- Yhevl1nChSCYAt6RnSnGOw5b -->
+            android:value="B9le9xEeV1p3oXN7RymLYIFLU4RqVK4W" /> <!-- Yhevl1nChSCYAt6RnSnGOw5b -->
 
         <activity
             android:name=".MainAuthorizedActivity"
@@ -338,7 +338,12 @@
         <activity
             android:name=".AuthorizeAgreementActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".WaitOrderActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity android:name=".WaitOrderInfoActivity"></activity>
     </application>
 
 </manifest>

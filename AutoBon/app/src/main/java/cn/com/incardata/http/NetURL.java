@@ -73,6 +73,8 @@ public class NetURL {
 	public static final String BILL_URL = BASE_URL + "technician/bill";
 	/** 通知消息列表 **/
 	public static final String MESSAGE_LIST = BASE_URL + "technician/message";
+	/** 可抢订单 **/
+	public static final String LIST_NEW = BASE_URL + "technician/order/listNew";
 
 	public static String inviteTechnician(String orderId,String partnerId){
 		return INVITE_TECHNICIAN+"/"+orderId+"/invite/"+partnerId;

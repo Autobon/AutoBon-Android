@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants"
+    android:paddingTop="@dimen/dp10"
+    android:paddingBottom="@dimen/dp10">
+
+    <Button
+        android:id="@+id/order_operate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/main_orange"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/dp5"
+        android:textSize="@dimen/sp13"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        android:paddingLeft="@dimen/dp25"
+        android:paddingRight="@dimen/dp25"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/check_btn"
+        android:text="@string/order_receiving"/>
+
+    <TextView
+        android:id="@+id/order_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/order_operate"
+        android:textColor="@color/main_orange"
+        android:textSize="@dimen/sp13"
+        android:maxLines="1"
+        android:ellipsize="end" />
+
+    <TextView
+        android:id="@+id/order_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/order_operate"
+        android:layout_below="@id/order_type"
+        android:textColor="@color/darkgray"
+        android:textSize="@dimen/sp13"
+        android:maxLines="1"
+        android:ellipsize="end" />
+
+    <TextView
+        android:id="@+id/order_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/darker_gray"
+        android:layout_toLeftOf="@id/order_operate"
+        android:layout_below="@id/order_number"
+        android:textSize="@dimen/sp13"
+        android:maxLines="1"
+        android:ellipsize="end" />
+
+    <!--<TextView-->
+    <!--android:id="@+id/order_hide_text"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="@dimen/dp120"-->
+    <!--android:layout_below="@id/order_time"-->
+    <!--android:layout_marginTop="@dimen/dp5"-->
+    <!--android:layout_marginBottom="@dimen/dp5"-->
+    <!--android:layout_marginLeft="@dimen/dp15"-->
+    <!--android:layout_marginRight="@dimen/dp15"-->
+    <!--android:gravity="center"-->
+    <!--android:background="#eeeeee"-->
+    <!--android:textColor="#a3a3a3"-->
+    <!--android:textSize="@dimen/sp15"-->
+    <!--android:text="@string/indent_image_text"/>-->
+    <ImageView
+        android:id="@+id/order_image"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp120"
+        android:layout_below="@id/order_time"
+        android:layout_marginTop="@dimen/dp5"
+        android:layout_marginBottom="@dimen/dp5"
+        android:layout_marginLeft="@dimen/dp15"
+        android:layout_marginRight="@dimen/dp15"/>
+
+</RelativeLayout>

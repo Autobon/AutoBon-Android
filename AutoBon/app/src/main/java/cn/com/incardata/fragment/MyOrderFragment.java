@@ -115,7 +115,7 @@ public class MyOrderFragment extends BaseFragment {
         mPull.setOnFooterRefreshListener(new PullToRefreshView.OnFooterRefreshListener() {
             @Override
             public void onFooterRefresh(PullToRefreshView view) {
-                if (page == totalPages){
+                if (page >= totalPages){
                     T.show(getActivity(), R.string.has_load_all_label);
                     mPull.loadedCompleted();
                     return;

@@ -295,5 +295,9 @@
     <string name="choose_gallery">从相册中选择</string>
     <string name="notification_list">通知列表</string>
     <string name="server_conter">服务中心</string>
+    <string name="order_receiving">抢单</string>
+    <string name="order_str">订单</string>
+    <string name="order_infomation_str">订单详情</string>
+    <string name="order_receiving_process">正在抢单…</string>
 
 </resources>
