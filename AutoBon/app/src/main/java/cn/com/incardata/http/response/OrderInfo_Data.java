@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Created by zhangming on 2016/3/10.
+ * Created by wanghao on 2016/3/10.
  */
 public class OrderInfo_Data implements Parcelable {
     private int id;
@@ -25,6 +25,7 @@ public class OrderInfo_Data implements Parcelable {
     private OrderInfo_Construction mainConstruct;
     private OrderInfo_Construction secondConstruct;
     private OrderInfo_Data_Comment comment;
+    private OrderInfo_Cooperator cooperator;
     private String status;
 
     public int getId() {
@@ -171,6 +172,14 @@ public class OrderInfo_Data implements Parcelable {
         this.comment = comment;
     }
 
+    public OrderInfo_Cooperator getCooperator() {
+        return cooperator;
+    }
+
+    public void setCooperator(OrderInfo_Cooperator cooperator) {
+        this.cooperator = cooperator;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -200,11 +209,12 @@ public class OrderInfo_Data implements Parcelable {
         dest.writeString(this.positionLon);
         dest.writeString(this.positionLat);
         dest.writeString(this.remark);
-        dest.writeParcelable(this.mainTech, 0);
-        dest.writeParcelable(this.secondTech, 0);
-        dest.writeParcelable(this.mainConstruct, 0);
-        dest.writeParcelable(this.secondConstruct, 0);
-        dest.writeParcelable(this.comment, 0);
+        dest.writeParcelable(this.mainTech, flags);
+        dest.writeParcelable(this.secondTech, flags);
+        dest.writeParcelable(this.mainConstruct, flags);
+        dest.writeParcelable(this.secondConstruct, flags);
+        dest.writeParcelable(this.comment, flags);
+        dest.writeParcelable(this.cooperator, flags);
         dest.writeString(this.status);
     }
 
@@ -230,14 +240,17 @@ public class OrderInfo_Data implements Parcelable {
         this.mainConstruct = in.readParcelable(OrderInfo_Construction.class.getClassLoader());
         this.secondConstruct = in.readParcelable(OrderInfo_Construction.class.getClassLoader());
         this.comment = in.readParcelable(OrderInfo_Data_Comment.class.getClassLoader());
+        this.cooperator = in.readParcelable(OrderInfo_Cooperator.class.getClassLoader());
         this.status = in.readString();
     }
 
-    public static final Parcelable.Creator<OrderInfo_Data> CREATOR = new Parcelable.Creator<OrderInfo_Data>() {
+    public static final Creator<OrderInfo_Data> CREATOR = new Creator<OrderInfo_Data>() {
+        @Override
         public OrderInfo_Data createFromParcel(Parcel source) {
             return new OrderInfo_Data(source);
         }
 
+        @Override
         public OrderInfo_Data[] newArray(int size) {
             return new OrderInfo_Data[size];
         }
