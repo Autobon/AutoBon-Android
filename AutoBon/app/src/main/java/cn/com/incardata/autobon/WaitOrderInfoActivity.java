@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import org.apache.http.message.BasicNameValuePair;
 
@@ -19,13 +20,11 @@ import cn.com.incardata.http.response.TakeupEntity;
 import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.T;
 
-/**未抢订单详情
- * @author wanghao
- */
 public class WaitOrderInfoActivity extends BaseActivity implements IndentMapFragment.OnFragmentInteractionListener{
     private FragmentManager fragmentManager;
     private IndentMapFragment mFragment;
 
+    private TextView orderType;
     private Button immediateOrder;
 
     private Order order;
@@ -40,6 +39,7 @@ public class WaitOrderInfoActivity extends BaseActivity implements IndentMapFrag
     }
 
     private void initView() {
+        orderType = (TextView) findViewById(R.id.order_type);
         immediateOrder = (Button) findViewById(R.id.immediate_order);
 
         findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
@@ -54,7 +54,7 @@ public class WaitOrderInfoActivity extends BaseActivity implements IndentMapFrag
                 immediateOrder();
             }
         });
-//        order = getIntent().getExtras().getParcelable("Order");
+        order = getIntent().getExtras().getParcelable("Order");
     }
 
     private void fillData() {
@@ -63,8 +63,9 @@ public class WaitOrderInfoActivity extends BaseActivity implements IndentMapFrag
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.add(R.id.order_container, mFragment).commit();
 
-        if (mFragment != null && order != null){
+        if (mFragment != null){
             mFragment.setData(order);
+            orderType.setText(MyApplication.getInstance().getSkill(order.getOrderType()));
         }
     }
 

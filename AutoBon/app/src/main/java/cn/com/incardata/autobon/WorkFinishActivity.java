@@ -305,7 +305,7 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
         //TODO 获取上传的图片
         Map<Integer,String> picMap = mAdapter.getPicMap();
         if(picMap.size()<3){  //图片数量为0,提示用户
-            T.show(context,context.getString(R.string.no_pic_tips_work_after));
+            T.show(context,context.getString(R.string.no_pic_tips));
             return;
         }
         BasicNameValuePair bv_orderId = new BasicNameValuePair("orderId",String.valueOf(orderInfo.getId()));

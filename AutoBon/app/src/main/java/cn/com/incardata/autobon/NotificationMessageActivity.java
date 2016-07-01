@@ -17,7 +17,7 @@ import cn.com.incardata.http.response.Message_Data;
 import cn.com.incardata.utils.T;
 import cn.com.incardata.view.PullToRefreshView;
 
-/**
+/** 消息通知
  * Created by zhangming on 2016/3/9.
  */
 public class NotificationMessageActivity extends BaseActivity implements View.OnClickListener{
