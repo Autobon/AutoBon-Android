@@ -46,7 +46,7 @@
             android:id="@+id/tv_login_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="wangho"
+            android:text="name"
             android:layout_toRightOf="@id/iv_circle"
             android:layout_marginLeft="@dimen/dp10"
             android:layout_marginTop="@dimen/dp5"

@@ -96,7 +96,6 @@ public class MyContactAdapter extends BaseAdapter{
             public void onResult(Object entity) {
                 if(entity == null){
                     T.show(activity,activity.getString(R.string.invite_contact_failed));
-
                     return;
                 }
                 InviteTechnicainEntity inviteTechnicainEntity = (InviteTechnicainEntity) entity;
