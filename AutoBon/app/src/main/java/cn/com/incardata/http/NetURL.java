@@ -2,9 +2,13 @@ package cn.com.incardata.http;
 
 public class NetURL {
 	/** 基地址 */
-	public final static String BASE_URL = "http://121.40.157.200:12345/api/mobile/";
-	public final static String IP_PORT = "http://121.40.157.200:12345";
-	public static final String PUB = "http://121.40.157.200:12345/api/pub/";
+//	public final static String BASE_URL = "http://121.40.157.200:12345/api/mobile/";
+//	public final static String IP_PORT = "http://121.40.157.200:12345";
+//	public static final String PUB = "http://121.40.157.200:12345/api/pub/";
+
+	public final static String BASE_URL = "http://hpecar.com:8012/api/mobile/";
+	public final static String IP_PORT = "http://hpecar.com:8012";
+	public static final String PUB = "http://hpecar.com:8012/api/pub/";
 
 	/** 发送验证短信 */
 	public static final String VERIFY_SMS = PUB + "verifySms";
@@ -91,5 +95,9 @@ public class NetURL {
 	/** 拉取帐单下的订单列表 **/
 	public static String getBillOrderInfo(int billId){
 		return BILL_URL+"/"+billId+"/order";
+	}
+	/** 放弃订单 **/
+	public static String getDropOrder(int orderId){
+		return BASE_URL + "technician/order/" + orderId + "/cancel";
 	}
 }

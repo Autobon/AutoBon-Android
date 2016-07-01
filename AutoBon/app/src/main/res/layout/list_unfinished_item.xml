@@ -20,12 +20,22 @@
         android:layout_alignParentRight="true"
         android:background="@drawable/check_btn"
         android:text="@string/into_order"/>
+    <TextView
+        android:id="@+id/order_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/order_operate"
+        android:textColor="@color/main_orange"
+        android:textSize="@dimen/sp13"
+        android:maxLines="1"
+        android:ellipsize="end" />
 
     <TextView
         android:id="@+id/order_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/order_operate"
+        android:layout_below="@id/order_type"
         android:textColor="@color/darkgray"
         android:textSize="@dimen/sp13"
         android:maxLines="1"
