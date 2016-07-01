@@ -55,6 +55,7 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
     private PullToRefreshView mPull;
     private ListView mListView;
     private RelativeLayout orderLayout;
+    private TextView orderType;
     private Button immediateOrder;
 
     private int orderId = -1;//订单ID－抢单
@@ -77,6 +78,7 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
         mPull = (PullToRefreshView) findViewById(R.id.order_pull);
         mListView = (ListView) findViewById(R.id.unfinished_order_list);
         orderLayout = (RelativeLayout) findViewById(R.id.order_layout);
+        orderType = (TextView) findViewById(R.id.order_type);
         immediateOrder = (Button) findViewById(R.id.immediate_order);
 
         findViewById(R.id.personal).setOnClickListener(this);
@@ -171,12 +173,12 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
             }
         }
 
-        if (construction == null){//进入开始工作
+        if (construction == null){
             Intent intent = new Intent(this, OrderReceiveActivity.class);
             intent.putExtra(AutoCon.ORDER_INFO, orderInfo);
             intent.putExtra(OrderReceiveActivity.IsLocalData, true);
             startActivity(intent);
-        }else if (construction.getSigninTime() == null){//进入签到
+        }else if (construction.getSigninTime() == null){
             Intent intent = new Intent(this, WorkSignInActivity.class);
             intent.putExtra(AutoCon.ORDER_INFO, orderInfo);
             startActivity(intent);
@@ -297,7 +299,7 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
                 OrderMsg orderMsg = JSON.parseObject(json, OrderMsg.class);
                 mFragment.setData(orderMsg.getOrder());
                 orderId = orderMsg.getOrder().getId();
-//                orderType.setText(MyApplication.getInstance().getSkill(orderMsg.getOrder().getOrderType()));
+                orderType.setText(MyApplication.getInstance().getSkill(orderMsg.getOrder().getOrderType()));
                 showWindow();
             }
         }else if (ActionType.ACTION_INVITATION.equals(action)){

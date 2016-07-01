@@ -30,7 +30,7 @@ import cn.com.incardata.http.response.VerifySmsEntity;
 import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
 
-/**
+/** 找回密码
  * Created by Administrator on 2016/2/17.
  */
 public class FindPasswordActivity extends BaseActivity implements View.OnClickListener{
