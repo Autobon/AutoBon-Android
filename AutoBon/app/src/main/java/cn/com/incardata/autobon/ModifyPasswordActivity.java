@@ -21,7 +21,7 @@ import cn.com.incardata.http.response.ChangePasswordEntity;
 import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
 
-/**
+/** 修改密码
  * Created by zhangming on 2016/2/26.
  */
 public class ModifyPasswordActivity extends BaseActivity implements View.OnClickListener{

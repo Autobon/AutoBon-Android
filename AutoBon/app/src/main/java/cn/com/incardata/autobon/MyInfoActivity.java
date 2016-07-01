@@ -21,7 +21,7 @@ import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
 import cn.com.incardata.view.CircleImageView;
 
-/**
+/** 我的信息
  * Created by zhangming on 2016/2/25.
  */
 public class MyInfoActivity extends BaseActivity implements View.OnClickListener{

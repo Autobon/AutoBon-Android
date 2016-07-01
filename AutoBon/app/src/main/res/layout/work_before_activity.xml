@@ -125,12 +125,12 @@
         android:background="@color/lightgray"/>
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dp160"
         android:background="@android:color/white">
         <RelativeLayout
             android:id="@+id/rl_default_pic"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp160"
+            android:layout_height="match_parent"
             android:background="@android:color/white">
             <ImageView
                 android:id="@+id/iv_car_upload_photo"
@@ -159,7 +159,7 @@
         <RelativeLayout
             android:id="@+id/rl_single_pic"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dp200"
             android:background="@android:color/white"
             android:visibility="gone"
             android:paddingLeft="@dimen/dp20"
@@ -168,7 +168,7 @@
             android:paddingBottom="@dimen/dp10">
             <GridView
                 android:id="@+id/gv_single_pic"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:numColumns="3"
                 android:verticalSpacing="@dimen/dp20"

@@ -144,7 +144,7 @@ public class MyApplication extends Application{
                 return val;
             }
         }
-        return "";
+        return null;
     }
 
     public synchronized void setCookie(String autoken){

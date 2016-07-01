@@ -26,7 +26,7 @@ public class UpgradeApp {
 		StringBuffer fileN = new StringBuffer(path + "/CarBlue/80miles.apk");
 		File tmpFile = new File(fileN.toString());
 		if (!tmpFile.getParentFile().exists()) {
-			tmpFile.mkdirs();
+			tmpFile.mkdir();
 		}
 		File file = new File(fileN.toString());
 		if (file.exists()) {

@@ -48,7 +48,7 @@
         <!--<item name="android:windowCloseOnTouchOutside">false</item>-->
     </style>
 
-    <!-- todo:点击外部可取消 -->
+    <!-- 点击外部可取消 -->
     <style name="DialogFragment_Cancelable" parent="DialogFragment">
         <item name="android:windowCloseOnTouchOutside">true</item>
     </style>
