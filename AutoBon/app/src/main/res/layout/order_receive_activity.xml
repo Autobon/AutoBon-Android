@@ -28,18 +28,16 @@
             android:textColor="@android:color/white"
             android:textSize="@dimen/sp18" />
 
-        <TextView
-            android:id="@+id/drop_order"
+        <ImageView
             android:layout_width="@dimen/dp50"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:clickable="true"
             android:focusable="true"
-            android:textSize="@dimen/sp15"
-            android:textColor="@android:color/white"
-            android:gravity="center"
-            android:text="@string/drop_order"
-            android:onClick="onClickDropOrder"/>
+            android:padding="@dimen/dp10"
+            android:visibility="invisible"
+            android:scaleType="centerInside"
+            android:src="@mipmap/emit" />
     </RelativeLayout>
 
     <FrameLayout

@@ -11,6 +11,10 @@ import android.os.IBinder;
 import cn.com.incardata.application.MyApplication;
 import cn.com.incardata.service.AutobonService;
 
+/**
+ *  欢迎界面
+ */
+
 public class WelcomeActivity extends BaseActivity {
     private static final int DURATION = 2000;//持续时长（秒）
     @Override

@@ -83,7 +83,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/distance_text"
+            android:text="@string/signin"
             android:textColor="@color/darkgray"
             android:textSize="@dimen/sp15" />
 
@@ -110,4 +110,14 @@
         android:text="@string/sign_in_text"
         android:textColor="@color/line_color"
         android:textSize="@dimen/sp15" />
+
+
+    <TextView
+        android:textSize="@dimen/sp12"
+        android:textColor="@color/gray_A3"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp20"
+        android:text="为了准确定位你的位置,请在室外无遮挡处定位"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </LinearLayout>

@@ -31,7 +31,7 @@ import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
 
 
-/**
+/** 注册
  * Created by Administrator on 2016/2/16.
  */
 public class RegisterActivity extends BaseActivity implements View.OnClickListener{

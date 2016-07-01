@@ -3,6 +3,7 @@ package cn.com.incardata.autobon;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -21,7 +22,7 @@ import cn.com.incardata.utils.DateCompute;
 import cn.com.incardata.utils.T;
 
 /**
- * 订单详情
+ * 我的订单-订单详情
  */
 public class OrderInfoActivity extends BaseActivity {
 
@@ -30,9 +31,11 @@ public class OrderInfoActivity extends BaseActivity {
     private TextView orderNum;
     private ImageView orderImage;
     private TextView remark;
-    private TextView workTime;
-    private TextView workDuration;
-    private TextView workItem;
+    private TextView order_type;
+    private TextView work_item;
+    private TextView work_person;
+    private TextView sign_in_time;
+    private GridView work_before_grid,work_after_grid;
     private RatingBar ratingBar;
     private ImageView arriveOnTime;
     private ImageView completeOnTime;
@@ -60,9 +63,12 @@ public class OrderInfoActivity extends BaseActivity {
         orderNum = (TextView) findViewById(R.id.order_number);
         orderImage = (ImageView) findViewById(R.id.order_image);
         remark = (TextView) findViewById(R.id.remark);
-        workTime = (TextView) findViewById(R.id.work_time);
-        workDuration = (TextView) findViewById(R.id.work_duration);
-        workItem = (TextView) findViewById(R.id.work_item);
+        order_type = (TextView) findViewById(R.id.order_type);
+        work_item = (TextView) findViewById(R.id.work_item);
+        work_person = (TextView) findViewById(R.id.work_person);
+        sign_in_time = (TextView) findViewById(R.id.sign_in_time);
+        work_before_grid = (GridView) findViewById(R.id.work_before_grid);
+        work_after_grid = (GridView) findViewById(R.id.work_after_grid);
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
         arriveOnTime = (ImageView) findViewById(R.id.arrive_on_time);
         completeOnTime = (ImageView) findViewById(R.id.complete_on_time);
@@ -105,7 +111,7 @@ public class OrderInfoActivity extends BaseActivity {
 
     private void updateUI(OrderInfo_Data data){
         remark.setText(data.getRemark());
-        workTime.setText(DateCompute.getDate(data.getOrderTime()));
+//        workTime.setText(DateCompute.getDate(data.getOrderTime()));
         orderNum.setText(getResources().getString(R.string.order_serial_number) + data.getOrderNum());
         ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + data.getPhoto(), orderImage, false, R.mipmap.load_image_failed);
 
@@ -153,15 +159,15 @@ public class OrderInfoActivity extends BaseActivity {
             moneyState.setText(R.string.pay_wait);
             moneyState.setTextColor(getResources().getColor(R.color.darkgray));
         }
-        workDuration.setText(duration(construct.getStartTime(), construct.getEndTime()));
+//        workDuration.setText(duration(construct.getStartTime(), construct.getEndTime()));
 
         if (data.getOrderType() == 4) {//美容清洁
-            workItem.setText(MyApplication.getInstance().getSkill(4));
+//            workItem.setText(MyApplication.getInstance().getSkill(4));
             return;
         }
         String item = construct.getWorkItems();
         if (TextUtils.isEmpty(item)){
-            workItem.setText(null);
+//            workItem.setText(null);
         }else {
             if (item.contains(",")){
                 String[] items = item.split(",");
@@ -169,9 +175,9 @@ public class OrderInfoActivity extends BaseActivity {
                 for (String str : items){
                     tempItem += MyOrderActivity.workItems[Integer.parseInt(str)] + ",";
                 }
-                workItem.setText(tempItem.substring(0, tempItem.length() - 1));
+//                workItem.setText(tempItem.substring(0, tempItem.length() - 1));
             }else {
-                workItem.setText(MyOrderActivity.workItems[1]);
+//                workItem.setText(MyOrderActivity.workItems[1]);
             }
         }
     }
