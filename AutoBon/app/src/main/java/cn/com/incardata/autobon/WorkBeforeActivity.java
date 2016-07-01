@@ -60,7 +60,7 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
     private PictureGridAdapter mAdapter;
     private File tempFile;
     private String fileName = "";
-    private static final int MAX_PICS = 9; //图片数上限
+    private static final int MAX_PICS = 6; //图片数上限
 
     private Uri carPhotoUri;
     private static final int CAR_PHOTO = 1;

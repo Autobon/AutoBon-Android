@@ -4,8 +4,6 @@
     <string name="digits_indentify_number">0123456789X</string>
     <string name="load_progress_tips">正在加载…</string>
     <string name="uploading_image">上传中…</string>
-    <string name="cancel">取消</string>
-    <string name="ok">确定</string>
 
     <!--登陆界面-->
     <string name="text_language">语言</string>
