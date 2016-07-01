@@ -67,7 +67,7 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
     private Button finish_work_btn;
     private ImageView iv_left,iv_right,iv_my_info,iv_enter_more_page;
     private Context context;
-    private static final int MAX_PICS = 9; //图片数上限
+    private static final int MAX_PICS = 6; //图片数上限
 
     private File tempFile;
     private String fileName = "";  //my_picture目录
