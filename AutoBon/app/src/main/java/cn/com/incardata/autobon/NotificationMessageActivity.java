@@ -61,7 +61,7 @@ public class NotificationMessageActivity extends BaseActivity implements View.On
         mPull.setOnFooterRefreshListener(new PullToRefreshView.OnFooterRefreshListener() {
             @Override
             public void onFooterRefresh(PullToRefreshView view) {
-                if (page == totalPages){
+                if (page >= totalPages){
                     T.show(getContext(), R.string.has_load_all_label);
                     mPull.loadedCompleted();
                     return;

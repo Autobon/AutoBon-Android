@@ -24,6 +24,7 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.model.LatLng;
 
+import cn.com.incardata.autobon.EnlargementActivity;
 import cn.com.incardata.autobon.R;
 import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
@@ -161,13 +162,13 @@ public class IndentMapFragment extends BaiduMapFragment{
         mMapView.showScaleControl(true);  //默认是true,显示标尺
 
         BaiduMapUtil.initData();
-//        setBaseData();
+        setBaseData();
         setListener();
     }
 
     private void setBaseData(){
         if (indentImage == null) return;
-        ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + photoUrl, indentImage, false, R.mipmap.load_image_failed);
+        ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + photoUrl, indentImage, R.mipmap.load_image_failed);
         indentText.setVisibility(View.GONE);
 
         if (workTime != null){
@@ -186,6 +187,14 @@ public class IndentMapFragment extends BaiduMapFragment{
     }
 
     private void setListener() {
+        rootView.findViewById(R.id.indent_image).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickImage(v);
+            }
+        });
+
+
         /**
          * 百度地图加载完毕后回调此方法(传参入口)
          */
@@ -215,6 +224,15 @@ public class IndentMapFragment extends BaiduMapFragment{
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+    }
+
+    /**查看订单放大图
+     * @param v
+     */
+    public void onClickImage(View v){
+        Bundle bundle = new Bundle();
+        bundle.putStringArray("IMAGE_URL", new String[]{photoUrl});
+        startActivity(EnlargementActivity.class, bundle);
     }
 
     @Override
@@ -252,14 +270,6 @@ public class IndentMapFragment extends BaiduMapFragment{
     @Override
     public void onResume() {
         super.onResume();
-    }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (hidden){
-//            baiduMap.
-        }
     }
 
     /**

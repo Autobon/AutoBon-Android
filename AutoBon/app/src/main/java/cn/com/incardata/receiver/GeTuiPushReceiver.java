@@ -21,7 +21,9 @@ import cn.com.incardata.application.MyApplication;
 import cn.com.incardata.autobon.MainAuthorizedActivity;
 import cn.com.incardata.autobon.R;
 import cn.com.incardata.getui.ActionType;
+import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.L;
+import cn.com.incardata.utils.SharedPre;
 
 /**
  * 个推
@@ -82,8 +84,9 @@ public class GeTuiPushReceiver extends BroadcastReceiver{
         try {
             JSONObject jsonObject = new JSONObject(msg);
             String action = jsonObject.getString(ActionType.NAME);
-
+            boolean isAuthorize = SharedPre.getBoolean(context, AutoCon.IS_AUTHORIZED, false);
             if (ActionType.NEW_ORDER.equals(action)){ //新订单
+                if (!isAuthorize) return;
                 if (MyApplication.isMainForego() && MyApplication.isSkipNewOrder()){
                     Intent intent = new Intent(ActionType.ACTION_ORDER);
                     intent.putExtra(ActionType.EXTRA_DATA, msg);
@@ -92,6 +95,7 @@ public class GeTuiPushReceiver extends BroadcastReceiver{
                     showNotification(context, "新订单", jsonObject.getString("title"), 3, msg);
                 }
             }else if (ActionType.INVITE_PARTNER.equals(action)){ //合作邀请
+                if (!isAuthorize) return;
                 if (MyApplication.isMainForego()) {
                     Intent intent = new Intent(ActionType.ACTION_INVITATION);
                     intent.putExtra(ActionType.EXTRA_DATA, msg);
@@ -100,14 +104,18 @@ public class GeTuiPushReceiver extends BroadcastReceiver{
                     showNotification(context, "邀请消息", jsonObject.getString("title"), 2, msg);
                 }
             }else if (ActionType.INVITATION_ACCEPTED.equals(action)){ //邀请已被接受
+                if (!isAuthorize) return;
                 showNotification(context, "邀请消息", jsonObject.getString("title"), 1);
             }else if (ActionType.INVITATION_REJECTED.equals(action)){ //邀请被拒绝
+                if (!isAuthorize) return;
                 showNotification(context, "邀请消息", jsonObject.getString("title"), 1);
             }else if (ActionType.VERIFICATION_SUCCEED.equals(action)){ //认证通过
                 showNotification(context, "认证消息", jsonObject.getString("title"), 0);
                 context.sendBroadcast(new Intent(ActionType.ACTION_VERIFIED));
             }else if (ActionType.VERIFICATION_FAILED.equals(action)){ //认证失败
                 showNotification(context, "认证消息", jsonObject.getString("title"), 0);
+            }else if (ActionType.NEW_MESSAGE.equals(action)){
+                showNotification(context, context.getString(R.string.app_name), jsonObject.getString("title"), 4);
             }
         } catch (JSONException e) {
             e.printStackTrace();

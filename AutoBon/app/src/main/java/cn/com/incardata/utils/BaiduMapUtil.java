@@ -73,7 +73,7 @@ public class BaiduMapUtil {
 
     public static void locate(BaiduMap baiduMap){
         MyLocationConfiguration configuration = new MyLocationConfiguration(
-                MyLocationConfiguration.LocationMode.FOLLOWING, true,
+                MyLocationConfiguration.LocationMode.NORMAL, true,
                 BitmapDescriptorFactory.fromResource(R.mipmap.here));
         baiduMap.setMyLocationConfigeration(configuration);// 设置定位显示的模式
         baiduMap.setMapStatus(MapStatusUpdateFactory.zoomTo(baiduMap.getMapStatus().zoom));  //定位后更新缩放级别
@@ -234,7 +234,7 @@ public class BaiduMapUtil {
                     if(!NetWorkHelper.isNetworkAvailable(context)) {  //无网络不显示
                         return;
                     }
-                    markOverlay[0] = drawMarker(this.baiduMap,latLng,BitmapDescriptorFactory.fromResource(R.mipmap.here),markZIndex);
+                    markOverlay[0] = drawMarker(this.baiduMap,latLng,BitmapDescriptorFactory.fromResource(R.mipmap.here1),markZIndex);
 
                     /** 暂时隐藏pop **/
                     //popOverlay[0] = drawPopWindow(this.baiduMap,context,latLng,result.getAddrStr(),popZIndex);

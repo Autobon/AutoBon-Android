@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp45"
+        android:background="@color/main_orange">
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="@dimen/dp35"
+            android:layout_height="match_parent"
+            android:padding="@dimen/dp10"
+            android:src="@mipmap/default_back"
+            android:scaleType="centerInside"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/order_str"
+            android:textSize="@dimen/sp18"
+            android:textColor="@android:color/white"/>
+
+        <!--<ImageView-->
+            <!--android:id="@+id/order_more"-->
+            <!--android:layout_width="@dimen/dp45"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:padding="@dimen/dp10"-->
+            <!--android:src="@mipmap/wait_order"-->
+            <!--android:scaleType="centerInside"-->
+            <!--android:clickable="true"-->
+            <!--android:focusable="true"-->
+            <!--android:layout_alignParentRight="true"/>-->
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/dp10">
+
+        <TextView
+            android:id="@+id/today"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp13"
+            android:textColor="@color/darkgray"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="2015-01-05 星期二"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp13"
+            android:textColor="@color/darkgray"
+            android:text="@string/order_mode"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#F0F0F0"/>
+
+    <cn.com.incardata.view.PullToRefreshView
+        android:id="@+id/pull"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/wait_order_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbarStyle="outsideOverlay"
+            android:paddingLeft="@dimen/dp10"
+            android:paddingRight="@dimen/dp10"
+            android:divider="#F0F0F0"
+            android:dividerHeight="1dp"/>
+
+    </cn.com.incardata.view.PullToRefreshView>
+</LinearLayout>
+

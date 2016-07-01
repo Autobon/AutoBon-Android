@@ -55,7 +55,6 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
     private PullToRefreshView mPull;
     private ListView mListView;
     private RelativeLayout orderLayout;
-    private TextView orderType;
     private Button immediateOrder;
 
     private int orderId = -1;//订单ID－抢单
@@ -78,7 +77,6 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
         mPull = (PullToRefreshView) findViewById(R.id.order_pull);
         mListView = (ListView) findViewById(R.id.unfinished_order_list);
         orderLayout = (RelativeLayout) findViewById(R.id.order_layout);
-        orderType = (TextView) findViewById(R.id.order_type);
         immediateOrder = (Button) findViewById(R.id.immediate_order);
 
         findViewById(R.id.personal).setOnClickListener(this);
@@ -101,7 +99,7 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
                 startActivity(MyInfoActivity.class);
                 break;
             case R.id.order_more:
-                startActivity(MoreActivity.class);
+                startActivity(WaitOrderActivity.class);
                 break;
             case R.id.order_close_window:
                 closeWindow();
@@ -126,7 +124,7 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
                     public void onResult(Object entity) {
                         cancelDialog();
                         if (entity == null){
-                             return;
+                            return;
                         }
                         if (entity instanceof OrderInfoEntity && ((OrderInfoEntity) entity).isResult()){
                             intoOrder(((OrderInfoEntity) entity).getData());
@@ -147,7 +145,7 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
         mPull.setOnFooterRefreshListener(new PullToRefreshView.OnFooterRefreshListener() {
             @Override
             public void onFooterRefresh(PullToRefreshView view) {
-                if (page == totalPages){
+                if (page >= totalPages){
                     T.show(getContext(), R.string.has_load_all_label);
                     mPull.loadedCompleted();
                     return;
@@ -173,12 +171,12 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
             }
         }
 
-        if (construction == null){
+        if (construction == null){//进入开始工作
             Intent intent = new Intent(this, OrderReceiveActivity.class);
             intent.putExtra(AutoCon.ORDER_INFO, orderInfo);
             intent.putExtra(OrderReceiveActivity.IsLocalData, true);
             startActivity(intent);
-        }else if (construction.getSigninTime() == null){
+        }else if (construction.getSigninTime() == null){//进入签到
             Intent intent = new Intent(this, WorkSignInActivity.class);
             intent.putExtra(AutoCon.ORDER_INFO, orderInfo);
             startActivity(intent);
@@ -198,7 +196,7 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
     }
 
     private void getpageList(int page) {
-        Http.getInstance().getTaskToken(NetURL.UNFINISHED_ORDER_LIST, "page=" + page + "&pageSize=5", ListUnfinishedEntity.class, new OnResult() {
+        Http.getInstance().getTaskToken(NetURL.UNFINISHED_ORDER_LIST, "page=" + page + "&pageSize=10", ListUnfinishedEntity.class, new OnResult() {
             @Override
             public void onResult(Object entity) {
                 mPull.loadedCompleted();
@@ -229,9 +227,11 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
      * 抢单
      */
     private void immediateOrder() {
+        showDialog(getString(R.string.order_receiving_process));
         Http.getInstance().postTaskToken(NetURL.TAKEUP, TakeupEntity.class, new OnResult() {
             @Override
             public void onResult(Object entity) {
+                cancelDialog();
                 if (entity == null) {
                     T.show(getContext(), R.string.immediate_order_failed);
                     return;
@@ -239,7 +239,6 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
                 if (entity instanceof TakeupEntity){
                     TakeupEntity takeup = (TakeupEntity) entity;
                     if (takeup.isResult()){
-//                        T.show(getContext(), R.string.immediate_order_success);
                         page = 1;
                         isRefresh = true;
                         getpageList(1);
@@ -282,7 +281,7 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
         @Override
         public void onReceive(Context context, Intent intent) {
             if (mFragment != null && mFragment.isVisible()) return;
-           geTuiMsg(intent);
+            geTuiMsg(intent);
         }
     };
 
@@ -298,15 +297,12 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
                 OrderMsg orderMsg = JSON.parseObject(json, OrderMsg.class);
                 mFragment.setData(orderMsg.getOrder());
                 orderId = orderMsg.getOrder().getId();
-                orderType.setText(MyApplication.getInstance().getSkill(orderMsg.getOrder().getOrderType()));
+//                orderType.setText(MyApplication.getInstance().getSkill(orderMsg.getOrder().getOrderType()));
                 showWindow();
             }
         }else if (ActionType.ACTION_INVITATION.equals(action)){
             InvitationMsg invitation = JSON.parseObject(json, InvitationMsg.class);
-            if (invitationDialogFragment == null){
-                invitationDialogFragment = new InvitationDialogFragment();
-            }
-
+            invitationDialogFragment = new InvitationDialogFragment();
             if (!invitationDialogFragment.isAdded()){
                 invitationDialogFragment.show(fragmentManager, "Invitation");
             }

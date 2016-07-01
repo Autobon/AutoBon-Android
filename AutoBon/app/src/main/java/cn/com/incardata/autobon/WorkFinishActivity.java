@@ -67,7 +67,7 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
     private Button finish_work_btn;
     private ImageView iv_left,iv_right,iv_my_info,iv_enter_more_page;
     private Context context;
-    private static final int MAX_PICS = 6; //图片数上限
+    private static final int MAX_PICS = 9; //图片数上限
 
     private File tempFile;
     private String fileName = "";  //my_picture目录
@@ -305,7 +305,7 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
         //TODO 获取上传的图片
         Map<Integer,String> picMap = mAdapter.getPicMap();
         if(picMap.size()<3){  //图片数量为0,提示用户
-            T.show(context,context.getString(R.string.no_pic_tips));
+            T.show(context,context.getString(R.string.no_pic_tips_work_after));
             return;
         }
         BasicNameValuePair bv_orderId = new BasicNameValuePair("orderId",String.valueOf(orderInfo.getId()));
