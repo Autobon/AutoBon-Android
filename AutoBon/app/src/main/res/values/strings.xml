@@ -310,5 +310,12 @@
     <string name="order_str">订单</string>
     <string name="order_infomation_str">订单详情</string>
     <string name="order_receiving_process">正在抢单…</string>
-
+    <!-- 订单详情 -->
+    <string name="order_type_tv">订单类型：</string>
+    <string name="work_item">施工项目：</string>
+    <string name="work_person_tv">施工人员：</string>
+    <string name="sign_in_time_tv">签到时间：</string>
+    <string name="work_before_tv">施工前照片</string>
+    <string name="work_after_tv">施工后照片</string>
+    <string name="signin">请距离目标位置500米内签到！</string>
 </resources>
