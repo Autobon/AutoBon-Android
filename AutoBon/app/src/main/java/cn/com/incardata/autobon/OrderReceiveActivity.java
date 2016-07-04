@@ -121,7 +121,7 @@ public class OrderReceiveActivity extends BaseActivity implements
 
     private void initializeData() {
         if (mFragment != null && orderInfo != null) {
-            mFragment.setData(orderInfo.getPositionLon(), orderInfo.getPositionLat(), orderInfo.getPhoto(), orderInfo.getOrderTime(), orderInfo.getRemark(), orderInfo.getCreatorName());
+            mFragment.setData(orderInfo);
 
             if (MyApplication.getInstance().getUserId() == orderInfo.getMainTech().getId()){
                 MyInfo_Data tech = orderInfo.getSecondTech();

@@ -295,7 +295,7 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
         if (ActionType.ACTION_ORDER.equals(action)){
             if (mFragment != null){
                 OrderMsg orderMsg = JSON.parseObject(json, OrderMsg.class);
-                mFragment.setData(orderMsg.getOrder());
+                mFragment.setData(orderMsg.getOrder(), orderMsg.getOrder().getCooperator());
                 orderId = orderMsg.getOrder().getId();
 //                orderType.setText(MyApplication.getInstance().getSkill(orderMsg.getOrder().getOrderType()));
                 showWindow();

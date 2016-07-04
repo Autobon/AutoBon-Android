@@ -15,7 +15,7 @@ import java.util.LinkedList;
 import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
 
-/**查看放大图片
+/**查看放大图片(传递当前显示位置POSITION及地址数组IMAGE_URL字段)
  * Created by yang on 2016/6/14.
  */
 public class EnlargementActivity extends BaseActivity{

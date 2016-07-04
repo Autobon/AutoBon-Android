@@ -23,7 +23,6 @@ import com.baidu.mapapi.model.LatLng;
 import org.apache.http.message.BasicNameValuePair;
 
 import cn.com.incardata.fragment.BaiduMapFragment;
-import cn.com.incardata.getui.InvitationMsg;
 import cn.com.incardata.http.Http;
 import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
@@ -64,7 +63,6 @@ public class InvitationActivity extends BaseActivity implements View.OnClickList
     private TextView mainTech;
 
     private OrderInfo_Data orderInfo;
-    private InvitationMsg invitation;
     private int orderId;
 
     @Override
@@ -104,7 +102,6 @@ public class InvitationActivity extends BaseActivity implements View.OnClickList
 
     private void initViews() {
         orderInfo = getIntent().getParcelableExtra(AutoCon.ORDER_INFO);
-        invitation = getIntent().getParcelableExtra("INVITATION");
 
         mainTech = (TextView) findViewById(R.id.main_tech);
         mMapView = (MapView) findViewById(R.id.bdmapView);
@@ -129,15 +126,6 @@ public class InvitationActivity extends BaseActivity implements View.OnClickList
             orderId = orderInfo.getId();
             mainTech.setText(orderInfo.getMainTech().getName());
             setData(orderInfo.getPositionLon(), orderInfo.getPositionLat(), orderInfo.getPhoto(), orderInfo.getOrderTime(), orderInfo.getRemark(), orderInfo.getCreatorName());
-        }else if (invitation != null){
-            orderId = invitation.getOrder().getId();
-            mainTech.setText(invitation.getOwner().getName());
-            setData(invitation.getOrder().getPositionLon(),
-                    invitation.getOrder().getPositionLat(),
-                    invitation.getOrder().getPhoto(),
-                    invitation.getOrder().getOrderTime(),
-                    invitation.getOrder().getRemark(),
-                    invitation.getOrder().getCreatorName());
         }else {
             T.show(this , R.string.loading_data_failure);
             return;
@@ -146,7 +134,7 @@ public class InvitationActivity extends BaseActivity implements View.OnClickList
 
     private void setBaseData(){
         if (!TextUtils.isEmpty(photoUrl)){
-            ImageLoaderCache.getInstance().loader(photoUrl, indentImage, false, R.mipmap.load_image_failed);
+            ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + photoUrl, indentImage, false, R.mipmap.load_image_failed);
             indentText.setVisibility(View.GONE);
         }
         if (workTime != null){
@@ -180,6 +168,7 @@ public class InvitationActivity extends BaseActivity implements View.OnClickList
         findViewById(R.id.iv_back).setOnClickListener(this);
         findViewById(R.id.reject).setOnClickListener(this);
         findViewById(R.id.accept).setOnClickListener(this);
+        findViewById(R.id.order_image).setOnClickListener(this);
     }
 
     @Override
@@ -252,6 +241,10 @@ public class InvitationActivity extends BaseActivity implements View.OnClickList
             case R.id.accept:
                 postInvitation(true);
                 break;
+            case R.id.order_image:
+                Bundle bundle = new Bundle();
+                bundle.putStringArray("IMAGE_URL", new String[]{photoUrl});
+                startActivity(EnlargementActivity.class, bundle);
         }
     }
 

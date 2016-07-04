@@ -174,7 +174,7 @@
         android:clickable="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:visibility="visible"
+        android:visibility="gone"
         android:background="#7E000000">
 
         <LinearLayout
