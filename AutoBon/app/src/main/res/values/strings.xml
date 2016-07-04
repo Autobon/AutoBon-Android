@@ -157,7 +157,7 @@
     <string name="skill_item_4">美容清洁</string>
     <string name="identify_photo">身份证正面照</string>
     <string name="bank_card_info">银行卡信息</string>
-    <string name="bank_number">银行卡号</string>
+    <string name="bank_number">本人银行卡号</string>
     <string name="submit">提交</string>
     <string name="authorize_agreement_1">点击“提交”代表您已阅读并同意</string>
     <string name="authorize_agreement_2">《车邻邦技师认证协议》</string>

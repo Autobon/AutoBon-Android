@@ -51,7 +51,7 @@ import cn.com.incardata.utils.T;
  */
 public class WorkBeforeActivity extends BaseActivity implements View.OnClickListener{
     private Context context;
-    private ImageView iv_my_info,iv_enter_more_page,iv_camera;
+    private ImageView iv_my_info,iv_enter_more_page;
     private TextView tv_day,tv_has_time;
     private Button next_btn;
     private RelativeLayout rl_single_pic,rl_default_pic;
@@ -137,7 +137,6 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
 
         iv_my_info = (ImageView) findViewById(R.id.iv_my_info);
         iv_enter_more_page =(ImageView) findViewById(R.id.iv_enter_more_page);
-        iv_camera = (ImageView) findViewById(R.id.iv_camera);
         tv_day = (TextView) findViewById(R.id.tv_day);
         tv_has_time = (TextView) findViewById(R.id.has_use_time);
         next_btn = (Button) findViewById(R.id.next_btn);
@@ -168,8 +167,8 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
     private void setListener(){
         iv_my_info.setOnClickListener(this);
         iv_enter_more_page.setOnClickListener(this);
-        iv_camera.setOnClickListener(this);
         next_btn.setOnClickListener(this);
+        findViewById(R.id.rl_default_pic).setOnClickListener(this);
 
         gv_single_pic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -190,7 +189,7 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
             case R.id.iv_enter_more_page:
                 startActivity(MoreActivity.class);
                 break;
-            case R.id.iv_camera:
+            case R.id.rl_default_pic:
                 uploadWorkPhoto();
                 break;
             case R.id.next_btn:

@@ -54,7 +54,7 @@ public class WaitOrderInfoActivity extends BaseActivity implements IndentMapFrag
                 immediateOrder();
             }
         });
-//        order = getIntent().getExtras().getParcelable("Order");
+        order = getIntent().getExtras().getParcelable("Order");
     }
 
     private void fillData() {
@@ -64,7 +64,7 @@ public class WaitOrderInfoActivity extends BaseActivity implements IndentMapFrag
         ft.add(R.id.order_container, mFragment).commit();
 
         if (mFragment != null && order != null){
-            mFragment.setData(order);
+            mFragment.setData(order, order.getCooperator());
         }
     }
 

@@ -16,8 +16,13 @@ import cn.com.incardata.application.MyApplication;
 import cn.com.incardata.autobon.InvitationActivity;
 import cn.com.incardata.autobon.R;
 import cn.com.incardata.getui.InvitationMsg;
+import cn.com.incardata.http.Http;
 import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
+import cn.com.incardata.http.OnResult;
+import cn.com.incardata.http.response.OrderInfoEntity;
+import cn.com.incardata.http.response.OrderInfo_Data;
+import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.DecimalUtil;
 import cn.com.incardata.view.CircleImageView;
 
@@ -36,6 +41,8 @@ public class InvitationDialogFragment extends DialogFragment implements View.OnC
     private TextView goodRate;
     private TextView orderInfo;
     private Button previewOrder;
+
+    private OrderInfo_Data orderInfo_data;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -97,7 +104,7 @@ public class InvitationDialogFragment extends DialogFragment implements View.OnC
             ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + invitation.getOwner().getAvatar(), header);
             userName.setText(invitation.getOwner().getName());
             orderNum.setText(invitation.getOwner().getTotalOrders());
-            orderInfo.setText("邀请您参与" + MyApplication.getInstance().getSkill(invitation.getOrder().getOrderType()) + "的订单，订单编号" + invitation.getOrder().getOrderNum());
+            loadOrderInfo(invitation.getOrder());
             try {
                 float starNum = Float.parseFloat(invitation.getOwner().getStarRate());
                 ratingBar.setRating((int)Math.floor(starNum));  //取整设置星级
@@ -107,6 +114,18 @@ public class InvitationDialogFragment extends DialogFragment implements View.OnC
                 rate.setText("0");
             }
         }
+    }
+
+    private void loadOrderInfo(final int orderId){
+        Http.getInstance().getTaskToken(NetURL.getOrderInfo(orderId), "", OrderInfoEntity.class, new OnResult() {
+            @Override
+            public void onResult(Object entity) {
+                if (entity != null && entity instanceof OrderInfoEntity && ((OrderInfoEntity) entity).isResult()){
+                    orderInfo.setText("邀请您参与" + MyApplication.getInstance().getSkill(((OrderInfoEntity) entity).getData().getOrderType()) + "的订单，订单编号" + ((OrderInfoEntity) entity).getData().getOrderNum());
+                    orderInfo_data = ((OrderInfoEntity) entity).getData();
+                }
+            }
+        });
     }
 
     @Override
@@ -123,7 +142,7 @@ public class InvitationDialogFragment extends DialogFragment implements View.OnC
                 break;
             case R.id.preview_order:
                 Intent intent = new Intent(getActivity(), InvitationActivity.class);
-                intent.putExtra("INVITATION", invitation);
+                intent.putExtra(AutoCon.ORDER_INFO, orderInfo_data);
                 startActivity(intent);
                 dismiss();
                 break;
