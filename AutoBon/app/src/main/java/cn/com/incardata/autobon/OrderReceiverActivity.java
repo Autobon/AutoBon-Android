@@ -18,7 +18,7 @@ import cn.com.incardata.utils.BaiduMapUtil;
 import cn.com.incardata.utils.StringUtil;
 
 /**
- * 接单开始工作
+ * 接单开始工作(弃用)
  * Created by Administrator on 2016/2/17.
  */
 public class OrderReceiverActivity extends BaseBaiduMapActivity implements View.OnClickListener{

@@ -89,7 +89,7 @@ public class MainUnauthorizedActivity extends BaseActivity implements IndentMapF
                 if (mFragment != null){
                     String json = intent.getStringExtra(ActionType.EXTRA_DATA);
                     OrderMsg orderMsg = JSON.parseObject(json, OrderMsg.class);
-                    mFragment.setData(orderMsg.getOrder());
+                    mFragment.setData(orderMsg.getOrder(), orderMsg.getOrder().getCooperator());
                 }
             }else if (ActionType.ACTION_VERIFIED.equals(action)){
                 isVerified = true;

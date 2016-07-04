@@ -24,11 +24,15 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.model.LatLng;
 
+import cn.com.incardata.application.MyApplication;
+import cn.com.incardata.autobon.EnlargementActivity;
 import cn.com.incardata.autobon.R;
 import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.http.response.Order;
+import cn.com.incardata.http.response.OrderInfo_Cooperator;
+import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.utils.BaiduMapUtil;
 import cn.com.incardata.utils.DateCompute;
 import cn.com.incardata.utils.L;
@@ -57,7 +61,12 @@ public class IndentMapFragment extends BaiduMapFragment{
     private String workTimeStr;
     private String photoUrl;
     private String remark;
-    private String shopName;
+    private String shopName;//地图标记
+
+    private String orderType_str;//订单类型
+    private String orderOwner_str;//下单人
+    private String shopsLocation_str;//商户位置
+    private String shopsAlias_str;//商户名称
 
     private OnFragmentInteractionListener mListener;
     private BDLocationListener myBDLocationListener;
@@ -66,6 +75,10 @@ public class IndentMapFragment extends BaiduMapFragment{
     private ImageView indentImage;
     private TextView indentText;
     private TextView workTime;
+    private TextView orderType;
+    private TextView orderOwner;
+    private TextView shopsLocation;
+    private TextView shopsAlias;
     private TextView workNotes;
 
     public IndentMapFragment() {
@@ -110,14 +123,23 @@ public class IndentMapFragment extends BaiduMapFragment{
         return rootView;
     }
 
-    public void setData(Order order){
-        if (order == null) return;
-        positionLon = order.getPositionLon();
-        positionLat = order.getPositionLat();
-        photoUrl = order.getPhoto();
-        workTimeStr = DateCompute.getDate(order.getOrderTime());
-        remark = order.getRemark();
-        shopName = order.getCreatorName();
+    public void setData(Order order, OrderInfo_Cooperator cooperator){
+        if (order != null) {
+            positionLon = order.getPositionLon();
+            positionLat = order.getPositionLat();
+            photoUrl = order.getPhoto();
+            workTimeStr = DateCompute.getDate(order.getOrderTime());
+            remark = order.getRemark();
+            shopName = order.getCreatorName();
+        }
+
+        if (cooperator != null) {
+            orderType_str = MyApplication.getInstance().getSkill(order.getOrderType());
+            orderOwner_str = cooperator.getCorporationName();
+            shopsLocation_str = cooperator.getAddress();
+            shopsAlias_str = cooperator.getFullname();
+        }
+
         setBaseData();
 
 //        Bundle bundle = new Bundle();
@@ -129,13 +151,19 @@ public class IndentMapFragment extends BaiduMapFragment{
 //        this.setArguments(bundle);
     }
 
-    public void setData(String positionLon, String positionLat, String photoUrl, long orderTime, String remark, String creatorName){
-        this.positionLon = positionLon;
-        this.positionLat = positionLat;
-        this.photoUrl = photoUrl;
-        this.workTimeStr = DateCompute.getDate(orderTime);
-        this.remark = remark;
-        this.shopName = creatorName;
+    public void setData(OrderInfo_Data orderInfo){
+        if (orderInfo == null) return;
+        this.positionLon = orderInfo.getPositionLon();
+        this.positionLat = orderInfo.getPositionLat();
+        this.photoUrl = orderInfo.getPhoto();
+        this.workTimeStr = DateCompute.getDate(orderInfo.getOrderTime());
+        this.remark = orderInfo.getRemark();
+        this.shopName = orderInfo.getCreatorName();
+
+        orderType_str = MyApplication.getInstance().getSkill(orderInfo.getOrderType());
+        orderOwner_str = orderInfo.getCooperator().getCorporationName();
+        shopsLocation_str = orderInfo.getCooperator().getAddress();
+        shopsAlias_str = orderInfo.getCooperator().getFullname();
         setBaseData();
     }
 
@@ -151,8 +179,11 @@ public class IndentMapFragment extends BaiduMapFragment{
         indentImage = (ImageView) rootView.findViewById(R.id.indent_image);
         indentText = (TextView) rootView.findViewById(R.id.indent_text);
         workTime = (TextView) rootView.findViewById(R.id.work_time);
+        orderType = (TextView) rootView.findViewById(R.id.order_type);
+        orderOwner = (TextView) rootView.findViewById(R.id.create_order_people);
+        shopsLocation = (TextView) rootView.findViewById(R.id.shops_location);
         workNotes = (TextView) rootView.findViewById(R.id.work_notes);
-
+        shopsAlias = (TextView) rootView.findViewById(R.id.shops_name);
         baiduMap = mMapView.getMap();  //管理具体的某一个MapView对象,缩放,旋转,平移
         MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.zoomTo(BaiduMapUtil.defaultLevel);  //默认级别12
         baiduMap.setMapStatus(mapStatusUpdate);  //设置缩放级别
@@ -167,7 +198,7 @@ public class IndentMapFragment extends BaiduMapFragment{
 
     private void setBaseData(){
         if (indentImage == null) return;
-        ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + photoUrl, indentImage, false, R.mipmap.load_image_failed);
+        ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + photoUrl, indentImage, R.mipmap.load_image_failed);
         indentText.setVisibility(View.GONE);
 
         if (workTime != null){
@@ -183,9 +214,22 @@ public class IndentMapFragment extends BaiduMapFragment{
         }catch (NullPointerException e){
             e.printStackTrace();
         }
+
+        orderType.setText(orderType_str);
+        orderOwner.setText(orderOwner_str);
+        shopsLocation.setText(shopsLocation_str);
+        shopsAlias.setText(shopsAlias_str);
     }
 
     private void setListener() {
+        rootView.findViewById(R.id.indent_image).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickImage(v);
+            }
+        });
+
+
         /**
          * 百度地图加载完毕后回调此方法(传参入口)
          */
@@ -215,6 +259,15 @@ public class IndentMapFragment extends BaiduMapFragment{
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+    }
+
+    /**查看订单放大图
+     * @param v
+     */
+    public void onClickImage(View v){
+        Bundle bundle = new Bundle();
+        bundle.putStringArray("IMAGE_URL", new String[]{photoUrl});
+        startActivity(EnlargementActivity.class, bundle);
     }
 
     @Override

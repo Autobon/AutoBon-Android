@@ -24,6 +24,7 @@ public class Order implements Parcelable {
     private int mainTechId;
     private int secondTechId;
     private String status;
+    private OrderInfo_Cooperator cooperator;
 
     public int getId() {
         return id;
@@ -153,6 +154,14 @@ public class Order implements Parcelable {
         this.status = status;
     }
 
+    public OrderInfo_Cooperator getCooperator() {
+        return cooperator;
+    }
+
+    public void setCooperator(OrderInfo_Cooperator cooperator) {
+        this.cooperator = cooperator;
+    }
+
 
     @Override
     public int describeContents() {
@@ -177,6 +186,7 @@ public class Order implements Parcelable {
         dest.writeInt(this.mainTechId);
         dest.writeInt(this.secondTechId);
         dest.writeString(this.status);
+        dest.writeParcelable(this.cooperator, flags);
     }
 
     public Order() {
@@ -199,13 +209,16 @@ public class Order implements Parcelable {
         this.mainTechId = in.readInt();
         this.secondTechId = in.readInt();
         this.status = in.readString();
+        this.cooperator = in.readParcelable(OrderInfo_Cooperator.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<Order> CREATOR = new Parcelable.Creator<Order>() {
+    public static final Creator<Order> CREATOR = new Creator<Order>() {
+        @Override
         public Order createFromParcel(Parcel source) {
             return new Order(source);
         }
 
+        @Override
         public Order[] newArray(int size) {
             return new Order[size];
         }

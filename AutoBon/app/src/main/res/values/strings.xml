@@ -4,6 +4,8 @@
     <string name="digits_indentify_number">0123456789X</string>
     <string name="load_progress_tips">正在加载…</string>
     <string name="uploading_image">上传中…</string>
+    <string name="cancel">取消</string>
+    <string name="ok">确定</string>
 
     <!--登陆界面-->
     <string name="text_language">语言</string>
@@ -102,6 +104,10 @@
     <string name="send_invitation">待确认</string>
     <string name="start_work_failed">开始工作失败</string>
     <string name="request_failed">请求失败</string>
+    <string name="drop_order">放弃</string>
+    <string name="processing">处理中…</string>
+    <string name="not_found_order_tips">未找到订单</string>
+    <string name="order_drop_successful">订单已放弃</string>
 
     <!--添加合作人-->
     <string name="add_contact_failed">添加失败</string>
@@ -136,6 +142,10 @@
     <string name="receive_indent">我要接单</string>
     <string name="start_authorization">我要认证</string>
     <string name="authorization_progress">认证进度</string>
+    <string name="order_type">订单类型：</string>
+    <string name="create_order_people">下单人员：</string>
+    <string name="shops_location">商户位置：</string>
+    <string name="shops_name">商户名称：</string>
 
     <!-- 我要认证 -->
     <string name="name">姓名</string>
@@ -147,7 +157,7 @@
     <string name="skill_item_4">美容清洁</string>
     <string name="identify_photo">身份证正面照</string>
     <string name="bank_card_info">银行卡信息</string>
-    <string name="bank_number">银行卡号</string>
+    <string name="bank_number">本人银行卡号</string>
     <string name="submit">提交</string>
     <string name="authorize_agreement_1">点击“提交”代表您已阅读并同意</string>
     <string name="authorize_agreement_2">《车邻邦技师认证协议》</string>
@@ -225,7 +235,7 @@
     <!-- 订单主页 -->
     <string name="into_order">进入订单</string>
     <string name="order_serial_number">订单编号</string>
-    <string name="order_time">预约时间:</string>
+    <string name="order_time">预约时间</string>
     <string name="immediate_order">立即抢单</string>
     <string name="immediate_order_failed">抢单失败</string>
     <string name="immediate_order_success">抢单成功</string>
@@ -242,7 +252,8 @@
     <string name="less_three_page_tips">不少于3张</string>
     <string name="next_btn">继续</string>
     <string name="finish_mode_text">即将完成模式</string>
-    <string name="no_pic_tips">请上传不少于3张工作后的照片</string>
+    <string name="no_pic_tips_work_before">请上传不少于1张工作前的照片</string>
+    <string name="no_pic_tips_work_after">请上传不少于3张工作后的照片</string>
     <string name="upload_work_before_failed_tips">上传施工前图像失败</string>
     <string name="choose_work_item_text">选择本次负责的工作项</string>
     <string name="five_car_tab_text">五座车</string>
@@ -299,6 +310,7 @@
     <string name="order_str">订单</string>
     <string name="order_infomation_str">订单详情</string>
     <string name="order_receiving_process">正在抢单…</string>
+    <!-- 订单详情 -->
     <string name="order_type_tv">订单类型：</string>
     <string name="work_item">施工项目：</string>
     <string name="work_person_tv">施工人员：</string>
@@ -306,5 +318,4 @@
     <string name="work_before_tv">施工前照片</string>
     <string name="work_after_tv">施工后照片</string>
     <string name="signin">请距离目标位置500米内签到！</string>
-
 </resources>

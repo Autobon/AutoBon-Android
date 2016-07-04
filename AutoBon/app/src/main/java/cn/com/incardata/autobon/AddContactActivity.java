@@ -27,17 +27,18 @@ import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
 import cn.com.incardata.view.PullToRefreshView;
 
-/** 添加合伙人
+/**
  * Created by Administrator on 2016/2/19.
-            */
-    public class AddContactActivity extends BaseActivity implements View.OnClickListener,
-            PullToRefreshView.OnHeaderRefreshListener,PullToRefreshView.OnFooterRefreshListener{
-        private Context context;
+ */
+public class AddContactActivity extends BaseActivity implements View.OnClickListener,
+        PullToRefreshView.OnHeaderRefreshListener,PullToRefreshView.OnFooterRefreshListener{
+    private Context context;
     private ImageView iv_back,iv_clear;
     private TextView tv_search;
     private EditText et_content;
     private ListView technician_list;
     private PullToRefreshView refreshView;
+
     private MyContactAdapter mAdapter;
     private List<AddContact_data_list> mList;
 

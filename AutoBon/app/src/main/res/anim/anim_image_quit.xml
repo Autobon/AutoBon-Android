@@ -6,7 +6,7 @@
     <scale android:fromXScale="1.0" android:toXScale=".5"
         android:fromYScale="1.0" android:toYScale=".5"
         android:pivotX="50%" android:pivotY="50%"
-        android:duration="300" />
+        android:duration="150" />
     <!-- 系统内置的动画持续时间
     android:duration="@android:integer/config_mediumAnimTime"
     -->

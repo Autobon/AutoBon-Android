@@ -13,12 +13,15 @@ import android.widget.TextView;
 import org.apache.http.message.BasicNameValuePair;
 
 import cn.com.incardata.application.MyApplication;
+import cn.com.incardata.fragment.DropOrderDialogFragment;
 import cn.com.incardata.fragment.ForceStartWorkDialogFragment;
 import cn.com.incardata.fragment.IndentMapFragment;
 import cn.com.incardata.getui.ActionType;
 import cn.com.incardata.http.Http;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.OnResult;
+import cn.com.incardata.http.response.BaseEntity;
+import cn.com.incardata.http.response.DropOrderEntity;
 import cn.com.incardata.http.response.MyInfo_Data;
 import cn.com.incardata.http.response.OrderInfoEntity;
 import cn.com.incardata.http.response.OrderInfo_Data;
@@ -27,12 +30,15 @@ import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
 
-/**
+/**接单开始工作
  * Created by zhangming on 2016/2/24.
  * 改为使用Fragment来处理
  */
-public class OrderReceiveActivity extends BaseActivity implements IndentMapFragment.OnFragmentInteractionListener,
-        View.OnClickListener, ForceStartWorkDialogFragment.OnForceListener {
+public class OrderReceiveActivity extends BaseActivity implements
+        IndentMapFragment.OnFragmentInteractionListener,
+        View.OnClickListener,
+        ForceStartWorkDialogFragment.OnForceListener,
+        DropOrderDialogFragment.OnClickListener {
     /** 表示携带数据，不需要网络加载 */
     public static final String IsLocalData = "IsLocalData";
 
@@ -40,6 +46,7 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
     private FragmentTransaction transaction;
     private IndentMapFragment mFragment;
     private ForceStartWorkDialogFragment forceDialog;
+    private DropOrderDialogFragment dropOderDialog;
 
     private TextView tv_add_contact;
     private LinearLayout ll_add_contact,ll_tab_bottom;
@@ -77,6 +84,17 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
         }
     }
 
+    /**放弃订单
+     * @param v
+     */
+    public void onClickDropOrder(View v){
+        //显示放弃订单对话框
+        if (dropOderDialog == null){
+            dropOderDialog = new DropOrderDialogFragment();
+        }
+        dropOderDialog.show(fragmentManager, "dropOderDialog");
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -103,7 +121,7 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
 
     private void initializeData() {
         if (mFragment != null && orderInfo != null) {
-            mFragment.setData(orderInfo.getPositionLon(), orderInfo.getPositionLat(), orderInfo.getPhoto(), orderInfo.getOrderTime(), orderInfo.getRemark(), orderInfo.getCreatorName());
+            mFragment.setData(orderInfo);
 
             if (MyApplication.getInstance().getUserId() == orderInfo.getMainTech().getId()){
                 MyInfo_Data tech = orderInfo.getSecondTech();
@@ -268,5 +286,32 @@ public class OrderReceiveActivity extends BaseActivity implements IndentMapFragm
     @Override
     public void onForce() {
        startWork(true);
+    }
+
+    @Override
+    public void onDropClick(View v) {
+        if (orderInfo == null) {
+            T.show(getContext(), getString(R.string.not_found_order_tips));
+            return;
+        }
+        showDialog(getString(R.string.processing));
+        Http.getInstance().postTaskToken(NetURL.getDropOrder(orderInfo.getId()), "", DropOrderEntity.class, new OnResult() {
+            @Override
+            public void onResult(Object entity) {
+                cancelDialog();
+                if (entity == null){
+                    T.show(getContext(), R.string.operate_failed_agen);
+                    return;
+                }
+                if (entity instanceof DropOrderEntity && ((DropOrderEntity) entity).isResult()){
+                    MyApplication.isRefresh = true;
+                    T.show(getContext(), getString(R.string.order_drop_successful));
+                    finish();
+                }else {
+                    T.show(getContext(), ((BaseEntity)entity).getMessage());
+                    return;
+                }
+            }
+        });
     }
 }

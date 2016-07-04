@@ -1,8 +1,16 @@
 package cn.com.incardata.autobon;
 
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -13,6 +21,7 @@ import cn.com.incardata.http.Http;
 import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.OnResult;
+import cn.com.incardata.http.response.MyInfo_Data;
 import cn.com.incardata.http.response.OrderInfoEntity;
 import cn.com.incardata.http.response.OrderInfo_Construction;
 import cn.com.incardata.http.response.OrderInfo_Data;
@@ -35,7 +44,7 @@ public class OrderInfoActivity extends BaseActivity {
     private TextView work_item;
     private TextView work_person;
     private TextView sign_in_time;
-    private GridView work_before_grid,work_after_grid;
+    private GridView work_before_grid, work_after_grid;
     private RatingBar ratingBar;
     private ImageView arriveOnTime;
     private ImageView completeOnTime;
@@ -44,6 +53,7 @@ public class OrderInfoActivity extends BaseActivity {
     private ImageView carProtect;
     private ImageView goodAttitude;
     private TextView otherProposal;
+    private Display display;
 
     private boolean isMainResponsible;
     private OrderInfo_Data orderInfo;
@@ -57,7 +67,9 @@ public class OrderInfoActivity extends BaseActivity {
         updateUI(orderInfo);
     }
 
+
     private void initView() {
+        display = getWindowManager().getDefaultDisplay();
         money = (TextView) findViewById(R.id.money);
         moneyState = (TextView) findViewById(R.id.money_state);
         orderNum = (TextView) findViewById(R.id.order_number);
@@ -89,18 +101,18 @@ public class OrderInfoActivity extends BaseActivity {
         orderInfo = getIntent().getParcelableExtra(AutoCon.ORDER_INFO);
     }
 
-    private void getOrderInfo(){
+    private void getOrderInfo() {
         Http.getInstance().getTaskToken(NetURL.getOrderInfo(2), "", OrderInfoEntity.class, new OnResult() {
             @Override
             public void onResult(Object entity) {
-                if (entity == null){
+                if (entity == null) {
                     T.show(getContext(), R.string.loading_data_failure);
                     return;
                 }
-                if (entity instanceof OrderInfoEntity){
-                    if (((OrderInfoEntity) entity).isResult()){
+                if (entity instanceof OrderInfoEntity) {
+                    if (((OrderInfoEntity) entity).isResult()) {
                         updateUI(((OrderInfoEntity) entity).getData());
-                    }else {
+                    } else {
                         T.show(getContext(), R.string.loading_data_failure);
                         return;
                     }
@@ -109,95 +121,214 @@ public class OrderInfoActivity extends BaseActivity {
         });
     }
 
-    private void updateUI(OrderInfo_Data data){
+    private void updateUI(OrderInfo_Data data) {
+        OrderInfo_Construction construct;
+        if (isMainResponsible) {
+            construct = data.getMainConstruct();
+        } else {
+            construct = data.getSecondConstruct();
+        }
+        OrderInfo_Data_Comment comment = data.getComment();
         remark.setText(data.getRemark());
-//        workTime.setText(DateCompute.getDate(data.getOrderTime()));
+        if (data.getOrderType() == 1) {
+            order_type.setText("隔热层");
+        } else if (data.getOrderType() == 2) {
+            order_type.setText("隐形车衣");
+        } else if (data.getOrderType() == 3) {
+            order_type.setText("车身改色");
+        } else {
+            order_type.setText("美容清洁");
+        }
+        MyInfo_Data tech;
+        if (isMainResponsible) {
+            tech = data.getMainTech();
+        } else {
+            tech = data.getSecondTech();
+        }
+        if (tech == null) {
+            return;
+        }
+        work_person.setText(tech.getName());
         orderNum.setText(getResources().getString(R.string.order_serial_number) + data.getOrderNum());
         ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + data.getPhoto(), orderImage, false, R.mipmap.load_image_failed);
 
-        OrderInfo_Data_Comment comment = data.getComment();
-        if (comment != null) {
-            ratingBar.setRating(comment.getStar());
-            if (comment.isArriveOnTime()) {
-                arriveOnTime.setImageResource(R.mipmap.radio_select);
-            }
-            if (comment.isCompleteOnTime()) {
-                completeOnTime.setImageResource(R.mipmap.radio_select);
-            }
-            if (comment.isProfessional()) {
-                professional.setImageResource(R.mipmap.radio_select);
-            }
-            if (comment.isDressNeatly()) {
-                dressNeatly.setImageResource(R.mipmap.radio_select);
-            }
-            if (comment.isCarProtect()) {
-                carProtect.setImageResource(R.mipmap.radio_select);
-            }
-            if (comment.isGoodAttitude()) {
-                goodAttitude.setImageResource(R.mipmap.radio_select);
-            }
-            otherProposal.setText(comment.getAdvice());
-        }
-
-
-        OrderInfo_Construction construct;
-        if (isMainResponsible){
-            construct = data.getMainConstruct();
-        }else {
-            construct = data.getSecondConstruct();
-        }
-
-        if (construct == null){
-            return;
-        }
-        money.setText(getResources().getString(R.string.RMB) + construct.getPayment());
-
-        if (construct.getPayStatus() == 2){
-            moneyState.setText(R.string.pay_done);
-            moneyState.setTextColor(getResources().getColor(R.color.main_orange));
-        }else {
-            moneyState.setText(R.string.pay_wait);
+        if (data.getStatus().equals("CANCELED")) {
+            money.setText(getResources().getString(R.string.RMB) + 0);
+            moneyState.setText("已撤销");
             moneyState.setTextColor(getResources().getColor(R.color.darkgray));
-        }
-//        workDuration.setText(duration(construct.getStartTime(), construct.getEndTime()));
-
-        if (data.getOrderType() == 4) {//美容清洁
-//            workItem.setText(MyApplication.getInstance().getSkill(4));
-            return;
-        }
-        String item = construct.getWorkItems();
-        if (TextUtils.isEmpty(item)){
-//            workItem.setText(null);
-        }else {
-            if (item.contains(",")){
-                String[] items = item.split(",");
-                String tempItem = "";
-                for (String str : items){
-                    tempItem += MyOrderActivity.workItems[Integer.parseInt(str)] + ",";
-                }
-//                workItem.setText(tempItem.substring(0, tempItem.length() - 1));
-            }else {
-//                workItem.setText(MyOrderActivity.workItems[1]);
+            work_item.setText("无");
+            sign_in_time.setText("无");
+        } else if (data.getStatus().equals("GIVEN_UP")) {
+            money.setText(getResources().getString(R.string.RMB) + 0);
+            moneyState.setText("已放弃");
+            moneyState.setTextColor(getResources().getColor(R.color.darkgray));
+            work_item.setText("无");
+            sign_in_time.setText("无");
+        } else if (data.getStatus().equals("EXPIRED")) {
+            money.setText(getResources().getString(R.string.RMB) + 0);
+            moneyState.setText("已超时");
+            moneyState.setTextColor(getResources().getColor(R.color.darkgray));
+            work_item.setText("无");
+            if (construct == null) {
+                sign_in_time.setText("无");
+            } else {
+                sign_in_time.setText(DateCompute.getDate(data.getOrderTime()));
             }
+        } else {
+            if (comment != null) {
+                ratingBar.setRating(comment.getStar());
+                if (comment.isArriveOnTime()) {
+                    arriveOnTime.setImageResource(R.mipmap.radio_select);
+                }
+                if (comment.isCompleteOnTime()) {
+                    completeOnTime.setImageResource(R.mipmap.radio_select);
+                }
+                if (comment.isProfessional()) {
+                    professional.setImageResource(R.mipmap.radio_select);
+                }
+                if (comment.isDressNeatly()) {
+                    dressNeatly.setImageResource(R.mipmap.radio_select);
+                }
+                if (comment.isCarProtect()) {
+                    carProtect.setImageResource(R.mipmap.radio_select);
+                }
+                if (comment.isGoodAttitude()) {
+                    goodAttitude.setImageResource(R.mipmap.radio_select);
+                }
+                otherProposal.setText(comment.getAdvice());
+            }
+            if (construct == null){
+                money.setText(getResources().getString(R.string.RMB) + 0);
+            }else {
+                money.setText(getResources().getString(R.string.RMB) + construct.getPayment());
+            }
+
+            if (construct.getPayStatus() == 2) {
+                moneyState.setText(R.string.pay_done);
+                moneyState.setTextColor(getResources().getColor(R.color.main_orange));
+            } else {
+                moneyState.setText(R.string.pay_wait);
+                moneyState.setTextColor(getResources().getColor(R.color.darkgray));
+            }
+
+
+            if (data.getOrderType() == 4) {//美容清洁
+                work_item.setText(MyApplication.getInstance().getSkill(4));
+                return;
+            }
+            String item = construct.getWorkItems();
+            if (TextUtils.isEmpty(item)) {
+                work_item.setText(null);
+            } else {
+                if (item.contains(",")) {
+                    String[] items = item.split(",");
+                    String tempItem = "";
+                    for (String str : items) {
+                        tempItem += MyOrderActivity.workItems[Integer.parseInt(str)] + ",";
+                    }
+                    work_item.setText(tempItem.substring(0, tempItem.length() - 1));
+                } else {
+                    work_item.setText(MyOrderActivity.workItems[1]);
+                }
+            }
+            sign_in_time.setText(DateCompute.getDate(data.getOrderTime()));
+            Myadapter myadapter;
+            String[] urlItems;
+            String urlBeforePhotos = construct.getBeforePhotos();
+            if (urlBeforePhotos.contains(",")) {
+                urlItems = urlBeforePhotos.split(",");
+            } else {
+                urlItems = new String[]{urlBeforePhotos};
+            }
+            myadapter = new Myadapter(this, urlItems);
+            work_before_grid.setAdapter(myadapter);
+
+            work_before_grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+                }
+            });
+
+
+
+
+            String urlAfterPhotos = construct.getAfterPhotos();
+            if (urlAfterPhotos.contains(",")) {
+                urlItems = urlAfterPhotos.split(",");
+            } else {
+                urlItems = new String[]{urlAfterPhotos};
+            }
+            myadapter = new Myadapter(this, urlItems);
+            work_after_grid.setAdapter(myadapter);
+
         }
+
     }
 
-    private String duration(long startTime, long endTime){
-        long useTime = 0L;
-        try{
-            useTime = endTime - startTime;
-        }catch (Exception e){
-            e.printStackTrace();
-            return "0分钟";
-        }
-        final int hour = (int)(useTime / (1000*3600));
-        final int minute =(int)((useTime - hour*(1000*3600)) / (1000*60));
-//        final int second = (int)((useTime - hour*(1000*3600) - minute*(1000*60)) / 1000);
+//    private String duration(long startTime, long endTime) {
+//        long useTime = 0L;
+//        try {
+//            useTime = endTime - startTime;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return "0分钟";
+//        }
+//        final int hour = (int) (useTime / (1000 * 3600));
+//        final int minute = (int) ((useTime - hour * (1000 * 3600)) / (1000 * 60));
+////        final int second = (int)((useTime - hour*(1000*3600) - minute*(1000*60)) / 1000);
+//
+//        if (hour <= 0) {
+//            return minute + "分钟";
+//        } else {
+//            return hour + "小时" + minute + "分钟";
+//        }
+//    }
 
-        if (hour <= 0){
-            return minute + "分钟";
-        }else {
-            return hour + "小时" + minute + "分钟";
+
+    class Myadapter extends BaseAdapter {
+        private Context context;
+        private String[] urlItem;
+
+        public Myadapter(Context context, String[] urlItem) {
+            this.context = context;
+            this.urlItem = urlItem;
+        }
+
+        @Override
+        public int getCount() {
+            return urlItem.length;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return position;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View view, ViewGroup viewGroup) {
+            ImageView imageView;
+            if (view == null) {
+                view = LayoutInflater.from(context).inflate(R.layout.grid_item_image, viewGroup, false);
+                imageView = (ImageView) view.findViewById(R.id.imgGridItem);
+//                imageView.setLayoutParams(new GridView.LayoutParams(display.getWidth() / 3,display.getWidth() / 3));
+                imageView.setPadding(15, 15, 15, 15);
+                GridView.LayoutParams params = new GridView.LayoutParams(display.getWidth() / 3, display.getWidth() / 3);
+                view.setLayoutParams(params);
+                view.setTag(imageView);
+            } else {
+                imageView = (ImageView) view.getTag();
+            }
+//            imageView.setImageResource(imgUrl[position]);
+            ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + urlItem[position], imageView, false);
+
+
+            return view;
         }
     }
 }

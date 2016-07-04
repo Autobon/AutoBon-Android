@@ -4,22 +4,21 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import cn.com.incardata.http.response.MyInfo_Data;
-import cn.com.incardata.http.response.Order;
 
 /**
  * 合作邀请
  * Created by wanghao on 16/3/17.
  */
 public class InvitationMsg extends BaseMsg implements Parcelable {
-    private Order order;
+    private int order;
     private MyInfo_Data owner;
     private MyInfo_Data partner;
 
-    public Order getOrder() {
+    public int getOrder() {
         return order;
     }
 
-    public void setOrder(Order order) {
+    public void setOrder(int order) {
         this.order = order;
     }
 
@@ -39,7 +38,6 @@ public class InvitationMsg extends BaseMsg implements Parcelable {
         this.partner = partner;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -47,25 +45,29 @@ public class InvitationMsg extends BaseMsg implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(this.order, flags);
-        dest.writeParcelable(this.owner, 0);
-        dest.writeParcelable(this.partner, 0);
+        super.writeToParcel(dest, flags);
+        dest.writeInt(this.order);
+        dest.writeParcelable(this.owner, flags);
+        dest.writeParcelable(this.partner, flags);
     }
 
     public InvitationMsg() {
     }
 
     protected InvitationMsg(Parcel in) {
-        this.order = in.readParcelable(Order.class.getClassLoader());
+        super(in);
+        this.order = in.readInt();
         this.owner = in.readParcelable(MyInfo_Data.class.getClassLoader());
         this.partner = in.readParcelable(MyInfo_Data.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<InvitationMsg> CREATOR = new Parcelable.Creator<InvitationMsg>() {
+    public static final Creator<InvitationMsg> CREATOR = new Creator<InvitationMsg>() {
+        @Override
         public InvitationMsg createFromParcel(Parcel source) {
             return new InvitationMsg(source);
         }
 
+        @Override
         public InvitationMsg[] newArray(int size) {
             return new InvitationMsg[size];
         }
