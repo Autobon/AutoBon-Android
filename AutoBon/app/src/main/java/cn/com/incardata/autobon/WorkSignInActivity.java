@@ -46,7 +46,7 @@ import cn.com.incardata.utils.T;
  * 工作签到
  */
 public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnClickListener{
-    private static final int SIGN = 500000000;//允许签到距离m
+    private static final int SIGN = 500;//允许签到距离m
     private TextView tv_day;
     private Context context;
     private Button sign_in_btn;
