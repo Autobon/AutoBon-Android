@@ -13,5 +13,7 @@
         android:layout_width="@dimen/dp20"
         android:layout_height="@dimen/dp20"
         android:src="@mipmap/delete_pic"
+        android:scaleType="centerInside"
+        android:alpha="0.8"
         android:layout_alignRight="@id/iv_single_pic"/>
 </RelativeLayout>

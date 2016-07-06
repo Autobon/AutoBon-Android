@@ -24,9 +24,9 @@ import com.alibaba.fastjson.JSON;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import cn.com.incardata.adapter.PictureGridAdapter;
@@ -144,12 +144,6 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
         rl_default_pic = (RelativeLayout) findViewById(R.id.rl_default_pic);
 
         gv_single_pic = (GridView)findViewById(R.id.gv_single_pic);
-        gv_single_pic.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-        });
         mAdapter = new PictureGridAdapter(this,MAX_PICS);
         gv_single_pic.setAdapter(mAdapter);
 
@@ -175,6 +169,16 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(position == mAdapter.getCount()-1 && !mAdapter.isReachMax()){
                     capture(CAR_PHOTO,carPhotoUri);
+                }else {
+                    LinkedHashMap<Integer, String> temp = mAdapter.getPicMap();
+                    if (temp == null || temp.isEmpty()){
+                        startActivity(EnlargementActivity.class);
+                    }else {
+                        Bundle bundle = new Bundle();
+                        bundle.putStringArray(EnlargementActivity.IMAGE_URL, temp.values().toArray(new String[temp.size()]));
+                        bundle.putInt(EnlargementActivity.POSITION, position);
+                        startActivity(EnlargementActivity.class, bundle);
+                    }
                 }
             }
         });
@@ -200,6 +204,7 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
 
     private void initFile() {
         if(fileName.equals("")) {
+
             if(SDCardUtils.isExistSDCard()) {
                 String path = SDCardUtils.getGatherDir() + File.separator + "my_picture";
                 File dir = new File(path);
@@ -223,7 +228,7 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
             carPhotoUri = Uri.fromFile(new File(SDCardUtils.getGatherDir() + File.separator + "car_photo.jpeg"));
         }
         initFile();
-        capture(CAR_PHOTO,carPhotoUri);
+        capture(CAR_PHOTO, carPhotoUri);
     }
 
     private void capture(int requestCode, Uri imageUri){
@@ -282,10 +287,9 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
         if (resultCode != RESULT_OK) return;
         if(requestCode == CAR_PHOTO){
             try {
-                Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(carPhotoUri));
-                bitmap = BitmapHelper.resizeImage(bitmap, 0.5f);
+                Bitmap bitmap = BitmapHelper.resizeImage(getContext(), carPhotoUri, 0.35f);
                 Uri uri = Uri.fromFile(tempFile);
-                boolean isSuccess = BitmapHelper.saveBitmap(uri, bitmap, true);  //压缩图片保存到新地址
+                boolean isSuccess = BitmapHelper.saveBitmap(uri, bitmap);  //压缩图片保存到新地址
 
                 if(isSuccess){
                     if(NetWorkHelper.isNetworkAvailable(context)){
@@ -295,9 +299,12 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
                         return;
                     }
                 }
-            }catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }catch (NullPointerException e){
+
+                if (bitmap != null && !bitmap.isRecycled()){
+                    bitmap.recycle();
+                    bitmap = null;
+                }
+            } catch (NullPointerException e){
                 e.printStackTrace();
             }
         }
@@ -307,6 +314,7 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
      * 上传车辆图片
      */
     private void uploadCarPhoto(Uri uri){
+        showDialog(getString(R.string.uploading_image));
         new AsyncTask<String, Void, String>() {
             @Override
             protected String doInBackground(String... params) {
@@ -322,6 +330,7 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
+                cancelDialog();
                 if (s == null) {
                     T.show(context,getString(R.string.upload_image_failed));
                     return;
@@ -352,6 +361,10 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
             SDCardUtils.deleteAllFileInFolder(dir);
             Log.i("test","dir===>"+dir.getPath());
             tempFile = null;
+        }
+        if (mAdapter != null) {
+            mAdapter.onDestory();
+            System.gc();
         }
     }
 }

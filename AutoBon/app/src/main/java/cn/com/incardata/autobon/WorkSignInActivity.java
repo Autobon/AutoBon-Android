@@ -39,7 +39,6 @@ import cn.com.incardata.http.response.SignInEntity;
 import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.BaiduMapUtil;
 import cn.com.incardata.utils.DateCompute;
-import cn.com.incardata.utils.DecimalUtil;
 import cn.com.incardata.utils.T;
 
 /**
@@ -47,7 +46,7 @@ import cn.com.incardata.utils.T;
  * 工作签到
  */
 public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnClickListener{
-    private static final int SIGN = 100000000;//允许签到距离m
+    private static final int SIGN = 500000000;//允许签到距离m
     private TextView tv_day;
     private Context context;
     private Button sign_in_btn;
@@ -107,7 +106,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
     private void initView(){
         context = this;
         tv_day = (TextView) findViewById(R.id.tv_day);
-        super.tv_distance = (TextView) findViewById(R.id.tv_distance);
+//        super.tv_distance = (TextView) findViewById(R.id.tv_distance);
         sign_in_btn = (Button) findViewById(R.id.sign_in_btn);
         iv_my_info = (ImageView) findViewById(R.id.iv_my_info);
 
@@ -245,7 +244,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
         baiduMap.getUiSettings().setCompassEnabled(false);  //不显示指南针
         MyLocationConfiguration configuration = new MyLocationConfiguration(
                 MyLocationConfiguration.LocationMode.NORMAL, true,
-                BitmapDescriptorFactory.fromResource(R.mipmap.here));
+                BitmapDescriptorFactory.fromResource(R.drawable.here));
         baiduMap.setMyLocationConfigeration(configuration);// 设置定位显示的模式
         baiduMap.setMapStatus(MapStatusUpdateFactory.zoomTo(baiduMap.getMapStatus().zoom));  //定位后更新缩放级别
     }
@@ -293,12 +292,12 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
                     }
                 }
                 if(markOverlay[1] == null){
-                    tv_distance.setText("0m");
+//                    tv_distance.setText("0m");
                 }else{
                     double distance = BaiduMapUtil.getDistance(latLngArray[0],mLatLng); //单位为m
                     if(sign_in_btn!=null){  //签到界面有提示框,并且改变Button样式
                         if(Math.abs(distance)<=SIGN){  //到达(有误差)
-                            tv_distance.setText(R.string.arrive_text);
+//                            tv_distance.setText(R.string.arrive_text);
                             sign_in_btn.setBackgroundResource(R.drawable.default_btn);
                             sign_in_btn.setTextColor(context.getResources().getColor(android.R.color.white));
                             int padding =  getResources().getDimensionPixelSize(R.dimen.dp10);
@@ -310,14 +309,18 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
                             //toast.show();
                         }
                     }
-                    if(distance>=1000){  //距离大于等于1公里
-                        distance = DecimalUtil.DoubleDecimal1(distance/1000);  //保留一位小数
-                        tv_distance.setText(String.valueOf(distance)+"km");
-                    }else{  //距离小于1公里
-                        distance = DecimalUtil.DoubleDecimal1(distance); //保留一位小数
-                        tv_distance.setText(String.valueOf(distance)+"m");
-                    }
+                    //改为提示，不需要显示距离
+//                    if(distance>=1000){  //距离大于等于1公里
+//                        distance = DecimalUtil.DoubleDecimal1(distance/1000);  //保留一位小数
+//                        tv_distance.setText(String.valueOf(distance)+"km");
+//                    }else{  //距离小于1公里
+//                        distance = DecimalUtil.DoubleDecimal1(distance); //保留一位小数
+//                        tv_distance.setText(String.valueOf(distance)+"m");
+//                    }
                 }
+            }else {
+                //定位失败
+                T.show(getContext(), "定位失败，请检查您的网络、\nGPS或定位权限是否开启");
             }
         }
     }

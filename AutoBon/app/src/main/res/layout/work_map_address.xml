@@ -75,26 +75,37 @@
         android:focusable="true"
         android:focusableInTouchMode="true" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp60"
-        android:gravity="center">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/distance_text"
-            android:textColor="@color/darkgray"
-            android:textSize="@dimen/sp15" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp20"
+        android:layout_marginBottom="@dimen/dp20"
+        android:text="@string/sign_tips_500m"
+        android:textColor="@color/darkgray"
+        android:textSize="@dimen/sp13"/>
 
-        <TextView
-            android:id="@+id/tv_distance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp5"
-            android:textColor="@color/darkgray"
-            android:textSize="@dimen/sp15" />
-    </LinearLayout>
+    <!--<LinearLayout   距离门店＊＊km－－>暂时隐藏-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="@dimen/dp60"-->
+    <!--android:gravity="center">-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="@string/distance_text"-->
+    <!--android:textColor="@color/darkgray"-->
+    <!--android:textSize="@dimen/sp15" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/tv_distance"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="@dimen/dp5"-->
+    <!--android:textColor="@color/darkgray"-->
+    <!--android:textSize="@dimen/sp15" />-->
+    <!--</LinearLayout>-->
 
     <Button
         android:id="@+id/sign_in_btn"
@@ -110,4 +121,14 @@
         android:text="@string/sign_in_text"
         android:textColor="@color/line_color"
         android:textSize="@dimen/sp15" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom|center_horizontal"
+        android:gravity="bottom"
+        android:layout_marginBottom="@dimen/dp15"
+        android:text="@string/local_tips"
+        android:textColor="@color/gray_A3"
+        android:textSize="@dimen/sp12" />
 </LinearLayout>
