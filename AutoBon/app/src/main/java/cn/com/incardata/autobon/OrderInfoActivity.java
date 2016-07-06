@@ -28,6 +28,7 @@ import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.http.response.OrderInfo_Data_Comment;
 import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.DateCompute;
+import cn.com.incardata.utils.L;
 import cn.com.incardata.utils.T;
 
 /**
@@ -131,13 +132,13 @@ public class OrderInfoActivity extends BaseActivity {
         OrderInfo_Data_Comment comment = data.getComment();
         remark.setText(data.getRemark());
         if (data.getOrderType() == 1) {
-            order_type.setText("隔热层");
+            order_type.setText(R.string.orderType1);
         } else if (data.getOrderType() == 2) {
-            order_type.setText("隐形车衣");
+            order_type.setText(R.string.orderType2);
         } else if (data.getOrderType() == 3) {
-            order_type.setText("车身改色");
+            order_type.setText(R.string.orderType3);
         } else {
-            order_type.setText("美容清洁");
+            order_type.setText(R.string.orderType4);
         }
         MyInfo_Data tech;
         if (isMainResponsible) {
@@ -152,27 +153,27 @@ public class OrderInfoActivity extends BaseActivity {
         orderNum.setText(getResources().getString(R.string.order_serial_number) + data.getOrderNum());
         ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + data.getPhoto(), orderImage, false, R.mipmap.load_image_failed);
 
-        if (data.getStatus().equals("CANCELED")) {
+        if ("CANCELED".equals(data.getStatus())) {
             money.setText(getResources().getString(R.string.RMB) + 0);
-            moneyState.setText("已撤销");
+            moneyState.setText(R.string.yetcancel);
             moneyState.setTextColor(getResources().getColor(R.color.darkgray));
-            work_item.setText("无");
-            sign_in_time.setText("无");
-        } else if (data.getStatus().equals("GIVEN_UP")) {
+            work_item.setText(R.string.nothave);
+            sign_in_time.setText(R.string.nothave);
+        } else if ("GIVEN_UP".equals(data.getStatus())) {
             money.setText(getResources().getString(R.string.RMB) + 0);
-            moneyState.setText("已放弃");
+            moneyState.setText(R.string.yetrenounce);
             moneyState.setTextColor(getResources().getColor(R.color.darkgray));
-            work_item.setText("无");
-            sign_in_time.setText("无");
-        } else if (data.getStatus().equals("EXPIRED")) {
+            work_item.setText(R.string.nothave);
+            sign_in_time.setText(R.string.nothave);
+        } else if ("EXPIRED".equals(data.getStatus())) {
             money.setText(getResources().getString(R.string.RMB) + 0);
-            moneyState.setText("已超时");
+            moneyState.setText(R.string.yetovertime);
             moneyState.setTextColor(getResources().getColor(R.color.darkgray));
-            work_item.setText("无");
+            work_item.setText(R.string.nothave);
             if (construct == null) {
-                sign_in_time.setText("无");
+                sign_in_time.setText(R.string.nothave);
             } else {
-                sign_in_time.setText(DateCompute.getDate(data.getOrderTime()));
+                sign_in_time.setText(DateCompute.getDate(construct.getSigninTime()));
             }
         } else {
             if (comment != null) {
@@ -217,23 +218,34 @@ public class OrderInfoActivity extends BaseActivity {
                 return;
             }
             String item = construct.getWorkItems();
+
+            L.i("items====",item);
+            L.i("======","=============================================");
             if (TextUtils.isEmpty(item)) {
                 work_item.setText(null);
             } else {
                 if (item.contains(",")) {
                     String[] items = item.split(",");
+
+
                     String tempItem = "";
                     for (String str : items) {
+                        L.i("aaaa====",str);
+                        L.i("======","=============================================");
                         tempItem += MyOrderActivity.workItems[Integer.parseInt(str)] + ",";
+                        L.i("bbbb====",MyOrderActivity.workItems[Integer.parseInt(str)]);
+                        L.i("======","=============================================");
+
                     }
                     work_item.setText(tempItem.substring(0, tempItem.length() - 1));
                 } else {
                     work_item.setText(MyOrderActivity.workItems[1]);
                 }
             }
-            sign_in_time.setText(DateCompute.getDate(data.getOrderTime()));
+            sign_in_time.setText(DateCompute.getDate(construct.getSigninTime()));
             Myadapter myadapter;
             String[] urlItems;
+
             String urlBeforePhotos = construct.getBeforePhotos();
             if (urlBeforePhotos.contains(",")) {
                 urlItems = urlBeforePhotos.split(",");
@@ -243,15 +255,6 @@ public class OrderInfoActivity extends BaseActivity {
             myadapter = new Myadapter(this, urlItems);
             work_before_grid.setAdapter(myadapter);
 
-            work_before_grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-
-                }
-            });
-
-
-
 
             String urlAfterPhotos = construct.getAfterPhotos();
             if (urlAfterPhotos.contains(",")) {
@@ -259,7 +262,7 @@ public class OrderInfoActivity extends BaseActivity {
             } else {
                 urlItems = new String[]{urlAfterPhotos};
             }
-            myadapter = new Myadapter(this, urlItems);
+            myadapter = new Myadapter(this,  urlItems);
             work_after_grid.setAdapter(myadapter);
 
         }
@@ -293,6 +296,7 @@ public class OrderInfoActivity extends BaseActivity {
         public Myadapter(Context context, String[] urlItem) {
             this.context = context;
             this.urlItem = urlItem;
+            notifyDataSetChanged();
         }
 
         @Override

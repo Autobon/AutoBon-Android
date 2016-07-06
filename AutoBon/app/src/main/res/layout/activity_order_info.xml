@@ -202,7 +202,7 @@
                 android:id="@+id/v7"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/work_item_tv"
+                android:layout_below="@id/work_item"
                 android:layout_marginTop="@dimen/dp5"
                 android:layout_marginBottom="@dimen/dp5"
                 android:layout_marginLeft="@dimen/dp15"
@@ -292,14 +292,14 @@
             android:background="@android:color/white"
             android:paddingLeft="@dimen/dp20"
             android:paddingRight="@dimen/dp20"
-            android:paddingBottom="@dimen/dp10">
+            >
 
             <GridView
                 android:id="@+id/work_before_grid"
                 android:layout_width="wrap_content"
                 android:numColumns="3"
                 android:listSelector="@android:color/transparent"
-                android:verticalSpacing="@dimen/dp20"
+                android:verticalSpacing="@dimen/dp10"
                 android:horizontalSpacing="@dimen/dp20"
                 android:gravity="center"
                 android:stretchMode="columnWidth"
@@ -313,7 +313,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@id/rl1"
-                android:layout_marginTop="@dimen/dp5"
                 android:layout_marginBottom="@dimen/dp5"
                 android:layout_marginLeft="@dimen/dp15"
                 android:layout_marginRight="@dimen/dp15"
@@ -335,8 +334,7 @@
             android:layout_below="@id/work_after_tv"
             android:background="@android:color/white"
             android:paddingLeft="@dimen/dp20"
-            android:paddingRight="@dimen/dp20"
-            android:paddingBottom="@dimen/dp10">
+            android:paddingRight="@dimen/dp20">
 
             <GridView
                 android:id="@+id/work_after_grid"
