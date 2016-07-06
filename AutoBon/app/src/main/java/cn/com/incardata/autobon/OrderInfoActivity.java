@@ -26,6 +26,7 @@ import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.http.response.OrderInfo_Data_Comment;
 import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.DateCompute;
+import cn.com.incardata.utils.L;
 import cn.com.incardata.utils.T;
 
 /**
@@ -158,25 +159,25 @@ public class OrderInfoActivity extends BaseActivity {
 
         if ("CANCELED".equals(data.getStatus())) {
             money.setText(getResources().getString(R.string.RMB) + 0);
-            moneyState.setText("已撤销");
+            moneyState.setText(R.string.yetcancel);
             moneyState.setTextColor(getResources().getColor(R.color.darkgray));
-            work_item.setText("无");
-            sign_in_time.setText("无");
+            work_item.setText(R.string.nothave);
+            sign_in_time.setText(R.string.nothave);
         } else if ("GIVEN_UP".equals(data.getStatus())) {
             money.setText(getResources().getString(R.string.RMB) + 0);
-            moneyState.setText("已放弃");
+            moneyState.setText(R.string.yetrenounce);
             moneyState.setTextColor(getResources().getColor(R.color.darkgray));
-            work_item.setText("无");
-            sign_in_time.setText("无");
+            work_item.setText(R.string.nothave);
+            sign_in_time.setText(R.string.nothave);
         } else if ("EXPIRED".equals(data.getStatus())) {
             money.setText(getResources().getString(R.string.RMB) + 0);
-            moneyState.setText("已超时");
+            moneyState.setText(R.string.yetovertime);
             moneyState.setTextColor(getResources().getColor(R.color.darkgray));
-            work_item.setText("无");
+            work_item.setText(R.string.nothave);
             if (construct == null) {
-                sign_in_time.setText("无");
+                sign_in_time.setText(R.string.nothave);
             } else {
-                sign_in_time.setText(DateCompute.getDate(data.getOrderTime()));
+                sign_in_time.setText(DateCompute.getDate(construct.getSigninTime()));
             }
         } else {
             if (comment != null) {
@@ -220,21 +221,31 @@ public class OrderInfoActivity extends BaseActivity {
                 work_item.setText(MyApplication.getInstance().getSkill(4));
             }
             String item = construct.getWorkItems();
+
+            L.i("items====",item);
+            L.i("======","=============================================");
             if (TextUtils.isEmpty(item)) {
                 work_item.setText(null);
             } else {
                 if (item.contains(",")) {
                     String[] items = item.split(",");
+
+
                     String tempItem = "";
                     for (String str : items) {
+                        L.i("aaaa====",str);
+                        L.i("======","=============================================");
                         tempItem += MyOrderActivity.workItems[Integer.parseInt(str)] + ",";
+                        L.i("bbbb====",MyOrderActivity.workItems[Integer.parseInt(str)]);
+                        L.i("======","=============================================");
+
                     }
                     work_item.setText(tempItem.substring(0, tempItem.length() - 1));
                 } else {
                     work_item.setText(MyOrderActivity.workItems[1]);
                 }
             }
-            sign_in_time.setText(DateCompute.getDate(data.getOrderTime()));
+            sign_in_time.setText(DateCompute.getDate(construct.getSigninTime()));
             Myadapter myadapter;
             final String[] urlBefore;
             String urlBeforePhotos = construct.getBeforePhotos();

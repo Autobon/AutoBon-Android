@@ -13,27 +13,29 @@ import java.util.List;
 
 /**
  * 标准的基类Fragment
+ *
  * @author zhangming
  * @date 2016/03/14
  */
-public abstract class BaseStandardFragment extends Fragment{
+public abstract class BaseStandardFragment extends Fragment {
     protected List<String> paramList = new ArrayList<String>();
     protected OnFragmentInteractionListener mListener;
 
     /**
      * 通过工厂方法来创建Fragment实例
      * 同时给Fragment来提供参数来使用
-     * 供外部调用,可以从Activity中传递参数到Fragment 
+     * 供外部调用,可以从Activity中传递参数到Fragment
      * 通过泛型解决传入的fragment实例类型
+     *
      * @return BaseStandardFragment的实例.
      * @throws Exception
      */
-    public static <T>T newInstance(Class<T> cls,String...params) throws Exception{
+    public static <T> T newInstance(Class<T> cls, String... params) throws Exception {
         T fragment = cls.newInstance();
         Bundle args = new Bundle();
         args.putStringArray("params", params);
-        if(fragment instanceof BaseStandardFragment){
-            BaseStandardFragment bsFragment = (BaseStandardFragment)fragment;
+        if (fragment instanceof BaseStandardFragment) {
+            BaseStandardFragment bsFragment = (BaseStandardFragment) fragment;
             bsFragment.setArguments(args);
         }
         return fragment;
@@ -42,8 +44,8 @@ public abstract class BaseStandardFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(getArguments()!=null){
-            for(String param : getArguments().getStringArray("params")){
+        if (getArguments() != null) {
+            for (String param : getArguments().getStringArray("params")) {
                 paramList.add(param);
             }
         }
@@ -57,7 +59,7 @@ public abstract class BaseStandardFragment extends Fragment{
 
     // TODO: 提供此方法供子类的fragment重写,根据实际情况加载不同布局View
     public abstract View onFragmentCreateView(LayoutInflater inflater,
-                                              ViewGroup container,Bundle savedInstanceState);
+                                              ViewGroup container, Bundle savedInstanceState);
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -67,7 +69,7 @@ public abstract class BaseStandardFragment extends Fragment{
     }
 
     /**
-     *onAttach中连接监听接口 确保Activity支持该接口
+     * onAttach中连接监听接口 确保Activity支持该接口
      */
     @Override
     public void onAttach(Activity activity) {

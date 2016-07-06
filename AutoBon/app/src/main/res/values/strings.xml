@@ -320,4 +320,8 @@
     <string name="signin">请距离目标位置500米内签到！</string>
     <string name="sign_tips_500m">请距离目标位置500米内签到！</string>
     <string name="local_tips">为了准确定位你的位置，请在室外无遮挡处定位</string>
+    <string name="yetcancel">已撤销</string>
+    <string name="nothave">无</string>
+    <string name="yetrenounce">已放弃</string>
+    <string name="yetovertime">已超时</string>
 </resources>
