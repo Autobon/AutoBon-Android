@@ -34,7 +34,9 @@ public class RadioFragmentGridAdapter extends BaseAdapter{
 	public View getView(final int position, View convertView, ViewGroup parent) {
         final WorkItem_Data workItem_data = mList.get(position);
 
+
 		View view=View.inflate(mActivity, R.layout.rg_tab_grid_item, null);
+
 		final Button btn = (Button)view.findViewById(R.id.rg_btn);
 		btn.setText(workItem_data.getName());
 

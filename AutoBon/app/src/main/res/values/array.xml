@@ -16,6 +16,8 @@
     </string-array>
 
     <string-array name="work_item">
+        <!--<key>0站位</key>-->
+        <item>前风挡</item>
         <!--<key>1</key>-->
         <item>前风挡</item>
         <!--<key>2</key>-->

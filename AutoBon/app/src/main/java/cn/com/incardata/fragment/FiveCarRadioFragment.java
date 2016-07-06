@@ -20,64 +20,71 @@ import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.WorkItemEntity;
 import cn.com.incardata.http.response.WorkItem_Data;
 import cn.com.incardata.utils.AutoCon;
+import cn.com.incardata.utils.L;
 import cn.com.incardata.utils.T;
 
-public class FiveCarRadioFragment extends BaseStandardFragment{
-	private Activity mActivity;
-	private GridView gv_tag;
-	private View rootView;
-	private RadioFragmentGridAdapter mAdapter;
-	private List<WorkItem_Data> mList;
+public class FiveCarRadioFragment extends BaseStandardFragment {
+    private Activity mActivity;
+    private GridView gv_tag;
+    private View rootView;
+    private RadioFragmentGridAdapter mAdapter;
+    private List<WorkItem_Data> mList;
 
-	//TODO 覆写抽象类BaseStandardFragment中的方法
-	@Override
-	public View onFragmentCreateView(LayoutInflater inflater,
-			ViewGroup container, Bundle savedInstanceState) {
-	    if(null == rootView) {
+
+    //TODO 覆写抽象类BaseStandardFragment中的方法
+    @Override
+    public View onFragmentCreateView(LayoutInflater inflater,
+                                     ViewGroup container, Bundle savedInstanceState) {
+        if (null == rootView) {
             rootView = inflater.inflate(R.layout.car_radio_tab_fragment, container, false);
         }
-        if(null != rootView) {
+        if (null != rootView) {
             ViewGroup parent = (ViewGroup) rootView.getParent();
-            if(parent != null) {
+            if (parent != null) {
                 parent.removeView(rootView);
             }
         }
-		this.initView();
-		this.initData();
-		return rootView;
-	}
-	
-	private void initView(){
+        this.initView();
+        this.initData();
+        return rootView;
+    }
+
+    private void initView() {
         mList = new ArrayList<WorkItem_Data>();
-		mActivity = getActivity();
-		gv_tag = (GridView)rootView.findViewById(R.id.gv_tag);
-		mAdapter = new RadioFragmentGridAdapter(mActivity,mList);
-		gv_tag.setAdapter(mAdapter);
-	}
+        mActivity = getActivity();
+        gv_tag = (GridView) rootView.findViewById(R.id.gv_tag);
+        mAdapter = new RadioFragmentGridAdapter(mActivity, mList);
+        gv_tag.setAdapter(mAdapter);
+    }
 
-	private void initData(){
-		if(paramList.size() == 0){
-			return;
-		}
-		BasicNameValuePair bv_orderType = new BasicNameValuePair("orderType",paramList.get(0));  //设置orderType参数
-		BasicNameValuePair bv_carSeat = new BasicNameValuePair("carSeat",String.valueOf(AutoCon.five_carSeat));  //五座车
-		Http.getInstance().getTaskToken(NetURL.GET_WORK_ITEM, WorkItemEntity.class, new OnResult() {
-			@Override
-			public void onResult(Object entity) {
-				if(entity == null){
-					T.show(mActivity,mActivity.getString(R.string.request_failed));
-					return;
-				}
-				WorkItemEntity workItemEntity = (WorkItemEntity) entity;
-				List<WorkItem_Data> dataList =  workItemEntity.getData();  //获取五座车数据信息
-				updateData(dataList);
-			}
-		},bv_orderType,bv_carSeat);
-	}
+    private void initData() {
+        if (paramList.size() == 0) {
+            return;
+        }
+        BasicNameValuePair bv_orderType = new BasicNameValuePair("orderType", paramList.get(0));  //设置orderType参数
+        BasicNameValuePair bv_carSeat = new BasicNameValuePair("carSeat", String.valueOf(AutoCon.five_carSeat));  //五座车
+        Http.getInstance().getTaskToken(NetURL.GET_WORK_ITEM, WorkItemEntity.class, new OnResult() {
+            @Override
+            public void onResult(Object entity) {
+                if (entity == null) {
+                    T.show(mActivity, mActivity.getString(R.string.request_failed));
+                    return;
+                }
+                WorkItemEntity workItemEntity = (WorkItemEntity) entity;
+                List<WorkItem_Data> dataList = workItemEntity.getData();  //获取五座车数据信息
+                for (WorkItem_Data workItem_data : dataList) {
+                    L.i("datalist", (workItem_data.getName() + "/" + workItem_data.getId() + "/" + workItem_data.getSeat()).toString());
+                    L.i("=======", "===================================");
+                }
 
-	private void updateData(List<WorkItem_Data> dataList){
-		mList.clear();
-		mList.addAll(dataList);
-		mAdapter.notifyDataSetChanged();
-	}
+                updateData(dataList);
+            }
+        }, bv_orderType, bv_carSeat);
+    }
+
+    private void updateData(List<WorkItem_Data> dataList) {
+        mList.clear();
+        mList.addAll(dataList);
+        mAdapter.notifyDataSetChanged();
+    }
 }
