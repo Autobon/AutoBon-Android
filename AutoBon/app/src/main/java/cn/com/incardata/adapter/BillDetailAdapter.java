@@ -1,6 +1,8 @@
 package cn.com.incardata.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import java.util.List;
 
 import cn.com.incardata.application.MyApplication;
 import cn.com.incardata.autobon.BillDetailActivity;
+import cn.com.incardata.autobon.EnlargementActivity;
 import cn.com.incardata.autobon.R;
 import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
@@ -62,9 +65,12 @@ public class BillDetailAdapter extends BaseAdapter{
             holder.tv_order_time = (TextView)convertView.findViewById(R.id.tv_order_time);
             holder.tv_work_item = (TextView)convertView.findViewById(R.id.tv_work_item);
 
+            holder.imageOnclick = new ImageOnclick(position);
+            holder.iv_order_img.setOnClickListener(holder.imageOnclick);
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder)convertView.getTag();
+            holder.imageOnclick.setPosition(position);
         }
 
         OrderInfo_Data data = mList.get(position);
@@ -115,5 +121,22 @@ public class BillDetailAdapter extends BaseAdapter{
         ImageView iv_order_img;
         TextView tv_order_time;
         TextView tv_work_item;
+        ImageOnclick imageOnclick;
     }
+
+    private class ImageOnclick extends AsInnerOnclick{
+        public ImageOnclick(int position) {
+            super(position);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(context, EnlargementActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putStringArray("IMAGE_URL", new String[]{mList.get(getPosition()).getPhoto()});
+            intent.putExtras(bundle);
+            context.startActivity(intent);
+//            context.overridePendingTransition(R.anim.anim_image_enter, R.anim.anim_image_quit);
+        }
+    };
 }

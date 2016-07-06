@@ -19,6 +19,8 @@ import cn.com.incardata.http.NetURL;
  * Created by yang on 2016/6/14.
  */
 public class EnlargementActivity extends BaseActivity{
+    public final static String IMAGE_URL = "IMAGE_URL";
+    public final static String POSITION = "POSITION";
     private ViewPager viewPager;
     private RelativeLayout rl1;
     private TextView indicator;

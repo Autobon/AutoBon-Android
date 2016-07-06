@@ -380,13 +380,11 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
 
     private void idPhotoProcess(Uri uri){
         try {
-            Bitmap bitmap = BitmapFactory.decodeStream(getContext().getContentResolver().openInputStream(uri));
-            bitmap = BitmapHelper.resizeImage(bitmap, 0.5f);
-            BitmapHelper.saveBitmap(this.idPhotoUri, bitmap, true);
-            uploadIdPhoto();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }catch (NullPointerException e){
+            Bitmap bitmap = BitmapHelper.resizeImage(getContext(), uri, 0.5f);
+            if (BitmapHelper.saveBitmap(this.idPhotoUri, bitmap)) {
+                uploadIdPhoto();
+            }
+        } catch (NullPointerException e){
             e.printStackTrace();
         }
     }
