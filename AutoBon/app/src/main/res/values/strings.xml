@@ -318,10 +318,8 @@
     <string name="work_before_tv">施工前照片</string>
     <string name="work_after_tv">施工后照片</string>
     <string name="signin">请距离目标位置500米内签到！</string>
-    <string name="orderType1">隔热层</string>
-    <string name="orderType2">隐形车衣</string>
-    <string name="orderType3">车身改色</string>
-    <string name="orderType4">美容清洁</string>
+    <string name="sign_tips_500m">请距离目标位置500米内签到！</string>
+    <string name="local_tips">为了准确定位你的位置，请在室外无遮挡处定位</string>
     <string name="yetcancel">已撤销</string>
     <string name="nothave">无</string>
     <string name="yetrenounce">已放弃</string>

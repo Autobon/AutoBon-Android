@@ -74,7 +74,7 @@ public class BaiduMapUtil {
     public static void locate(BaiduMap baiduMap){
         MyLocationConfiguration configuration = new MyLocationConfiguration(
                 MyLocationConfiguration.LocationMode.NORMAL, true,
-                BitmapDescriptorFactory.fromResource(R.mipmap.here));
+                BitmapDescriptorFactory.fromResource(R.drawable.here));
         baiduMap.setMyLocationConfigeration(configuration);// 设置定位显示的模式
         baiduMap.setMapStatus(MapStatusUpdateFactory.zoomTo(baiduMap.getMapStatus().zoom));  //定位后更新缩放级别
     }

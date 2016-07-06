@@ -1,8 +1,6 @@
 package cn.com.incardata.autobon;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Display;
@@ -97,6 +95,12 @@ public class OrderInfoActivity extends BaseActivity {
                 finish();
             }
         });
+        findViewById(R.id.order_image).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openImage(0, orderInfo.getPhoto());
+            }
+        });
 
         isMainResponsible = getIntent().getBooleanExtra("isMain", false);
         orderInfo = getIntent().getParcelableExtra(AutoCon.ORDER_INFO);
@@ -132,13 +136,13 @@ public class OrderInfoActivity extends BaseActivity {
         OrderInfo_Data_Comment comment = data.getComment();
         remark.setText(data.getRemark());
         if (data.getOrderType() == 1) {
-            order_type.setText(R.string.orderType1);
+            order_type.setText(R.string.skill_item_1);
         } else if (data.getOrderType() == 2) {
-            order_type.setText(R.string.orderType2);
+            order_type.setText(R.string.skill_item_2);
         } else if (data.getOrderType() == 3) {
-            order_type.setText(R.string.orderType3);
+            order_type.setText(R.string.skill_item_3);
         } else {
-            order_type.setText(R.string.orderType4);
+            order_type.setText(R.string.skill_item_4);
         }
         MyInfo_Data tech;
         if (isMainResponsible) {
@@ -215,7 +219,6 @@ public class OrderInfoActivity extends BaseActivity {
 
             if (data.getOrderType() == 4) {//美容清洁
                 work_item.setText(MyApplication.getInstance().getSkill(4));
-                return;
             }
             String item = construct.getWorkItems();
 
@@ -244,29 +247,51 @@ public class OrderInfoActivity extends BaseActivity {
             }
             sign_in_time.setText(DateCompute.getDate(construct.getSigninTime()));
             Myadapter myadapter;
-            String[] urlItems;
-
+            final String[] urlBefore;
             String urlBeforePhotos = construct.getBeforePhotos();
             if (urlBeforePhotos.contains(",")) {
-                urlItems = urlBeforePhotos.split(",");
+                urlBefore = urlBeforePhotos.split(",");
             } else {
-                urlItems = new String[]{urlBeforePhotos};
+                urlBefore = new String[]{urlBeforePhotos};
             }
-            myadapter = new Myadapter(this, urlItems);
+            myadapter = new Myadapter(this, urlBefore);
             work_before_grid.setAdapter(myadapter);
 
+            work_before_grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                    openImage(position, urlBefore);
+                }
+            });
 
+            final String[] urlAfter;
             String urlAfterPhotos = construct.getAfterPhotos();
             if (urlAfterPhotos.contains(",")) {
-                urlItems = urlAfterPhotos.split(",");
+                urlAfter = urlAfterPhotos.split(",");
             } else {
-                urlItems = new String[]{urlAfterPhotos};
+                urlAfter = new String[]{urlAfterPhotos};
             }
-            myadapter = new Myadapter(this,  urlItems);
+            myadapter = new Myadapter(this, urlAfter);
             work_after_grid.setAdapter(myadapter);
-
+            work_after_grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    openImage(position, urlAfter);
+                }
+            });
         }
 
+    }
+
+    /** 查看图片
+     * @param position
+     * @param urls
+     */
+    private void openImage(int position, String... urls){
+        Bundle bundle = new Bundle();
+        bundle.putStringArray(EnlargementActivity.IMAGE_URL, urls);
+        bundle.putInt(EnlargementActivity.POSITION, position);
+        startActivity(EnlargementActivity.class, bundle);
     }
 
 //    private String duration(long startTime, long endTime) {
@@ -296,7 +321,6 @@ public class OrderInfoActivity extends BaseActivity {
         public Myadapter(Context context, String[] urlItem) {
             this.context = context;
             this.urlItem = urlItem;
-            notifyDataSetChanged();
         }
 
         @Override
@@ -321,9 +345,8 @@ public class OrderInfoActivity extends BaseActivity {
                 view = LayoutInflater.from(context).inflate(R.layout.grid_item_image, viewGroup, false);
                 imageView = (ImageView) view.findViewById(R.id.imgGridItem);
 //                imageView.setLayoutParams(new GridView.LayoutParams(display.getWidth() / 3,display.getWidth() / 3));
-                imageView.setPadding(15, 15, 15, 15);
-                GridView.LayoutParams params = new GridView.LayoutParams(display.getWidth() / 3, display.getWidth() / 3);
-                view.setLayoutParams(params);
+//                GridView.LayoutParams params = new GridView.LayoutParams(display.getWidth() / 3, display.getWidth() / 3);
+//                view.setLayoutParams(params);
                 view.setTag(imageView);
             } else {
                 imageView = (ImageView) view.getTag();

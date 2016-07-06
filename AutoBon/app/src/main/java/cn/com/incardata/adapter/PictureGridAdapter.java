@@ -10,9 +10,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import cn.com.incardata.autobon.R;
 
@@ -22,7 +22,7 @@ import cn.com.incardata.autobon.R;
  */
 public class PictureGridAdapter extends BaseAdapter {
     public List<Bitmap> picList = new ArrayList<Bitmap>();
-    private Map<Integer,String> picMap = new HashMap<Integer,String>();  //key为bitmap对象的hashcode值,value为bitmap图像的url除去ip和端口号后的地址
+    private LinkedHashMap<Integer,String> picMap = new LinkedHashMap<>();  //key为bitmap对象的hashcode值,value为bitmap图像的url除去ip和端口号后的地址
 
     private Context mContext;
     private int maxPic;
@@ -34,7 +34,7 @@ public class PictureGridAdapter extends BaseAdapter {
         return addButton;
     }
 
-    public Map<Integer,String> getPicMap(){
+    public LinkedHashMap<Integer,String> getPicMap(){
         return picMap;
     }
 
@@ -137,6 +137,7 @@ public class PictureGridAdapter extends BaseAdapter {
 
     public void removePic(int idx) {
         picMap.remove(picList.get(idx).hashCode());
+        picList.get(idx).recycle();
         picList.remove(idx);
         if (idx + 1 == this.maxPic) {  //点击最后一张图片显示添加按钮
             picList.add(idx, getAddPic());
@@ -146,5 +147,20 @@ public class PictureGridAdapter extends BaseAdapter {
             reachMax = false;
         }
         notifyDataSetChanged();
+    }
+
+    public void onDestory(){
+        if (picMap != null){
+            picMap.clear();
+        }
+        if (picList != null){
+            Iterator<Bitmap> iterator = picList.iterator();
+            while(iterator.hasNext()){
+                Bitmap bitmap = iterator.next();
+                bitmap.recycle();
+                bitmap = null;
+            }
+            picList.clear();
+        }
     }
 }

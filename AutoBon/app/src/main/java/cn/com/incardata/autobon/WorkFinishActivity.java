@@ -30,6 +30,7 @@ import org.apache.http.message.BasicNameValuePair;
 import java.io.File;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -229,7 +230,17 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                         tempDir = new File(SDCardUtils.getGatherDir());
                         carPhotoUri = Uri.fromFile(new File(tempDir, "car_photo.jpeg"));
                     }
-                    capture(CAR_PHOTO, carPhotoUri);
+                    capture(CAR_PHOTO,carPhotoUri);
+                }else {
+                    LinkedHashMap<Integer, String> temp = mAdapter.getPicMap();
+                    if (temp == null || temp.isEmpty()){
+                        startActivity(EnlargementActivity.class);
+                    }else {
+                        Bundle bundle = new Bundle();
+                        bundle.putStringArray(EnlargementActivity.IMAGE_URL, temp.values().toArray(new String[temp.size()]));
+                        bundle.putInt(EnlargementActivity.POSITION, position);
+                        startActivity(EnlargementActivity.class, bundle);
+                    }
                 }
             }
         });
@@ -417,11 +428,10 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
         if (resultCode != RESULT_OK) return;
         switch (requestCode) {
             case CAR_PHOTO:
-                try {
-                    Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(carPhotoUri));
-                    bitmap = BitmapHelper.resizeImage(bitmap, 0.5f);
+                try{
+                    Bitmap bitmap = BitmapHelper.resizeImage(getContext(), carPhotoUri, 0.35f);
                     Uri uri = Uri.fromFile(tempFile);
-                    boolean isSuccess = BitmapHelper.saveBitmap(uri, bitmap, false);
+                    boolean isSuccess = BitmapHelper.saveBitmap(uri, bitmap);
 
                     if (isSuccess) {  //成功保存后上传压缩后的图片
                         if (NetWorkHelper.isNetworkAvailable(context)) {
@@ -431,7 +441,11 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                             return;
                         }
                     }
-                } catch (Exception e) {
+                    if (bitmap != null && !bitmap.isRecycled()){
+                        bitmap.recycle();
+                        bitmap = null;
+                    }
+                }catch (Exception e) {
                     e.printStackTrace();
                 }
                 break;
@@ -441,7 +455,8 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void uploadCarPhoto(final Uri carCompressUri) {
+    private void uploadCarPhoto(final Uri carCompressUri){
+        showDialog(getString(R.string.uploading_image));
         new AsyncTask<String, Void, String>() {
             @Override
             protected String doInBackground(String... params) {
@@ -457,6 +472,7 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
+                cancelDialog();
                 if (s == null) {
                     T.show(context, getString(R.string.upload_image_failed));
                     return;
@@ -491,6 +507,10 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
             SDCardUtils.deleteAllFileInFolder(dir);
             Log.i("test", "dir===>" + dir.getPath());
             tempFile = null;
+        }
+        if (mAdapter != null){
+            mAdapter.onDestory();
+            System.gc();
         }
     }
 }
