@@ -53,11 +53,11 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
     private ImageView iv_my_info;
     private BDLocationListener myBDLocationListener;
 
-    protected static View pop;
-    protected static Overlay[] markOverlay;  //标志物图层
-    protected static Overlay[] popOverlay;  //信息框图层
-    protected static LatLng[] latLngArray;  //位置信息记录
-    protected static String[] windowInfo;  //窗体信息记录
+    protected View pop;
+    protected Overlay[] markOverlay;  //标志物图层
+    protected Overlay[] popOverlay;  //信息框图层
+    protected LatLng[] latLngArray;  //位置信息记录
+    protected String[] windowInfo;  //窗体信息记录
 
     private OrderInfo_Data orderInfo;
     private boolean isSign = false;//是否可以签到
@@ -243,7 +243,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
         baiduMap.setMyLocationEnabled(true);// 打开定位图层
         baiduMap.getUiSettings().setCompassEnabled(false);  //不显示指南针
         MyLocationConfiguration configuration = new MyLocationConfiguration(
-                MyLocationConfiguration.LocationMode.NORMAL, true,
+                MyLocationConfiguration.LocationMode.FOLLOWING, true,
                 BitmapDescriptorFactory.fromResource(R.drawable.here));
         baiduMap.setMyLocationConfigeration(configuration);// 设置定位显示的模式
         baiduMap.setMapStatus(MapStatusUpdateFactory.zoomTo(baiduMap.getMapStatus().zoom));  //定位后更新缩放级别
