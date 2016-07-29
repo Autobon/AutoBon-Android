@@ -15,19 +15,15 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import cn.com.incardata.application.MyApplication;
-import cn.com.incardata.http.Http;
 import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
-import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.MyInfo_Data;
-import cn.com.incardata.http.response.OrderInfoEntity;
 import cn.com.incardata.http.response.OrderInfo_Construction;
 import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.http.response.OrderInfo_Data_Comment;
 import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.DateCompute;
 import cn.com.incardata.utils.L;
-import cn.com.incardata.utils.T;
 
 /**
  * 我的订单-订单详情
@@ -105,26 +101,26 @@ public class OrderInfoActivity extends BaseActivity {
         isMainResponsible = getIntent().getBooleanExtra("isMain", false);
         orderInfo = getIntent().getParcelableExtra(AutoCon.ORDER_INFO);
     }
-
-    private void getOrderInfo() {
-        Http.getInstance().getTaskToken(NetURL.getOrderInfo(2), "", OrderInfoEntity.class, new OnResult() {
-            @Override
-            public void onResult(Object entity) {
-                if (entity == null) {
-                    T.show(getContext(), R.string.loading_data_failure);
-                    return;
-                }
-                if (entity instanceof OrderInfoEntity) {
-                    if (((OrderInfoEntity) entity).isResult()) {
-                        updateUI(((OrderInfoEntity) entity).getData());
-                    } else {
-                        T.show(getContext(), R.string.loading_data_failure);
-                        return;
-                    }
-                }
-            }
-        });
-    }
+//获取订单详情
+//    private void getOrderInfo() {
+//        Http.getInstance().getTaskToken(NetURL.getOrderInfo(2), "", OrderInfoEntity.class, new OnResult() {
+//            @Override
+//            public void onResult(Object entity) {
+//                if (entity == null) {
+//                    T.show(getContext(), R.string.loading_data_failure);
+//                    return;
+//                }
+//                if (entity instanceof OrderInfoEntity) {
+//                    if (((OrderInfoEntity) entity).isResult()) {
+//                        updateUI(((OrderInfoEntity) entity).getData());
+//                    } else {
+//                        T.show(getContext(), R.string.loading_data_failure);
+//                        return;
+//                    }
+//                }
+//            }
+//        });
+//    }
 
     private void updateUI(OrderInfo_Data data) {
         OrderInfo_Construction construct;
@@ -293,26 +289,6 @@ public class OrderInfoActivity extends BaseActivity {
         bundle.putInt(EnlargementActivity.POSITION, position);
         startActivity(EnlargementActivity.class, bundle);
     }
-
-//    private String duration(long startTime, long endTime) {
-//        long useTime = 0L;
-//        try {
-//            useTime = endTime - startTime;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return "0分钟";
-//        }
-//        final int hour = (int) (useTime / (1000 * 3600));
-//        final int minute = (int) ((useTime - hour * (1000 * 3600)) / (1000 * 60));
-////        final int second = (int)((useTime - hour*(1000*3600) - minute*(1000*60)) / 1000);
-//
-//        if (hour <= 0) {
-//            return minute + "分钟";
-//        } else {
-//            return hour + "小时" + minute + "分钟";
-//        }
-//    }
-
 
     class Myadapter extends BaseAdapter {
         private Context context;
