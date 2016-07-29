@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,6 +21,7 @@ import com.baidu.mapapi.model.LatLng;
 
 import org.apache.http.message.BasicNameValuePair;
 
+import cn.com.incardata.application.MyApplication;
 import cn.com.incardata.fragment.BaiduMapFragment;
 import cn.com.incardata.http.Http;
 import cn.com.incardata.http.ImageLoaderCache;
@@ -30,6 +30,7 @@ import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.InvitationEntity;
 import cn.com.incardata.http.response.Order;
+import cn.com.incardata.http.response.OrderInfoEntity;
 import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.BaiduMapUtil;
@@ -54,11 +55,20 @@ public class InvitationActivity extends BaseActivity implements View.OnClickList
     private String remark;
     private String shopName;
 
+    private String orderType_str;//订单类型
+    private String orderOwner_str;//下单人
+    private String shopsLocation_str;//商户位置
+    private String shopsAlias_str;//商户名称
+
     private BDLocationListener myBDLocationListener;
     private TextView distance;
     private ImageView indentImage;
     private TextView indentText;
     private TextView workTime;
+    private TextView orderType;
+    private TextView orderOwner;
+    private TextView shopsLocation;
+    private TextView shopsAlias;
     private TextView workNotes;
     private TextView mainTech;
 
@@ -81,17 +91,33 @@ public class InvitationActivity extends BaseActivity implements View.OnClickList
         workTimeStr = DateCompute.getDate(order.getOrderTime());
         remark = order.getRemark();
         shopName = order.getCreatorName();
+
         setBaseData();
+        getOrderInfo(order.getId());
     }
 
-    public void setData(String positionLon, String positionLat, String photoUrl, long orderTime, String remark, String creatorName){
-        this.positionLon = positionLon;
-        this.positionLat = positionLat;
-        this.photoUrl = photoUrl;
-        this.workTimeStr = DateCompute.getDate(orderTime);
-        this.remark = remark;
-        this.shopName = creatorName;
+    public void setData(OrderInfo_Data orderInfo){
+        if (orderInfo == null) return;
+        this.positionLon = orderInfo.getPositionLon();
+        this.positionLat = orderInfo.getPositionLat();
+        this.photoUrl = orderInfo.getPhoto();
+        this.workTimeStr = DateCompute.getDate(orderInfo.getOrderTime());
+        this.remark = orderInfo.getRemark();
+        this.shopName = orderInfo.getCreatorName();
+
+        orderType_str = MyApplication.getInstance().getSkill(orderInfo.getOrderType());
+        orderOwner_str = orderInfo.getCooperator().getCorporationName();
+        shopsLocation_str = orderInfo.getCooperator().getAddress();
+        shopsAlias_str = orderInfo.getCooperator().getFullname();
         setBaseData();
+        setCooperator();
+    }
+
+    private void setCooperator(){
+        orderType.setText(orderType_str);
+        orderOwner.setText(orderOwner_str);
+        shopsLocation.setText(shopsLocation_str);
+        shopsAlias.setText(shopsAlias_str);
     }
 
     @Override
@@ -109,6 +135,10 @@ public class InvitationActivity extends BaseActivity implements View.OnClickList
         indentImage = (ImageView) findViewById(R.id.indent_image);
         indentText = (TextView) findViewById(R.id.indent_text);
         workTime = (TextView) findViewById(R.id.work_time);
+        orderType = (TextView) findViewById(R.id.order_type);
+        orderOwner = (TextView) findViewById(R.id.create_order_people);
+        shopsLocation = (TextView) findViewById(R.id.shops_location);
+        shopsAlias = (TextView) findViewById(R.id.shops_name);
         workNotes = (TextView) findViewById(R.id.work_notes);
 
         baiduMap = mMapView.getMap();  //管理具体的某一个MapView对象,缩放,旋转,平移
@@ -125,7 +155,7 @@ public class InvitationActivity extends BaseActivity implements View.OnClickList
         if (orderInfo != null){
             orderId = orderInfo.getId();
             mainTech.setText(orderInfo.getMainTech().getName());
-            setData(orderInfo.getPositionLon(), orderInfo.getPositionLat(), orderInfo.getPhoto(), orderInfo.getOrderTime(), orderInfo.getRemark(), orderInfo.getCreatorName());
+            setData(orderInfo);
         }else {
             T.show(this , R.string.loading_data_failure);
             return;
@@ -133,10 +163,10 @@ public class InvitationActivity extends BaseActivity implements View.OnClickList
     }
 
     private void setBaseData(){
-        if (!TextUtils.isEmpty(photoUrl)){
-            ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + photoUrl, indentImage, false, R.mipmap.load_image_failed);
-            indentText.setVisibility(View.GONE);
-        }
+        if (indentImage == null) return;
+        ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + photoUrl, indentImage, R.mipmap.load_image_failed);
+        indentText.setVisibility(View.GONE);
+
         if (workTime != null){
             workTime.setText(workTimeStr);
         }
@@ -150,6 +180,32 @@ public class InvitationActivity extends BaseActivity implements View.OnClickList
         }catch (NullPointerException e){
             e.printStackTrace();
         }
+    }
+
+
+
+    private void getOrderInfo(int orderId) {
+        Http.getInstance().getTaskToken(NetURL.getOrderInfo(orderId), "", OrderInfoEntity.class, new OnResult() {
+            @Override
+            public void onResult(Object entity) {
+                if (entity == null) {
+//                    T.show(getContext(), R.string.loading_data_failure);
+                    return;
+                }
+                if (entity instanceof OrderInfoEntity) {
+                    if (((OrderInfoEntity) entity).isResult()) {
+                        orderType_str = MyApplication.getInstance().getSkill(((OrderInfoEntity) entity).getData().getOrderType());
+                        orderOwner_str = ((OrderInfoEntity) entity).getData().getCooperator().getCorporationName();
+                        shopsLocation_str = ((OrderInfoEntity) entity).getData().getCooperator().getAddress();
+                        shopsAlias_str = ((OrderInfoEntity) entity).getData().getCooperator().getFullname();
+                        setCooperator();
+                    } else {
+                        T.show(getContext(), R.string.load_cooperator_info_failure);
+                        return;
+                    }
+                }
+            }
+        });
     }
 
     private void setListener() {

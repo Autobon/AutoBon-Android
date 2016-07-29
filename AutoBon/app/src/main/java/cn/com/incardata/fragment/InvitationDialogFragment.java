@@ -72,7 +72,7 @@ public class InvitationDialogFragment extends DialogFragment implements View.OnC
         ratingBar = (RatingBar) rootView.findViewById(R.id.ratingbar);
         rate = (TextView) rootView.findViewById(R.id.rate);
         orderNum = (TextView) rootView.findViewById(R.id.order_num);
-        goodRate = (TextView) rootView.findViewById(R.id.tv_good_rate);
+//        goodRate = (TextView) rootView.findViewById(R.id.tv_good_rate);
         orderInfo = (TextView) rootView.findViewById(R.id.order_info);
         previewOrder = (Button) rootView.findViewById(R.id.preview_order);
 

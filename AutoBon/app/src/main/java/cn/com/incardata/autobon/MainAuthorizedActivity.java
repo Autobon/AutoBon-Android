@@ -190,7 +190,7 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
             Intent intent = new Intent(this, WorkFinishActivity.class);
             intent.putExtra(AutoCon.ORDER_INFO, orderInfo);
             startActivity(intent);
-        }else if (ActionType.IN_PROGRESS.equals(orderInfo.getStatus())){
+        }else if (ActionType.SIGNED_IN.equals(orderInfo.getStatus())){
             T.show(getContext(), "您已完成此单，等待合伙人提交");
         }
     }

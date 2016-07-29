@@ -37,6 +37,10 @@ public class ActionType {
      */
     public final static String IN_PROGRESS = "IN_PROGRESS";
     /**
+     * 签到
+     */
+    public final static String SIGNED_IN = "SIGNED_IN";
+    /**
      * 订单已结束
      */
     public final static String FINISHED = "FINISHED";
