@@ -29,7 +29,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:singleLine="true"
-            android:text="服务协议"
+            android:text="@string/service_agreement"
             android:textColor="@android:color/white"
             android:textSize="@dimen/sp18" />
 

@@ -2,7 +2,7 @@ package cn.com.incardata.http.response;
 
 import java.util.List;
 
-/**
+/** 账单列表
  * Created by zhangming on 2016/3/18.
  */
 public class Bill_Data {

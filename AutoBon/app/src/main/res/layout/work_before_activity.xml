@@ -9,17 +9,14 @@
         android:background="@color/main_orange">
 
         <ImageView
-            android:id="@+id/iv_my_info"
-            android:layout_width="@dimen/dp45"
+            android:id="@+id/iv_back"
+            android:layout_width="@dimen/dp35"
             android:layout_height="match_parent"
             android:clickable="true"
             android:focusable="true"
-            android:paddingBottom="@dimen/dp10"
-            android:paddingLeft="@dimen/dp15"
-            android:paddingRight="@dimen/dp15"
-            android:paddingTop="@dimen/dp10"
+            android:padding="@dimen/dp10"
             android:scaleType="centerInside"
-            android:src="@mipmap/img_account_white" />
+            android:src="@mipmap/default_back" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -28,18 +25,31 @@
             android:text="@string/login_title"
             android:textColor="@android:color/white"
             android:textSize="@dimen/sp18" />
-
         <ImageView
-            android:id="@+id/iv_enter_more_page"
-            android:layout_width="@dimen/dp50"
+            android:id="@+id/iv_my_info"
+            android:layout_width="@dimen/dp45"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
             android:clickable="true"
             android:focusable="true"
-            android:padding="@dimen/dp10"
-            android:visibility="invisible"
+            android:layout_alignParentRight="true"
+            android:paddingBottom="@dimen/dp10"
+            android:paddingLeft="@dimen/dp15"
+            android:paddingRight="@dimen/dp15"
+            android:paddingTop="@dimen/dp10"
             android:scaleType="centerInside"
-            android:src="@mipmap/emit" />
+            android:src="@mipmap/img_account_white" />
+        <TextView
+            android:id="@+id/drop_order"
+            android:layout_width="@dimen/dp50"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@id/iv_my_info"
+            android:clickable="true"
+            android:focusable="true"
+            android:textSize="@dimen/sp15"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:text="@string/updata_tech"
+            android:onClick="onClickDropOrder"/>
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -68,32 +78,29 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/lightgray"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingTop="@dimen/dp5"
-        android:paddingBottom="@dimen/dp5"
-        android:background="@android:color/white">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/work_make_time"
-            android:textSize="@dimen/sp15"
-            android:textColor="@color/darkgray"/>
-        <TextView
-            android:id="@+id/has_use_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/sp15"
-            android:textColor="@color/darkgray"
-            android:text="@string/default_time"
-            android:layout_marginLeft="@dimen/dp10"/>
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/lightgray"/>
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:gravity="center"-->
+        <!--android:paddingTop="@dimen/dp5"-->
+        <!--android:paddingBottom="@dimen/dp5"-->
+        <!--android:background="@android:color/white">-->
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/work_make_time"-->
+            <!--android:textSize="@dimen/sp15"-->
+            <!--android:textColor="@color/darkgray"/>-->
+        <!--<TextView-->
+            <!--android:id="@+id/has_use_time"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="@dimen/sp15"-->
+            <!--android:textColor="@color/darkgray"-->
+            <!--android:text="@string/default_time"-->
+            <!--android:layout_marginLeft="@dimen/dp10"/>-->
+    <!--</LinearLayout>-->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -12,12 +12,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+
 import cn.com.incardata.http.Http;
+import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.MyInfoEntity;
 import cn.com.incardata.http.response.MyInfo_Data;
+import cn.com.incardata.http.response.MyMessage;
+import cn.com.incardata.http.response.MyMessageData;
+import cn.com.incardata.http.response.MyMessageEntity;
+import cn.com.incardata.utils.DecimalUtil;
+import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
 import cn.com.incardata.view.ModifyBankCardNoDialog;
 
@@ -25,13 +33,20 @@ import cn.com.incardata.view.ModifyBankCardNoDialog;
  * Created by zhangming on 2016/3/2.
  * 余额信息
  */
-public class RestInfoActivity extends BaseActivity{
+public class RestInfoActivity extends BaseActivity {
     private Context context;
     private LinearLayout ll_modify_bank;
-    private TextView tv_rest_money,tv_bank_category,tv_bank_number;
+    private TextView tv_rest_money, tv_bank_category, tv_bank_number;
     private ImageView iv_back;
     private ModifyBankCardNoDialog dialog;
     private Bundle bundle;
+
+
+    private String rest_money;
+    private String bank;
+    private String bankCardNumber;
+    private String bankCardNumber1;
+    private String bankAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +56,7 @@ public class RestInfoActivity extends BaseActivity{
         initData();
     }
 
-    private void initView(){
+    private void initView() {
         context = this;
         ll_modify_bank = (LinearLayout) findViewById(R.id.ll_modify_bank);
         tv_rest_money = (TextView) findViewById(R.id.tv_rest_money);
@@ -87,9 +102,13 @@ public class RestInfoActivity extends BaseActivity{
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                Intent intent = new Intent(context,ModifyBankCardInfoActivity.class);
+                Intent intent = new Intent(context, ModifyBankCardInfoActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("bank",bank);
+                bundle.putString("bankCardNumber",bankCardNumber1);
+                bundle.putString("bankAddress",bankAddress);
                 intent.putExtras(bundle);
-                startActivityForResult(intent,0);
+                startActivityForResult(intent, 0);
             }
         });
     }
@@ -97,69 +116,104 @@ public class RestInfoActivity extends BaseActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 0 && resultCode == RESULT_OK){
-            Log.i("test","修改了信息,重新从服务器上获取一次数据...");
+        if (requestCode == 0 && resultCode == RESULT_OK) {
+            Log.i("test", "修改了信息,重新从服务器上获取一次数据...");
             //注:只有用户修改了信息后才从服务器上拉取数据，否则直接使用我的信息中传递过来的数据显示，更新数据,减少流量消耗
             getDataFromServer();
         }
     }
 
-    private void initData(){
+
+
+    private void initData() {
         bundle = getIntent().getExtras();
-        String rest_money = bundle.getString("rest_money",String.valueOf(0));
-        String bank = bundle.getString("bank","");
-        String bankCardNumber = bundle.getString("bankCardNumber","");
-        if(bankCardNumber.length()>=8){
-            bankCardNumber = replace(bankCardNumber,"*",3,bankCardNumber.length()-4);
+        rest_money = bundle.getString("rest_money", String.valueOf(0));
+        bank = bundle.getString("bank", "");
+        bankCardNumber = bundle.getString("bankCardNumber", "");
+        bankCardNumber1 = bundle.getString("bankCardNumber", "");
+        bankAddress = bundle.getString("bankAddress","");
+        if (bankCardNumber.length() >= 8) {
+            bankCardNumber = replace(bankCardNumber, "*", 3, bankCardNumber.length() - 4);
         }
         tv_rest_money.setText(rest_money);
         tv_bank_category.setText(bank);
         tv_bank_number.setText(bankCardNumber);
     }
 
-
-    private void getDataFromServer(){
-        if(NetWorkHelper.isNetworkAvailable(context)) {
-            Http.getInstance().getTaskToken(NetURL.MY_INFO_URL, MyInfoEntity.class, new OnResult() {
+    private void getDataFromServer() {
+        if (NetWorkHelper.isNetworkAvailable(context)) {
+            Http.getInstance().getTaskToken(NetURL.MY_INFO_URLV2, MyMessageEntity.class, new OnResult() {
                 @Override
                 public void onResult(Object entity) {
                     if (entity == null) {
                         T.show(context, context.getString(R.string.get_info_failed));
                         return;
                     }
-                    MyInfoEntity myInfoEntity = (MyInfoEntity) entity;
-                    MyInfo_Data data = myInfoEntity.getData();
-                    String bank = data.getBank(); //银行字典
-                    String bankCardNumber = data.getBankCardNo(); //银行卡号
-                    if(bankCardNumber.length()>=8){
-                        bankCardNumber = replace(bankCardNumber,"*",3,bankCardNumber.length()-4);
+                    MyMessageEntity myInfoEntity = (MyMessageEntity) entity;
+
+                    if (myInfoEntity.isStatus()) {
+                        MyMessageData myMessageData = JSON.parseObject(myInfoEntity.getMessage().toString(), MyMessageData.class);
+                        MyMessage myMessage = myMessageData.getTechnician();
+                        bank = myMessage.getBank();
+                        bankCardNumber = myMessage.getBankCardNo();
+                        bankCardNumber1 = myMessage.getBankCardNo();
+                        bankAddress = myMessage.getBankAddress();
+                        if (bankCardNumber.length() >= 8) {
+                            bankCardNumber = replace(bankCardNumber, "*", 3, bankCardNumber.length() - 4);
+                        }
+                        tv_bank_category.setText(bank);
+                        tv_bank_number.setText(bankCardNumber);
                     }
-                    tv_bank_category.setText(bank);
-                    tv_bank_number.setText(bankCardNumber);
                 }
             });
-        }else{
-            T.show(this,getString(R.string.no_network_tips));
+        } else {
+            T.show(this, getString(R.string.no_network_tips));
         }
     }
 
+//
+//    private void getDataFromServer(){
+//        if(NetWorkHelper.isNetworkAvailable(context)) {
+//            Http.getInstance().getTaskToken(NetURL.MY_INFO_URL, MyInfoEntity.class, new OnResult() {
+//                @Override
+//                public void onResult(Object entity) {
+//                    if (entity == null) {
+//                        T.show(context, context.getString(R.string.get_info_failed));
+//                        return;
+//                    }
+//                    MyInfoEntity myInfoEntity = (MyInfoEntity) entity;
+//                    MyInfo_Data data = myInfoEntity.getData();
+//                    String bank = data.getBank(); //银行字典
+//                    String bankCardNumber = data.getBankCardNo(); //银行卡号
+//                    if(bankCardNumber.length()>=8){
+//                        bankCardNumber = replace(bankCardNumber,"*",3,bankCardNumber.length()-4);
+//                    }
+//                    tv_bank_category.setText(bank);
+//                    tv_bank_number.setText(bankCardNumber);
+//                }
+//            });
+//        }else{
+//            T.show(this,getString(R.string.no_network_tips));
+//        }
+//    }
+
 
     /**
-     * @param str 原字符
+     * @param str   原字符
      * @param reStr 替换后的字符
      * @param start 开始位置
-     * @param end 结束位置
+     * @param end   结束位置
      * @return
      */
-    private String replace(String str,String reStr,int start,int end){
+    private String replace(String str, String reStr, int start, int end) {
         StringBuffer sb = new StringBuffer();
         sb.append(str);
 
         StringBuilder builder = new StringBuilder();
-        for(int i=0;i<end-start;i++){
+        for (int i = 0; i < end - start; i++) {
             builder.append(reStr);
         }
-        sb = sb.replace(start,end,builder.toString());
+        sb = sb.replace(start, end, builder.toString());
         return sb.toString();
     }
 }

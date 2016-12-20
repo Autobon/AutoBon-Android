@@ -22,14 +22,15 @@ import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
 
 /**
+ * 修改密码
  * Created by zhangming on 2016/2/26.
  */
-public class ModifyPasswordActivity extends BaseActivity implements View.OnClickListener{
+public class ModifyPasswordActivity extends BaseActivity implements View.OnClickListener {
     private EditText et_pwd;
     private EditText et_new_pwd;
     private Button submit_pwd_btn;
     private Context context;
-    private ImageView iv_eye,iv_new_eye,iv_back;
+    private ImageView iv_eye, iv_new_eye, iv_back;
     private boolean isOldFocus;
     private boolean isNewFocus;
 
@@ -40,11 +41,11 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
         initView();
     }
 
-    public void initView(){
+    public void initView() {
         context = this;
         et_pwd = (EditText) findViewById(R.id.et_pwd);
         et_new_pwd = (EditText) findViewById(R.id.et_new_pwd);
-        submit_pwd_btn = (Button)findViewById(R.id.submit_pwd_btn);
+        submit_pwd_btn = (Button) findViewById(R.id.submit_pwd_btn);
         iv_eye = (ImageView) findViewById(R.id.iv_eye);
         iv_new_eye = (ImageView) findViewById(R.id.iv_new_eye);
         iv_back = (ImageView) findViewById(R.id.iv_back);
@@ -55,40 +56,41 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
         iv_back.setOnClickListener(this);
     }
 
-    private void submitRegisterInfo(){
+    private void submitRegisterInfo() {
         String old_pwd = et_pwd.getText().toString().trim();
         String new_pwd = et_new_pwd.getText().toString().trim();
-        if(StringUtil.isEmpty(old_pwd)){
-            T.show(this,getString(R.string.old_empty_tips));
+        if (StringUtil.isEmpty(old_pwd)) {
+            T.show(this, getString(R.string.old_empty_tips));
             return;
         }
-        if(old_pwd.length()<8){
-            T.show(this,getString(R.string.old_length_tips));
+        if (old_pwd.length() < 8) {
+            T.show(this, getString(R.string.old_length_tips));
             return;
         }
-        if(!old_pwd.matches(".*[a-zA-Z].*[0-9]|.*[0-9].*[a-zA-Z]")){
-            T.show(this,getString(R.string.old_error_password));
-            return;
-        }
-
-        if(StringUtil.isEmpty(new_pwd)){
-            T.show(this,getString(R.string.new_empty_tips));
-            return;
-        }
-        if(new_pwd.length()<8){
-            T.show(this,getString(R.string.new_length_tips));
-            return;
-        }
-        if(!new_pwd.matches(".*[a-zA-Z].*[0-9]|.*[0-9].*[a-zA-Z]")){  //密码长度至少为8位,且为数字或字母组合
-            T.show(context,context.getString(R.string.new_error_password));
+        if (!old_pwd.matches(".*[a-zA-Z].*[0-9]|.*[0-9].*[a-zA-Z]")) {
+            T.show(this, getString(R.string.old_error_password));
             return;
         }
 
-        BasicNameValuePair oldPassword = new BasicNameValuePair("oldPassword",old_pwd);
-        BasicNameValuePair newPassword = new BasicNameValuePair("newPassword",new_pwd);
+        if (StringUtil.isEmpty(new_pwd)) {
+            T.show(this, getString(R.string.new_empty_tips));
+            return;
+        }
+        if (new_pwd.length() < 8) {
+            T.show(this, getString(R.string.new_length_tips));
+            return;
+        }
+        if (!new_pwd.matches(".*[a-zA-Z].*[0-9]|.*[0-9].*[a-zA-Z]")) {  //密码长度至少为8位,且为数字或字母组合
+            T.show(context, context.getString(R.string.new_error_password));
+            return;
+        }
 
-        if(NetWorkHelper.isNetworkAvailable(context)) {
-            Http.getInstance().postTaskToken(NetURL.CHANGE_PASSWORD, ChangePasswordEntity.class, new OnResult() {
+//        BasicNameValuePair oldPassword = new BasicNameValuePair("oldPassword", old_pwd);
+//        BasicNameValuePair newPassword = new BasicNameValuePair("newPassword", new_pwd);
+        String param = "?oldPassword=" + old_pwd + "&newPassword=" + new_pwd;
+
+        if (NetWorkHelper.isNetworkAvailable(context)) {
+            Http.getInstance().putTaskToken(NetURL.CHANGE_PASSWORDV2 + param,"", ChangePasswordEntity.class, new OnResult() {
                 @Override
                 public void onResult(Object entity) {
                     if (entity == null) {
@@ -96,43 +98,43 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
                         return;
                     }
                     ChangePasswordEntity changePasswordEntity = (ChangePasswordEntity) entity;
-                    if (changePasswordEntity.isResult()) {
-                        T.show(context, context.getString(R.string.modify_pwd_success));
+                    if (changePasswordEntity.isStatus()) {
+                        T.show(context, changePasswordEntity.getMessage());
                         finish();
                         return;
                     } else {
-                        if("ILLEGAL_PARAM".equals(changePasswordEntity.getError())){
-                            T.show(context,context.getString(R.string.old_pwd_error_tips));
-                            return;
-                        }
+
+                        T.show(context, changePasswordEntity.getMessage());
+                        return;
+
                     }
                 }
-            }, oldPassword, newPassword);
-        }else{
-            T.show(this,getString(R.string.no_network_tips));
+            });
+        } else {
+            T.show(this, getString(R.string.no_network_tips));
         }
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.iv_eye:
                 isOldFocus = !isOldFocus;
                 if (isOldFocus) {
-                    showOrHidenLoginPwd(et_pwd,true);
+                    showOrHidenLoginPwd(et_pwd, true);
                     iv_eye.setImageResource(R.mipmap.eye_open);
                 } else {
-                    showOrHidenLoginPwd(et_pwd,false);
+                    showOrHidenLoginPwd(et_pwd, false);
                     iv_eye.setImageResource(R.mipmap.eye_hidden);
                 }
                 break;
             case R.id.iv_new_eye:
                 isNewFocus = !isNewFocus;
                 if (isNewFocus) {
-                    showOrHidenLoginPwd(et_new_pwd,true);
+                    showOrHidenLoginPwd(et_new_pwd, true);
                     iv_new_eye.setImageResource(R.mipmap.eye_open);
                 } else {
-                    showOrHidenLoginPwd(et_new_pwd,false);
+                    showOrHidenLoginPwd(et_new_pwd, false);
                     iv_new_eye.setImageResource(R.mipmap.eye_hidden);
                 }
                 break;
@@ -146,10 +148,9 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
     }
 
     /**
-     * @param isShowPwd
-     * 是否显示密码
+     * @param isShowPwd 是否显示密码
      */
-    private void showOrHidenLoginPwd(EditText editText,boolean isShowPwd) {
+    private void showOrHidenLoginPwd(EditText editText, boolean isShowPwd) {
         if (isShowPwd) {
             editText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
         } else {
@@ -159,7 +160,7 @@ public class ModifyPasswordActivity extends BaseActivity implements View.OnClick
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if(null != this.getCurrentFocus()){
+        if (null != this.getCurrentFocus()) {
             //点击空白位置 隐藏软键盘
             InputMethodManager mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             return mInputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);

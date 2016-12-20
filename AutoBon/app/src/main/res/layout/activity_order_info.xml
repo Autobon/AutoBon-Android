@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/rll1"
     android:background="@android:color/white">
 
 
@@ -43,6 +44,7 @@
     </RelativeLayout>
 
     <ScrollView
+        android:id="@+id/sc1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/r1">
@@ -94,20 +96,40 @@
                 android:layout_marginLeft="@dimen/dp15"
                 android:layout_marginRight="@dimen/dp15"
                 android:background="#F0F0F0"/>
-
-            <ImageView
-                android:id="@+id/order_image"
+            <RelativeLayout
+                android:id="@+id/rl5"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp120"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/v2"
-                android:layout_marginLeft="@dimen/dp15"
-                android:layout_marginRight="@dimen/dp15"/>
+                android:background="@android:color/white"
+                android:paddingLeft="@dimen/dp20"
+                android:paddingRight="@dimen/dp20">
+
+                <cn.com.incardata.view.MyGridView
+                    android:id="@+id/order_grid"
+                    android:layout_width="wrap_content"
+                    android:numColumns="3"
+                    android:listSelector="@android:color/transparent"
+                    android:verticalSpacing="@dimen/dp10"
+                    android:horizontalSpacing="@dimen/dp10"
+                    android:gravity="center"
+                    android:stretchMode="columnWidth"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+
+            <!--<ImageView-->
+                <!--android:id="@+id/order_image"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/dp120"-->
+                <!--android:layout_below="@id/v2"-->
+                <!--android:layout_marginLeft="@dimen/dp15"-->
+                <!--android:layout_marginRight="@dimen/dp15"/>-->
 
             <View
                 android:id="@+id/v3"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/order_image"
+                android:layout_below="@id/rl5"
                 android:layout_marginTop="@dimen/dp5"
                 android:layout_marginBottom="@dimen/dp5"
                 android:layout_marginLeft="@dimen/dp15"
@@ -169,7 +191,7 @@
                 android:id="@+id/v5"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/order_type_tv"
+                android:layout_below="@id/order_type"
                 android:layout_marginTop="@dimen/dp5"
                 android:layout_marginBottom="@dimen/dp5"
                 android:layout_marginLeft="@dimen/dp15"
@@ -184,10 +206,10 @@
                 android:layout_marginLeft="@dimen/dp15"
                 android:layout_below="@id/v5"
                 android:textSize="@dimen/sp13"
-                android:text="@string/work_item"/>
+                android:text="@string/shops_name"/>
 
             <TextView
-                android:id="@+id/work_item"
+                android:id="@+id/shops_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/darkgray"
@@ -202,7 +224,7 @@
                 android:id="@+id/v7"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/work_item"
+                android:layout_below="@id/shops_name"
                 android:layout_marginTop="@dimen/dp5"
                 android:layout_marginBottom="@dimen/dp5"
                 android:layout_marginLeft="@dimen/dp15"
@@ -233,7 +255,7 @@
                 android:id="@+id/v6"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/work_person_tv"
+                android:layout_below="@id/work_person"
                 android:layout_marginTop="@dimen/dp5"
                 android:layout_marginBottom="@dimen/dp5"
                 android:layout_marginLeft="@dimen/dp15"
@@ -248,7 +270,7 @@
                 android:layout_marginLeft="@dimen/dp15"
                 android:layout_below="@id/v6"
                 android:textSize="@dimen/sp13"
-                android:text="@string/sign_in_time_tv"/>
+                android:text="@string/work_time1"/>
 
             <TextView
                 android:id="@+id/sign_in_time"
@@ -261,12 +283,32 @@
                 android:textSize="@dimen/sp13" />
 
 
-
             <View
                 android:id="@+id/v11"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/sign_in_time_tv"
+                android:layout_below="@id/sign_in_time"
+                android:layout_marginTop="@dimen/dp5"
+                android:layout_marginBottom="@dimen/dp5"
+                android:layout_marginLeft="@dimen/dp15"
+                android:layout_marginRight="@dimen/dp15"
+                android:background="#F0F0F0"/>
+            <Button
+                android:id="@+id/check_tech_message"
+                android:layout_width="match_parent"
+                android:layout_below="@id/v11"
+                android:background="@null"
+                android:text="@string/check_work_info"
+                android:textColor="@color/main_orange"
+                android:gravity="center"
+                android:layout_marginRight="@dimen/dp20"
+                android:layout_marginLeft="@dimen/dp20"
+                android:layout_height="wrap_content" />
+            <View
+                android:id="@+id/v18"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/check_tech_message"
                 android:layout_marginTop="@dimen/dp5"
                 android:layout_marginBottom="@dimen/dp5"
                 android:layout_marginLeft="@dimen/dp15"
@@ -280,7 +322,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/darkgray"
                 android:layout_marginLeft="@dimen/dp15"
-                android:layout_below="@id/v11"
+                android:layout_below="@id/v18"
                 android:textSize="@dimen/sp13"
                 android:text="@string/work_before_tv"/>
 
@@ -290,6 +332,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/work_before_tv"
                 android:background="@android:color/white"
+                android:paddingTop="@dimen/dp10"
+                android:paddingBottom="@dimen/dp10"
                 android:paddingLeft="@dimen/dp20"
                 android:paddingRight="@dimen/dp20">
 
@@ -331,8 +375,9 @@
                 android:layout_below="@id/work_after_tv"
                 android:background="@android:color/white"
                 android:paddingLeft="@dimen/dp20"
+                android:paddingTop="@dimen/dp10"
                 android:paddingRight="@dimen/dp20"
-                android:paddingBottom="@dimen/dp5">
+                android:paddingBottom="@dimen/dp10">
 
                 <cn.com.incardata.view.MyGridView
                     android:id="@+id/work_after_grid"
@@ -385,192 +430,217 @@
                 android:layout_height="1dp"
                 android:background="#F0F0F0"
                 android:layout_below="@id/l1" />
-
-            <RatingBar
-                style="@style/LargeRatingBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/ratingBar"
+            <RelativeLayout
                 android:layout_below="@+id/v9"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/dp20"
-                android:isIndicator="true"/>
-
-            <ImageView
-                android:id="@+id/arrive_on_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:maxWidth="@dimen/dp20"
-                android:maxHeight="@dimen/dp20"
-                android:padding="2px"
-                android:layout_below="@id/ratingBar"
-                android:layout_marginTop="@dimen/dp20"
-                android:layout_marginLeft="@dimen/dp20"
-                android:src="@mipmap/radio_default"
-                android:scaleType="centerInside"/>
-
-            <TextView
-                android:id="@+id/arrive_on_time_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/arrive_on_time"
-                android:layout_alignBottom="@id/arrive_on_time"
-                android:layout_marginLeft="@dimen/dp5"
-                android:textColor="@color/darkgray"
-                android:textSize="@dimen/sp13"
-                android:text="@string/arrive_on_time"/>
-
-            <ImageView
-                android:id="@+id/professional"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:maxWidth="@dimen/dp20"
-                android:maxHeight="@dimen/dp20"
-                android:padding="2px"
-                android:layout_below="@id/arrive_on_time"
-                android:layout_alignLeft="@id/arrive_on_time"
-                android:layout_marginTop="@dimen/dp10"
-                android:src="@mipmap/radio_default"
-                android:scaleType="centerInside"/>
-
-            <TextView
-                android:id="@+id/professional_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/professional"
-                android:layout_alignBottom="@id/professional"
-                android:layout_marginLeft="@dimen/dp5"
-                android:textColor="@color/darkgray"
-                android:textSize="@dimen/sp13"
-                android:text="@string/professional"/>
-
-
-            <ImageView
-                android:id="@+id/car_protect"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:maxWidth="@dimen/dp20"
-                android:maxHeight="@dimen/dp20"
-                android:padding="2px"
-                android:layout_below="@id/professional"
-                android:layout_alignLeft="@id/professional"
-                android:layout_marginTop="@dimen/dp10"
-                android:src="@mipmap/radio_default"
-                android:scaleType="centerInside"/>
-
-            <TextView
-                android:id="@+id/car_protect_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/car_protect"
-                android:layout_alignBottom="@id/car_protect"
-                android:layout_marginLeft="@dimen/dp5"
-                android:textColor="@color/darkgray"
-                android:textSize="@dimen/sp13"
-                android:text="@string/car_protect"/>
-
-            <ImageView
-                android:id="@+id/good_attitude"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/car_protect_tv"
-                android:layout_alignBottom="@id/car_protect_tv"
-                android:padding="2px"
-                android:adjustViewBounds="true"
-                android:maxWidth="@dimen/dp20"
-                android:maxHeight="@dimen/dp20"
-                android:layout_marginTop="@dimen/dp20"
-                android:layout_marginLeft="@dimen/dp50"
-                android:src="@mipmap/radio_default"
-                android:scaleType="centerInside"/>
-
-            <TextView
-                android:id="@+id/good_attitude_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/good_attitude"
-                android:layout_alignBottom="@id/good_attitude"
-                android:layout_marginLeft="@dimen/dp5"
-                android:textColor="@color/darkgray"
-                android:textSize="@dimen/sp13"
-                android:text="@string/good_attitude"/>
-
-            <ImageView
-                android:id="@+id/dress_neatly"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/professional_tv"
-                android:layout_alignBottom="@id/professional_tv"
-                android:layout_alignLeft="@id/good_attitude"
-                android:padding="2px"
-                android:adjustViewBounds="true"
-                android:maxWidth="@dimen/dp20"
-                android:maxHeight="@dimen/dp20"
-                android:layout_marginTop="@dimen/dp20"
-                android:src="@mipmap/radio_default"
-                android:scaleType="centerInside"/>
-
-            <TextView
-                android:id="@+id/dress_neatly_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/dress_neatly"
-                android:layout_alignBottom="@id/dress_neatly"
-                android:layout_marginLeft="@dimen/dp5"
-                android:textColor="@color/darkgray"
-                android:textSize="@dimen/sp13"
-                android:text="@string/dress_neatly"/>
-
-
-            <ImageView
-                android:id="@+id/complete_on_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/arrive_on_time_tv"
-                android:layout_alignBottom="@id/arrive_on_time_tv"
-                android:layout_alignLeft="@id/good_attitude"
-                android:padding="2px"
-                android:adjustViewBounds="true"
-                android:maxWidth="@dimen/dp20"
-                android:maxHeight="@dimen/dp20"
-                android:layout_marginTop="@dimen/dp20"
-                android:src="@mipmap/radio_default"
-                android:scaleType="centerInside"/>
-
-            <TextView
-                android:id="@+id/complete_on_time_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/complete_on_time"
-                android:layout_alignBottom="@id/complete_on_time"
-                android:layout_marginLeft="@dimen/dp5"
-                android:textColor="@color/darkgray"
-                android:textSize="@dimen/sp13"
-                android:text="@string/complete_on_time"/>
-
-            <View
-                android:id="@+id/v10"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#F0F0F0"
-                android:layout_margin="@dimen/dp20"
-                android:layout_below="@id/car_protect" />
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/noComment"
+                    android:text="@string/moComment"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/darkgray"
+                    android:textSize="@dimen/sp13"
+                    android:visibility="gone"
+                    android:gravity="center_horizontal"
+                    android:paddingBottom="@dimen/dp30"
+                    android:background="@android:color/white"
+                    android:layout_marginTop="@dimen/dp10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <RelativeLayout
+                    android:id="@+id/rll5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <RatingBar
+                        style="@style/LargeRatingBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/ratingBar"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/dp20"
+                        android:isIndicator="true"/>
 
-            <TextView
-                android:id="@+id/other_proposal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/darkgray"
-                android:layout_below="@id/v10"
-                android:textSize="@dimen/sp13"
-                android:paddingLeft="@dimen/dp20"
-                android:paddingRight="@dimen/dp20"
-                android:paddingBottom="@dimen/dp20"
-                android:textColorHint="@color/lightgray"
-                android:hint="其他意见和建议"/>
+                    <ImageView
+                        android:id="@+id/arrive_on_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:maxWidth="@dimen/dp20"
+                        android:maxHeight="@dimen/dp20"
+                        android:padding="2px"
+                        android:layout_below="@id/ratingBar"
+                        android:layout_marginTop="@dimen/dp20"
+                        android:layout_marginLeft="@dimen/dp20"
+                        android:src="@mipmap/radio_default"
+                        android:scaleType="centerInside"/>
+
+                    <TextView
+                        android:id="@+id/arrive_on_time_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/arrive_on_time"
+                        android:layout_alignBottom="@id/arrive_on_time"
+                        android:layout_marginLeft="@dimen/dp5"
+                        android:textColor="@color/darkgray"
+                        android:textSize="@dimen/sp13"
+                        android:text="@string/arrive_on_time"/>
+
+                    <ImageView
+                        android:id="@+id/professional"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:maxWidth="@dimen/dp20"
+                        android:maxHeight="@dimen/dp20"
+                        android:padding="2px"
+                        android:layout_below="@id/arrive_on_time"
+                        android:layout_alignLeft="@id/arrive_on_time"
+                        android:layout_marginTop="@dimen/dp10"
+                        android:src="@mipmap/radio_default"
+                        android:scaleType="centerInside"/>
+
+                    <TextView
+                        android:id="@+id/professional_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/professional"
+                        android:layout_alignBottom="@id/professional"
+                        android:layout_marginLeft="@dimen/dp5"
+                        android:textColor="@color/darkgray"
+                        android:textSize="@dimen/sp13"
+                        android:text="@string/professional"/>
+
+
+                    <ImageView
+                        android:id="@+id/car_protect"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:maxWidth="@dimen/dp20"
+                        android:maxHeight="@dimen/dp20"
+                        android:padding="2px"
+                        android:layout_below="@id/professional"
+                        android:layout_alignLeft="@id/professional"
+                        android:layout_marginTop="@dimen/dp10"
+                        android:src="@mipmap/radio_default"
+                        android:scaleType="centerInside"/>
+
+                    <TextView
+                        android:id="@+id/car_protect_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/car_protect"
+                        android:layout_alignBottom="@id/car_protect"
+                        android:layout_marginLeft="@dimen/dp5"
+                        android:textColor="@color/darkgray"
+                        android:textSize="@dimen/sp13"
+                        android:text="@string/car_protect"/>
+
+                    <ImageView
+                        android:id="@+id/good_attitude"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/car_protect_tv"
+                        android:layout_alignBottom="@id/car_protect_tv"
+                        android:padding="2px"
+                        android:adjustViewBounds="true"
+                        android:maxWidth="@dimen/dp20"
+                        android:maxHeight="@dimen/dp20"
+                        android:layout_marginTop="@dimen/dp20"
+                        android:layout_marginLeft="@dimen/dp50"
+                        android:src="@mipmap/radio_default"
+                        android:scaleType="centerInside"/>
+
+                    <TextView
+                        android:id="@+id/good_attitude_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/good_attitude"
+                        android:layout_alignBottom="@id/good_attitude"
+                        android:layout_marginLeft="@dimen/dp5"
+                        android:textColor="@color/darkgray"
+                        android:textSize="@dimen/sp13"
+                        android:text="@string/good_attitude"/>
+
+                    <ImageView
+                        android:id="@+id/dress_neatly"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/professional_tv"
+                        android:layout_alignBottom="@id/professional_tv"
+                        android:layout_alignLeft="@id/good_attitude"
+                        android:padding="2px"
+                        android:adjustViewBounds="true"
+                        android:maxWidth="@dimen/dp20"
+                        android:maxHeight="@dimen/dp20"
+                        android:layout_marginTop="@dimen/dp20"
+                        android:src="@mipmap/radio_default"
+                        android:scaleType="centerInside"/>
+
+                    <TextView
+                        android:id="@+id/dress_neatly_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/dress_neatly"
+                        android:layout_alignBottom="@id/dress_neatly"
+                        android:layout_marginLeft="@dimen/dp5"
+                        android:textColor="@color/darkgray"
+                        android:textSize="@dimen/sp13"
+                        android:text="@string/dress_neatly"/>
+
+
+                    <ImageView
+                        android:id="@+id/complete_on_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/arrive_on_time_tv"
+                        android:layout_alignBottom="@id/arrive_on_time_tv"
+                        android:layout_alignLeft="@id/good_attitude"
+                        android:padding="2px"
+                        android:adjustViewBounds="true"
+                        android:maxWidth="@dimen/dp20"
+                        android:maxHeight="@dimen/dp20"
+                        android:layout_marginTop="@dimen/dp20"
+                        android:src="@mipmap/radio_default"
+                        android:scaleType="centerInside"/>
+
+                    <TextView
+                        android:id="@+id/complete_on_time_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/complete_on_time"
+                        android:layout_alignBottom="@id/complete_on_time"
+                        android:layout_marginLeft="@dimen/dp5"
+                        android:textColor="@color/darkgray"
+                        android:textSize="@dimen/sp13"
+                        android:text="@string/complete_on_time"/>
+
+                    <View
+                        android:id="@+id/v10"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#F0F0F0"
+                        android:layout_margin="@dimen/dp20"
+                        android:layout_below="@id/car_protect" />
+
+                    <TextView
+                        android:id="@+id/other_proposal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/darkgray"
+                        android:layout_below="@id/v10"
+                        android:textSize="@dimen/sp13"
+                        android:paddingLeft="@dimen/dp20"
+                        android:paddingRight="@dimen/dp20"
+                        android:paddingBottom="@dimen/dp20"
+                        android:textColorHint="@color/lightgray"
+                        android:hint="其他意见和建议"/>
+
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

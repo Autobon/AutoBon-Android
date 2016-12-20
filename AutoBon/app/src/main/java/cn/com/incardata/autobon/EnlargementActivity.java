@@ -14,6 +14,7 @@ import java.util.LinkedList;
 
 import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
+import cn.com.incardata.view.ZoomImageView;
 
 /**查看放大图片(传递当前显示位置POSITION及地址数组IMAGE_URL字段)
  * Created by yang on 2016/6/14.
@@ -108,13 +109,13 @@ public class EnlargementActivity extends BaseActivity{
          */
         @Override
         public Object instantiateItem(ViewGroup container, int i) {
-            ImageView convertView = null;
+            ZoomImageView convertView = null;
             if (mViewCache.size() == 0){
-                convertView = new ImageView(getContext());
-                convertView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                convertView = new ZoomImageView(EnlargementActivity.this);
+                convertView.setScaleType(ImageView.ScaleType.MATRIX);
                 convertView.setOnClickListener(onClickPageListener);
             }else {
-                convertView = (ImageView) mViewCache.removeFirst();
+                convertView = (ZoomImageView) mViewCache.removeFirst();
             }
             ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + imgUrl[i], convertView, R.mipmap.load_image_failed);
             container.addView(convertView);

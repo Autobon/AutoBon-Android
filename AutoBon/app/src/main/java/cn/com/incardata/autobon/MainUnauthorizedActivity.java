@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -18,6 +19,11 @@ import cn.com.incardata.fragment.IndentMapFragment;
 import cn.com.incardata.getui.ActionType;
 import cn.com.incardata.getui.CustomIntentFilter;
 import cn.com.incardata.getui.OrderMsg;
+import cn.com.incardata.http.Http;
+import cn.com.incardata.http.NetURL;
+import cn.com.incardata.http.OnResult;
+import cn.com.incardata.http.response.OrderInfo;
+import cn.com.incardata.http.response.OrderInfoEntity;
 import cn.com.incardata.utils.T;
 
 /**
@@ -30,12 +36,16 @@ public class MainUnauthorizedActivity extends BaseActivity implements IndentMapF
     private FragmentTransaction transaction;
     private IndentMapFragment mFragment;
 
-    private TextView mAuthorization;
+    private TextView mAuthorization,receive_indent;
     private boolean isVerifying;//是否正在审核
+
+    private int orderId;
+    private OrderInfo orderInfo;
     /**
      * 认证通过
      */
     private boolean isVerified;
+    private ImageView iv_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +60,14 @@ public class MainUnauthorizedActivity extends BaseActivity implements IndentMapF
 
     private void init() {
         mAuthorization = (TextView) findViewById(R.id.start_authorization);
+        receive_indent = (TextView) findViewById(R.id.receive_indent);
+        iv_back = (ImageView) findViewById(R.id.iv_back);
+        iv_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         if (isVerifying){
             mAuthorization.setText(R.string.authorization_progress);
         }
@@ -59,11 +77,53 @@ public class MainUnauthorizedActivity extends BaseActivity implements IndentMapF
                 onClickInvoke();
             }
         });
+        receive_indent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isVerified){
+                    startActivity(MainAuthorizedActivity.class);
+                    finish();
+                    return;
+                }else {
+                    T.show(getContext(),getString(R.string.authorize_pass_take_order));
+                    return;
+                }
+            }
+        });
 
         transaction = fragmentManager.beginTransaction();
         mFragment = new IndentMapFragment();
         transaction.replace(R.id.fragment_container, mFragment);
         transaction.commit();
+    }
+
+
+
+    /**\
+     * 通过订单Id获取订单详情
+     */
+
+    public void getOrerInfo(){
+        showDialog();
+        Http.getInstance().getTaskToken(NetURL.getOrderInfoV2(orderId), "", OrderInfoEntity.class, new OnResult() {
+            @Override
+            public void onResult(Object entity) {
+                cancelDialog();
+                if (entity == null){
+                    T.show(getContext(),R.string.gain_data_failed);
+                    return;
+                }
+                if (entity instanceof OrderInfoEntity){
+                    OrderInfoEntity orderInfoEntity = (OrderInfoEntity) entity;
+                    if (orderInfoEntity.isStatus()){
+                        orderInfo = JSON.parseObject(orderInfoEntity.getMessage().toString(),OrderInfo.class);
+                        mFragment.setData(orderInfo);
+                    }else {
+                        T.show(getContext(),orderInfoEntity.getMessage().toString());
+                    }
+                }
+            }
+        });
     }
 
     private void onClickInvoke(){
@@ -89,10 +149,15 @@ public class MainUnauthorizedActivity extends BaseActivity implements IndentMapF
                 if (mFragment != null){
                     String json = intent.getStringExtra(ActionType.EXTRA_DATA);
                     OrderMsg orderMsg = JSON.parseObject(json, OrderMsg.class);
-                    mFragment.setData(orderMsg.getOrder(), orderMsg.getOrder().getCooperator());
+                    orderId = orderMsg.getOrder().getId();
+                    getOrerInfo();
+//                    mFragment.setData(orderMsg.getOrder(), orderMsg.getOrder().getCooperator());
                 }
             }else if (ActionType.ACTION_VERIFIED.equals(action)){
                 isVerified = true;
+                startActivity(MainAuthorizedActivity.class);
+                finish();
+                return;
             }
 
         }

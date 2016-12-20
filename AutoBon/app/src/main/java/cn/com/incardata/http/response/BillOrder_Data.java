@@ -2,7 +2,7 @@ package cn.com.incardata.http.response;
 
 import java.util.List;
 
-/**
+/** 账单详情列表
  * Created by zhangming on 2016/3/21.
  */
 public class BillOrder_Data {
@@ -11,7 +11,7 @@ public class BillOrder_Data {
     private int totalPages;
     private int pageSize;
     private int count;
-    private List<OrderInfo_Data> list;
+    private List<BillOrderList> list;
 
     public int getPage() {
         return page;
@@ -53,11 +53,11 @@ public class BillOrder_Data {
         this.count = count;
     }
 
-    public List<OrderInfo_Data> getList() {
+    public List<BillOrderList> getList() {
         return list;
     }
 
-    public void setList(List<OrderInfo_Data> list) {
+    public void setList(List<BillOrderList> list) {
         this.list = list;
     }
 }

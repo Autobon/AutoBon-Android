@@ -1,5 +1,6 @@
 package cn.com.incardata.autobon;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -31,12 +32,14 @@ import java.util.Map;
 
 import cn.com.incardata.adapter.PictureGridAdapter;
 import cn.com.incardata.application.MyApplication;
+import cn.com.incardata.fragment.DropOrderDialogFragment;
 import cn.com.incardata.http.Http;
 import cn.com.incardata.http.HttpClientInCar;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.IdPhotoEntity;
+import cn.com.incardata.http.response.OrderInfo;
 import cn.com.incardata.http.response.OrderInfo_Construction;
 import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.utils.AutoCon;
@@ -49,10 +52,10 @@ import cn.com.incardata.utils.T;
  * Created by zhangming on 2016/3/11.
  * 工作前上传图像
  */
-public class WorkBeforeActivity extends BaseActivity implements View.OnClickListener{
+public class WorkBeforeActivity extends BaseActivity implements View.OnClickListener,DropOrderDialogFragment.OnClickListener{
     private Context context;
-    private ImageView iv_my_info,iv_enter_more_page;
-    private TextView tv_day,tv_has_time;
+    private ImageView iv_my_info,iv_enter_more_page,iv_back;
+    private TextView tv_day;
     private Button next_btn;
     private RelativeLayout rl_single_pic,rl_default_pic;
 
@@ -67,13 +70,16 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
     private static final int COUNT_TIME_FLAG = 1;
 
     private boolean isRunning = true;
-    private OrderInfo_Data orderInfo;
+    private OrderInfo orderInfo;
     private OrderInfo_Construction construction;
+    private DropOrderDialogFragment dropOderDialog;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.work_before_activity);
+        fragmentManager = getFragmentManager();
         initView();
         initData();
         setListener();
@@ -90,7 +96,7 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
                     int minute = bundle.getInt("minute");
                     int second = bundle.getInt("second");
 
-                    tv_has_time.setText(hour+context.getString(R.string.tv_hour)+minute+context.getString(R.string.tv_minute)+second+context.getString(R.string.tv_second));
+//                    tv_has_time.setText(hour+context.getString(R.string.tv_hour)+minute+context.getString(R.string.tv_minute)+second+context.getString(R.string.tv_second));
                     break;
             }
         }
@@ -136,9 +142,10 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
         orderInfo = getIntent().getParcelableExtra(AutoCon.ORDER_INFO);
 
         iv_my_info = (ImageView) findViewById(R.id.iv_my_info);
-        iv_enter_more_page =(ImageView) findViewById(R.id.iv_enter_more_page);
+        iv_back = (ImageView) findViewById(R.id.iv_back);
+//        iv_enter_more_page =(ImageView) findViewById(R.id.iv_enter_more_page);
         tv_day = (TextView) findViewById(R.id.tv_day);
-        tv_has_time = (TextView) findViewById(R.id.has_use_time);
+//        tv_has_time = (TextView) findViewById(R.id.has_use_time);
         next_btn = (Button) findViewById(R.id.next_btn);
         rl_single_pic = (RelativeLayout) findViewById(R.id.rl_single_pic);
         rl_default_pic = (RelativeLayout) findViewById(R.id.rl_default_pic);
@@ -147,11 +154,11 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
         mAdapter = new PictureGridAdapter(this,MAX_PICS);
         gv_single_pic.setAdapter(mAdapter);
 
-        if (orderInfo.getMainTech().getId() == MyApplication.getInstance().getUserId()){
-            construction = orderInfo.getMainConstruct();
-        }else{
-            construction = orderInfo.getSecondConstruct();
-        }
+//        if (orderInfo.getMainTech().getId() == MyApplication.getInstance().getUserId()){
+//            construction = orderInfo.getMainConstruct();
+//        }else{
+//            construction = orderInfo.getSecondConstruct();
+//        }
     }
 
     private void initData(){
@@ -160,7 +167,8 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
 
     private void setListener(){
         iv_my_info.setOnClickListener(this);
-        iv_enter_more_page.setOnClickListener(this);
+//        iv_enter_more_page.setOnClickListener(this);
+        iv_back.setOnClickListener(this);
         next_btn.setOnClickListener(this);
         findViewById(R.id.rl_default_pic).setOnClickListener(this);
 
@@ -190,9 +198,12 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
             case R.id.iv_my_info:
                 startActivity(MyInfoActivity.class);
                 break;
-            case R.id.iv_enter_more_page:
-                startActivity(MoreActivity.class);
+            case R.id.iv_back:
+                finish();
                 break;
+//            case R.id.iv_enter_more_page:
+//                startActivity(MoreActivity.class);
+//                break;
             case R.id.rl_default_pic:
                 uploadWorkPhoto();
                 break;
@@ -260,8 +271,9 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
         urls = urls.substring(0,urls.length()-1);
         Log.i("test","urls======>"+urls);
         BasicNameValuePair bv_urls = new BasicNameValuePair("urls",urls);
+        String json = "?orderId=" + orderInfo.getId() + "&urls=" + urls;
 
-        Http.getInstance().postTaskToken(NetURL.SUBMIT_BEFORE_WORK_PHOTO_URL, IdPhotoEntity.class, new OnResult() {
+        Http.getInstance().putTaskToken(NetURL.SUBMIT_BEFORE_WORK_PHOTO_URLV2 + json,"", IdPhotoEntity.class, new OnResult() {
             @Override
             public void onResult(Object entity) {
                 if(entity == null){
@@ -269,7 +281,9 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
                     return;
                 }
                 IdPhotoEntity idPhotoEntity = (IdPhotoEntity) entity;
-                if(idPhotoEntity.isResult()){  //跳转
+                if(idPhotoEntity.isStatus()){  //跳转
+                    orderInfo.setStartTime(System.currentTimeMillis());
+                    orderInfo.setStatus("AT_WORK");
                     Intent intent = new Intent(context,WorkFinishActivity.class);
                     intent.putExtra(AutoCon.ORDER_INFO,orderInfo);
                     startActivity(intent);
@@ -278,7 +292,7 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
                     T.show(context,idPhotoEntity.getMessage());
                 }
             }
-        },bv_orderId,bv_urls);
+        });
     }
 
     @Override
@@ -336,19 +350,19 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
                     return;
                 }else {
                     IdPhotoEntity idPhotoEntity = JSON.parseObject(s, IdPhotoEntity.class);
-                    if (idPhotoEntity.isResult()){
+                    if (idPhotoEntity.isStatus()){
                         Bitmap bitmap = BitmapFactory.decodeFile(Uri.fromFile(tempFile).getPath());
                         //iv_car_upload_photo.setImageBitmap(bitmap);
                         rl_default_pic.setVisibility(View.GONE);
                         rl_single_pic.setVisibility(View.VISIBLE);
-                        mAdapter.addPic(bitmap,idPhotoEntity.getData());  //添加图片
+                        mAdapter.addPic(bitmap,idPhotoEntity.getMessage());  //添加图片
                     }else {
                         T.show(context,getString(R.string.upload_image_failed));
                         return;
                     }
                 }
             }
-        }.execute(uri.getPath(), NetURL.UPLOAD_WORK_PHOTO);
+        }.execute(uri.getPath(), NetURL.UPLOAD_WORK_PHOTOV2);
     }
 
     @Override
@@ -366,5 +380,28 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
             mAdapter.onDestory();
             System.gc();
         }
+    }
+
+    /**放弃订单
+     * @param v
+     */
+    public void onClickDropOrder(View v){
+        //显示放弃订单对话框
+        if (dropOderDialog == null){
+            dropOderDialog = new DropOrderDialogFragment();
+        }
+        dropOderDialog.show(fragmentManager, "dropOderDialog");
+    }
+
+    @Override
+    public void onDropClick(View v) {
+        if (orderInfo == null) {
+            T.show(getContext(), getString(R.string.not_found_order_tips));
+            return;
+        }
+        Intent intent = new Intent(this,CancelOrderReasonActivity.class);
+        intent.putExtra(AutoCon.ORDER_ID,orderInfo.getId());
+        startActivity(intent);
+
     }
 }

@@ -123,7 +123,7 @@ public class BillAdapter extends BaseAdapter{
         holder.tv_year.setText(year + context.getString(R.string.year_text));
         holder.tv_month.setText(monthMap.get(month));
         holder.tv_money.setText("￥"+String.valueOf(money));
-        if(allYearBills.get(position).isPayed()){  //已结算
+        if(allYearBills.get(position).isPaid()){  //已结算
             holder.tv_status.setBackgroundResource(R.drawable.bill_pay);
             holder.tv_status.setText(context.getString(R.string.pay_text));
             holder.tv_status.setTextColor(context.getResources().getColor(R.color.main_white));

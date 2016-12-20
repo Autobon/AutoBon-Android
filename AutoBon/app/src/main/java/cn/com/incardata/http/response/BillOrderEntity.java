@@ -1,6 +1,6 @@
 package cn.com.incardata.http.response;
 
-/**
+/** 账单详情实体类
  * Created by zhangming on 2016/3/21.
  */
 public class BillOrderEntity extends BaseEntity{

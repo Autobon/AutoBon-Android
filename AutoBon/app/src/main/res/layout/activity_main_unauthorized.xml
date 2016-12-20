@@ -6,16 +6,27 @@
     android:orientation="vertical"
     android:background="@color/main_white"
     tools:context=".MainUnauthorizedActivity">
-
-    <TextView
-        android:id="@+id/title"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp45"
-        android:background="@color/main_orange"
-        android:textSize="@dimen/sp18"
-        android:textColor="@android:color/white"
-        android:gravity="center"
-        android:text="@string/app_name" />
+        android:background="@color/main_orange">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="@dimen/dp35"
+            android:layout_height="match_parent"
+            android:padding="@dimen/dp10"
+            android:scaleType="centerInside"
+            android:src="@mipmap/default_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/app_name"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp18" />
+    </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/fragment_container"
@@ -41,7 +52,6 @@
             android:paddingBottom="@dimen/dp10"
             android:textSize="@dimen/sp15"
             android:gravity="center"
-            android:enabled="false"
             android:textColor="#dddddd"
             android:layout_height="wrap_content" />
         <View

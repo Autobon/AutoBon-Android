@@ -132,7 +132,7 @@ public class Http{
 	 */
 	public void putTaskToken(String strUrl, String param, Class<?> cls, OnResult onResult){
 		msgQueue.put(onResult.hashCode(), onResult);
- 		taskToken(strUrl, param, PUT, cls, onResult.hashCode());
+ 		taskToken(strUrl,param, PUT, cls, onResult.hashCode());
 	}
 
 	/**

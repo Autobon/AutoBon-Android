@@ -15,20 +15,29 @@ import java.util.ArrayList;
 
 import cn.com.incardata.application.MyApplication;
 import cn.com.incardata.autobon.EnlargementActivity;
+import cn.com.incardata.autobon.OrderReceiveActivity;
 import cn.com.incardata.autobon.R;
+import cn.com.incardata.autobon.WorkBeforeActivity;
+import cn.com.incardata.autobon.WorkFinishActivity;
+import cn.com.incardata.autobon.WorkSignInActivity;
+import cn.com.incardata.fragment.ForceStartWorkDialogFragment;
 import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
+import cn.com.incardata.http.response.OrderInfo;
 import cn.com.incardata.http.response.OrderInfo_Data;
+import cn.com.incardata.http.response.UnfinishOrder;
+import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.DateCompute;
 
-/**已抢订单
+/**
+ * 已抢订单
  * Created by wanghao on 16/3/9.
  */
-public class OrderUnfinishedAdapter extends BaseAdapter{
+public class OrderUnfinishedAdapter extends BaseAdapter {
     private Context context;
-    private ArrayList<OrderInfo_Data> mList;
+    private ArrayList<OrderInfo> mList;
 
-    public OrderUnfinishedAdapter(Context context, ArrayList<OrderInfo_Data> mList){
+    public OrderUnfinishedAdapter(Context context, ArrayList<OrderInfo> mList) {
         this.context = context;
         this.mList = mList;
     }
@@ -50,58 +59,88 @@ public class OrderUnfinishedAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(final int i, View view, ViewGroup viewGroup) {
+    public View getView(final int position, View view, ViewGroup viewGroup) {
         Holder holder = null;
         if (view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.list_unfinished_item, viewGroup, false);
             holder = new Holder();
 
             holder.operate = (Button) view.findViewById(R.id.order_operate);
-            holder.orderType = (TextView) view.findViewById(R.id.order_type);
+//            holder.orderType = (TextView) view.findViewById(R.id.order_type);
             holder.orderNumber = (TextView) view.findViewById(R.id.order_number);
             holder.orderTime = (TextView) view.findViewById(R.id.order_time);
-            holder.orderImage = (ImageView) view.findViewById(R.id.order_image);
-//            holder.hideBg = (TextView) view.findViewById(R.id.order_hide_text);
-
-            holder.imageOnclick = new ImageOnclick(i);
-            holder.orderImage.setOnClickListener(holder.imageOnclick);
+            holder.types[0] = (TextView) view.findViewById(R.id.btn1);
+            holder.types[1] = (TextView) view.findViewById(R.id.btn2);
+            holder.types[2] = (TextView) view.findViewById(R.id.btn3);
+            holder.types[3] = (TextView) view.findViewById(R.id.btn4);
+            holder.warn = (ImageView) view.findViewById(R.id.warn);
             view.setTag(holder);
-        }else {
+        } else {
             holder = (Holder) view.getTag();
-            holder.imageOnclick.setPosition(i);
         }
 
-        holder.orderType.setText(MyApplication.getInstance().getSkill(mList.get(i).getOrderType()));
+        String[] type = (mList.get(position).getType()).split(",");
+//
+        for (int i = 0; i < 4; i++){
+            if (i < type.length){
+                holder.types[i].setVisibility(View.VISIBLE);
+                holder.types[i].setText(getProject(type[i]));
+            }else {
+                holder.types[i].setVisibility(View.INVISIBLE);
+            }
+        }
+
+
         holder.orderNumber.setText(R.string.order_serial_number);
-        holder.orderNumber.append(mList.get(i).getOrderNum());
+        holder.orderNumber.append(mList.get(position).getOrderNum());
         holder.orderTime.setText(R.string.order_time);
-        holder.orderTime.append(DateCompute.getDate(mList.get(i).getOrderTime()));
+        holder.orderTime.append(DateCompute.getDate(mList.get(position).getAgreedStartTime()));
+        if ((mList.get(position).getAgreedStartTime() - System.currentTimeMillis()) < 60 * 60 * 1000 && (mList.get(position).getAgreedStartTime() - System.currentTimeMillis()) > 0){
+            holder.warn.setVisibility(View.VISIBLE);
+        }else {
+            holder.warn.setVisibility(View.GONE);
+        }
+
+        if ("TAKEN_UP".equals(mList.get(position).getStatus())) {//进入开始工作
+            holder.operate.setText(R.string.start_work);
+        } else {
+            holder.operate.setText(R.string.inputOrder);
+        }
 
         holder.operate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mListener != null){
-                    mListener.onClickOrder(i);
+                if (mListener != null) {
+                    mListener.onClickOrder(position);
                 }
             }
         });
 
-        ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + mList.get(i).getPhoto(), holder.orderImage, 0);
-//        ImageLoaderCache.getInstance().loader(mList.get(i).getPhoto(), holder.orderImage, 0);
         return view;
     }
 
-    private class Holder{
+    private class Holder {
         Button operate;
-        TextView orderType;
         TextView orderNumber;
         TextView orderTime;
-        ImageView orderImage;
-        ImageOnclick imageOnclick;
-//        TextView hideBg;
+        private TextView[] types = new TextView[4];
+        ImageView warn;
     }
 
-    private class ImageOnclick extends AsInnerOnclick{
+    public String getProject(String type) {
+        if ("1".equals(type)) {
+            return "隔热膜";
+        } else if ("2".equals(type)) {
+            return "隐形车衣";
+        } else if ("3".equals(type)) {
+            return "车身改色";
+        } else if ("4".equals(type)) {
+            return "美容清洁";
+        } else
+            return null;
+    }
+
+    private class ImageOnclick extends AsInnerOnclick {
         public ImageOnclick(int position) {
             super(position);
         }
@@ -115,15 +154,17 @@ public class OrderUnfinishedAdapter extends BaseAdapter{
             context.startActivity(intent);
 //            context.overridePendingTransition(R.anim.anim_image_enter, R.anim.anim_image_quit);
         }
-    };
+    }
+
+    ;
 
     private OnClickOrderListener mListener;
 
-    public void setOnClickOrderListener(OnClickOrderListener mListener){
+    public void setOnClickOrderListener(OnClickOrderListener mListener) {
         this.mListener = mListener;
     }
 
-    public interface OnClickOrderListener{
+    public interface OnClickOrderListener {
         void onClickOrder(int position);
     }
 }

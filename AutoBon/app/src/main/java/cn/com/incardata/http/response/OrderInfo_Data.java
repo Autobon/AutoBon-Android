@@ -3,7 +3,7 @@ package cn.com.incardata.http.response;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
+/**未完成订单信息
  * Created by wanghao on 2016/3/10.
  */
 public class OrderInfo_Data implements Parcelable {

@@ -16,9 +16,7 @@ public class StringUtil {
             "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"};
 
     /**
-     * ת���ֽ�����Ϊ16�����ַ�
-     *
-     * @param b �ֽ�����
+     * @param bty
      * @return 16�����ַ�
      */
     private static String byteArrayToHexString(byte[] bty) {
@@ -31,9 +29,8 @@ public class StringUtil {
     }
 
     /**
-     * ת���ֽ���Ϊ16�����ַ�
      *
-     * @param b byte��ֵ
+     * @param  byt
      * @return 16�����ַ�
      */
     private static String byteToHexString(byte byt) {

@@ -31,7 +31,7 @@ import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
 
 
-/**
+/** 注册
  * Created by Administrator on 2016/2/16.
  */
 public class RegisterActivity extends BaseActivity implements View.OnClickListener{
@@ -158,7 +158,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private void sendValidCode(String phone){
         if(NetWorkHelper.isNetworkAvailable(context)) {
             BasicNameValuePair bv_phone = new BasicNameValuePair("phone",phone);
-            Http.getInstance().getTaskToken(NetURL.VERIFY_SMS, VerifySmsEntity.class, new OnResult() {
+            Http.getInstance().postTaskToken(NetURL.VERIFY_SMSV2, VerifySmsEntity.class, new OnResult() {
                 @Override
                 public void onResult(Object entity) {
                     if (entity == null) {
@@ -166,10 +166,12 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                         return;
                     }
                     VerifySmsEntity verifySmsEntity = (VerifySmsEntity) entity;
-                    if(verifySmsEntity.isResult()){
+                    if(verifySmsEntity.isStatus()){
                         countDownTimer(60); //验证码发送成功后,再倒计时60秒
                         T.show(context,context.getString(R.string.send_code_success));
                         return;
+                    }else {
+                        T.show(context,verifySmsEntity.getMessage());
                     }
                 }
             },bv_phone);
@@ -180,9 +182,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void submitRegisterInfo(){
-        String phone = et_phone.getText().toString().trim();
+        final String phone = et_phone.getText().toString().trim();
         String code = et_code.getText().toString().trim();
-        String password = et_pwd.getText().toString().trim();
+        final String password = et_pwd.getText().toString().trim();
         if(StringUtil.isEmpty(phone)){
             T.show(context,context.getString(R.string.empty_phone));
             return;
@@ -219,7 +221,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         mList.add(new BasicNameValuePair("verifySms",code));
 
         if(NetWorkHelper.isNetworkAvailable(context)) {
-            Http.getInstance().postTaskToken(NetURL.REGISTER, RegisterEntity.class, new OnResult() {
+            Http.getInstance().postTaskToken(NetURL.REGISTERV2, RegisterEntity.class, new OnResult() {
                 @Override
                 public void onResult(Object entity) {
                     if (entity == null) {
@@ -227,21 +229,19 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                         return;
                     }
                     RegisterEntity registerEntity = (RegisterEntity) entity;
-                    if(registerEntity.isResult()){  //成功
+                    if(registerEntity.isStatus()){  //成功
                         T.show(context,context.getString(R.string.register_success_tips));
                         //TODO 注册成功后清空任务栈返回登录界面
                         Intent intent = new Intent(context, LoginActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("activityId",1);
+                        intent.putExtra("phone",phone);
+                        intent.putExtra("password",password);
                         startActivity(intent);
                         finish();
                     }else{  //失败
-                        if("OCCUPIED_ID".equals(registerEntity.getError())){  //手机号已注册
-                            T.show(context,context.getString(R.string.phone_has_register_tips));
-                            return;
-                        }else if("ILLEGAL_PARAM".equals(registerEntity.getError())){  //验证码错误
-                            T.show(context,context.getString(R.string.valid_code_error_tips));
-                            return;
-                        }
+                        T.show(context,registerEntity.getMessage().toString());
+                        return;
                     }
                 }
             },(BasicNameValuePair[]) mList.toArray(new BasicNameValuePair[mList.size()]));

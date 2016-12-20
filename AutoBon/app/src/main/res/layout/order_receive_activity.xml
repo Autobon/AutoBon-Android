@@ -99,10 +99,10 @@
             android:textSize="@dimen/sp15" />
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#eeeeee" />
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:background="#eeeeee" />-->
 
     <LinearLayout
         android:id="@+id/ll_tab_bottom"
@@ -110,15 +110,15 @@
         android:layout_height="@dimen/dp40"
         android:orientation="horizontal" >
 
-        <TextView
-            android:id="@+id/tv_add_contact"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/tab_one_text"
-            android:textColor="@color/lightgray"
-            android:textSize="@dimen/sp15" />
+        <!--<TextView-->
+            <!--android:id="@+id/tv_add_contact"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/tab_one_text"-->
+            <!--android:textColor="@color/lightgray"-->
+            <!--android:textSize="@dimen/sp15" />-->
 
         <TextView
             android:id="@+id/begin_work"
@@ -128,6 +128,8 @@
             android:background="@color/main_orange"
             android:gravity="center"
             android:text="@string/tab_two_text"
+            android:layout_marginLeft="@dimen/dp20"
+            android:layout_marginRight="@dimen/dp20"
             android:textColor="@android:color/white"
             android:textSize="@dimen/sp15" />
     </LinearLayout>

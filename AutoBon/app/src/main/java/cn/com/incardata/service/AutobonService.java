@@ -87,8 +87,8 @@ public class AutobonService extends Service {
                     mHandler.sendEmptyMessageDelayed(10, 5000);
                     return;
                 }
-                if (entity instanceof PushIDEntity && !((PushIDEntity) entity).isResult()){
-                    L.d("Getui", "cid上传失败");
+                if (entity instanceof PushIDEntity && !((PushIDEntity) entity).isStatus()){
+                    L.d("Getui", "cid上传成功");
                     mHandler.sendEmptyMessageDelayed(0, 5000);
                 }
             }
@@ -144,12 +144,14 @@ public class AutobonService extends Service {
             mParams.add(new BasicNameValuePair("province", bdLocation.getProvince()));
             mParams.add(new BasicNameValuePair("city", bdLocation.getCity()));
             mParams.add(new BasicNameValuePair("district", bdLocation.getDistrict()));
+            mParams.add(new BasicNameValuePair("street", bdLocation.getStreet()));
+            mParams.add(new BasicNameValuePair("streetNumber", bdLocation.getStreetNumber()));
 
-            Http.getInstance().postTaskToken(NetURL.REPORT_MY_ADDRESS, ReportLocationEntity.class, new OnResult() {
+            Http.getInstance().postTaskToken(NetURL.REPORT_MY_ADDRESSV2, ReportLocationEntity.class, new OnResult() {
                 @Override
                 public void onResult(Object entity) {
                     if (entity == null)return;
-                    L.d("BDLocation-uploadLocal", "isResult=" + ((ReportLocationEntity)entity).isResult());
+                    L.d("BDLocation-uploadLocal", "isResult=" + ((ReportLocationEntity)entity).isStatus());
                 }
             }, (BasicNameValuePair[]) mParams.toArray(new BasicNameValuePair[mParams.size()]));
         }

@@ -32,7 +32,7 @@ public class BaseBaiduMapActivity extends BaseActivity{
 
     protected static LatLng mLatLng = new LatLng(30.511869,114.405746);
     protected static String mAddress = "4S";  //测试地址,可以更改
-    protected static int scanTime = 10*1000;  //设置10s定位一次
+    protected static int scanTime = 60*1000;  //设置10s定位一次
 
 
     @Override

@@ -84,6 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/sp15"
+                android:text="0"
                 android:textColor="@color/main_orange"
                 android:layout_marginLeft="@dimen/dp5"/>
 
@@ -107,6 +108,7 @@
                 android:layout_marginLeft="@dimen/dp10"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
+                android:text="0"
                 android:textColor="@color/main_white"
                 android:textSize="@dimen/sp13"/>
         </LinearLayout>
@@ -418,8 +420,8 @@
         android:gravity="center"
         android:text="@string/logout_text"
         android:textSize="@dimen/sp15"
-        android:textColor="@color/lightgray"
-        android:background="@android:color/white"
+        android:textColor="@color/main_white"
+        android:background="@color/main_orange"
         android:clickable="true"
         android:focusable="true"/>
 </LinearLayout>

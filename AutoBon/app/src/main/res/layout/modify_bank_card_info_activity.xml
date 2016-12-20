@@ -28,121 +28,156 @@
             android:textColor="@android:color/white"
             android:textSize="@dimen/sp18" />
     </RelativeLayout>
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp40"
-        android:layout_marginTop="@dimen/dp10"
-        android:background="@android:color/white"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="@dimen/dp5"
-            android:layout_height="match_parent"
-            android:background="@color/main_orange" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/dp15"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text="@string/bank_info_text"
-            android:textColor="@color/darkgray"
-            android:textSize="@dimen/sp15" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/lightgray" />
-
-    <TextView
-        android:id="@+id/tv_name"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp60"
-        android:background="@android:color/white"
-        android:gravity="center_vertical"
-        android:paddingLeft="@dimen/dp25"
-        android:textColor="@color/line_color"
-        android:textSize="@dimen/sp15"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/lightgray" />
-
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingTop="@dimen/dp20"
-        android:paddingBottom="@dimen/dp40">
-
-        <TableRow
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:background="@color/main_white"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp60"
-            android:layout_marginRight="@dimen/dp60">
-            <Spinner
-                android:id="@+id/sp_bank_catrgory"
-                android:layout_width="0dp"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp40"
+                android:layout_marginTop="@dimen/dp10"
+                android:background="@android:color/white"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="@dimen/dp5"
+                    android:layout_height="match_parent"
+                    android:background="@color/main_orange" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp15"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/bank_info_text"
+                    android:textColor="@color/darkgray"
+                    android:textSize="@dimen/sp15" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/lightgray" />
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp60"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dp25"
+                android:textColor="@color/line_color"
+                android:textSize="@dimen/sp15"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/lightgray" />
+
+            <TableLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/spinner_bg"
-                android:spinnerMode="dropdown" />
-        </TableRow>
-        <EditText
-            android:id="@+id/bank_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp60"
-            android:layout_marginRight="@dimen/dp60"
-            android:textColor="@color/darkgray"
-            android:textSize="@dimen/sp15"
-            android:background="@null"
-            android:maxLength="20"
-            android:singleLine="true"
-            android:inputType="number"
-            android:paddingBottom="@dimen/dp5"
-            android:layout_marginTop="@dimen/dp20"
-            android:textColorHint="@color/lightgray"
-            android:hint="@string/bank_number"/>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/lightgray"
-            android:layout_marginTop="@dimen/dp10"
-            android:layout_marginLeft="@dimen/dp60"
-            android:layout_marginRight="@dimen/dp60"/>
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/dp20"
+                android:paddingBottom="@dimen/dp40">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp60"
-            android:layout_marginRight="@dimen/dp60"
-            android:gravity="left"
-            android:textSize="@dimen/sp10"
-            android:textColor="@color/gray_A3"
-            android:text="@string/please_verify_bank_card_number"/>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp60"
+                    android:layout_marginRight="@dimen/dp60">
+                    <Spinner
+                        android:id="@+id/sp_bank_catrgory"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/spinner_bg"
+                        android:spinnerMode="dropdown" />
+                </TableRow>
+                <EditText
+                    android:id="@+id/bank_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp60"
+                    android:layout_marginRight="@dimen/dp60"
+                    android:textColor="@color/darkgray"
+                    android:textSize="@dimen/sp15"
+                    android:background="@null"
+                    android:maxLength="20"
+                    android:singleLine="true"
+                    android:inputType="number"
+                    android:paddingBottom="@dimen/dp5"
+                    android:layout_marginTop="@dimen/dp20"
+                    android:textColorHint="@color/lightgray"
+                    android:hint="@string/bank_number"/>
 
-    </TableLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/lightgray"
+                    android:layout_marginTop="@dimen/dp10"
+                    android:layout_marginLeft="@dimen/dp60"
+                    android:layout_marginRight="@dimen/dp60"/>
 
-    <Button
-        android:id="@+id/submit_bank_card_info_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft ="@dimen/dp60"
-        android:layout_marginRight="@dimen/dp60"
-        android:layout_marginTop="@dimen/dp30"
-        android:paddingTop="@dimen/dp12"
-        android:paddingBottom="@dimen/dp12"
-        android:text="@string/btn_text_submit"
-        android:gravity="center"
-        android:textSize="@dimen/sp18"
-        android:background="@drawable/login_btn_selector"
-        android:textColor="@android:color/white"/>
+                <EditText
+                    android:id="@+id/bank_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp60"
+                    android:layout_marginRight="@dimen/dp60"
+                    android:textColor="@color/darkgray"
+                    android:textSize="@dimen/sp15"
+                    android:background="@null"
+                    android:maxLength="20"
+                    android:singleLine="true"
+                    android:paddingBottom="@dimen/dp5"
+                    android:layout_marginTop="@dimen/dp20"
+                    android:textColorHint="@color/lightgray"
+                    android:hint="@string/bank_andress1"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/lightgray"
+                    android:layout_marginTop="@dimen/dp10"
+                    android:layout_marginLeft="@dimen/dp60"
+                    android:layout_marginRight="@dimen/dp60"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp60"
+                    android:layout_marginRight="@dimen/dp60"
+                    android:gravity="left"
+                    android:textSize="@dimen/sp10"
+                    android:textColor="@color/gray_A3"
+                    android:text="@string/please_verify_bank_card_number"/>
+
+            </TableLayout>
+
+            <Button
+                android:id="@+id/submit_bank_card_info_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft ="@dimen/dp60"
+                android:layout_marginRight="@dimen/dp60"
+                android:layout_marginTop="@dimen/dp30"
+                android:paddingTop="@dimen/dp12"
+                android:paddingBottom="@dimen/dp12"
+                android:text="@string/btn_text_submit"
+                android:gravity="center"
+                android:textSize="@dimen/sp18"
+                android:background="@drawable/login_btn_selector"
+                android:textColor="@android:color/white"/>
+        </LinearLayout>
+    </ScrollView>
+
+
 </LinearLayout>

@@ -9,19 +9,22 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+
 import cn.com.incardata.http.Http;
 import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.http.OnResult;
-import cn.com.incardata.http.response.MyInfoEntity;
-import cn.com.incardata.http.response.MyInfo_Data;
+import cn.com.incardata.http.response.MyMessage;
+import cn.com.incardata.http.response.MyMessageData;
+import cn.com.incardata.http.response.MyMessageEntity;
 import cn.com.incardata.utils.DecimalUtil;
 import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
 import cn.com.incardata.view.CircleImageView;
 
-/**
+/** 我的信息
  * Created by zhangming on 2016/2/25.
  */
 public class MyInfoActivity extends BaseActivity implements View.OnClickListener{
@@ -35,6 +38,8 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
     private String name;  //技师姓名
     private String bank;
     private String bankCardNumber;
+    private String bankAddress;
+    private MyMessage myMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,65 +90,132 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         findViewById(R.id.server_conter_layout).setOnClickListener(this);
     }
 
-    private MyInfo_Data myInfo;
+    /**
+     * 此处获取认证进度信息返回的就是我的信息的字段
+     */
+//    private void getDataFromServer(){
+//        Http.getInstance().getTaskToken(NetURL.MY_INFO_URLV2, MyMessageEntity.class, new OnResult() {
+//            @Override
+//            public void onResult(Object entity) {
+//                if(entity == null){
+//                    T.show(context,context.getString(R.string.get_info_failed));
+//                    return;
+//                }
+//                MyMessageEntity myMessageEntity = (MyMessageEntity) entity;
+////                if (myMessageEntity.isStatus()){
+////
+////                }
+//                MyMessageData myMessageData = JSON.parseObject(myMessageEntity.getMessage().toString(),MyMessageData.class);
+//                myMessage = myMessageData.getTechnician();
+//                if(myMessage!=null){
+//                    String status = myMessage.getStatus(); //审核状态
+//                    String avatar = myMessage.getAvatar(); //技师头像地址URL
+//                    String name = myMessage.getName();
+//                    String idNo = myMessage.getIdNo();  //身份证号
+//                    String resume = myMessage.getResume();
+//                    String reference = myMessage.getReference();
+//                    String bankCardNo = myMessage.getBankCardNo(); //银行卡号
+//                    String bank = myMessage.getBank();  //银行
+//                    String bankAdress = myMessage.getBankAddress();
+//                    String idPhoto = myMessage.getIdPhoto();  //身份证图像地址URL
+////                    String verifyMsg = myMessage.getVerifyMsg();  //原因
+//
+//
+//                    if("IN_VERIFICATION".equals(status)){ //等待审核
+//                        tv_status.setText(context.getString(R.string.authorize_IN_VERIFICATION));
+//                    }else if("REJECTED".equals(status)){  //审核失败
+//                        ll_failed_reason.setVisibility(View.VISIBLE);
+//                        btn_change_info.setVisibility(View.VISIBLE);
+//                        failedReason.setText(myMessage.getVerifyMsg());
+//                        tv_status.setText(context.getString(R.string.authorize_REJECTED));
+//                    }
+//                    tv_username.setText(name);
+//                    if (TextUtils.isEmpty(reference)){
+//                        tv_reference.setText("无");
+//                    }else {
+//                        tv_reference.setText(reference);
+//                    }
+//                    ImageLoaderCache.getInstance().loader(NetURL.IP_PORT+avatar,iv_circle);
+//                    ImageLoaderCache.getInstance().loader(NetURL.IP_PORT+idPhoto,iv_card_photo);
+//                    tv_id_number.setText(idNo);
+//                    tv_bank_number.setText(bankCardNo);
+//                    tv_bank.setText(bank);
+//                    tv_bank_address.setText(bankAdress);
+//                    if (TextUtils.isEmpty(resume)){
+//                        tv_resume.setText("无");
+//                    }else {
+//                        tv_resume.setText(resume);
+//                    }
+//
+//                }else {
+//                    T.show(getContext(),getString(R.string.dataUploadFailed));
+//                }
+//            }
+//        });
+//    }
+
+//    private MyInfo_Data myInfo;
     private void getDataFromServer(){
         if(NetWorkHelper.isNetworkAvailable(context)) {
-            Http.getInstance().getTaskToken(NetURL.MY_INFO_URL, MyInfoEntity.class, new OnResult() {
+            Http.getInstance().getTaskToken(NetURL.MY_INFO_URLV2, MyMessageEntity.class, new OnResult() {
                 @Override
                 public void onResult(Object entity) {
                     if (entity == null) {
                         T.show(context, context.getString(R.string.get_info_failed));
                         return;
                     }
-                    MyInfoEntity myInfoEntity = (MyInfoEntity) entity;
-                     myInfo = myInfoEntity.getData();
+                    MyMessageEntity myInfoEntity = (MyMessageEntity) entity;
 
-                    String avatar = myInfo.getAvatar(); //技师头像url尾部
-                    name = myInfo.getName(); //技师姓名
-                    String star = myInfo.getStarRate();  //星级
-                    bank = myInfo.getBank(); //银行字典
-                    bankCardNumber = myInfo.getBankCardNo(); //银行卡号
+                    if (myInfoEntity.isStatus()){
+                        MyMessageData myMessageData = JSON.parseObject(myInfoEntity.getMessage().toString(),MyMessageData.class);
+                        myMessage = myMessageData.getTechnician();
+                        String avatar = myMessage.getAvatar(); //技师头像url尾部
+                        name = myMessage.getName(); //技师姓名
+                        String star = myMessageData.getStarRate();  //星级
+                        bank = myMessage.getBank(); //银行字典
+                        bankCardNumber = myMessage.getBankCardNo(); //银行卡号
+                        bankAddress = myMessage.getBankAddress();//开户行地址
 
-                    if(StringUtil.isNotEmpty(myInfo.getTotalOrders())){
-                        try{
-                            int totalOrders = Integer.parseInt(myInfo.getTotalOrders());  //订单数
-                            tv_order_num.setText(String.valueOf(totalOrders));
-                        }catch (NumberFormatException e){
-                            tv_order_num.setText("0");
+                        if(StringUtil.isNotEmpty(myMessageData.getTotalOrders())){
+                            try{
+                                int totalOrders = Integer.parseInt(myMessageData.getTotalOrders());  //订单数
+                                tv_order_num.setText(String.valueOf(totalOrders));
+                            }catch (NumberFormatException e){
+                                tv_order_num.setText("0");
+                            }
                         }
-                    }
 
-                    if(StringUtil.isNotEmpty(myInfo.getTotalOrders())){
-                        try{
-                            double balance = Double.parseDouble(myInfo.getBalance());  //余额
-                            tv_cost.setText(String.valueOf(balance));
-                        }catch (NumberFormatException e){
-                            tv_cost.setText("0");
+                        if(StringUtil.isNotEmpty(myMessageData.getBalance())){
+                            try{
+                                double balance = Double.parseDouble(myMessageData.getBalance());  //余额
+                                tv_cost.setText(String.valueOf(balance));
+                            }catch (NumberFormatException e){
+                                tv_cost.setText("0");
+                            }
                         }
-                    }
 
-                    if(StringUtil.isNotEmpty(myInfo.getUnpaidOrders())){
-                        try{
-                            int unpadOrders = Integer.parseInt(myInfo.getUnpaidOrders());  //账单数
-                            tv_my_order_num.setText(String.valueOf(unpadOrders));
-                        }catch (NumberFormatException e){
-                            tv_my_order_num.setText("0");
+                        if(StringUtil.isNotEmpty(myMessageData.getUnpaidOrders())){
+                            try{
+                                int unpadOrders = Integer.parseInt(myMessageData.getUnpaidOrders());  //账单数
+                                tv_my_order_num.setText(String.valueOf(unpadOrders));
+                            }catch (NumberFormatException e){
+                                tv_my_order_num.setText("0");
+                            }
                         }
-                    }
-
-                    if(StringUtil.isNotEmpty(avatar)){
-                        ImageLoaderCache.getInstance().loader(NetURL.IP_PORT+avatar,iv_circle);
-                    }
-                    if(StringUtil.isNotEmpty(name)){
-                        tv_login_username.setText(name);
-                    }
-                    try {
-                        float starNum = Float.parseFloat(star);
-                        mRatingbar.setRating((int)Math.floor(starNum));  //取整设置星级
-                        tv_rate.setText(String.valueOf(DecimalUtil.FloatDecimal1(starNum)));  //设置保留一位小数
-                    }catch (Exception e){
-                        mRatingbar.setRating(0);
-                        tv_rate.setText("0");
+                        if(StringUtil.isNotEmpty(avatar)){
+                            ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + avatar,iv_circle);
+                        }
+                        if(StringUtil.isNotEmpty(name)){
+                            tv_login_username.setText(name);
+                        }
+                        try {
+                            float starNum = Float.parseFloat(star);
+                            mRatingbar.setRating((int)Math.floor(starNum));  //取整设置星级
+                            tv_rate.setText(String.valueOf(DecimalUtil.FloatDecimal1(starNum)));  //设置保留一位小数
+                        }catch (Exception e){
+                            mRatingbar.setRating(0);
+                            tv_rate.setText("0");
+                        }
                     }
                 }
             });
@@ -174,21 +246,24 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
                 bundle.putString("rest_money",rest_money);  //余额信息
                 bundle.putString("bank",bank);
                 bundle.putString("bankCardNumber",bankCardNumber);
+                bundle.putString("bankAddress",bankAddress);
                 startActivity(RestInfoActivity.class,bundle);
                 break;
             case R.id.ll_order_num: //账单
                 startActivity(BillActivity.class);
                 break;
             case R.id.my_info_layout:
-                Intent intent1 = new Intent(getContext(), AuthorizeActivity.class);
-                intent1.putExtra("isAgain", true);
-                intent1.putExtra("name", myInfo.getName());
-                intent1.putExtra("headUrl", myInfo.getAvatar());
-                intent1.putExtra("idNumber", myInfo.getIdNo());
-                intent1.putExtra("skillArray", myInfo.getSkill());
-                intent1.putExtra("idUrl", myInfo.getIdPhoto());
-                intent1.putExtra("bankName", myInfo.getBank());
-                intent1.putExtra("bankNo", myInfo.getBankCardNo());
+                Intent intent1 = new Intent(getContext(), AuthorizationProgressActivity.class);
+//                intent1.putExtra("isAgain", 2);
+//                intent1.putExtra("myMessage",myMessage);
+//                intent1.putExtra("name", myInfo.getName());
+//                intent1.putExtra("headUrl", myInfo.getAvatar());
+//                intent1.putExtra("idNumber", myInfo.getIdNo());
+//                intent1.putExtra("skillArray", myInfo.getSkill());
+//                intent1.putExtra("idUrl", myInfo.getIdPhoto());
+//                intent1.putExtra("bankName", myInfo.getBank());
+//                intent1.putExtra("bankNo", myInfo.getBankCardNo());
+                intent1.putExtra("isInfo",true);
                 startActivity(intent1);
                 break;
             case R.id.my_order_layout:

@@ -2,80 +2,213 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/line_light_color"
     android:descendantFocusability="blocksDescendants"
-    android:paddingTop="@dimen/dp10"
-    android:paddingBottom="@dimen/dp10">
+   >
 
-    <Button
-        android:id="@+id/order_operate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/main_orange"
-        android:gravity="center"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="@dimen/dp5"
-        android:textSize="@dimen/sp13"
-        android:paddingTop="3dp"
-        android:paddingBottom="3dp"
-        android:paddingLeft="@dimen/dp25"
-        android:paddingRight="@dimen/dp25"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/check_btn"
-        android:text="@string/order_receiving"/>
+        android:background="@color/main_white">
 
-    <TextView
-        android:id="@+id/order_type"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/order_operate"
-        android:textColor="@color/main_orange"
-        android:textSize="@dimen/sp13"
-        android:maxLines="1"
-        android:ellipsize="end" />
+        <View
+            android:id="@+id/v1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentTop="true"
+            android:background="#F0F0F0" />
+        <ImageView
+            android:id="@+id/warn"
+            android:src="@mipmap/warn"
+            android:layout_marginLeft="@dimen/dp10"
+            android:layout_marginTop="@dimen/dp10"
+            android:scaleType="fitXY"
+            android:visibility="gone"
+            android:layout_alignParentLeft="true"
+            android:layout_width="@dimen/dp20"
+            android:layout_height="@dimen/dp20" />
 
-    <TextView
-        android:id="@+id/order_number"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/order_operate"
-        android:layout_below="@id/order_type"
-        android:textColor="@color/darkgray"
-        android:textSize="@dimen/sp13"
-        android:maxLines="1"
-        android:ellipsize="end" />
+        <TextView
+            android:id="@+id/order_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/v1"
+            android:layout_marginLeft="@dimen/dp10"
+            android:layout_marginRight="@dimen/dp10"
+            android:layout_marginTop="@dimen/dp10"
+            android:ellipsize="end"
+            android:layout_alignBaseline="@id/warn"
+            android:layout_toRightOf="@id/warn"
+            android:maxLines="1"
+            android:text="@string/order_serial_number"
+            android:textColor="@color/darkgray"
+            android:textSize="@dimen/sp13" />
 
-    <TextView
-        android:id="@+id/order_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/darker_gray"
-        android:layout_toLeftOf="@id/order_operate"
-        android:layout_below="@id/order_number"
-        android:textSize="@dimen/sp13"
-        android:maxLines="1"
-        android:ellipsize="end" />
+        <Button
+            android:id="@+id/order_operate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/v1"
+            android:layout_marginRight="@dimen/dp10"
+            android:layout_marginTop="@dimen/dp5"
+            android:gravity="center"
+            android:layout_alignBaseline="@id/order_number"
+            android:paddingBottom="3dp"
+            android:paddingLeft="@dimen/dp15"
+            android:paddingRight="@dimen/dp15"
+            android:background="@drawable/check_btn"
+            android:paddingTop="3dp"
+            android:text="@string/order_receiving"
+            android:textColor="@color/main_orange"
+            android:textSize="@dimen/sp13" />
+
+        <LinearLayout
+            android:id="@+id/ll1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp40"
+            android:layout_below="@id/order_number"
+            android:layout_marginLeft="@dimen/dp10"
+            android:layout_marginRight="@dimen/dp10"
+            android:layout_marginTop="@dimen/dp5"
+            android:background="@android:color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/btn1"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp30"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/dp5"
+                android:layout_weight="1"
+                android:background="@drawable/textview_style"
+                android:gravity="center"
+                android:text="隔热膜"
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/sp13"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/btn2"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp30"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/dp5"
+                android:layout_weight="1"
+                android:background="@drawable/textview_style"
+                android:gravity="center"
+                android:text="隐形车衣"
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/sp13"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/btn3"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp30"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/dp5"
+                android:layout_weight="1"
+                android:background="@drawable/textview_style"
+                android:gravity="center"
+                android:text="车身改色"
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/sp13"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/btn4"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp30"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@drawable/textview_style"
+                android:gravity="center"
+                android:text="美容清洁"
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/sp13"
+                android:visibility="invisible" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/v2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/ll1"
+            android:layout_marginTop="@dimen/dp10"
+            android:background="@color/lightgray" />
+
+        <TextView
+            android:id="@+id/order_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/v2"
+            android:layout_marginLeft="@dimen/dp10"
+            android:layout_marginTop="@dimen/dp10"
+            android:text="@string/order_time"
+            android:textColor="@color/gray_A3"
+            android:textSize="@dimen/sp13" />
+
+        <View
+            android:id="@+id/v5"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/order_time"
+            android:layout_marginTop="@dimen/dp10"
+            android:background="#F0F0F0" />
+
+    </RelativeLayout>
+
+    <!--<Button-->
+        <!--android:id="@+id/order_operate"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textColor="@color/main_orange"-->
+        <!--android:gravity="center"-->
+        <!--android:layout_marginTop="@dimen/dp5"-->
+        <!--android:textSize="@dimen/sp13"-->
+        <!--android:paddingTop="3dp"-->
+        <!--android:paddingBottom="3dp"-->
+        <!--android:paddingLeft="@dimen/dp25"-->
+        <!--android:paddingRight="@dimen/dp25"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:background="@drawable/check_btn"-->
+        <!--android:text="@string/order_receiving"/>-->
 
     <!--<TextView-->
-    <!--android:id="@+id/order_hide_text"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="@dimen/dp120"-->
-    <!--android:layout_below="@id/order_time"-->
-    <!--android:layout_marginTop="@dimen/dp5"-->
-    <!--android:layout_marginBottom="@dimen/dp5"-->
-    <!--android:layout_marginLeft="@dimen/dp15"-->
-    <!--android:layout_marginRight="@dimen/dp15"-->
-    <!--android:gravity="center"-->
-    <!--android:background="#eeeeee"-->
-    <!--android:textColor="#a3a3a3"-->
-    <!--android:textSize="@dimen/sp15"-->
-    <!--android:text="@string/indent_image_text"/>-->
-    <ImageView
-        android:id="@+id/order_image"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp120"
-        android:layout_below="@id/order_time"
-        android:layout_marginTop="@dimen/dp5"
-        android:layout_marginBottom="@dimen/dp5"
-        android:layout_marginLeft="@dimen/dp15"
-        android:layout_marginRight="@dimen/dp15"/>
+        <!--android:id="@+id/order_type"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_toLeftOf="@id/order_operate"-->
+        <!--android:textColor="@color/main_orange"-->
+        <!--android:textSize="@dimen/sp13"-->
+        <!--android:maxLines="1"-->
+        <!--android:ellipsize="end" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/order_number"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_toLeftOf="@id/order_operate"-->
+        <!--android:layout_below="@id/order_type"-->
+        <!--android:textColor="@color/darkgray"-->
+        <!--android:textSize="@dimen/sp13"-->
+        <!--android:maxLines="1"-->
+        <!--android:ellipsize="end" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/order_time"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textColor="@android:color/darker_gray"-->
+        <!--android:layout_toLeftOf="@id/order_operate"-->
+        <!--android:layout_below="@id/order_number"-->
+        <!--android:textSize="@dimen/sp13"-->
+        <!--android:maxLines="1"-->
+        <!--android:ellipsize="end" />-->
+
 
 </RelativeLayout>

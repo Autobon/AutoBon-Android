@@ -12,6 +12,7 @@ import cn.com.incardata.http.Http;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.BillOrderEntity;
+import cn.com.incardata.http.response.BillOrderList;
 import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.utils.T;
 import cn.com.incardata.view.PullToRefreshView;
@@ -23,7 +24,7 @@ import cn.com.incardata.view.PullToRefreshView;
 public class BillDetailActivity extends BaseActivity {
     private PullToRefreshView pullToRefreshView;
     private ListView mList;
-    private List<OrderInfo_Data> billDetailList;
+    private List<BillOrderList> billDetailList;
     private BillDetailAdapter billAdapter;
     private int billId;
     public static String[] workItems;
@@ -56,7 +57,7 @@ public class BillDetailActivity extends BaseActivity {
     private void initData() {
         workItems = getResources().getStringArray(R.array.work_item);
 
-        billDetailList = new ArrayList<OrderInfo_Data>();
+        billDetailList = new ArrayList<BillOrderList>();
         billAdapter = new BillDetailAdapter(this, billDetailList);
         mList.setAdapter(billAdapter);
 
@@ -84,7 +85,7 @@ public class BillDetailActivity extends BaseActivity {
     }
 
     private void getDataFromServer(int page) {
-        Http.getInstance().getTaskToken(NetURL.getBillOrderInfo(billId), "page=" + page + "&pageSize=20", BillOrderEntity.class, new OnResult() {
+        Http.getInstance().getTaskToken(NetURL.getBillOrderInfoV2(billId), "page=" + page + "&pageSize=20", BillOrderEntity.class, new OnResult() {
             @Override
             public void onResult(Object entity) {
                 pullToRefreshView.loadedCompleted();

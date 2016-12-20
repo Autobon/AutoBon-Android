@@ -185,27 +185,27 @@ public class InvitationActivity extends BaseActivity implements View.OnClickList
 
 
     private void getOrderInfo(int orderId) {
-        Http.getInstance().getTaskToken(NetURL.getOrderInfo(orderId), "", OrderInfoEntity.class, new OnResult() {
-            @Override
-            public void onResult(Object entity) {
-                if (entity == null) {
-//                    T.show(getContext(), R.string.loading_data_failure);
-                    return;
-                }
-                if (entity instanceof OrderInfoEntity) {
-                    if (((OrderInfoEntity) entity).isResult()) {
-                        orderType_str = MyApplication.getInstance().getSkill(((OrderInfoEntity) entity).getData().getOrderType());
-                        orderOwner_str = ((OrderInfoEntity) entity).getData().getCooperator().getCorporationName();
-                        shopsLocation_str = ((OrderInfoEntity) entity).getData().getCooperator().getAddress();
-                        shopsAlias_str = ((OrderInfoEntity) entity).getData().getCooperator().getFullname();
-                        setCooperator();
-                    } else {
-                        T.show(getContext(), R.string.load_cooperator_info_failure);
-                        return;
-                    }
-                }
-            }
-        });
+//        Http.getInstance().getTaskToken(NetURL.getOrderInfo(orderId), "", OrderInfoEntity.class, new OnResult() {
+//            @Override
+//            public void onResult(Object entity) {
+//                if (entity == null) {
+////                    T.show(getContext(), R.string.loading_data_failure);
+//                    return;
+//                }
+//                if (entity instanceof OrderInfoEntity) {
+//                    if (((OrderInfoEntity) entity).isResult()) {
+//                        orderType_str = MyApplication.getInstance().getSkill(((OrderInfoEntity) entity).getData().getOrderType());
+//                        orderOwner_str = ((OrderInfoEntity) entity).getData().getCooperator().getCorporationName();
+//                        shopsLocation_str = ((OrderInfoEntity) entity).getData().getCooperator().getAddress();
+//                        shopsAlias_str = ((OrderInfoEntity) entity).getData().getCooperator().getFullname();
+//                        setCooperator();
+//                    } else {
+//                        T.show(getContext(), R.string.load_cooperator_info_failure);
+//                        return;
+//                    }
+//                }
+//            }
+//        });
     }
 
     private void setListener() {

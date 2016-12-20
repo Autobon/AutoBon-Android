@@ -2,7 +2,7 @@ package cn.com.incardata.http.response;
 
 import java.util.List;
 
-/**
+/** 通知消息
  * Created by wanghao on 16/4/14.
  */
 public class Message_Data {

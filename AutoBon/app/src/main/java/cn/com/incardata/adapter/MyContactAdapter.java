@@ -23,6 +23,7 @@ import cn.com.incardata.http.response.AddContact_data_list;
 import cn.com.incardata.http.response.InviteTechnicainEntity;
 import cn.com.incardata.utils.T;
 import cn.com.incardata.view.CircleImageView;
+import cn.com.incardata.view.PullToRefreshView;
 
 /**
  * Created by zhangming on 2016/2/29.
@@ -55,7 +56,7 @@ public class MyContactAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         if (convertView == null) {
             holder = new ViewHolder();
@@ -80,38 +81,13 @@ public class MyContactAdapter extends BaseAdapter{
         holder.btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                technicianName = data.getName();
-                technicianId = data.getId();
-                addTechnician(); //添加技师
+                onGetPosition.getPosition(position);
             }
         });
 
         return convertView;
     }
 
-    public void addTechnician(){
-        //TODO 发送合作邀请
-        Http.getInstance().postTaskToken(NetURL.inviteTechnician(String.valueOf(orderId), String.valueOf(technicianId)), InviteTechnicainEntity.class, new OnResult() {
-            @Override
-            public void onResult(Object entity) {
-                if(entity == null){
-                    T.show(activity,activity.getString(R.string.invite_contact_failed));
-                    return;
-                }
-                InviteTechnicainEntity inviteTechnicainEntity = (InviteTechnicainEntity) entity;
-                if(inviteTechnicainEntity.isResult()){
-                    Log.i("test","添加合作技师成功");
-                    Intent i=new Intent();
-                    i.putExtra("username",technicianName);
-                    i.putExtra("technicianId",technicianId);
-                    activity.setResult(activity.RESULT_OK,i);
-                    activity.finish();
-                }else{
-                    T.show(activity,inviteTechnicainEntity.getMessage());
-                }
-            }
-        }, new BasicNameValuePair("orderId", String.valueOf(orderId)), new BasicNameValuePair("partnerId", String.valueOf(technicianId)));
-    }
 
     static class ViewHolder{
         CircleImageView circleImageView;
@@ -128,5 +104,25 @@ public class MyContactAdapter extends BaseAdapter{
 
     public void setOrderId(int orderId) {
         this.orderId = orderId;
+    }
+
+//    public View.OnClickListener onClickListener;
+//
+//    public void setOnClickListener(View.OnClickListener onClickListener){
+//        this.onClickListener = onClickListener;
+//    }
+    private OnGetPosition onGetPosition;
+
+
+    public OnGetPosition getOnGetPosition() {
+        return onGetPosition;
+    }
+
+    public void setOnGetPosition(OnGetPosition onGetPosition) {
+        this.onGetPosition = onGetPosition;
+    }
+
+    public interface OnGetPosition{
+        void getPosition(int position);
     }
 }

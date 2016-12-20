@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+
 import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
@@ -21,13 +23,14 @@ import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.AddContactEntity;
+import cn.com.incardata.http.response.AddContact_data;
 import cn.com.incardata.http.response.AddContact_data_list;
 import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
 import cn.com.incardata.view.PullToRefreshView;
 
-/**
+/** 增加技师
  * Created by Administrator on 2016/2/19.
  */
 public class AddContactActivity extends BaseActivity implements View.OnClickListener,
@@ -126,11 +129,12 @@ public class AddContactActivity extends BaseActivity implements View.OnClickList
                         return;
                     }
                     AddContactEntity addContactEntity = (AddContactEntity) entity;
-                    if (addContactEntity.isResult()) {
+                    if (addContactEntity.isStatus()) {
+                        AddContact_data addContact_data = JSON.parseObject(addContactEntity.getMessage().toString(),AddContact_data.class);
                         if (total == -1) {
-                            total = addContactEntity.getData().getTotalElements(); //获取总条目数量(只在搜索时获取总条目个数,刷新时不必再次获取)
+                            total = addContact_data.getTotalElements(); //获取总条目数量(只在搜索时获取总条目个数,刷新时不必再次获取)
                         }
-                        List<AddContact_data_list> dataList = addContactEntity.getData().getList();
+                        List<AddContact_data_list> dataList = addContact_data.getList();
                         if (total == 0) {
                             updateData(dataList,false);
                             refreshView.setVisibility(View.GONE);

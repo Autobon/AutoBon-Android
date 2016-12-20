@@ -1,5 +1,6 @@
 package cn.com.incardata.autobon;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,10 +30,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.com.incardata.application.MyApplication;
+import cn.com.incardata.fragment.DropOrderDialogFragment;
 import cn.com.incardata.http.Http;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.http.OnResult;
+import cn.com.incardata.http.response.OrderInfo;
 import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.http.response.ReportLocationEntity;
 import cn.com.incardata.http.response.SignInEntity;
@@ -45,12 +48,12 @@ import cn.com.incardata.utils.T;
  * Created by zhangming on 2016/2/22.
  * 工作签到
  */
-public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnClickListener{
+public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnClickListener,DropOrderDialogFragment.OnClickListener{
     private static final int SIGN = 500;//允许签到距离500m
     private TextView tv_day;
     private Context context;
     private Button sign_in_btn;
-    private ImageView iv_my_info;
+    private ImageView iv_my_info,iv_back;
     private BDLocationListener myBDLocationListener;
 
     protected View pop;
@@ -59,13 +62,16 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
     protected LatLng[] latLngArray;  //位置信息记录
     protected String[] windowInfo;  //窗体信息记录
 
-    private OrderInfo_Data orderInfo;
+    private OrderInfo orderInfo;
     private boolean isSign = false;//是否可以签到
+    private DropOrderDialogFragment dropOderDialog;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.work_map_address);
+        fragmentManager = getFragmentManager();
         initBaiduMapView();
         initView();
         initData();
@@ -73,8 +79,8 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
         //data
         orderInfo = getIntent().getParcelableExtra(AutoCon.ORDER_INFO);
         try {
-            mLatLng = new LatLng(Double.parseDouble(orderInfo.getPositionLat()), Double.parseDouble(orderInfo.getPositionLon()));
-            mAddress = orderInfo.getCreatorName();
+            mLatLng = new LatLng(Double.parseDouble(orderInfo.getLatitude()), Double.parseDouble(orderInfo.getLongitude()));
+            mAddress = orderInfo.getCoopName();
         }catch(NumberFormatException e){
             e.printStackTrace();
         }catch (NullPointerException e){
@@ -109,6 +115,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
 //        super.tv_distance = (TextView) findViewById(R.id.tv_distance);
         sign_in_btn = (Button) findViewById(R.id.sign_in_btn);
         iv_my_info = (ImageView) findViewById(R.id.iv_my_info);
+        iv_back = (ImageView) findViewById(R.id.iv_back);
 
         tv_day.setText(DateCompute.getWeekOfDate());
     }
@@ -135,6 +142,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
             }
         });
         iv_my_info.setOnClickListener(this);
+        iv_back.setOnClickListener(this);
         sign_in_btn.setOnClickListener(this);
     }
 
@@ -144,6 +152,9 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
             case R.id.iv_my_info:
                 Intent intent = new Intent(this,MyInfoActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.iv_back:
+                finish();
                 break;
             case R.id.sign_in_btn:
                 signIn();
@@ -200,7 +211,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
         bvList.add(bv_two);
         bvList.add(bv_three);
 
-        Http.getInstance().postTaskToken(NetURL.SIGN_IN_URL, SignInEntity.class, new OnResult() {
+        Http.getInstance().postTaskToken(NetURL.SIGN_IN_URLV2, SignInEntity.class, new OnResult() {
             @Override
             public void onResult(Object entity) {
                 if(entity == null){
@@ -208,12 +219,14 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
                     return;
                 }
                 SignInEntity signInEntity = (SignInEntity) entity;
-                if(signInEntity.isResult()){
-                    if (orderInfo.getMainTech().getId() == MyApplication.getInstance().getUserId()){
-                        orderInfo.getMainConstruct().setSigninTime(System.currentTimeMillis());
-                    }else {
-                        orderInfo.getSecondConstruct().setSigninTime(System.currentTimeMillis());
-                    }
+                if(signInEntity.isStatus()){
+//                    if (orderInfo.getMainTech().getId() == MyApplication.getInstance().getUserId()){
+//                        orderInfo.getMainConstruct().setSigninTime(System.currentTimeMillis());
+//                    }else {
+//                        orderInfo.getSecondConstruct().setSigninTime(System.currentTimeMillis());
+//                    }
+                    orderInfo.setSignTime(System.currentTimeMillis());
+                    orderInfo.setStatus("SIGNED_IN");
                     Intent intent = new Intent(getContext(), WorkBeforeActivity.class);
                     intent.putExtra(AutoCon.ORDER_INFO, orderInfo);
                     startActivity(intent);
@@ -265,6 +278,8 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
         windowInfo[1] = mAddress;
     }
 
+
+
     class MyBDLocationListener implements BDLocationListener {
         @Override
         public void onReceiveLocation(BDLocation result) {
@@ -277,7 +292,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
                     baiduMap.setMyLocationData(new MyLocationData.Builder()
                             .accuracy(0)
                             // 此处设置开发者获取到的方向信息，顺时针0-360
-                            .direction(result.getRadius())
+//                            .direction(result.getRadius())
                             .latitude(result.getLatitude())
                             .longitude(result.getLongitude())
                             .build());
@@ -339,11 +354,34 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
                     return;
                 }
                 ReportLocationEntity reportLocationEntity = (ReportLocationEntity) entity;
-                if(reportLocationEntity.isResult()){
+                if(reportLocationEntity.isStatus()){
                     Log.i("test","上传数据===>"+mLatlng.longitude+","+mLatlng.latitude);
                     return;
                 }
             }
         },bv_one,bv_two);
+    }
+
+    /**放弃订单
+     * @param v
+     */
+    public void onClickDropOrder(View v){
+        //显示放弃订单对话框
+        if (dropOderDialog == null){
+            dropOderDialog = new DropOrderDialogFragment();
+        }
+        dropOderDialog.show(fragmentManager, "dropOderDialog");
+    }
+
+    @Override
+    public void onDropClick(View v) {
+        if (orderInfo == null) {
+            T.show(getContext(), getString(R.string.not_found_order_tips));
+            return;
+        }
+        Intent intent = new Intent(this,CancelOrderReasonActivity.class);
+        intent.putExtra(AutoCon.ORDER_ID,orderInfo.getId());
+        startActivity(intent);
+
     }
 }

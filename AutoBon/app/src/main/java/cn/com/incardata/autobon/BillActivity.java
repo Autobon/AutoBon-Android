@@ -56,7 +56,7 @@ public class BillActivity extends BaseActivity implements View.OnClickListener{
 
     private void initData(){
         showDialog();
-        Http.getInstance().getTaskToken(NetURL.BILL_URL, "page=1&pageSize=36", BillEntity.class, new OnResult() {//第一版可查看最多36个月（3年）的数据
+        Http.getInstance().getTaskToken(NetURL.BILL_URL, "page=1&pageSize=60", BillEntity.class, new OnResult() {//第一版可查看最多36个月（3年）的数据
             @Override
             public void onResult(Object entity) {
                 if(entity == null){

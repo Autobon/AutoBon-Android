@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/line_light_color"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp45"
+        android:background="@color/main_orange">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="@dimen/dp35"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="@dimen/dp10"
+            android:scaleType="centerInside"
+            android:src="@mipmap/default_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/app_name"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp18" />
+    </RelativeLayout>
+    <ScrollView
+        android:paddingBottom="@dimen/dp20"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/dp5"
+                android:background="@android:color/white"
+                >
+
+                <View
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/main_orange" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingTop="@dimen/dp10"
+                    android:paddingBottom="@dimen/dp10"
+                    android:paddingLeft="@dimen/dp15"
+                    android:text="@string/cancelReason"
+                    android:textColor="@color/darkgray"
+                    android:textSize="@dimen/sp15" />
+            </LinearLayout>
+            <View
+                android:background="@color/line_color"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+            <LinearLayout
+                android:id="@+id/ll1"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:paddingBottom="@dimen/dp10"
+                android:paddingTop="@dimen/dp10"
+                android:background="@android:color/white"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/img1"
+                    android:layout_width="@dimen/dp20"
+                    android:layout_height="@dimen/dp20"
+                    android:padding="2px"
+                    android:adjustViewBounds="true"
+                    android:layout_marginLeft="@dimen/dp20"
+                    android:maxWidth="@dimen/dp20"
+                    android:maxHeight="@dimen/dp20"
+                    android:src="@mipmap/radio_select"
+                    android:scaleType="centerInside"/>
+                <TextView
+                    android:text="@string/grab_error_order"
+                    android:layout_marginLeft="@dimen/dp10"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/gray_A3"
+                    android:textSize="@dimen/sp13"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+            <View
+                android:background="@color/lightgray"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+            <LinearLayout
+                android:id="@+id/ll2"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:paddingBottom="@dimen/dp10"
+                android:paddingTop="@dimen/dp10"
+                android:background="@android:color/white"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/img2"
+                    android:layout_width="@dimen/dp20"
+                    android:layout_height="@dimen/dp20"
+                    android:padding="2px"
+                    android:adjustViewBounds="true"
+                    android:layout_marginLeft="@dimen/dp20"
+                    android:maxWidth="@dimen/dp20"
+                    android:maxHeight="@dimen/dp20"
+                    android:src="@mipmap/radio_default"
+                    android:scaleType="centerInside"/>
+                <TextView
+                    android:text="@string/temporary_be_engaged"
+                    android:layout_marginLeft="@dimen/dp10"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/gray_A3"
+                    android:textSize="@dimen/sp13"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+            <View
+                android:background="@color/lightgray"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+            <LinearLayout
+                android:id="@+id/ll3"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:paddingBottom="@dimen/dp10"
+                android:paddingTop="@dimen/dp10"
+                android:background="@android:color/white"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/img3"
+                    android:layout_width="@dimen/dp20"
+                    android:layout_height="@dimen/dp20"
+                    android:padding="2px"
+                    android:adjustViewBounds="true"
+                    android:layout_marginLeft="@dimen/dp20"
+                    android:maxWidth="@dimen/dp20"
+                    android:maxHeight="@dimen/dp20"
+                    android:src="@mipmap/radio_default"
+                    android:scaleType="centerInside"/>
+                <TextView
+                    android:text="@string/rest"
+                    android:layout_marginLeft="@dimen/dp10"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/gray_A3"
+                    android:textSize="@dimen/sp13"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+            <View
+                android:background="@color/lightgray"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+            <EditText
+                android:id="@+id/ed_reason"
+                android:background="@android:color/white"
+                android:paddingLeft="@dimen/dp15"
+                android:paddingRight="@dimen/dp15"
+                android:layout_marginTop="@dimen/dp10"
+                android:paddingTop="@dimen/dp15"
+                android:gravity="left"
+                android:hint="请填写放弃理由"
+                android:maxLength="150"
+                android:textColorHint="@color/lightgray"
+                android:paddingBottom="@dimen/dp15"
+                android:visibility="gone"
+                android:minLines="3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/submit"
+                style="@style/LoginButtonStyle"
+                android:layout_marginTop="@dimen/dp40"
+                android:text="@string/submit" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+</LinearLayout>
