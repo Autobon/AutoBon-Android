@@ -93,6 +93,7 @@ public class GridViewAdapter extends BaseAdapter {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if (item.getTechnicianId() == -1) {
                     btn.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.corner_choice_btn));
                     btn.setTextColor(context.getResources().getColor(R.color.main_white));
@@ -110,6 +111,8 @@ public class GridViewAdapter extends BaseAdapter {
                         }
                     }
                 }
+
+
 //                if (item.isCheck()){
 //                    btn.setBackgroundColor(Color.WHITE);
 //                    btn.setTextColor(Color.RED);

@@ -145,7 +145,6 @@ public class WaitOrderActivity extends BaseActivity implements PullToRefreshView
                         }
                         if (listNew_data.getTotalElements() == 0){
                             T.show(getContext(),getString(R.string.no_order));
-                            return;
                         }
                         orderList.addAll(listNew_data.getList());
                         mAdapter.notifyDataSetInvalidated();

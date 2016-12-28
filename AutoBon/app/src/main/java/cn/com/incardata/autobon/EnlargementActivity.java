@@ -16,10 +16,11 @@ import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.view.ZoomImageView;
 
-/**查看放大图片(传递当前显示位置POSITION及地址数组IMAGE_URL字段)
+/**
+ * 查看放大图片(传递当前显示位置POSITION及地址数组IMAGE_URL字段)
  * Created by yang on 2016/6/14.
  */
-public class EnlargementActivity extends BaseActivity{
+public class EnlargementActivity extends BaseActivity {
     public final static String IMAGE_URL = "IMAGE_URL";
     public final static String POSITION = "POSITION";
     private ViewPager viewPager;
@@ -44,7 +45,7 @@ public class EnlargementActivity extends BaseActivity{
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         imgUrl = bundle.getStringArray("IMAGE_URL");
-        if (imgUrl == null){
+        if (imgUrl == null) {
             imgUrl = new String[]{"intent data error"};
         }
 
@@ -60,21 +61,21 @@ public class EnlargementActivity extends BaseActivity{
         viewPager.setCurrentItem(position);
         //设置监听，主要是设置点点的背景
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-        }
+            }
 
-        @Override
-        public void onPageSelected(int position) {
-            indicator.setText((position + 1) + "/" + imgUrl.length);
-        }
+            @Override
+            public void onPageSelected(int position) {
+                indicator.setText((position + 1) + "/" + imgUrl.length);
+            }
 
-        @Override
-        public void onPageScrollStateChanged(int state) {
+            @Override
+            public void onPageScrollStateChanged(int state) {
 
-        }
-    });
+            }
+        });
     }
 
 
@@ -110,13 +111,13 @@ public class EnlargementActivity extends BaseActivity{
         @Override
         public Object instantiateItem(ViewGroup container, int i) {
             ZoomImageView convertView = null;
-            if (mViewCache.size() == 0){
-                convertView = new ZoomImageView(EnlargementActivity.this);
-                convertView.setScaleType(ImageView.ScaleType.MATRIX);
-                convertView.setOnClickListener(onClickPageListener);
-            }else {
-                convertView = (ZoomImageView) mViewCache.removeFirst();
-            }
+//            if (mViewCache.size() == 0){
+            convertView = new ZoomImageView(EnlargementActivity.this);
+            convertView.setScaleType(ImageView.ScaleType.MATRIX);
+            convertView.setOnClickListener(onClickPageListener);
+//            }else {
+//                convertView = (ZoomImageView) mViewCache.removeFirst();
+//            }
             ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + imgUrl[i], convertView, R.mipmap.load_image_failed);
             container.addView(convertView);
             return convertView;

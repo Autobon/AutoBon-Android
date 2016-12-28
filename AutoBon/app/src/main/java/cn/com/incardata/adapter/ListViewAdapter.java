@@ -119,7 +119,7 @@ public class ListViewAdapter extends BaseAdapter {
                 public void onRefresh() {
                     if (mMapGridView != null && !mMapGridView.isEmpty()) {
                         Iterator iter = mMapGridView.entrySet().iterator();
-                        while (iter.hasNext()) {
+                            while (iter.hasNext()) {
                             Map.Entry entry = (Map.Entry) iter.next();
                             GridViewAdapter a = (GridViewAdapter) entry.getValue();
                             a.notifyDataSetChanged();

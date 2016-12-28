@@ -94,7 +94,13 @@ public class ConsumeGridViewAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 check = position;
-                showPopupWindow(list,item.getTotal());
+                if (item.getTechnicianId() == -1){
+                    T.show(context,"请先选择施工部位，再选择报废材料数量");
+                    return;
+                }else {
+                    showPopupWindow(list,item.getTotal());
+                }
+
             }
         });
         return view1;

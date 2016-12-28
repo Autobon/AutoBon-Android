@@ -325,7 +325,7 @@ public class ZoomImageView extends ImageView implements ScaleGestureDetector.OnS
             // 如果宽和高都大于屏幕，则让其按按比例适应屏幕大小
             if (dw > width && dh > height)
             {
-                scale = Math.min(dw * 1.0f / width, dh * 1.0f / height);
+                scale = Math.min(width * 1.0f / dw, height * 1.0f / dh);
             }
             initScale = scale;
             // 图片移动至屏幕中心

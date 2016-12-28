@@ -9,6 +9,15 @@ public class ConstructionPosition {
     private int projectId;
     private int technicianId = -1;
     private int total = 0;
+    private int checkId = 0;
+
+    public int getCheckId() {
+        return checkId;
+    }
+
+    public void setCheckId(int checkId) {
+        this.checkId = checkId;
+    }
 
     public int getId() {
         return id;

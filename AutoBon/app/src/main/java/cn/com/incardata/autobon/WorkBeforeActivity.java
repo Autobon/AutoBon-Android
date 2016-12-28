@@ -256,7 +256,7 @@ public class WorkBeforeActivity extends BaseActivity implements View.OnClickList
      */
     private void submitWorkBeforePhotoURL(){
         Map<Integer,String> picMap = mAdapter.getPicMap();
-        if(picMap.size()<1){  //图片数量为0,提示用户
+        if(picMap.size() < 3){  //图片数量为0,提示用户
             T.show(this,getString(R.string.no_pic_tips_work_before));
             return;
         }

@@ -225,7 +225,6 @@ public class MyOrderFragment extends BaseFragment {
                         }
                         if (listUnFinishOrder.getTotalElements() == 0) {
                             T.show(getContext(), getString(R.string.no_order));
-                            return;
                         }
                         for (OrderInfo orderInfo : listUnFinishOrder.getContent()) {
                             mList.add(orderInfo);
@@ -263,7 +262,6 @@ public class MyOrderFragment extends BaseFragment {
                         if (listUnFinishOrder.getTotalElements() == 0) {
                             if (isHead) {
                                 T.show(getContext(), getString(R.string.no_order));
-                                return;
                             }
                         }
                         for (OrderInfo orderInfo : listUnFinishOrder.getContent()) {

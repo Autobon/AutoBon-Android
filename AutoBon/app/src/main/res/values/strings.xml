@@ -253,7 +253,7 @@
     <string name="less_three_page_tips">不少于3张</string>
     <string name="next_btn">继续</string>
     <string name="finish_mode_text">即将完成模式</string>
-    <string name="no_pic_tips_work_before">请上传不少于1张工作前的照片</string>
+    <string name="no_pic_tips_work_before">请上传不少于3张工作前的照片</string>
     <string name="no_pic_tips_work_after">请上传不少于3张工作后的照片</string>
     <string name="upload_work_before_failed_tips">上传施工前图像失败</string>
     <string name="choose_work_item_text">选择本次负责的工作项</string>
@@ -364,7 +364,7 @@
     <string name="che">车身改色</string>
     <string name="mei">美容清洁</string>
     <string name="check_skill_level">查看技能等级规则</string>
-    <string name="introduce_oneself">请介绍一下自己吧！</string>
+    <string name="introduce_oneself">请介绍一下自己吧！(200字以内)</string>
     <string name="bank_CarNo">银行卡号</string>
     <string name="bank_address1">开户行地址</string>
     <string name="check_work_info">查看施工详情</string>
