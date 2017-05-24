@@ -27,7 +27,13 @@ import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.navi.BaiduMapAppNotSupportNaviException;
+import com.baidu.mapapi.navi.BaiduMapNavigation;
+import com.baidu.mapapi.navi.NaviParaOption;
+
+import java.io.File;
 
 import cn.com.incardata.application.MyApplication;
 import cn.com.incardata.autobon.EnlargementActivity;
@@ -78,6 +84,7 @@ public class IndentMapFragment extends BaiduMapFragment{
 
     private OnFragmentInteractionListener mListener;
     private BDLocationListener myBDLocationListener;
+    private BaiduMap.OnMarkerClickListener markerClickListener;
     private View rootView;
     private TextView distance;
 //    private ImageView indentImage;
@@ -94,6 +101,8 @@ public class IndentMapFragment extends BaiduMapFragment{
     private RelativeLayout rl1;
     private View v1;
 
+    private boolean isClick = true;
+
     public IndentMapFragment() {
         // Required empty public constructor
     }
@@ -102,16 +111,13 @@ public class IndentMapFragment extends BaiduMapFragment{
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment IndentMapFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static IndentMapFragment newInstance(String param1, String param2) {
+    public static IndentMapFragment newInstance(boolean isClick) {
         IndentMapFragment fragment = new IndentMapFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putBoolean("isClick", isClick);
         fragment.setArguments(args);
         return fragment;
     }
@@ -119,6 +125,9 @@ public class IndentMapFragment extends BaiduMapFragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null){
+            this.isClick = getArguments().getBoolean("isClick");
+        }
     }
 
     @Override
@@ -231,12 +240,100 @@ public class IndentMapFragment extends BaiduMapFragment{
         MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.zoomTo(BaiduMapUtil.defaultLevel);  //默认级别12
         baiduMap.setMapStatus(mapStatusUpdate);  //设置缩放级别
 
+//        baiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
+//            @Override
+//            public boolean onMarkerClick(Marker marker) {
+////                return false;
+//                startNavi(new LatLng(Double.parseDouble(positionLat), Double.parseDouble(positionLon)),shopsLocation_str);
+////                openBaiduMap(Double.parseDouble(positionLat), Double.parseDouble(positionLon), shopName);
+//                return false;
+//            }
+//        });
+
         mMapView.showZoomControls(false);
         mMapView.showScaleControl(true);  //默认是true,显示标尺
 
         BaiduMapUtil.initData();
         setBaseData();
         setListener();
+    }
+
+    /**
+     * 打开百度地图导航功能
+     * @param lon
+     * @param lat
+     * @param describle
+     */
+    private void openBaiduMap(double lon, double lat, String describle) {
+        LatLng latLng = BaiduMapUtil.getBaidulatlng();
+        try {
+            StringBuilder loc = new StringBuilder();
+            loc.append("intent://map/direction?origin=latlng:");
+            loc.append(latLng.latitude);
+            loc.append(",");
+            loc.append(latLng.longitude);
+            loc.append("|name:");
+            loc.append("我的位置");
+            loc.append("&destination=latlng:");
+            loc.append(lat);
+            loc.append(",");
+            loc.append(lon);
+            loc.append("|name:");
+            loc.append(describle);
+            loc.append("&mode=driving");
+            loc.append("&referer=Autohome|GasStation#Intent;scheme=bdapp;package=com.baidu.BaiduMap;end");
+            Intent intent = Intent.getIntent(loc.toString());
+            if (isInstallPackage("com.baidu.BaiduMap")) {
+                startActivity(intent); //启动调用
+                Log.e("GasStation", "百度地图客户端已经安装");
+            } else {
+//                LatLng ptMine = new LatLng(latLng.latitude, latLng.longitude);
+//                LatLng ptPosition = new LatLng(lat, lon);
+//
+//                NaviParaOption para = new NaviParaOption()
+//                        .startPoint(ptMine)
+//                        .endPoint(ptPosition);
+//                BaiduMapNavigation.openWebBaiduMapNavi(para, getContext());
+                T.show(getContext(),"手机未安装百度地图");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //开启百度导航
+    public void startNavi(LatLng endLatLng,String address) {
+        LatLng latLng = BaiduMapUtil.getBaidulatlng();
+        //百度地图,从起点是LatLng ll_location = new LatLng("你的纬度latitude","你的经度longitude");
+        //终点是LatLng ll = new LatLng("你的纬度latitude","你的经度longitude");
+        NaviParaOption para = new NaviParaOption();
+        para.startPoint(latLng);
+        para.startName("我的位置");
+        para.endPoint(endLatLng);
+        para.endName(address);
+        if (isInstallPackage("com.baidu.BaiduMap")) {
+            try {
+                BaiduMapNavigation.openBaiduMapNavi(para, getContext());
+            } catch (BaiduMapAppNotSupportNaviException e) {
+                e.printStackTrace();
+                T.show(getContext(),"您尚未安装百度地图或地图版本过低");
+            }
+        } else {
+//                LatLng ptMine = new LatLng(latLng.latitude, latLng.longitude);
+//                LatLng ptPosition = new LatLng(lat, lon);
+//
+//                NaviParaOption para = new NaviParaOption()
+//                        .startPoint(ptMine)
+//                        .endPoint(ptPosition);
+//                BaiduMapNavigation.openWebBaiduMapNavi(para, getContext());
+            T.show(getContext(),"手机未安装百度地图");
+        }
+
+    }
+
+    // 判断手机是否有app
+    private boolean isInstallPackage(String packageName) {
+        return new File("/data/data/" + packageName).exists();
     }
 
     private void setBaseData(){
@@ -289,6 +386,7 @@ public class IndentMapFragment extends BaiduMapFragment{
         }
     }
 
+
     private void setListener() {
 //        rootView.findViewById(R.id.indent_image).setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -296,6 +394,7 @@ public class IndentMapFragment extends BaiduMapFragment{
 //                onClickImage(v);
 //            }
 //        });
+
 
 
         /**
@@ -307,9 +406,16 @@ public class IndentMapFragment extends BaiduMapFragment{
                 myBDLocationListener = new BaiduMapUtil.MyListener(getActivity(),baiduMap,distance, null, "4S店", null);
                 //tv_distance为下方显示距离的TextView控件,mAddress为另一个点的位置
                 BaiduMapUtil.locate(baiduMap,scanTime, new LocationClient(getActivity().getApplicationContext()),myBDLocationListener);
+
             }
         });
+
+        if (isClick){
+            markerClickListener = new BaiduMapUtil.MarkerCilckListener();
+            baiduMap.setOnMarkerClickListener(markerClickListener);
+        }
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

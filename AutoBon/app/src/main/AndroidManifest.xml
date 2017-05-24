@@ -4,7 +4,7 @@
 
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-
+    <uses-permission android:name="android.permission.CAMERA"/>
     <!-- 个推SDK权限配置开始 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -95,7 +95,10 @@
             android:name=".MyInfoActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
-        .
+        <activity
+            android:name=".StandardOmmissionActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".ModifyPasswordActivity"
             android:screenOrientation="portrait"
@@ -134,6 +137,11 @@
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".ServiceCenterActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+
+        <activity
+            android:name=".CollectionShopActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
 

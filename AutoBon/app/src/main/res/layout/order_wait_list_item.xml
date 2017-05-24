@@ -144,13 +144,25 @@
         <TextView
             android:id="@+id/order_time"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dp20"
             android:layout_below="@id/v2"
+            android:gravity="center_vertical"
             android:layout_marginLeft="@dimen/dp10"
             android:layout_marginTop="@dimen/dp10"
             android:text="@string/order_time"
             android:textColor="@color/gray_A3"
             android:textSize="@dimen/sp13" />
+
+        <ImageView
+            android:id="@+id/img_collection"
+            android:layout_below="@id/v2"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp10"
+            android:src="@mipmap/img_rank"
+            android:layout_alignBottom="@id/order_time"
+            android:layout_alignTop="@id/order_time"
+            android:layout_width="@dimen/dp20"
+            android:layout_height="@dimen/dp20" />
 
         <View
             android:id="@+id/v5"

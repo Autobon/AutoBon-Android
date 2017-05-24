@@ -1,10 +1,15 @@
 package cn.com.incardata.http;
 
 public class NetURL {
-	/** 正式服务器基地址 */
-	public final static String BASE_URL = "http://121.40.219.58:8000/api/mobile/";
-	public final static String IP_PORT = "http://121.40.219.58:8000";
-	public static final String PUB = "http://121.40.219.58:8000/api/pub/";
+	/** 2017-05-04修改正式服务器基地址 */
+	public final static String BASE_URL = "http://47.93.17.218:12345/api/mobile/";
+	public final static String IP_PORT = "http://47.93.17.218:12345";
+	public static final String PUB = "http://47.93.17.218:12345/api/pub/";
+
+//    /** 正式服务器基地址 */
+//    public final static String BASE_URL = "http://121.40.219.58:8000/api/mobile/";
+//    public final static String IP_PORT = "http://121.40.219.58:8000";
+//    public static final String PUB = "http://121.40.219.58:8000/api/pub/";
 
 
 //    /**
@@ -21,9 +26,9 @@ public class NetURL {
 //    public static final String PUB = "http://dev.incardata.com.cn:12345/api/pub/";
 
 
-//	public final static String BASE_URL = "http://hpecar.com:8012/api/mobile/";
-//	public final static String IP_PORT = "http://hpecar.com:8012";
-//	public static final String PUB = "http://hpecar.com:8012/api/pub/";
+//	public final static String BASE_URL = "http://10.0.12.191:12345/api/mobile/";
+//	public final static String IP_PORT = "http://10.0.12.191:12345";
+//	public static final String PUB = "http://10.0.12.191:12345/api/pub/";
 
     /**
      * 发送验证短信
@@ -313,6 +318,20 @@ public class NetURL {
     public static String getBillOrderInfoV2(int billId) {
         return BILL_URL + "/v2/" + billId + "/order";
     }
+
+    /**
+     * 已收藏的商户
+     **/
+    public static final String YETCOLLECTIONSHOP = BASE_URL + "technician/favorite/cooperator";
+
+    /**
+     * 移除已收藏的商户/收藏商户
+     **/
+    public static final String deleteCollectionShop(int id){
+        return BASE_URL + "technician/favorite/cooperator/" + id;
+    }
+
+
 
 
 }

@@ -25,6 +25,18 @@
             android:textSize="@dimen/sp18"
             android:textColor="@android:color/white"/>
 
+        <TextView
+            android:id="@+id/collection"
+            android:layout_width="@dimen/dp50"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:textSize="@dimen/sp15"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:text="@string/collection" />
+
         <!--<ImageView-->
         <!--android:id="@+id/order_more"-->
         <!--android:layout_width="@dimen/dp45"-->

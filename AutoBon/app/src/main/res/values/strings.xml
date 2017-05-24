@@ -377,4 +377,7 @@
     <string name="no_order">暂无订单</string>
     <string name="count">合计:</string>
     <string name="ge1">隔热膜</string>
+    <string name="standard_commission">佣金标准</string>
+    <string name="collection_shop">我的收藏</string>
+    <string name="collection">收藏</string>
 </resources>

@@ -16,10 +16,11 @@
         android:id="@+id/delect_tech"
         android:src="@mipmap/delect_tech"
         android:layout_width="@dimen/dp20"
+        android:layout_height="@dimen/dp20"
         android:layout_marginTop="@dimen/dp10"
         android:layout_marginRight="@dimen/dp20"
         android:layout_alignParentRight="true"
-        android:layout_height="@dimen/dp20" />
+         />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

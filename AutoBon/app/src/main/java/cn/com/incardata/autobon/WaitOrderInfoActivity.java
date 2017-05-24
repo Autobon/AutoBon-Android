@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 
@@ -16,6 +17,7 @@ import cn.com.incardata.fragment.IndentMapFragment;
 import cn.com.incardata.http.Http;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.OnResult;
+import cn.com.incardata.http.response.BaseEntity;
 import cn.com.incardata.http.response.Order;
 import cn.com.incardata.http.response.OrderInfo;
 import cn.com.incardata.http.response.TakeupEntity;
@@ -36,6 +38,8 @@ public class WaitOrderInfoActivity extends BaseActivity implements IndentMapFrag
 
     private OrderInfo orderInfo;
 
+    private TextView collection;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +51,8 @@ public class WaitOrderInfoActivity extends BaseActivity implements IndentMapFrag
 
     private void initView() {
         immediateOrder = (Button) findViewById(R.id.immediate_order);
+
+        collection = (TextView) findViewById(R.id.collection);
 
         findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +67,42 @@ public class WaitOrderInfoActivity extends BaseActivity implements IndentMapFrag
             }
         });
         orderInfo = getIntent().getExtras().getParcelable(AutoCon.ORDER_INFO);
+
+
+        collection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                collectionShop();
+            }
+        });
+    }
+
+    /**
+     * 收藏商户方法
+     */
+    private void collectionShop(){
+        showDialog();
+        Http.getInstance().postTaskToken(NetURL.deleteCollectionShop(orderInfo.getCoopId()), "", BaseEntity.class, new OnResult() {
+            @Override
+            public void onResult(Object entity) {
+                cancelDialog();
+                if (entity == null) {
+                    T.show(getContext(),R.string.request_failed);
+                    return;
+
+                }
+                if (entity instanceof BaseEntity){
+                    BaseEntity entity1 = (BaseEntity) entity;
+                    if (entity1.isResult()){
+                        T.show(getContext(),"收藏商户成功");
+                        WaitOrderActivity.isGetCollectionShop = true;
+                    }else {
+                        T.show(getContext(),entity1.getMessage());
+                    }
+                }
+
+            }
+        });
     }
 
     private void fillData() {

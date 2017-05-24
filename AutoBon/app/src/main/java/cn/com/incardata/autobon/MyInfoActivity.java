@@ -30,8 +30,9 @@ import cn.com.incardata.view.CircleImageView;
 public class MyInfoActivity extends BaseActivity implements View.OnClickListener{
     private Context context;
     private RatingBar mRatingbar;
-    private TextView tv_rate,tv_logout,tv_cost,tv_login_username,tv_order_num,tv_my_order_num;
+    private TextView tv_rate,tv_logout,tv_cost,tv_login_username,tv_order_num,tv_my_order_num,tv_standard_ommission;
     private LinearLayout ll_modify_pwd,ll_cost,ll_order_num;
+    private LinearLayout collection_shop;                 //收藏商户
     private ImageView iv_back;
     private CircleImageView iv_circle;
 
@@ -64,9 +65,11 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         tv_cost = (TextView) findViewById(R.id.tv_cost);
         tv_order_num = (TextView) findViewById(R.id.order_num);
         tv_my_order_num = (TextView) findViewById(R.id.tv_my_order_num);
+        tv_standard_ommission = (TextView) findViewById(R.id.tv_standard_ommission);
         ll_modify_pwd = (LinearLayout) findViewById(R.id.ll_modify_pwd);
         ll_cost = (LinearLayout) findViewById(R.id.ll_cost);
         ll_order_num = (LinearLayout) findViewById(R.id.ll_order_num);
+        collection_shop = (LinearLayout) findViewById(R.id.collection_shop);
         iv_back = (ImageView) findViewById(R.id.iv_back);
         iv_circle = (CircleImageView) findViewById(R.id.iv_circle);
         tv_login_username = (TextView)findViewById(R.id.tv_login_username);
@@ -83,6 +86,8 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         tv_logout.setOnClickListener(this);
         ll_cost.setOnClickListener(this);
         ll_order_num.setOnClickListener(this);
+        tv_standard_ommission.setOnClickListener(this);
+        collection_shop.setOnClickListener(this);
 
         findViewById(R.id.my_info_layout).setOnClickListener(this);
         findViewById(R.id.my_order_layout).setOnClickListener(this);
@@ -239,6 +244,9 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
             case R.id.ll_modify_pwd:
                 startActivity(ModifyPasswordActivity.class);
                 break;
+            case R.id.tv_standard_ommission:
+                startActivity(StandardOmmissionActivity.class);
+                break;
             case R.id.ll_cost:  //余额
                 String rest_money = tv_cost.getText().toString().trim();
                 Bundle bundle = new Bundle();
@@ -274,6 +282,9 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
                 break;
             case R.id.server_conter_layout:
                 startActivity(ServiceCenterActivity.class);
+                break;
+            case R.id.collection_shop:
+                startActivity(CollectionShopActivity.class);
                 break;
         }
     }

@@ -24,6 +24,7 @@ import cn.com.incardata.http.Http;
 import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.OnResult;
+import cn.com.incardata.http.response.BaseEntity;
 import cn.com.incardata.http.response.MyInfo_Data;
 import cn.com.incardata.http.response.Order;
 import cn.com.incardata.http.response.OrderConstructionShow;
@@ -66,6 +67,7 @@ public class OrderInfoActivity extends BaseActivity {
     private TextView noComment;
     private Display display;
     private Button check_tech_message;
+    private Button collection;
 
     private boolean isMainResponsible;
     private OrderInfo orderInfo;
@@ -106,10 +108,20 @@ public class OrderInfoActivity extends BaseActivity {
         rll5 = (RelativeLayout) findViewById(R.id.rll5);
         check_tech_message = (Button) findViewById(R.id.check_tech_message);
 
+        collection = (Button) findViewById(R.id.collection);
+
         findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+
+        collection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                collectionShop();
             }
         });
 
@@ -135,6 +147,34 @@ public class OrderInfoActivity extends BaseActivity {
             return "美容清洁";
         } else
             return null;
+    }
+
+
+    /**
+     * 收藏商户方法
+     */
+    private void collectionShop(){
+        showDialog();
+        Http.getInstance().postTaskToken(NetURL.deleteCollectionShop(orderInfo.getCoopId()), "", BaseEntity.class, new OnResult() {
+            @Override
+            public void onResult(Object entity) {
+                cancelDialog();
+                if (entity == null) {
+                    T.show(getContext(),R.string.request_failed);
+                    return;
+
+                }
+                if (entity instanceof BaseEntity){
+                    BaseEntity entity1 = (BaseEntity) entity;
+                    if (entity1.isResult()){
+                        T.show(getContext(),"收藏商户成功");
+                    }else {
+                        T.show(getContext(),entity1.getMessage());
+                    }
+                }
+
+            }
+        });
     }
 
 

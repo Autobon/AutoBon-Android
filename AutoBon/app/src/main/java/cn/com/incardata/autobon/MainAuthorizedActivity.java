@@ -94,7 +94,7 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
         today.setText(DateCompute.getWeekOfDate());
 
         fragmentManager = getFragmentManager();
-        mFragment = new IndentMapFragment();
+        mFragment = new IndentMapFragment().newInstance(false);
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.add(R.id.order_container, mFragment).hide(mFragment).commit();
     }

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/main_white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp45"
+        android:background="@color/main_orange">
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="@dimen/dp35"
+            android:layout_height="match_parent"
+            android:padding="@dimen/dp10"
+            android:src="@mipmap/default_back"
+            android:scaleType="centerInside"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/collection_shop"
+            android:textSize="@dimen/sp18"
+            android:textColor="@android:color/white"/>
+
+    </RelativeLayout>
+
+
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:background="#F0F0F0"/>-->
+
+    <cn.com.incardata.view.PullToRefreshView
+        android:id="@+id/pull"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/collection_shop_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbarStyle="outsideOverlay"
+            android:divider="#F0F0F0"
+            />
+
+    </cn.com.incardata.view.PullToRefreshView>
+
+</LinearLayout>

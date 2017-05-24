@@ -218,6 +218,24 @@
                 android:layout_toRightOf="@id/work_item_tv"
                 android:textSize="@dimen/sp13" />
 
+            <Button
+                android:id="@+id/collection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/v1"
+                android:layout_marginRight="@dimen/dp15"
+                android:gravity="center"
+                android:paddingBottom="3dp"
+                android:paddingLeft="@dimen/dp15"
+                android:layout_alignBaseline="@+id/shops_name"
+                android:paddingRight="@dimen/dp15"
+                android:background="@drawable/check_btn"
+                android:paddingTop="3dp"
+                android:text="@string/collection"
+                android:textColor="@color/main_orange"
+                android:textSize="@dimen/sp13" />
+
 
 
             <View

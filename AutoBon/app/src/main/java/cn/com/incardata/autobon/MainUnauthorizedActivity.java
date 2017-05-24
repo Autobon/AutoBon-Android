@@ -92,7 +92,7 @@ public class MainUnauthorizedActivity extends BaseActivity implements IndentMapF
         });
 
         transaction = fragmentManager.beginTransaction();
-        mFragment = new IndentMapFragment();
+        mFragment = new IndentMapFragment().newInstance(false);
         transaction.replace(R.id.fragment_container, mFragment);
         transaction.commit();
     }

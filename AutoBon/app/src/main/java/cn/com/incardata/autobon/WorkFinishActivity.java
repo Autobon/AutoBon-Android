@@ -188,12 +188,14 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                     @Override
                     public void getHeight() {
                         for (int i = 0;i < getOrderProjectItems.size(); i++){
-                            for (int j = 0;j <getOrderProjectItems.get(i).getConstructionPositions().length;j++ ){
+                            for (int j = 0;j <getOrderProjectItems.get(i).getConstructionPositions().length;j++){
                                 getOrderProjectItems.get(i).getConstructionPositions()[j].setTechnicianId(-1);
                                 getOrderProjectItems.get(i).getConstructionPositions()[j].setTotal(0);
+                                getOrderProjectItems.get(i).getConstructionPositions()[j].setCheck(false);
                             }
                         }
                         listViewAdapter.notifyDataSetChanged();
+                        consumeGridViewAdapter.notifyDataSetChanged();
                         setListViewHeightBasedOnChildren(listview_workItem);
                     }
                 });
@@ -236,9 +238,11 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                             for (int j = 0;j <getOrderProjectItems.get(i).getConstructionPositions().length;j++ ){
                                 getOrderProjectItems.get(i).getConstructionPositions()[j].setTechnicianId(-1);
                                 getOrderProjectItems.get(i).getConstructionPositions()[j].setTotal(0);
+                                getOrderProjectItems.get(i).getConstructionPositions()[j].setCheck(false);
                             }
                         }
                         listViewAdapter.notifyDataSetChanged();
+                        consumeGridViewAdapter.notifyDataSetChanged();
                         setListViewHeightBasedOnChildren(listview_workItem);
                     }
                 });
@@ -281,9 +285,11 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                             for (int j = 0;j <getOrderProjectItems.get(i).getConstructionPositions().length;j++ ){
                                 getOrderProjectItems.get(i).getConstructionPositions()[j].setTechnicianId(-1);
                                 getOrderProjectItems.get(i).getConstructionPositions()[j].setTotal(0);
+                                getOrderProjectItems.get(i).getConstructionPositions()[j].setCheck(false);
                             }
                         }
                         listViewAdapter.notifyDataSetChanged();
+                        consumeGridViewAdapter.notifyDataSetChanged();
                         setListViewHeightBasedOnChildren(listview_workItem);
                     }
                 });
@@ -326,9 +332,11 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                             for (int j = 0;j <getOrderProjectItems.get(i).getConstructionPositions().length;j++ ){
                                 getOrderProjectItems.get(i).getConstructionPositions()[j].setTechnicianId(-1);
                                 getOrderProjectItems.get(i).getConstructionPositions()[j].setTotal(0);
+                                getOrderProjectItems.get(i).getConstructionPositions()[j].setCheck(false);
                             }
                         }
                         listViewAdapter.notifyDataSetChanged();
+                        consumeGridViewAdapter.notifyDataSetChanged();
                         setListViewHeightBasedOnChildren(listview_workItem);
                     }
                 });
@@ -853,6 +861,15 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                         listViewAdapter.setOnGetHeight(new ListViewAdapter.OnGetHeight() {
                             @Override
                             public void getHeight() {
+                                for (int i = 0;i < getOrderProjectItems.size(); i++){
+                                    for (int j = 0;j <getOrderProjectItems.get(i).getConstructionPositions().length;j++ ){
+                                        getOrderProjectItems.get(i).getConstructionPositions()[j].setTechnicianId(-1);
+                                        getOrderProjectItems.get(i).getConstructionPositions()[j].setTotal(0);
+                                        getOrderProjectItems.get(i).getConstructionPositions()[j].setCheck(false);
+                                    }
+                                }
+                                listViewAdapter.notifyDataSetChanged();
+                                consumeGridViewAdapter.notifyDataSetChanged();
                                 setListViewHeightBasedOnChildren(listview_workItem);
                             }
                         });

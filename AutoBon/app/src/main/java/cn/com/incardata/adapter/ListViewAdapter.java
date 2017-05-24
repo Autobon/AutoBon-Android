@@ -96,9 +96,19 @@ public class ListViewAdapter extends BaseAdapter {
         holder.delect_tech.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                adapter1.setUserId(users.get(position).getId());
+                int id = users.get(position).getId();
+//                adapter1.setUserId(users.get(position).getId());
+
+//                for (ConstructionPosition constructionPosition : items){
+//                    if (constructionPosition.getTechnicianId() == users.get(position).getId()){
+//                        constructionPosition.setTechnicianId(-1);
+//                        constructionPosition.setCheck(false);
+//                    }
+//                }
                 users.remove(position);
+
                 notifyDataSetChanged();
+//                adapter1.notifyDataSetChanged();
                 onGetHeight.getHeight();
             }
         });
@@ -108,9 +118,9 @@ public class ListViewAdapter extends BaseAdapter {
 //            activity.setListViewHeightBasedOnChildren(activity.getListview_workItem());
 //        }
         holder.ciName.setText(users.get(position).getName());
-        if (mMapGridView.containsKey(position)) {
-            holder.ciGridview.setAdapter(mMapGridView.get(position));
-        } else {
+//        if (mMapGridView.containsKey(position)) {
+//            holder.ciGridview.setAdapter(mMapGridView.get(position));
+//        } else {
             GridViewAdapter adapter = new GridViewAdapter(context, items, users.get(position));
             adapter1 = adapter;
             holder.ciGridview.setAdapter(adapter);
@@ -128,7 +138,7 @@ public class ListViewAdapter extends BaseAdapter {
                 }
             });
             mMapGridView.put(position, adapter);
-        }
+//        }
 
         return view;
     }

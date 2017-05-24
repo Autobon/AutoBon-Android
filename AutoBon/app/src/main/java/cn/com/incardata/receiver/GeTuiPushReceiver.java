@@ -87,12 +87,12 @@ public class GeTuiPushReceiver extends BroadcastReceiver {
             boolean isAuthorize = SharedPre.getBoolean(context, AutoCon.IS_AUTHORIZED, false);
             if (ActionType.NEW_ORDER.equals(action)) { //新订单
                 if (!isAuthorize) return;
-                if (MyApplication.isMainForego() && MyApplication.isSkipNewOrder()){
-                Intent intent = new Intent(ActionType.ACTION_ORDER);
-                intent.putExtra(ActionType.EXTRA_DATA, msg);
-                context.sendBroadcast(intent);
-                }else {
-                showNotification(context, "新订单", jsonObject.getString("title"), 3, msg);
+                if (MyApplication.isMainForego() && MyApplication.isSkipNewOrder()) {
+                    Intent intent = new Intent(ActionType.ACTION_ORDER);
+                    intent.putExtra(ActionType.EXTRA_DATA, msg);
+                    context.sendBroadcast(intent);
+                } else {
+                    showNotification(context, "新订单", jsonObject.getString("title"), 3, msg);
                 }
             } else if (ActionType.INVITE_PARTNER.equals(action)) { //合作邀请
                 if (!isAuthorize) return;

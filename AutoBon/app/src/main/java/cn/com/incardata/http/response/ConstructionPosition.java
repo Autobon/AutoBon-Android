@@ -9,14 +9,14 @@ public class ConstructionPosition {
     private int projectId;
     private int technicianId = -1;
     private int total = 0;
-    private int checkId = 0;
+    private boolean isCheck = false;
 
-    public int getCheckId() {
-        return checkId;
+    public boolean isCheck() {
+        return isCheck;
     }
 
-    public void setCheckId(int checkId) {
-        this.checkId = checkId;
+    public void setCheck(boolean check) {
+        isCheck = check;
     }
 
     public int getId() {

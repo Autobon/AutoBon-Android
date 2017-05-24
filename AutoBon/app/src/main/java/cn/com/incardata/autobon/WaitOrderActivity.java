@@ -20,6 +20,8 @@ import cn.com.incardata.application.MyApplication;
 import cn.com.incardata.http.Http;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.OnResult;
+import cn.com.incardata.http.response.CollectionShopEntity;
+import cn.com.incardata.http.response.CollectionShop_Data;
 import cn.com.incardata.http.response.ListNewEntity;
 import cn.com.incardata.http.response.ListNew_Data;
 import cn.com.incardata.http.response.Order;
@@ -46,6 +48,10 @@ public class WaitOrderActivity extends BaseActivity implements PullToRefreshView
 
     private TextView today;
 
+    private List<CollectionShop_Data> collectionShopList;
+
+    public static boolean isGetCollectionShop = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,13 +60,29 @@ public class WaitOrderActivity extends BaseActivity implements PullToRefreshView
         initView();
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isGetCollectionShop){
+            isGetCollectionShop = false;
+            getCollectionShopList();
+        }
+    }
+
     private void initView() {
+        collectionShopList = new ArrayList<>();
         today = (TextView) findViewById(R.id.today);
         refresh = (PullToRefreshView) findViewById(R.id.pull);
         mListView = (ListView) findViewById(R.id.wait_order_list);
 
         orderList = new ArrayList<OrderInfo>();
-        mAdapter = new OrderWaitAdapter(this, orderList);
+        mAdapter = new OrderWaitAdapter(this, orderList,collectionShopList);
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -80,6 +102,7 @@ public class WaitOrderActivity extends BaseActivity implements PullToRefreshView
             }
         });
         today.setText(DateCompute.getWeekOfDate());
+        getCollectionShopList();
         loadData(1);
 
         mAdapter.setOnClickOrderListener(new OrderWaitAdapter.OnClickOrderListener() {
@@ -123,6 +146,30 @@ public class WaitOrderActivity extends BaseActivity implements PullToRefreshView
                 }
             }
         }, new BasicNameValuePair("orderId", String.valueOf(orderId)));
+    }
+
+    /**
+     * 获取收藏技师列表
+     */
+    private void getCollectionShopList(){
+        Http.getInstance().getTaskToken(NetURL.YETCOLLECTIONSHOP, "page=1&pageSize=200", CollectionShopEntity.class, new OnResult() {
+            @Override
+            public void onResult(Object entity) {
+                refresh.loadedCompleted();
+                if (entity == null) {
+                    T.show(getContext(),R.string.request_failed);
+                    return;
+                }
+                if (entity instanceof CollectionShopEntity){
+                    if (collectionShopList!= null && collectionShopList.size() > 0){
+                        collectionShopList.clear();
+                    }
+                    CollectionShopEntity collectionShopEntity = (CollectionShopEntity) entity;
+                    collectionShopList.addAll(collectionShopEntity.getList());
+                    mAdapter.notifyDataSetInvalidated();
+                }
+            }
+        });
     }
 
     private void loadData(int page){

@@ -15,6 +15,7 @@ import cn.com.incardata.application.MyApplication;
 import cn.com.incardata.autobon.R;
 import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
+import cn.com.incardata.http.response.CollectionShop_Data;
 import cn.com.incardata.http.response.Order;
 import cn.com.incardata.http.response.OrderInfo;
 import cn.com.incardata.utils.DateCompute;
@@ -25,10 +26,12 @@ import cn.com.incardata.utils.DateCompute;
 public class OrderWaitAdapter extends BaseAdapter{
     private Context context;
     private List<OrderInfo> orderList;
+    private List<CollectionShop_Data> collectionShopList;
 
-    public OrderWaitAdapter(Context context, List<OrderInfo> orderList){
+    public OrderWaitAdapter(Context context, List<OrderInfo> orderList,List<CollectionShop_Data> collectionShopList){
         this.context = context;
         this.orderList = orderList;
+        this.collectionShopList = collectionShopList;
     }
 
     @Override
@@ -62,6 +65,7 @@ public class OrderWaitAdapter extends BaseAdapter{
             holder.types[1] = (TextView) view.findViewById(R.id.btn2);
             holder.types[2] = (TextView) view.findViewById(R.id.btn3);
             holder.types[3] = (TextView) view.findViewById(R.id.btn4);
+            holder.img_collection = (ImageView) view.findViewById(R.id.img_collection);
 
 //            holder.orderImage = (ImageView) view.findViewById(R.id.order_image);
 //            holder.hideBg = (TextView) view.findViewById(R.id.order_hide_text);
@@ -71,6 +75,18 @@ public class OrderWaitAdapter extends BaseAdapter{
             holder = (Holder) view.getTag();
         }
 
+        if (collectionShopList != null && collectionShopList.size() > 0){
+            for (int i = 0; i < collectionShopList.size(); i++){
+                if (orderList.get(position).getCoopId() == collectionShopList.get(i).getCooperator().getId()){
+                    holder.img_collection.setImageDrawable(context.getResources().getDrawable(R.mipmap.img_rank));
+                    break;
+                }else {
+                    holder.img_collection.setImageDrawable(context.getResources().getDrawable(R.mipmap.img_rank_default));
+                }
+            }
+        }else {
+            holder.img_collection.setImageDrawable(context.getResources().getDrawable(R.mipmap.img_rank_default));
+        }
 
         String[] type = (orderList.get(position).getType()).split(",");
         for (int i = 0; i < 4; i++){
@@ -107,6 +123,8 @@ public class OrderWaitAdapter extends BaseAdapter{
         TextView orderTime;
 
         private TextView[] types = new TextView[4];
+
+        private ImageView img_collection;
 //        ImageView orderImage;
 //        TextView hideBg;
     }
