@@ -3,6 +3,8 @@ package cn.com.incardata.utils;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -179,18 +181,21 @@ public class BaiduMapUtil {
 //        LatLng latLng = BaiduMapUtil.getBaidulatlng();
         //百度地图,从起点是LatLng ll_location = new LatLng("你的纬度latitude","你的经度longitude");
         //终点是LatLng ll = new LatLng("你的纬度latitude","你的经度longitude");
-        NaviParaOption para = new NaviParaOption();
-        para.startPoint(latLngArray[0]);
-        para.startName("我的位置");
-        para.endPoint(latLngArray[1]);
-        para.endName(address);
+//        NaviParaOption para = new NaviParaOption();
+//        para.startPoint(latLngArray[0]);
+//        para.startName("我的位置");
+//        para.endPoint(latLngArray[1]);
+//        para.endName(address);
+        Intent intent = new Intent();
+        intent.setData(Uri.parse("baidumap://map/navi?location=" + latLngArray[1].latitude + "," + latLngArray[1].longitude));
         if (isInstallPackage("com.baidu.BaiduMap")) {
-            try {
-                BaiduMapNavigation.openBaiduMapNavi(para, context);
-            } catch (BaiduMapAppNotSupportNaviException e) {
-                e.printStackTrace();
-                T.show(context,"您尚未安装百度地图或地图版本过低");
-            }
+            context.startActivity(intent);
+//            try {
+////                BaiduMapNavigation.openBaiduMapNavi(para, context);
+//            } catch (BaiduMapAppNotSupportNaviException e) {
+//                e.printStackTrace();
+//                T.show(context,"您尚未安装百度地图或地图版本过低");
+//            }
         } else {
 //                LatLng ptMine = new LatLng(latLng.latitude, latLng.longitude);
 //                LatLng ptPosition = new LatLng(lat, lon);

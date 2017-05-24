@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +34,7 @@ import com.baidu.mapapi.navi.NaviParaOption;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -182,22 +184,39 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
 
 
     //开启百度导航
-    public static void startNavi(Context context, String address) {
+    public void startNavi(Context context, String address) {
 //        LatLng latLng = BaiduMapUtil.getBaidulatlng();
         //百度地图,从起点是LatLng ll_location = new LatLng("你的纬度latitude","你的经度longitude");
         //终点是LatLng ll = new LatLng("你的纬度latitude","你的经度longitude");
-        NaviParaOption para = new NaviParaOption();
-        para.startPoint(latLngArray[0]);
-        para.startName("我的位置");
-        para.endPoint(latLngArray[1]);
-        para.endName(address);
+//        NaviParaOption para = new NaviParaOption();
+//        para.startPoint(latLngArray[0]);
+//        para.startName("我的位置");
+//        para.endPoint(latLngArray[1]);
+//        para.endName(address);
+
+//        try {
+//            intent = Intent.getIntent("intent://map/direction?" +
+//                    "origin=latlng:"+ latLngArray[0].latitude + "," + latLngArray[0].longitude +   //起点  此处不传值默认选择当前位置
+//                    "&destination=latlng:"+ latLngArray[1].latitude + ","+ latLngArray[1] .longitude+"|name:" + address +        //终点
+//                    "&mode=driving&" +          //导航路线方式
+//                    "region=北京" +           //
+//                    "&src=慧医#Intent;scheme=bdapp;package=com.baidu.BaiduMap;end");
+//
+//
+//
+//        } catch (URISyntaxException e) {
+//            e.printStackTrace();
+//        }
+        Intent intent = new Intent();
+        intent.setData(Uri.parse("baidumap://map/navi?location=" + latLngArray[1].latitude + "," + latLngArray[1].longitude));
         if (isInstallPackage("com.baidu.BaiduMap")) {
-            try {
-                BaiduMapNavigation.openBaiduMapNavi(para, context);
-            } catch (BaiduMapAppNotSupportNaviException e) {
-                e.printStackTrace();
-                T.show(context, "您尚未安装百度地图或地图版本过低");
-            }
+            startActivity(intent);
+//            try {
+//                BaiduMapNavigation.openBaiduMapNavi(para, context);
+//            } catch (BaiduMapAppNotSupportNaviException e) {
+//                e.printStackTrace();
+//                T.show(context, "您尚未安装百度地图或地图版本过低");
+//            }
         } else {
 //                LatLng ptMine = new LatLng(latLng.latitude, latLng.longitude);
 //                LatLng ptPosition = new LatLng(lat, lon);
