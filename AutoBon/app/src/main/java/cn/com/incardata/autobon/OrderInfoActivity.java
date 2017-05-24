@@ -4,26 +4,41 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+
 import cn.com.incardata.application.MyApplication;
+import cn.com.incardata.http.Http;
 import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
+import cn.com.incardata.http.OnResult;
+import cn.com.incardata.http.response.BaseEntity;
 import cn.com.incardata.http.response.MyInfo_Data;
+import cn.com.incardata.http.response.Order;
+import cn.com.incardata.http.response.OrderConstructionShow;
+import cn.com.incardata.http.response.OrderInfo;
+import cn.com.incardata.http.response.OrderInfoEntity;
 import cn.com.incardata.http.response.OrderInfo_Construction;
 import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.http.response.OrderInfo_Data_Comment;
 import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.DateCompute;
 import cn.com.incardata.utils.L;
+import cn.com.incardata.utils.T;
+import cn.com.incardata.view.WorkMessagePopupWindow;
+import cn.com.incardata.view.wheel.widget.WheelPopupWindow;
 
 /**
  * 我的订单-订单详情
@@ -33,13 +48,13 @@ public class OrderInfoActivity extends BaseActivity {
     private TextView money;
     private TextView moneyState;
     private TextView orderNum;
-    private ImageView orderImage;
+    //    private ImageView orderImage;
     private TextView remark;
     private TextView order_type;
-    private TextView work_item;
+    private TextView shops_name;
     private TextView work_person;
-    private TextView sign_in_time;
-    private GridView work_before_grid, work_after_grid;
+    private TextView worktime;
+    private GridView work_before_grid, work_after_grid, order_grid;
     private RatingBar ratingBar;
     private ImageView arriveOnTime;
     private ImageView completeOnTime;
@@ -48,10 +63,16 @@ public class OrderInfoActivity extends BaseActivity {
     private ImageView carProtect;
     private ImageView goodAttitude;
     private TextView otherProposal;
+    private RelativeLayout rll5;
+    private TextView noComment;
     private Display display;
+    private Button check_tech_message;
+    private Button collection;
 
     private boolean isMainResponsible;
-    private OrderInfo_Data orderInfo;
+    private OrderInfo orderInfo;
+    private int id;
+    private WorkMessagePopupWindow workMessagePopupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +80,6 @@ public class OrderInfoActivity extends BaseActivity {
         setContentView(R.layout.activity_order_info);
 
         initView();
-        updateUI(orderInfo);
     }
 
 
@@ -68,12 +88,12 @@ public class OrderInfoActivity extends BaseActivity {
         money = (TextView) findViewById(R.id.money);
         moneyState = (TextView) findViewById(R.id.money_state);
         orderNum = (TextView) findViewById(R.id.order_number);
-        orderImage = (ImageView) findViewById(R.id.order_image);
         remark = (TextView) findViewById(R.id.remark);
         order_type = (TextView) findViewById(R.id.order_type);
-        work_item = (TextView) findViewById(R.id.work_item);
+        shops_name = (TextView) findViewById(R.id.shops_name);
         work_person = (TextView) findViewById(R.id.work_person);
-        sign_in_time = (TextView) findViewById(R.id.sign_in_time);
+        worktime = (TextView) findViewById(R.id.sign_in_time);
+        order_grid = (GridView) findViewById(R.id.order_grid);
         work_before_grid = (GridView) findViewById(R.id.work_before_grid);
         work_after_grid = (GridView) findViewById(R.id.work_after_grid);
         ratingBar = (RatingBar) findViewById(R.id.ratingBar);
@@ -84,6 +104,11 @@ public class OrderInfoActivity extends BaseActivity {
         carProtect = (ImageView) findViewById(R.id.car_protect);
         goodAttitude = (ImageView) findViewById(R.id.good_attitude);
         otherProposal = (TextView) findViewById(R.id.other_proposal);
+        noComment = (TextView) findViewById(R.id.noComment);
+        rll5 = (RelativeLayout) findViewById(R.id.rll5);
+        check_tech_message = (Button) findViewById(R.id.check_tech_message);
+
+        collection = (Button) findViewById(R.id.collection);
 
         findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,90 +116,151 @@ public class OrderInfoActivity extends BaseActivity {
                 finish();
             }
         });
-        findViewById(R.id.order_image).setOnClickListener(new View.OnClickListener() {
+
+
+        collection.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                openImage(0, orderInfo.getPhoto());
+            public void onClick(View view) {
+                collectionShop();
             }
         });
 
-        isMainResponsible = getIntent().getBooleanExtra("isMain", false);
+
+
         orderInfo = getIntent().getParcelableExtra(AutoCon.ORDER_INFO);
+        if (orderInfo == null){
+            T.show(getContext(),R.string.dataUploadFailed);
+        }else {
+            updateUI(orderInfo);
+        }
     }
-//获取订单详情
-//    private void getOrderInfo() {
-//        Http.getInstance().getTaskToken(NetURL.getOrderInfo(2), "", OrderInfoEntity.class, new OnResult() {
-//            @Override
-//            public void onResult(Object entity) {
-//                if (entity == null) {
-//                    T.show(getContext(), R.string.loading_data_failure);
-//                    return;
-//                }
-//                if (entity instanceof OrderInfoEntity) {
-//                    if (((OrderInfoEntity) entity).isResult()) {
-//                        updateUI(((OrderInfoEntity) entity).getData());
-//                    } else {
-//                        T.show(getContext(), R.string.loading_data_failure);
-//                        return;
-//                    }
-//                }
-//            }
-//        });
-//    }
 
-    private void updateUI(OrderInfo_Data data) {
-        OrderInfo_Construction construct;
-        if (isMainResponsible) {
-            construct = data.getMainConstruct();
+
+    public String getProject(String type) {
+        if ("1".equals(type)) {
+            return "隔热膜";
+        } else if ("2".equals(type)) {
+            return "隐形车衣";
+        } else if ("3".equals(type)) {
+            return "车身改色";
+        } else if ("4".equals(type)) {
+            return "美容清洁";
+        } else
+            return null;
+    }
+
+
+    /**
+     * 收藏商户方法
+     */
+    private void collectionShop(){
+        showDialog();
+        Http.getInstance().postTaskToken(NetURL.deleteCollectionShop(orderInfo.getCoopId()), "", BaseEntity.class, new OnResult() {
+            @Override
+            public void onResult(Object entity) {
+                cancelDialog();
+                if (entity == null) {
+                    T.show(getContext(),R.string.request_failed);
+                    return;
+
+                }
+                if (entity instanceof BaseEntity){
+                    BaseEntity entity1 = (BaseEntity) entity;
+                    if (entity1.isResult()){
+                        T.show(getContext(),"收藏商户成功");
+                    }else {
+                        T.show(getContext(),entity1.getMessage());
+                    }
+                }
+
+            }
+        });
+    }
+
+
+    private void updateUI(final OrderInfo data) {
+        Myadapter myadapter1;
+
+        final String[] urlOrder;
+        String urlOrderPhotos = data.getPhoto();
+        if (urlOrderPhotos.contains(",")) {
+            urlOrder = urlOrderPhotos.split(",");
         } else {
-            construct = data.getSecondConstruct();
+            urlOrder = new String[]{urlOrderPhotos};
         }
-        OrderInfo_Data_Comment comment = data.getComment();
+        myadapter1 = new Myadapter(this, urlOrder);
+        order_grid.setAdapter(myadapter1);
+
+        order_grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                openImage(position, urlOrder);
+            }
+        });
         remark.setText(data.getRemark());
-        if (data.getOrderType() == 1) {
-            order_type.setText(R.string.skill_item_1);
-        } else if (data.getOrderType() == 2) {
-            order_type.setText(R.string.skill_item_2);
-        } else if (data.getOrderType() == 3) {
-            order_type.setText(R.string.skill_item_3);
-        } else {
-            order_type.setText(R.string.skill_item_4);
+        String type = "";
+        String[] types = (data.getType()).split(",");
+        for (int i = 0; i < types.length; i++){
+            type = type + getProject(types[i]) + ",";
         }
-        MyInfo_Data tech;
-        if (isMainResponsible) {
-            tech = data.getMainTech();
-        } else {
-            tech = data.getSecondTech();
-        }
-        if (tech == null) {
-            return;
-        }
-        work_person.setText(tech.getName());
-        orderNum.setText(getResources().getString(R.string.order_serial_number) + data.getOrderNum());
-        ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + data.getPhoto(), orderImage, false, R.mipmap.load_image_failed);
+        type = type.substring(0,type.length() - 1);
 
-        if ("CANCELED".equals(data.getStatus())) {
-            money.setText(getResources().getString(R.string.RMB) + 0);
+        if (data.getStatus().equals("CANCELED")) {
+            money.setText(R.string.no);
             moneyState.setText(R.string.yetcancel);
             moneyState.setTextColor(getResources().getColor(R.color.darkgray));
-            work_item.setText(R.string.nothave);
-            sign_in_time.setText(R.string.nothave);
-        } else if ("GIVEN_UP".equals(data.getStatus())) {
-            money.setText(getResources().getString(R.string.RMB) + 0);
+        } else if (data.getStatus().equals("GIVEN_UP")) {
+            money.setText(R.string.no);
             moneyState.setText(R.string.yetrenounce);
             moneyState.setTextColor(getResources().getColor(R.color.darkgray));
-            work_item.setText(R.string.nothave);
-            sign_in_time.setText(R.string.nothave);
-        } else if ("EXPIRED".equals(data.getStatus())) {
-            money.setText(getResources().getString(R.string.RMB) + 0);
+        } else if (data.getStatus().equals("EXPIRED")) {
+            money.setText(R.string.no);
             moneyState.setText(R.string.yetovertime);
             moneyState.setTextColor(getResources().getColor(R.color.darkgray));
-            work_item.setText(R.string.nothave);
-            if (construct == null) {
-                sign_in_time.setText(R.string.nothave);
-            } else {
-                sign_in_time.setText(DateCompute.getDate(construct.getSigninTime()));
+        } else {
+            if (data.getPayStatus() == null || data.getPayStatus() == 0){
+                money.setText(R.string.no);
+                moneyState.setText(R.string.no_calculate);
+                moneyState.setTextColor(getResources().getColor(R.color.gray_A3));
+            }else if(data.getPayStatus() == 1){
+                money.setVisibility(View.VISIBLE);
+                money.setText(getResources().getString(R.string.RMB) + data.getPayment());
+                moneyState.setText(R.string.pay_wait);
+                moneyState.setTextColor(getResources().getColor(R.color.gray_A3));
+                money.setTextColor(getResources().getColor(R.color.gray_A3));
+            }else if (data.getPayStatus() == 2){
+                money.setVisibility(View.VISIBLE);
+                money.setText(getResources().getString(R.string.RMB) + data.getPayment());
+                moneyState.setText(R.string.pay_done);
+                moneyState.setTextColor(getResources().getColor(R.color.main_orange));
+                money.setTextColor(getResources().getColor(R.color.gray_A3));
             }
+        }
+
+        order_type.setText(type);
+        orderNum.setText(getResources().getString(R.string.order_serial_number) + data.getOrderNum());
+        shops_name.setText(data.getCoopName());
+
+
+        OrderInfo_Data_Comment comment = data.getComment();
+
+
+        if ("CANCELED".equals(data.getStatus())) {
+            shops_name.setText(R.string.nothave);
+            worktime.setText(R.string.nothave);
+            work_person.setText(data.getTechName());
+        } else if ("GIVEN_UP".equals(data.getStatus())) {
+            shops_name.setText(R.string.nothave);
+            worktime.setText(R.string.nothave);
+            work_person.setText(data.getTechName());
+        } else if ("EXPIRED".equals(data.getStatus())) {
+            shops_name.setText(R.string.nothave);
+            if (orderInfo.getStartTime() != 0) {
+                worktime.setText(DateCompute.getDate(orderInfo.getStartTime()));
+            } else {
+                worktime.setText(R.string.nothave);
+            }
+            work_person.setText(data.getTechName());
         } else {
             if (comment != null) {
                 ratingBar.setRating(comment.getStar());
@@ -197,54 +283,24 @@ public class OrderInfoActivity extends BaseActivity {
                     goodAttitude.setImageResource(R.mipmap.radio_select);
                 }
                 otherProposal.setText(comment.getAdvice());
-            }
-            if (construct == null){
-                money.setText(getResources().getString(R.string.RMB) + 0);
             }else {
-                money.setText(getResources().getString(R.string.RMB) + construct.getPayment());
+                noComment.setVisibility(View.VISIBLE);
+                rll5.setVisibility(View.GONE);
             }
 
-            if (construct.getPayStatus() == 2) {
-                moneyState.setText(R.string.pay_done);
-                moneyState.setTextColor(getResources().getColor(R.color.main_orange));
-            } else {
-                moneyState.setText(R.string.pay_wait);
-                moneyState.setTextColor(getResources().getColor(R.color.darkgray));
+            worktime.setText(DateCompute.getDate(orderInfo.getStartTime()));
+            String techname = "";
+            for (OrderConstructionShow orderConstructionShow : data.getOrderConstructionShow()) {
+                techname = techname + orderConstructionShow.getTechName() + ",";
             }
+            techname = techname.substring(0, techname.length() - 1);
 
+            work_person.setText(techname);
 
-            if (data.getOrderType() == 4) {//美容清洁
-                work_item.setText(MyApplication.getInstance().getSkill(4));
-            }
-            String item = construct.getWorkItems();
-
-            L.i("items====",item);
-            L.i("======","=============================================");
-            if (TextUtils.isEmpty(item)) {
-                work_item.setText(null);
-            } else {
-                if (item.contains(",")) {
-                    String[] items = item.split(",");
-
-
-                    String tempItem = "";
-                    for (String str : items) {
-                        L.i("aaaa====",str);
-                        L.i("======","=============================================");
-                        tempItem += MyOrderActivity.workItems[Integer.parseInt(str)] + ",";
-                        L.i("bbbb====",MyOrderActivity.workItems[Integer.parseInt(str)]);
-                        L.i("======","=============================================");
-
-                    }
-                    work_item.setText(tempItem.substring(0, tempItem.length() - 1));
-                } else {
-                    work_item.setText(MyOrderActivity.workItems[1]);
-                }
-            }
-            sign_in_time.setText(DateCompute.getDate(construct.getSigninTime()));
             Myadapter myadapter;
+
             final String[] urlBefore;
-            String urlBeforePhotos = construct.getBeforePhotos();
+            String urlBeforePhotos = data.getBeforePhotos();
             if (urlBeforePhotos.contains(",")) {
                 urlBefore = urlBeforePhotos.split(",");
             } else {
@@ -261,7 +317,7 @@ public class OrderInfoActivity extends BaseActivity {
             });
 
             final String[] urlAfter;
-            String urlAfterPhotos = construct.getAfterPhotos();
+            String urlAfterPhotos = data.getAfterPhotos();
             if (urlAfterPhotos.contains(",")) {
                 urlAfter = urlAfterPhotos.split(",");
             } else {
@@ -275,15 +331,29 @@ public class OrderInfoActivity extends BaseActivity {
                     openImage(position, urlAfter);
                 }
             });
+
+            check_tech_message.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (workMessagePopupWindow == null) {
+                        workMessagePopupWindow = new WorkMessagePopupWindow(OrderInfoActivity.this,data.getOrderConstructionShow(),data.getConstructionWasteShows());
+                        workMessagePopupWindow.init();
+                    }
+                    workMessagePopupWindow.showAtLocation(findViewById(R.id.rll1), Gravity.CENTER, 0, 0);
+                }
+            });
+
         }
 
     }
 
-    /** 查看图片
+    /**
+     * 查看图片
+     *
      * @param position
      * @param urls
      */
-    private void openImage(int position, String... urls){
+    private void openImage(int position, String... urls) {
         Bundle bundle = new Bundle();
         bundle.putStringArray(EnlargementActivity.IMAGE_URL, urls);
         bundle.putInt(EnlargementActivity.POSITION, position);
@@ -320,14 +390,10 @@ public class OrderInfoActivity extends BaseActivity {
             if (view == null) {
                 view = LayoutInflater.from(context).inflate(R.layout.grid_item_image, viewGroup, false);
                 imageView = (ImageView) view.findViewById(R.id.imgGridItem);
-//                imageView.setLayoutParams(new GridView.LayoutParams(display.getWidth() / 3,display.getWidth() / 3));
-//                GridView.LayoutParams params = new GridView.LayoutParams(display.getWidth() / 3, display.getWidth() / 3);
-//                view.setLayoutParams(params);
                 view.setTag(imageView);
             } else {
                 imageView = (ImageView) view.getTag();
             }
-//            imageView.setImageResource(imgUrl[position]);
             ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + urlItem[position], imageView, false);
 
 

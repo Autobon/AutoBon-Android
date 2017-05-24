@@ -2,7 +2,7 @@ package cn.com.incardata.http.response;
 
 import java.util.List;
 
-/**
+/** 可抢订单实体类
  * Created by wanghao on 16/4/20.
  */
 public class ListNew_Data {
@@ -11,7 +11,7 @@ public class ListNew_Data {
     private int totalPages;
     private int pageSize;
     private int count;
-    private List<Order> list;
+    private List<OrderInfo> list;
 
     public int getPage() {
         return page;
@@ -53,11 +53,11 @@ public class ListNew_Data {
         this.count = count;
     }
 
-    public List<Order> getList() {
+    public List<OrderInfo> getList() {
         return list;
     }
 
-    public void setList(List<Order> list) {
+    public void setList(List<OrderInfo> list) {
         this.list = list;
     }
 }

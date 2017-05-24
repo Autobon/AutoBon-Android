@@ -31,19 +31,25 @@ import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.http.StatusCode;
 import cn.com.incardata.http.response.LoginEntity;
+import cn.com.incardata.http.response.Login_Data;
 import cn.com.incardata.service.AutobonService;
 import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.SharedPre;
 import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener{
-    private ImageView iv_eye,iv_clear;
-    private EditText et_pwd,et_phone;
-    private TextView tv_register,tv_language,tv_forget_pwd;
+/**
+ * 登录
+ */
+
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
+    private ImageView iv_eye, iv_clear;
+    private EditText et_pwd, et_phone;
+    private TextView tv_register, tv_language, tv_forget_pwd;
     private Button login_btn;
     private boolean isFocus;
     private Context context;
+    private int activityId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +59,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         setListener();
     }
 
-    public void initView(){
+    public void initView() {
+        activityId = getIntent().getIntExtra("activityId", -1);
         context = this;
         iv_eye = (ImageView) findViewById(R.id.iv_eye);
         iv_clear = (ImageView) findViewById(R.id.iv_clear);
@@ -62,15 +69,26 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         tv_register = (TextView) findViewById(R.id.tv_register);
         tv_language = (TextView) findViewById(R.id.tv_language);
         tv_forget_pwd = (TextView) findViewById(R.id.tv_forget_pwd);
-        login_btn =(Button) findViewById(R.id.login_btn);
+        login_btn = (Button) findViewById(R.id.login_btn);
+        String phone = "";
+        String pwd = "";
 
-        String phone = SharedPre.getString(context,AutoCon.FLAG_PHONE,"");
-        String pwd = SharedPre.getString(context, AutoCon.FLAG_PASSWORD,"");
+        if (activityId == 1) {
+            phone = getIntent().getStringExtra("phone");
+            pwd = getIntent().getStringExtra("password");
+        } else if (activityId == 2) {
+            phone = getIntent().getStringExtra("phone");
+            pwd = getIntent().getStringExtra("password");
+        } else {
+            phone = SharedPre.getString(context, AutoCon.FLAG_PHONE, "");
+            pwd = SharedPre.getString(context, AutoCon.FLAG_PASSWORD, "");
+        }
+
         et_phone.setText(phone);
         et_pwd.setText(pwd);
     }
 
-    public void setListener(){
+    public void setListener() {
         iv_eye.setOnClickListener(this);
         iv_clear.setOnClickListener(this);
         tv_register.setOnClickListener(this);
@@ -92,9 +110,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
             @Override
             public void afterTextChanged(Editable s) {
                 String text = s.toString().trim();
-                if(StringUtil.isEmpty(text)){  //文本空,隐藏删除图片
+                if (StringUtil.isEmpty(text)) {  //文本空,隐藏删除图片
                     iv_clear.setVisibility(View.INVISIBLE);
-                }else{
+                } else {
                     iv_clear.setVisibility(View.VISIBLE);
                 }
             }
@@ -118,7 +136,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 et_phone.setText("");
                 break;
             case R.id.tv_register: //注册
-                Intent intent = new Intent(this,RegisterActivity.class);
+                Intent intent = new Intent(this, RegisterActivity.class);
                 startActivity(intent);
                 break;
             case R.id.login_btn: //登陆
@@ -132,7 +150,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 switchLang();
                 break;
             case R.id.tv_forget_pwd: //忘记密码
-                Intent i = new Intent(this,FindPasswordActivity.class);
+                Intent i = new Intent(this, FindPasswordActivity.class);
                 startActivity(i);
                 break;
         }
@@ -169,8 +187,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     }
 
     /**
-     * @param isShowPwd
-     * 是否显示密码
+     * @param isShowPwd 是否显示密码
      */
     private void showOrHidenLoginPwd(boolean isShowPwd) {
         if (isShowPwd) {
@@ -180,28 +197,28 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         }
     }
 
-    private void login(){
+    private void login() {
         String phone = et_phone.getText().toString().trim();
         String password = et_pwd.getText().toString().trim();
-        if(StringUtil.isEmpty(phone)){
-            T.show(context,context.getString(R.string.empty_phone));
+        if (StringUtil.isEmpty(phone)) {
+            T.show(context, context.getString(R.string.empty_phone));
             return;
         }
-        if(phone.length()!=11){
-            T.show(context,context.getString(R.string.error_phone));
+        if (phone.length() != 11) {
+            T.show(context, context.getString(R.string.error_phone));
             return;
         }
-        if(StringUtil.isEmpty(password)){
-            T.show(context,context.getString(R.string.empty_password));
+        if (StringUtil.isEmpty(password)) {
+            T.show(context, context.getString(R.string.empty_password));
             return;
         }
 
-        if(NetWorkHelper.isNetworkAvailable(context)){
+        if (NetWorkHelper.isNetworkAvailable(context)) {
             showDialog();  //显示加载框
-            MyAsyncTask myAsyncTask = new MyAsyncTask(phone,password);
+            MyAsyncTask myAsyncTask = new MyAsyncTask(phone, password);
             myAsyncTask.execute();
-        }else{
-            T.show(context,getString(R.string.no_network_tips));
+        } else {
+            T.show(context, getString(R.string.no_network_tips));
             return;
         }
     }
@@ -209,23 +226,24 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     /**
      * 自定义异步任务实现登陆操作
      */
-    class MyAsyncTask extends AsyncTask<Void,Void,String>{
+    class MyAsyncTask extends AsyncTask<Void, Void, String> {
         private String phone;
         private String password;
-        public MyAsyncTask(String phone,String password){
+
+        public MyAsyncTask(String phone, String password) {
             this.phone = phone;
             this.password = password;
         }
 
         @Override
         protected String doInBackground(Void... params) {
-            BasicNameValuePair bv_phone = new BasicNameValuePair("phone",this.phone);
-            BasicNameValuePair bv_password = new BasicNameValuePair("password",this.password);
-            try{
-                String result = HttpClientInCar.postLoginHttpToken(context,NetURL.LOGIN,bv_phone,bv_password);
+            BasicNameValuePair bv_phone = new BasicNameValuePair("phone", this.phone);
+            BasicNameValuePair bv_password = new BasicNameValuePair("password", this.password);
+            try {
+                String result = HttpClientInCar.postLoginHttpToken(context, NetURL.LOGINV2, bv_phone, bv_password);
                 Thread.sleep(3000);
                 return result;
-            }catch (Exception e){
+            } catch (Exception e) {
                 return null;
             }
         }
@@ -235,51 +253,48 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
             super.onPostExecute(result);
             cancelDialog();  //关闭加载框
             if (StringUtil.isEmpty(result)) {
-                T.show(context,context.getString(R.string.login_failed));
+                T.show(context, context.getString(R.string.login_failed));
                 return;
             }
-            LoginEntity loginEntity = JSON.parseObject(result,LoginEntity.class);
-            if(loginEntity == null){
-                T.show(context,context.getString(R.string.login_failed));
+            LoginEntity loginEntity = JSON.parseObject(result, LoginEntity.class);
+            if (loginEntity == null) {
+                T.show(context, context.getString(R.string.login_failed));
                 return;
             }
-            if(loginEntity.isResult()){  //成功
-                SharedPre.setSharedPreferences(context,AutoCon.FLAG_PHONE,this.phone);
-                SharedPre.setSharedPreferences(context, AutoCon.FLAG_PASSWORD,this.password);  //保存密码
+            if (loginEntity.isStatus()) {  //成功
+                SharedPre.setSharedPreferences(context, AutoCon.FLAG_PHONE, this.phone);
+                SharedPre.setSharedPreferences(context, AutoCon.FLAG_PASSWORD, this.password);  //保存密码
+                Login_Data login_data = JSON.parseObject(loginEntity.getMessage().toString(), Login_Data.class);
 
-                MyApplication.getInstance().setUserId(loginEntity.getData().getId());
+                MyApplication.getInstance().setUserId(login_data.getId());
                 //TODO 跳转主页
-                String status = loginEntity.getData().getStatus();
-                if (StatusCode.VERIFIED.equals(status)){
+                String status = login_data.getStatus();
+                if (StatusCode.VERIFIED.equals(status)) {
                     SharedPre.setSharedPreferences(getContext(), AutoCon.IS_AUTHORIZED, true);
                     startActivity(MainAuthorizedActivity.class);
-                    //startActivity(MyInfoActivity.class);
-                }else if(StatusCode.BANNED.equals(status)){
+//                    startActivity(AuthorizeActivity.class);
+//                    startActivity(CancelOrderReasonActivity.class);
+                } else if (StatusCode.BANNED.equals(status)) {
                     T.show(getContext(), R.string.banned);
                     SharedPre.setSharedPreferences(getContext(), AutoCon.IS_AUTHORIZED, false);
                     return;
-                }else {
+                } else {
                     SharedPre.setSharedPreferences(getContext(), AutoCon.IS_AUTHORIZED, false);
                     Bundle bundle = new Bundle();
-                    if (StatusCode.NEWLY_CREATED.equals(status)){
+                    if (StatusCode.NEWLY_CREATED.equals(status)) {
                         bundle.putBoolean("isVerifying", false);//是否正在审核
-                    }else {
+                    } else {
                         bundle.putBoolean("isVerifying", true);//是否正在审核
                     }
                     startActivity(MainUnauthorizedActivity.class, bundle);
                     //startActivity(MyInfoActivity.class);
                 }
-
                 startService(new Intent(getContext(), AutobonService.class));
-                finish();
-            }else{  //失败
-                if("NO_SUCH_USER".equals(loginEntity.getError())){
-                    T.show(context,context.getString(R.string.phone_no_register_tips));
-                    return;
-                }else if("PASSWORD_MISMATCH".equals(loginEntity.getError())){
-                    T.show(context,context.getString(R.string.password_error_tips));
-                    return;
-                }
+//                finish();
+            } else {  //失败
+                T.show(context, loginEntity.getMessage().toString());
+                return;
+
             }
         }
 
@@ -291,7 +306,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if(null != this.getCurrentFocus()){
+        if (null != this.getCurrentFocus()) {
             //点击空白位置 隐藏软键盘
             InputMethodManager mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             return mInputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);

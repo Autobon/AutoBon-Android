@@ -72,6 +72,17 @@ public class NetTaskToken implements Runnable {
 					}
 					handler.sendEmptyMessage(what);
 					return;
+				case Http.DEL:
+					if (param != null){
+						json = HttpClientInCar.DelHttpToken(strUrl, param);
+						break;
+					}
+					if (params != null){
+						json = HttpClientInCar.DelHttpToken(strUrl, params);
+						break;
+					}
+					handler.sendEmptyMessage(what);
+					break;
 				default:
 					break;
 			}

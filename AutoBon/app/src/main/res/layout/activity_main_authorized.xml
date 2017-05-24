@@ -159,8 +159,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scrollbarStyle="outsideOverlay"
-                android:paddingLeft="@dimen/dp10"
-                android:paddingRight="@dimen/dp10"
                 android:divider="#F0F0F0"
                 android:dividerHeight="1dp"/>
 

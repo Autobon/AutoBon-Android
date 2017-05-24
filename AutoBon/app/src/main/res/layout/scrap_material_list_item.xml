@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:background="@color/main_white"
+    android:gravity="center_vertical"
+    android:layout_marginTop="@dimen/dp10"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/name"
+        android:textSize="@dimen/sp13"
+        android:text="dads"
+        android:paddingTop="@dimen/dp10"
+        android:paddingBottom="@dimen/dp10"
+        android:textColor="@color/darkgray"
+        android:layout_marginLeft="@dimen/dp15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/project"
+        android:textSize="@dimen/sp13"
+        android:text="dads"
+        android:paddingTop="@dimen/dp10"
+        android:paddingBottom="@dimen/dp10"
+        android:textColor="@color/darkgray"
+        android:layout_marginLeft="@dimen/dp20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/position"
+        android:textSize="@dimen/sp13"
+        android:paddingTop="@dimen/dp10"
+        android:paddingBottom="@dimen/dp10"
+        android:layout_marginLeft="@dimen/dp20"
+        android:textColor="@color/darkgray"
+        android:text="dads"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <!--<TextView-->
+        <!--android:id="@+id/total"-->
+        <!--android:textSize="@dimen/sp13"-->
+        <!--android:textColor="@color/darkgray"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
+
+</LinearLayout>

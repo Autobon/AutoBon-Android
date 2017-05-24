@@ -2,6 +2,7 @@ package cn.com.incardata.autobon;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -20,6 +21,7 @@ import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.http.OnResult;
 import cn.com.incardata.http.response.ModifyBankCardEntity;
+import cn.com.incardata.utils.BankUtil;
 import cn.com.incardata.utils.T;
 
 /**
@@ -30,7 +32,7 @@ public class ModifyBankCardInfoActivity extends BaseActivity implements View.OnC
     private Context context;
     private ImageView iv_back;
     private TextView tv_name;
-    private EditText bank_number;
+    private EditText bank_number,bank_address;
     private Spinner sp_bank_catrgory;
     private String[] bankArray;
     private Button submit_bank_card_info_btn;
@@ -53,6 +55,7 @@ public class ModifyBankCardInfoActivity extends BaseActivity implements View.OnC
         tv_name = (TextView) findViewById(R.id.tv_name);
         sp_bank_catrgory = (Spinner) findViewById(R.id.sp_bank_catrgory);
         bank_number = (EditText) findViewById(R.id.bank_number);
+        bank_address = (EditText) findViewById(R.id.bank_address);
         submit_bank_card_info_btn = (Button) findViewById(R.id.submit_bank_card_info_btn);
     }
 
@@ -60,8 +63,10 @@ public class ModifyBankCardInfoActivity extends BaseActivity implements View.OnC
         Bundle bundle = getIntent().getExtras();
         String name = bundle.getString("name");
         String bankCardNumber = bundle.getString("bankCardNumber");
+        String bankAddress = bundle.getString("bankAddress");
         tv_name.setText(name);
         bank_number.setText(bankCardNumber);
+        bank_address.setText(bankAddress);
 
         bankArray = getResources().getStringArray(R.array.bank_array);
         BankNameAdapter bankNameAdapter = new BankNameAdapter(this, bankArray);
@@ -105,11 +110,29 @@ public class ModifyBankCardInfoActivity extends BaseActivity implements View.OnC
     private void modifyBankCardInfo(){
         if(NetWorkHelper.isNetworkAvailable(context)){
             String bankNo = bank_number.getText().toString().trim();
+            String bankAddress = bank_address.getText().toString().trim();
+
+            if (TextUtils.isEmpty(bankNo)) {
+                T.show(this, R.string.bank_number_error);
+                return;
+            }
+
+            if (!(bankNo.trim().length() >= 16 && BankUtil.checkBankCard(bankNo))) {
+                T.show(this, R.string.check_bank_number);
+                return;
+            }
+
+            if (TextUtils.isEmpty(bankAddress)) {
+                T.show(this, R.string.bank_andress_not_null);
+                return;
+            }
             //TODO 银行卡号只能根据数字位数来判断,诸如16位和19位
             BasicNameValuePair bv_one = new BasicNameValuePair("bank",bankName);
             BasicNameValuePair bv_two = new BasicNameValuePair("bankCardNo",bankNo);
+            BasicNameValuePair bv_three = new BasicNameValuePair("bankAddress",bankAddress);
+            String param = "?bank=" + bankName + "&bankCardNo=" + bankNo + "&bankAddress=" + bankAddress;
 
-            Http.getInstance().postTaskToken(NetURL.MODIFY_BANK_CARD_INFO_URL, ModifyBankCardEntity.class, new OnResult() {
+            Http.getInstance().putTaskToken(NetURL.MODIFY_BANK_CARD_INFO_URLV2 + param,"", ModifyBankCardEntity.class, new OnResult() {
                 @Override
                 public void onResult(Object entity) {
                     if(entity == null){
@@ -117,12 +140,16 @@ public class ModifyBankCardInfoActivity extends BaseActivity implements View.OnC
                         return;
                     }
                     ModifyBankCardEntity modifyBankCardEntity = (ModifyBankCardEntity)entity;
-                    if(modifyBankCardEntity.isResult()){
+                    if(modifyBankCardEntity.isStatus()){
                         T.show(context,context.getString(R.string.modify_bankcard_info_success));
+                        setResult(RESULT_OK);
+                        finish();
+                    }else {
+                        T.show(context,modifyBankCardEntity.getMessage());
                         return;
                     }
                 }
-            },bv_one,bv_two);
+            });
         }else{
             T.show(context,context.getString(R.string.no_network_tips));
         }

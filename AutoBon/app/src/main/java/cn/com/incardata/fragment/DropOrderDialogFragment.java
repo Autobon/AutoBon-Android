@@ -7,6 +7,9 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.baidu.mapapi.map.MapViewLayoutParams;
 
 import cn.com.incardata.autobon.R;
 
@@ -17,11 +20,20 @@ import cn.com.incardata.autobon.R;
 public class DropOrderDialogFragment extends DialogFragment implements View.OnClickListener{
     private OnClickListener mListener;
     private View rootView;
+    private TextView title;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.DialogFragment);
+    }
+
+    public void setData(boolean isCancel){
+        if (isCancel){
+            title.setText("确认要放弃此单吗");
+        }else {
+            title.setText("确认要放弃此单吗");
+        }
     }
 
     @Nullable
@@ -41,6 +53,7 @@ public class DropOrderDialogFragment extends DialogFragment implements View.OnCl
     }
 
     private void initViews() {
+        title = (TextView) rootView.findViewById(R.id.title);
         rootView.findViewById(R.id.cancel).setOnClickListener(this);
         rootView.findViewById(R.id.ok).setOnClickListener(this);
     }

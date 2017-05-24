@@ -1,16 +1,16 @@
 package cn.com.incardata.http.response;
 
-/**
+/** 添加技师实体类
  * Created by zhangming on 2016/2/28.
  */
-public class AddContactEntity extends BaseEntity{
-    private AddContact_data data;
+public class AddContactEntity extends BaseEntityTwo{
+    private Object message;
 
-    public AddContact_data getData() {
-        return data;
+    public Object getMessage() {
+        return message;
     }
 
-    public void setData(AddContact_data data) {
-        this.data = data;
+    public void setMessage(Object message) {
+        this.message = message;
     }
 }

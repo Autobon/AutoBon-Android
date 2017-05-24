@@ -2,7 +2,7 @@ package cn.com.incardata.http.response;
 
 import java.util.List;
 
-/**
+/** 添加技师
  * Created by zhangming on 2016/2/28.
  */
 public class AddContact_data {

@@ -90,22 +90,30 @@ public class WorkFinishedActivity extends BaseActivity implements View.OnClickLi
         WShare wShare = new WShare(this);
         switch (paltforn) {
             case QQ:
-                if(!wShare.shareQQ(ShareConstant.TITLE, ShareConstant.URL, content, ShareConstant.IMAGE_URL)){
+                if(!wShare.shareQQ(ShareConstant.TITLE, ShareConstant.URL
+//                        + "?orderId=" + orderId
+                        , content, ShareConstant.IMAGE_URL)){
                     T.show(getContext(), "请先安装QQ客户端");
                 }
                 break;
             case QZONE:
-                if(!wShare.shareQZone(ShareConstant.TITLE, ShareConstant.URL, content, ShareConstant.IMAGE_URL, ShareConstant.TITLE, ShareConstant.URL)){
+                if(!wShare.shareQZone(ShareConstant.TITLE, ShareConstant.URL
+//                        + "?orderId=" + orderId
+                        , content, ShareConstant.IMAGE_URL, ShareConstant.TITLE, ShareConstant.URL)){
                     T.show(getContext(), "请先安装QQ客户端");
                 }
                 break;
             case WECHAT:
-                if(!wShare.shareWechat(ShareConstant.TITLE, ShareConstant.URL, content, ShareConstant.IMAGE_URL, ShareConstant.URL)){
+                if(!wShare.shareWechat(ShareConstant.TITLE, ShareConstant.URL
+//                        + "?orderId=" + orderId
+                        , content, ShareConstant.IMAGE_URL, ShareConstant.URL)){
                     T.show(getContext(), "请先安装微信客户端");
                 }
                 break;
             case WECHAT_MOMENT:
-                if(!wShare.shareWechatMoment(content, ShareConstant.URL, content, ShareConstant.IMAGE_URL, ShareConstant.URL)){
+                if(!wShare.shareWechatMoment(content, ShareConstant.URL
+//                        + "?orderId=" + orderId
+                        , content, ShareConstant.IMAGE_URL, ShareConstant.URL)){
                     T.show(getContext(), "请先安装微信客户端");
                 }
                 break;

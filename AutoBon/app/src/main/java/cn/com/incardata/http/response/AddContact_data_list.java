@@ -1,6 +1,6 @@
 package cn.com.incardata.http.response;
 
-/**
+/** 添加技师 技师信息
  * Created by zhangming on 2016/2/28.
  */
 public class AddContact_data_list {

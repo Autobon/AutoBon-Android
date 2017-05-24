@@ -46,7 +46,7 @@
     <string name="find_password">找回密码</string>
     <string name="hint_phone">+86手机号</string>
     <string name="hint_code">请输入验证码</string>
-    <string name="text_get_code">获取验证</string>
+    <string name="text_get_code">获取验证码</string>
     <string name="code_tips">验证码已以短信形式发送到您的手机中,请注意查收</string>
     <string name="next_btn_text">下一步</string>
     <string name="repeat_get_text">再次获取</string>
@@ -88,7 +88,7 @@
     <string name="again_to_exit">再按一次退出应用</string>
 
     <!--接单,开始工作-->
-    <string name="text_distance">距离: </string>
+    <string name="text_distance">距离：</string>
     <string name="tab_one_text">+合作人</string>
     <string name="tab_two_text">开始工作</string>
     <string name="work_timer">工作时间:</string>
@@ -137,7 +137,7 @@
 
     <!-- 地图－订单fragment -->
     <string name="indent_image_text">订单图片</string>
-    <string name="work_time">施工时间：</string>
+    <string name="work_time">预约施工时间：</string>
     <string name="work_notes">下单备注：</string>
     <string name="receive_indent">我要接单</string>
     <string name="start_authorization">我要认证</string>
@@ -164,8 +164,9 @@
     <string name="authorize_agreement">认证协议</string>
     <string name="name_error">姓名不能为空</string>
     <string name="identify_number_error">身份证号不能为空</string>
+    <string name="reference_not_null">推荐人号码不能为空</string>
     <string name="bank_number_error">银行卡号不能为空</string>
-    <string name="skill_item_empty">请选择技能项</string>
+    <string name="skill_item_empty">请至少选择一项技能项</string>
     <string name="order_mode">接单模式</string>
     <string name="unfinished_order_number">未完成的订单数：</string>
     <string name="today_finish_order_number">今日完成订单数：</string>
@@ -234,8 +235,8 @@
 
     <!-- 订单主页 -->
     <string name="into_order">进入订单</string>
-    <string name="order_serial_number">订单编号</string>
-    <string name="order_time">预约时间</string>
+    <string name="order_serial_number">订单编号：</string>
+    <string name="order_time">预约施工时间 </string>
     <string name="immediate_order">立即抢单</string>
     <string name="immediate_order_failed">抢单失败</string>
     <string name="immediate_order_success">抢单成功</string>
@@ -252,7 +253,7 @@
     <string name="less_three_page_tips">不少于3张</string>
     <string name="next_btn">继续</string>
     <string name="finish_mode_text">即将完成模式</string>
-    <string name="no_pic_tips_work_before">请上传不少于1张工作前的照片</string>
+    <string name="no_pic_tips_work_before">请上传不少于3张工作前的照片</string>
     <string name="no_pic_tips_work_after">请上传不少于3张工作后的照片</string>
     <string name="upload_work_before_failed_tips">上传施工前图像失败</string>
     <string name="choose_work_item_text">选择本次负责的工作项</string>
@@ -325,4 +326,58 @@
     <string name="yetrenounce">已放弃</string>
     <string name="yetovertime">已超时</string>
     <string name="load_cooperator_info_failure">商户信息加载失败</string>
+    <string name="dataUploadFailed">数据加载失败</string>
+    <string name="bank_address">开户行地址:</string>
+    <string name="resume">个人简介:</string>
+    <string name="agree_end_time">最迟交车时间：</string>
+    <string name="create_time">下单时间：</string>
+    <string name="work_time1">施工时间：</string>
+    <string name="cancelReason">放弃理由</string>
+    <string name="updata_tech">改派</string>
+    <string name="inputOrder">进入订单</string>
+    <string name="finish_time">完成时间：</string>
+    <string name="moComment">暂无评价</string>
+    <string name="bank_andress1">开户行地址</string>
+    <string name="userMessage">个人信息</string>
+    <string name="no">无</string>
+    <string name="year">年</string>
+    <string name="ge_work_year">请选择隔热膜工作年限</string>
+    <string name="ge_level">请选择隔热膜星级</string>
+    <string name="yin_work_year">请选择隐形车衣工作年限</string>
+    <string name="yin_levlel">请选择隐形车衣星级</string>
+    <string name="che_work_year">请选择车身改色工作年限</string>
+    <string name="che_level">请选择车身改色星级</string>
+    <string name="mei_work_year">请选择美容清洁工作年限</string>
+    <string name="mei_level">请选择美容清洁星级</string>
+    <string name="check_bank_number">请检查银行卡号</string>
+    <string name="bank_andress_not_null">开户行地址不能为空</string>
+    <string name="work_year">工作年限</string>
+    <string name="grab_error_order">抢错单了</string>
+    <string name="temporary_be_engaged">临时有事</string>
+    <string name="input_cancel_reason">请填写放弃理由</string>
+    <string name="rest">其他</string>
+    <string name="gain_data_failed">获取数据失败</string>
+    <string name="authorize_pass_take_order">认证通过后才能接单</string>
+    <string name="this_tech_yet_select">该技师已经选择</string>
+    <string name="ge">隔热膜</string>
+    <string name="yin">隐形车衣</string>
+    <string name="che">车身改色</string>
+    <string name="mei">美容清洁</string>
+    <string name="check_skill_level">查看技能等级规则</string>
+    <string name="introduce_oneself">请介绍一下自己吧！(200字以内)</string>
+    <string name="bank_CarNo">银行卡号</string>
+    <string name="bank_address1">开户行地址</string>
+    <string name="check_work_info">查看施工详情</string>
+    <string name="service_agreement">服务协议</string>
+    <string name="level_message">一星代表初学，二星代表生疏，三星代表熟练，四星代表优秀，五星代表大师</string>
+    <string name="material_consume">材料耗损</string>
+    <string name="material_scrap">材料报废</string>
+    <string name="no_calculate">待计算</string>
+    <string name="start_work">开始工作</string>
+    <string name="no_order">暂无订单</string>
+    <string name="count">合计:</string>
+    <string name="ge1">隔热膜</string>
+    <string name="standard_commission">佣金标准</string>
+    <string name="collection_shop">我的收藏</string>
+    <string name="collection">收藏</string>
 </resources>

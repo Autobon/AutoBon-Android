@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/main_white"
+    android:layout_width="match_parent"
+    android:paddingTop="@dimen/dp15"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/tech_name"
+        android:layout_width="wrap_content"
+        android:textSize="@dimen/sp15"
+        android:layout_marginLeft="@dimen/dp15"
+        android:textColor="@color/darkgray"
+        android:text="张三"
+        android:layout_height="wrap_content" />
+    <!--<ListView-->
+        <!--android:id="@+id/wait_order_list"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:scrollbarStyle="outsideOverlay"-->
+        <!--android:paddingLeft="@dimen/dp10"-->
+        <!--android:paddingRight="@dimen/dp10"-->
+        <!--android:divider="#F0F0F0"-->
+        <!--android:dividerHeight="1dp"/>-->
+   <cn.com.incardata.view.MyListView
+       android:id="@+id/work_message_item_list"
+       android:layout_width="match_parent"
+       android:divider="@null"
+       android:background="@color/main_white"
+       android:scrollbarStyle="outsideOverlay"
+       android:layout_height="match_parent"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/dp10"
+        android:background="@color/lightgray"
+        android:layout_height="1dp"/>
+
+</LinearLayout>

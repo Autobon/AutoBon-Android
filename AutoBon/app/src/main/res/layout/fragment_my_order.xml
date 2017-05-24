@@ -11,6 +11,6 @@
         android:layout_height="match_parent"
         android:scrollbarStyle="outsideOverlay"
         android:divider="@color/main_white"
-        android:dividerHeight="@dimen/dp10"/>
+        />
 
 </cn.com.incardata.view.PullToRefreshView>

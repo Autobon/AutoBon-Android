@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/line_light_color"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp5"
+        android:background="@color/main_white">
+
+        <View
+            android:id="@+id/v1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentTop="true"
+            android:background="@color/line_color" />
+
+        <Button
+            android:id="@+id/delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/v1"
+            android:layout_marginRight="@dimen/dp10"
+            android:layout_marginTop="@dimen/dp15"
+            android:gravity="center"
+            android:paddingBottom="3dp"
+            android:paddingLeft="@dimen/dp15"
+            android:paddingRight="@dimen/dp15"
+            android:background="@drawable/check_btn"
+            android:paddingTop="3dp"
+            android:text="移除"
+            android:textColor="@color/main_orange"
+            android:textSize="@dimen/sp13" />
+
+        <TextView
+            android:id="@+id/shop_name_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/v1"
+            android:layout_marginLeft="@dimen/dp10"
+            android:layout_marginRight="@dimen/dp5"
+            android:layout_marginTop="@dimen/dp10"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="商户名称："
+            android:textColor="@color/darkgray"
+            android:textSize="@dimen/sp13" />
+
+        <TextView
+            android:id="@+id/shop_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/shop_name_title"
+            android:layout_marginLeft="@dimen/dp5"
+            android:layout_toRightOf="@id/shop_name_title"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:layout_toLeftOf="@id/delete"
+            android:singleLine="true"
+            android:textColor="@color/darkgray"
+            android:textSize="@dimen/sp13" />
+
+        <TextView
+            android:id="@+id/shop_corporation_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/shop_name_title"
+            android:layout_marginLeft="@dimen/dp10"
+            android:layout_marginRight="@dimen/dp5"
+            android:layout_marginTop="@dimen/dp10"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="商户法人："
+            android:textColor="#646161"
+            android:textSize="@dimen/sp13" />
+
+        <TextView
+            android:id="@+id/shop_corporation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/shop_corporation_title"
+            android:layout_marginLeft="@dimen/dp5"
+            android:layout_toRightOf="@id/shop_corporation_title"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text=""
+            android:textColor="#646161"
+            android:textSize="@dimen/sp13" />
+
+        <TextView
+            android:id="@+id/shop_phone_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/shop_corporation_title"
+            android:layout_marginLeft="@dimen/dp10"
+            android:layout_marginRight="@dimen/dp5"
+            android:layout_marginTop="@dimen/dp10"
+            android:ellipsize="end"
+            android:layout_marginBottom="@dimen/dp10"
+            android:maxLines="1"
+            android:text="联系方式："
+            android:textColor="#646161"
+            android:textSize="@dimen/sp13" />
+        <TextView
+            android:id="@+id/shop_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp5"
+            android:ellipsize="end"
+            android:layout_alignBaseline="@id/shop_phone_title"
+            android:layout_toRightOf="@id/shop_phone_title"
+            android:maxLines="1"
+            android:text=""
+            android:textColor="#646161"
+            android:textSize="@dimen/sp13" />
+
+
+
+        <View
+            android:id="@+id/v2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/line_color" />
+
+    </RelativeLayout>
+</RelativeLayout>

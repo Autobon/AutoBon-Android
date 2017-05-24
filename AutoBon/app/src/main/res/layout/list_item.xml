@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/main_white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/ciName"
+        android:textSize="18sp"
+        android:layout_marginLeft="@dimen/dp15"
+        android:textColor="#000000"
+        android:text="sdadasdasdasd"
+        android:layout_marginTop="@dimen/dp10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/delect_tech"
+        android:src="@mipmap/delect_tech"
+        android:layout_width="@dimen/dp20"
+        android:layout_height="@dimen/dp20"
+        android:layout_marginTop="@dimen/dp10"
+        android:layout_marginRight="@dimen/dp20"
+        android:layout_alignParentRight="true"
+         />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ciName"
+        android:background="@android:color/white"
+        android:padding="@dimen/dp10">
+
+        <cn.com.incardata.view.MyGridView
+            android:id="@+id/ciGridview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:horizontalSpacing="@dimen/dp5"
+            android:listSelector="@android:color/transparent"
+            android:numColumns="4"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="@dimen/dp10" >
+        </cn.com.incardata.view.MyGridView>
+    </RelativeLayout>
+
+</RelativeLayout>

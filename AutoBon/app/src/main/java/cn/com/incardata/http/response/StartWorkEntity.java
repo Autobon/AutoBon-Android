@@ -1,16 +1,27 @@
 package cn.com.incardata.http.response;
 
-/**
+/** 开始工作实体类
  * Created by zhangming on 2016/3/6.
  */
-public class StartWorkEntity extends BaseEntity{
-    private OrderInfo_Construction data;
+public class StartWorkEntity extends BaseEntityTwo{
 
-    public OrderInfo_Construction getData() {
-        return data;
+    private Object message;
+
+    public Object getMessage() {
+        return message;
     }
 
-    public void setData(OrderInfo_Construction data) {
-        this.data = data;
+    public void setMessage(Object message) {
+        this.message = message;
     }
+
+    //    private OrderInfo_Construction data;
+//
+//    public OrderInfo_Construction getData() {
+//        return data;
+//    }
+//
+//    public void setData(OrderInfo_Construction data) {
+//        this.data = data;
+//    }
 }

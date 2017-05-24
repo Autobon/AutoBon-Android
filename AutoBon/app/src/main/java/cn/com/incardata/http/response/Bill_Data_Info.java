@@ -10,7 +10,7 @@ public class Bill_Data_Info {
     private long billMonth;
     private int count;
     private double sum;
-    private boolean payed;
+    private boolean paid;
     private String payAt;
 
     public int getId() {
@@ -53,12 +53,12 @@ public class Bill_Data_Info {
         this.sum = sum;
     }
 
-    public boolean isPayed() {
-        return payed;
+    public boolean isPaid() {
+        return paid;
     }
 
-    public void setPayed(boolean payed) {
-        this.payed = payed;
+    public void setPaid(boolean paid) {
+        this.paid = paid;
     }
 
     public String getPayAt() {

@@ -1,6 +1,6 @@
 package cn.com.incardata.http.response;
 
-/**
+/** 登录实体类
  * Created by wanghao on 16/2/19.
  */
 public class Login_Data {

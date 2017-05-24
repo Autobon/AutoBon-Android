@@ -26,7 +26,7 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/dp50"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/dp5"
+            android:layout_marginLeft="@dimen/dp10"
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:orientation="vertical">
@@ -35,6 +35,7 @@
                 android:id="@+id/tv_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="asdsadsadas"
                 android:textColor="@color/darkgray"
                 android:textSize="@dimen/sp15" />
 
@@ -49,6 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#a3a3a3"
+                    android:text="asdadasdad"
                     android:textSize="@dimen/sp15" />
 
             </LinearLayout>

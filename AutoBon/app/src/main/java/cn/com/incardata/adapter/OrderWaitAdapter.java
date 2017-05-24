@@ -15,19 +15,23 @@ import cn.com.incardata.application.MyApplication;
 import cn.com.incardata.autobon.R;
 import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
+import cn.com.incardata.http.response.CollectionShop_Data;
 import cn.com.incardata.http.response.Order;
+import cn.com.incardata.http.response.OrderInfo;
 import cn.com.incardata.utils.DateCompute;
 
-/**
+/** 未被抢的单列表适配
  * Created by wanghao on 16/3/9.
  */
 public class OrderWaitAdapter extends BaseAdapter{
     private Context context;
-    private List<Order> orderList;
+    private List<OrderInfo> orderList;
+    private List<CollectionShop_Data> collectionShopList;
 
-    public OrderWaitAdapter(Context context, List<Order> orderList){
+    public OrderWaitAdapter(Context context, List<OrderInfo> orderList,List<CollectionShop_Data> collectionShopList){
         this.context = context;
         this.orderList = orderList;
+        this.collectionShopList = collectionShopList;
     }
 
     @Override
@@ -47,17 +51,23 @@ public class OrderWaitAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(final int i, View view, ViewGroup viewGroup) {
+    public View getView(final int position, View view, ViewGroup viewGroup) {
         Holder holder = null;
         if (view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.order_wait_list_item, viewGroup, false);
             holder = new Holder();
 
-            holder.orderType = (TextView) view.findViewById(R.id.order_type);
+//            holder.orderType = (TextView) view.findViewById(R.id.order_type);
             holder.operate = (Button) view.findViewById(R.id.order_operate);
             holder.orderNumber = (TextView) view.findViewById(R.id.order_number);
             holder.orderTime = (TextView) view.findViewById(R.id.order_time);
-            holder.orderImage = (ImageView) view.findViewById(R.id.order_image);
+            holder.types[0] = (TextView) view.findViewById(R.id.btn1);
+            holder.types[1] = (TextView) view.findViewById(R.id.btn2);
+            holder.types[2] = (TextView) view.findViewById(R.id.btn3);
+            holder.types[3] = (TextView) view.findViewById(R.id.btn4);
+            holder.img_collection = (ImageView) view.findViewById(R.id.img_collection);
+
+//            holder.orderImage = (ImageView) view.findViewById(R.id.order_image);
 //            holder.hideBg = (TextView) view.findViewById(R.id.order_hide_text);
 
             view.setTag(holder);
@@ -65,32 +75,58 @@ public class OrderWaitAdapter extends BaseAdapter{
             holder = (Holder) view.getTag();
         }
 
-        holder.orderType.setText(MyApplication.getInstance().getSkill(orderList.get(i).getOrderType()));
+        if (collectionShopList != null && collectionShopList.size() > 0){
+            for (int i = 0; i < collectionShopList.size(); i++){
+                if (orderList.get(position).getCoopId() == collectionShopList.get(i).getCooperator().getId()){
+                    holder.img_collection.setImageDrawable(context.getResources().getDrawable(R.mipmap.img_rank));
+                    break;
+                }else {
+                    holder.img_collection.setImageDrawable(context.getResources().getDrawable(R.mipmap.img_rank_default));
+                }
+            }
+        }else {
+            holder.img_collection.setImageDrawable(context.getResources().getDrawable(R.mipmap.img_rank_default));
+        }
+
+        String[] type = (orderList.get(position).getType()).split(",");
+        for (int i = 0; i < 4; i++){
+            if (i < type.length){
+                holder.types[i].setVisibility(View.VISIBLE);
+                holder.types[i].setText(getProject(type[i]));
+            }else {
+                holder.types[i].setVisibility(View.INVISIBLE);
+            }
+        }
+//        holder.orderType.setText(type);
         holder.orderNumber.setText(R.string.order_serial_number);
-        holder.orderNumber.append(orderList.get(i).getOrderNum());
+        holder.orderNumber.append(orderList.get(position).getOrderNum());
         holder.orderTime.setText(R.string.order_time);
-        holder.orderTime.append(DateCompute.getDate(orderList.get(i).getOrderTime()));
+        holder.orderTime.append(DateCompute.getDate(orderList.get(position).getAgreedStartTime()));
 
         holder.operate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mListener != null){
-                    mListener.onClickOrder(i);
+                    mListener.onClickOrder(position);
                 }
             }
         });
 
-        ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + orderList.get(i).getPhoto(), holder.orderImage, 0);
+//        ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + orderList.get(i).getPhoto(), holder.orderImage, 0);
         return view;
     }
 
     private class Holder{
-        TextView orderType;
+//        TextView orderType;
         Button operate;
         TextView orderNumber;
         TextView orderTime;
-        ImageView orderImage;
-        TextView hideBg;
+
+        private TextView[] types = new TextView[4];
+
+        private ImageView img_collection;
+//        ImageView orderImage;
+//        TextView hideBg;
     }
 
     private OnClickOrderListener mListener;
@@ -101,5 +137,18 @@ public class OrderWaitAdapter extends BaseAdapter{
 
     public interface OnClickOrderListener{
         void onClickOrder(int position);
+    }
+
+    public String getProject(String type){
+        if ("1".equals(type)){
+            return "隔热膜";
+        }else if ("2".equals(type)){
+            return "隐形车衣";
+        }else if ("3".equals(type)){
+            return "车身改色";
+        }else if ("4".equals(type)){
+            return "美容清洁";
+        }else
+            return null;
     }
 }

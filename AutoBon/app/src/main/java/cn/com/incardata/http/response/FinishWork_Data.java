@@ -1,6 +1,6 @@
 package cn.com.incardata.http.response;
 
-/**
+/** 弃用
  * Created by zhangming on 2016/3/15.
  */
 public class FinishWork_Data {

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,23 +18,24 @@ import cn.com.incardata.autobon.MyOrderActivity;
 import cn.com.incardata.autobon.R;
 import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
+import cn.com.incardata.http.response.OrderInfo;
 import cn.com.incardata.http.response.OrderInfo_Construction;
 import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.utils.DateCompute;
 
-/**
+/** 已完成订单列表适配
  * Created by wanghao on 16/3/21.
  */
 public class OrderFinishedAdapter extends BaseAdapter {
     private Context context;
-    private ArrayList<OrderInfo_Data> mList;
+    private ArrayList<OrderInfo> mList;
     private boolean isMainResponsible;
 
     private int main_orange_color;
     private int darkgray_color;
     private String RMB;
 
-    public OrderFinishedAdapter(Context context, boolean isMainResponsible, ArrayList<OrderInfo_Data> mList) {
+    public OrderFinishedAdapter(Context context, boolean isMainResponsible, ArrayList<OrderInfo> mList) {
         this.context = context;
         this.isMainResponsible = isMainResponsible;
         this.mList = mList;
@@ -69,9 +71,13 @@ public class OrderFinishedAdapter extends BaseAdapter {
             holder.money = (TextView) convertView.findViewById(R.id.money);
             holder.moneyState = (TextView) convertView.findViewById(R.id.money_state);
             holder.orderNum = (TextView) convertView.findViewById(R.id.order_number);
-            holder.orderImage = (ImageView) convertView.findViewById(R.id.order_image);
+            holder.buttons[0] = (TextView) convertView.findViewById(R.id.btn1);
+            holder.buttons[1] = (TextView) convertView.findViewById(R.id.btn2);
+            holder.buttons[2] = (TextView) convertView.findViewById(R.id.btn3);
+            holder.buttons[3] = (TextView) convertView.findViewById(R.id.btn4);
+//            holder.orderImage = (ImageView) convertView.findViewById(R.id.order_image);
             holder.workTime = (TextView) convertView.findViewById(R.id.work_time);
-            holder.workItem = (TextView) convertView.findViewById(R.id.work_item);
+//            holder.workItem = (TextView) convertView.findViewById(R.id.work_item);
 
             convertView.setTag(holder);
         } else {
@@ -80,76 +86,86 @@ public class OrderFinishedAdapter extends BaseAdapter {
 
         holder.orderNum.setText(R.string.order_serial_number);
         holder.orderNum.append(mList.get(position).getOrderNum());
-        ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + mList.get(position).getPhoto(), holder.orderImage, 0);
-
-        OrderInfo_Construction construct;
-        if (isMainResponsible) {
-            construct = mList.get(position).getMainConstruct();
-        } else {
-            construct = mList.get(position).getSecondConstruct();
+        holder.workTime.setText(DateCompute.getDate(mList.get(position).getStartTime()));
+        String[] types = (mList.get(position).getType()).split(",");
+        for (int i = 0; i < 4; i++){
+            if (i < types.length){
+                holder.buttons[i].setVisibility(View.VISIBLE);
+                holder.buttons[i].setText(getProject(types[i]));
+            }else {
+                holder.buttons[i].setVisibility(View.INVISIBLE);
+            }
         }
+//        type = type.substring(0,type.length() - 1);
+
+
+//        holder.workItem.setText(type);
+//        if (mList.get(position).getPayStatus() == 0){
+//
+//        }else if (mList.get(position).getPayStatus() == 0)
+
+
         if (mList.get(position).getStatus().equals("CANCELED")) {
             holder.money.setText(activity.getResources().getString(R.string.RMB) + 0);
-            holder.moneyState.setText("已撤销");
+            holder.moneyState.setText(R.string.yetcancel);
             holder.moneyState.setTextColor(activity.getResources().getColor(R.color.darkgray));
-            holder.workTime.setText("无");
-            holder.workItem.setText("无");
+            holder.workTime.setText(R.string.no);
+//            holder.workItem.setText("无");
         } else if (mList.get(position).getStatus().equals("GIVEN_UP")) {
             holder.money.setText(activity.getResources().getString(R.string.RMB) + 0);
-            holder.moneyState.setText("已放弃");
+            holder.moneyState.setText(R.string.yetrenounce);
             holder.moneyState.setTextColor(activity.getResources().getColor(R.color.darkgray));
-            holder.workTime.setText("无");
-            holder.workItem.setText("无");
+            holder.workTime.setText(R.string.no);
+//            holder.workItem.setText("无");
         } else if (mList.get(position).getStatus().equals("EXPIRED")) {
             holder.money.setText(activity.getResources().getString(R.string.RMB) + 0);
-            holder.moneyState.setText("已超时");
+            holder.moneyState.setText(R.string.yetovertime);
             holder.moneyState.setTextColor(activity.getResources().getColor(R.color.darkgray));
-            holder.workTime.setText("无");
-            holder.workItem.setText("无");
+            holder.workTime.setText(R.string.no);
+//            holder.workItem.setText("无");
         } else {
-            if (construct == null) {
-                holder.money.setText(activity.getResources().getString(R.string.RMB) + 0);
-            } else {
-                holder.money.setText(activity.getResources().getString(R.string.RMB) + construct.getPayment());
-            }
-
-            if (construct.getPayStatus() == 2) {
-                holder.moneyState.setText(R.string.pay_done);
-                holder.moneyState.setTextColor(activity.getResources().getColor(R.color.main_orange));
-            } else {
+            if (mList.get(position).getPayStatus() == null || mList.get(position).getPayStatus() == 0){
+                holder.money.setVisibility(View.GONE);
+                holder.moneyState.setText(R.string.no_calculate);
+                holder.moneyState.setTextColor(context.getResources().getColor(R.color.gray_A3));
+            }else if(mList.get(position).getPayStatus() == 1){
+                holder.money.setVisibility(View.VISIBLE);
+                holder.money.setText(activity.getString(R.string.count) + RMB + mList.get(position).getPayment());
                 holder.moneyState.setText(R.string.pay_wait);
-                holder.moneyState.setTextColor(activity.getResources().getColor(R.color.darkgray));
-            }
-            holder.workTime.setText(DateCompute.getDate(mList.get(position).getOrderTime()));
-            if (mList.get(position).getOrderType() == 4) {//美容清洁
-                holder.workItem.setText(MyApplication.getInstance().getSkill(4));
-            }
-            String item = construct.getWorkItems();
-            if (TextUtils.isEmpty(item)) {
-                holder.workItem.setText(null);
-            } else {
-                if (item.contains(",")) {
-                    String[] items = item.split(",");
-                    String tempItem = "";
-                    for (String str : items) {
-                        tempItem += MyOrderActivity.workItems[Integer.parseInt(str)] + ",";
-                    }
-                    holder.workItem.setText(tempItem.substring(0, tempItem.length() - 1));
-                } else {
-                    holder.workItem.setText(MyOrderActivity.workItems[1]);
-                }
+                holder.moneyState.setTextColor(context.getResources().getColor(R.color.gray_A3));
+                holder.money.setTextColor(context.getResources().getColor(R.color.gray_A3));
+            }else if (mList.get(position).getPayStatus() == 2){
+                holder.money.setVisibility(View.VISIBLE);
+                holder.money.setText(activity.getString(R.string.count) + RMB + mList.get(position).getPayment());
+                holder.moneyState.setText(R.string.pay_done);
+                holder.moneyState.setTextColor(context.getResources().getColor(R.color.main_orange));
+                holder.money.setTextColor(context.getResources().getColor(R.color.gray_A3));
             }
         }
 
         return convertView;
     }
 
+    public String getProject(String type) {
+        if ("1".equals(type)) {
+            return context.getString(R.string.ge);
+        } else if ("2".equals(type)) {
+            return context.getString(R.string.yin);
+        } else if ("3".equals(type)) {
+            return context.getString(R.string.che);
+        } else if ("4".equals(type)) {
+            return context.getString(R.string.mei);
+        } else
+            return null;
+    }
+
     private class Holder {
         TextView money;
         TextView moneyState;
         TextView orderNum;
-        ImageView orderImage;
+        TextView[] buttons = new TextView[4];
+//        ImageView orderImage;
         TextView workTime;
-        TextView workItem;
+
     }
 }

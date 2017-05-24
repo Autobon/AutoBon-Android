@@ -117,15 +117,15 @@ public class InvitationDialogFragment extends DialogFragment implements View.OnC
     }
 
     private void loadOrderInfo(final int orderId){
-        Http.getInstance().getTaskToken(NetURL.getOrderInfo(orderId), "", OrderInfoEntity.class, new OnResult() {
-            @Override
-            public void onResult(Object entity) {
-                if (entity != null && entity instanceof OrderInfoEntity && ((OrderInfoEntity) entity).isResult()){
-                    orderInfo.setText("邀请您参与" + MyApplication.getInstance().getSkill(((OrderInfoEntity) entity).getData().getOrderType()) + "的订单，订单编号" + ((OrderInfoEntity) entity).getData().getOrderNum());
-                    orderInfo_data = ((OrderInfoEntity) entity).getData();
-                }
-            }
-        });
+//        Http.getInstance().getTaskToken(NetURL.getOrderInfo(orderId), "", OrderInfoEntity.class, new OnResult() {
+//            @Override
+//            public void onResult(Object entity) {
+//                if (entity != null && entity instanceof OrderInfoEntity && ((OrderInfoEntity) entity).isResult()){
+//                    orderInfo.setText("邀请您参与" + MyApplication.getInstance().getSkill(((OrderInfoEntity) entity).getData().getOrderType()) + "的订单，订单编号" + ((OrderInfoEntity) entity).getData().getOrderNum());
+//                    orderInfo_data = ((OrderInfoEntity) entity).getData();
+//                }
+//            }
+//        });
     }
 
     @Override

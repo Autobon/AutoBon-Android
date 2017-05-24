@@ -1,6 +1,8 @@
 package cn.com.incardata.utils;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -20,15 +22,21 @@ import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
+import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.model.LatLngBounds;
+import com.baidu.mapapi.navi.BaiduMapAppNotSupportNaviException;
+import com.baidu.mapapi.navi.BaiduMapNavigation;
+import com.baidu.mapapi.navi.NaviParaOption;
 import com.baidu.mapapi.search.geocode.GeoCodeOption;
 import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import cn.com.incardata.autobon.R;
@@ -50,11 +58,28 @@ public class BaiduMapUtil {
     protected static final int length = 4;
     public static final int defaultLevel = 15;  //常量字段
 
+    public static BaiduMap baiduMaps = null;
+
+    public static LatLng baidulatlng = null;
+    private static LatLng endLatlng = null;
+    private static Context contexts = null;
+    private static String shopNames = null;
+    private static Marker shopMarker = null;
+
+
+    public static LatLng getBaidulatlng() {
+        return baidulatlng;
+    }
+
+    public static void setBaidulatlng(LatLng baidulatlng) {
+        BaiduMapUtil.baidulatlng = baidulatlng;
+    }
 
     /**
      * 自动定位当前位置
      */
     public static void locate(BaiduMap baiduMap,int scanTime,LocationClient mLocationClient,BDLocationListener myListener) {
+        baiduMaps = baiduMap;
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);// 设置定位模式
         option.setCoorType("bd09ll");// 返回的定位结果是百度经纬度,默认值gcj02
@@ -111,7 +136,11 @@ public class BaiduMapUtil {
         mSearch.geocode(new GeoCodeOption().city(address).address(address));
     }
 
-    public static void drawAnotherPointByGeo(Context context,BaiduMap baiduMap,LatLng latLng,String shopName){
+    public static void drawAnotherPointByGeo(final Context context, BaiduMap baiduMap, final LatLng latLng, final String shopName){
+        baiduMaps = baiduMap;
+        endLatlng = latLng;
+        contexts = context;
+        shopNames = shopName;
         if(markOverlay[1]!=null){
             markOverlay[1].remove();
         }
@@ -127,13 +156,70 @@ public class BaiduMapUtil {
 
         latLngArray[1] = latLng;
         windowInfo[1] = shopName;
+
+
+//        baiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
+//            @Override
+//            public boolean onMarkerClick(Marker marker) {
+////                return false;
+//                if (marker == markOverlay[1]){
+//                    startNavi(context,latLng,shopName);
+//                }
+////                openBaiduMap(Double.parseDouble(positionLat), Double.parseDouble(positionLon), shopName);
+//                return false;
+//            }
+//        });
+
     }
+
+
+
+    //开启百度导航
+    public static void startNavi(Context context,String address) {
+//        LatLng latLng = BaiduMapUtil.getBaidulatlng();
+        //百度地图,从起点是LatLng ll_location = new LatLng("你的纬度latitude","你的经度longitude");
+        //终点是LatLng ll = new LatLng("你的纬度latitude","你的经度longitude");
+        NaviParaOption para = new NaviParaOption();
+        para.startPoint(latLngArray[0]);
+        para.startName("我的位置");
+        para.endPoint(latLngArray[1]);
+        para.endName(address);
+        if (isInstallPackage("com.baidu.BaiduMap")) {
+            try {
+                BaiduMapNavigation.openBaiduMapNavi(para, context);
+            } catch (BaiduMapAppNotSupportNaviException e) {
+                e.printStackTrace();
+                T.show(context,"您尚未安装百度地图或地图版本过低");
+            }
+        } else {
+//                LatLng ptMine = new LatLng(latLng.latitude, latLng.longitude);
+//                LatLng ptPosition = new LatLng(lat, lon);
+//
+//                NaviParaOption para = new NaviParaOption()
+//                        .startPoint(ptMine)
+//                        .endPoint(ptPosition);
+//                BaiduMapNavigation.openWebBaiduMapNavi(para, getContext());
+            T.show(context,"手机未安装百度地图");
+        }
+
+    }
+
+    // 判断手机是否有app
+    private static boolean isInstallPackage(String packageName) {
+        return new File("/data/data/" + packageName).exists();
+    }
+
+
+
 
     public static Overlay drawMarker(BaiduMap baiduMap,LatLng latLng, BitmapDescriptor descriptor, int zIndex) {
         MarkerOptions markerOptions = new MarkerOptions();
         ArrayList<BitmapDescriptor> bitmaps = new ArrayList<BitmapDescriptor>();
         bitmaps.add(descriptor);
         markerOptions.position(latLng).icons(bitmaps).draggable(false);
+        if (endLatlng != null && latLng == endLatlng){
+            shopMarker = (Marker) baiduMap.addOverlay(markerOptions);
+        }
         Overlay overlay = baiduMap.addOverlay(markerOptions);
         overlay.setZIndex(zIndex);
         return overlay;  //返回添加的图层,便于移除
@@ -203,6 +289,8 @@ public class BaiduMapUtil {
         return d*1000;
     }
 
+
+
     public static class MyListener implements BDLocationListener {
         private Context context;
         private BaiduMap baiduMap;
@@ -230,10 +318,18 @@ public class BaiduMapUtil {
                 final double longitude = result.getLongitude();
                 latLng = new LatLng(latitude, longitude);
                 latLngArray[0] = latLng;
+                baidulatlng = latLng;
                 if(isFirst){
                     if(!NetWorkHelper.isNetworkAvailable(context)) {  //无网络不显示
                         return;
                     }
+//                    baiduMap.setMyLocationData(new MyLocationData.Builder()
+//                            .accuracy(0)
+//                            // 此处设置开发者获取到的方向信息，顺时针0-360
+////                            .direction(result.getRadius())
+//                            .latitude(result.getLatitude())
+//                            .longitude(result.getLongitude())
+//                            .build());
                     markOverlay[0] = drawMarker(this.baiduMap,latLng,BitmapDescriptorFactory.fromResource(R.mipmap.here1),markZIndex);
 
                     /** 暂时隐藏pop **/
@@ -277,6 +373,31 @@ public class BaiduMapUtil {
                     }
                 }
             }
+        }
+    }
+
+
+    public static class MarkerCilckListener implements BaiduMap.OnMarkerClickListener{
+
+        @Override
+        public boolean onMarkerClick(Marker marker) {
+            LatLng ll = marker.getPosition();        //点击图钉的经纬度
+            LatLng ls = shopMarker.getPosition();    //商户的经纬度
+            if (markOverlay[1] != null && markOverlay[0] != null && ll == ls){
+                final AlertDialog.Builder builder = new AlertDialog.Builder(contexts);
+                builder.setTitle("温馨提示")//设置对话框标题
+                        .setMessage("是否打开百度地图导航")//设置显示的内容
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {//添加确定按钮
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {//确定按钮的响应事件
+                                // TODO Auto-generated method stub
+                                startNavi(contexts,shopNames);
+                            }
+
+                        }).setNegativeButton("取消", null);//在按键响应事件中显示此对话框
+                builder.show();
+            }
+            return false;
         }
     }
 

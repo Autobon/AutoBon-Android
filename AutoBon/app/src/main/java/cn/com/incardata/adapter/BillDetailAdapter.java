@@ -19,6 +19,7 @@ import cn.com.incardata.autobon.EnlargementActivity;
 import cn.com.incardata.autobon.R;
 import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
+import cn.com.incardata.http.response.BillOrderList;
 import cn.com.incardata.http.response.OrderInfo_Construction;
 import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.utils.DateCompute;
@@ -29,9 +30,9 @@ import cn.com.incardata.utils.DateCompute;
  */
 public class BillDetailAdapter extends BaseAdapter{
     private Context context;
-    private List<OrderInfo_Data> mList;
+    private List<BillOrderList> mList;
 
-    public BillDetailAdapter(Context context,List<OrderInfo_Data> mList){
+    public BillDetailAdapter(Context context,List<BillOrderList> mList){
         this.context = context;
         this.mList = mList;
     }
@@ -58,85 +59,97 @@ public class BillDetailAdapter extends BaseAdapter{
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.bill_detail_item, parent, false);
-            holder.tv_order_num = (TextView)convertView.findViewById(R.id.tv_order_num);
-            holder.orderType = (TextView) convertView.findViewById(R.id.order_type);
-            holder.tv_order_money =  (TextView)convertView.findViewById(R.id.tv_order_money);
-            holder.iv_order_img = (ImageView)convertView.findViewById(R.id.iv_order_img);
-            holder.tv_order_time = (TextView)convertView.findViewById(R.id.tv_order_time);
-            holder.tv_work_item = (TextView)convertView.findViewById(R.id.tv_work_item);
-
-            holder.imageOnclick = new ImageOnclick(position);
-            holder.iv_order_img.setOnClickListener(holder.imageOnclick);
+            holder.money = (TextView) convertView.findViewById(R.id.money);
+            holder.bill_source = (TextView) convertView.findViewById(R.id.bill_source);
+            holder.orderNum = (TextView) convertView.findViewById(R.id.order_number);
+            holder.buttons[0] = (TextView) convertView.findViewById(R.id.btn1);
+            holder.buttons[1] = (TextView) convertView.findViewById(R.id.btn2);
+            holder.buttons[2] = (TextView) convertView.findViewById(R.id.btn3);
+            holder.buttons[3] = (TextView) convertView.findViewById(R.id.btn4);
+            holder.workTime = (TextView) convertView.findViewById(R.id.work_time);
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder)convertView.getTag();
-            holder.imageOnclick.setPosition(position);
         }
 
-        OrderInfo_Data data = mList.get(position);
-        holder.tv_order_num.setText(context.getString(R.string.order_serial_number) + data.getOrderNum());  //订单编号
-        holder.orderType.setText(MyApplication.getInstance().getSkill(data.getOrderType()));
-        ImageLoaderCache.getInstance().loader(NetURL.IP_PORT + data.getPhoto(), holder.iv_order_img, 0);
-        holder.tv_order_time.setText(DateCompute.getDate(data.getOrderTime()));  //施工时间
-
-        OrderInfo_Construction cons;
-        if (isMainTech(data.getMainTech().getId())) {
-            cons = mList.get(position).getMainConstruct();
+        BillOrderList billOrderList = mList.get(position);
+        if (billOrderList.getSource() == 1){
+            holder.bill_source.setVisibility(View.VISIBLE);
         }else {
-            cons = mList.get(position).getSecondConstruct();
+            holder.bill_source.setVisibility(View.GONE);
         }
-
-        if (cons == null) return convertView;
-
-        holder.tv_order_money.setText("￥"+String.valueOf(cons.getPayment()));//支付钱数量
-
-        if (TextUtils.isEmpty(cons.getWorkItems())) return convertView;
-        String item = cons.getWorkItems();
-        if (TextUtils.isEmpty(item)){
-            holder.tv_work_item.setText(null);
+        if (billOrderList.getOrderNum() == null){
+            holder.orderNum.setText(R.string.order_serial_number);
         }else {
-            if (item.contains(",")){
-                String[] items = item.split(",");
-                String tempItem = "";
-                for (String str : items){
-                    tempItem += BillDetailActivity.workItems[Integer.parseInt(str)] + ",";
-                }
-                holder.tv_work_item.setText(tempItem.substring(0, tempItem.length() - 1));
-            }else {
-                holder.tv_work_item.setText(BillDetailActivity.workItems[1]);
-            }
+            holder.orderNum.setText(R.string.order_serial_number);
+            holder.orderNum.append(billOrderList.getOrderNum());
         }
+        holder.workTime.setText(DateCompute.getDate(billOrderList.getCreateDate()));
+        if (billOrderList.getPayment() == null){
+            holder.money.setText("合计:" + context.getResources().getString(R.string.RMB) + 0);
+        }else {
+            holder.money.setText("合计:" + context.getResources().getString(R.string.RMB) + billOrderList.getPayment());
+        }
+
+        if (billOrderList.getProject1() != null){
+            holder.buttons[0].setVisibility(View.VISIBLE);
+            holder.buttons[0].setText(getProject(String.valueOf(billOrderList.getProject1())));
+            holder.buttons[1].setVisibility(View.INVISIBLE);
+            holder.buttons[2].setVisibility(View.INVISIBLE);
+            holder.buttons[3].setVisibility(View.INVISIBLE);
+        }
+        if (billOrderList.getProject2() != null){
+            holder.buttons[0].setVisibility(View.VISIBLE);
+            holder.buttons[1].setVisibility(View.VISIBLE);
+            holder.buttons[0].setText(getProject(String.valueOf(billOrderList.getProject1())));
+            holder.buttons[1].setText(getProject(String.valueOf(billOrderList.getProject2())));
+            holder.buttons[2].setVisibility(View.INVISIBLE);
+            holder.buttons[3].setVisibility(View.INVISIBLE);
+        }
+        if (billOrderList.getProject3() != null){
+            holder.buttons[0].setVisibility(View.VISIBLE);
+            holder.buttons[1].setVisibility(View.VISIBLE);
+            holder.buttons[2].setVisibility(View.VISIBLE);
+            holder.buttons[0].setText(getProject(String.valueOf(billOrderList.getProject1())));
+            holder.buttons[1].setText(getProject(String.valueOf(billOrderList.getProject2())));
+            holder.buttons[2].setText(getProject(String.valueOf(billOrderList.getProject3())));
+            holder.buttons[3].setVisibility(View.INVISIBLE);
+        }
+        if (billOrderList.getProject4() != null){
+            holder.buttons[0].setVisibility(View.VISIBLE);
+            holder.buttons[1].setVisibility(View.VISIBLE);
+            holder.buttons[2].setVisibility(View.VISIBLE);
+            holder.buttons[3].setVisibility(View.VISIBLE);
+            holder.buttons[0].setText(getProject(String.valueOf(billOrderList.getProject1())));
+            holder.buttons[1].setText(getProject(String.valueOf(billOrderList.getProject2())));
+            holder.buttons[2].setText(getProject(String.valueOf(billOrderList.getProject3())));
+            holder.buttons[3].setText(getProject(String.valueOf(billOrderList.getProject4())));
+        }
+
+
 
         return convertView;
     }
 
-    private boolean isMainTech(int id) {
-        return (MyApplication.getInstance().getUserId() == id);
+    public String getProject(String type) {
+        if ("1".equals(type)) {
+            return "隔热膜";
+        } else if ("2".equals(type)) {
+            return "隐形车衣";
+        } else if ("3".equals(type)) {
+            return "车身改色";
+        } else if ("4".equals(type)) {
+            return "美容清洁";
+        } else
+            return null;
     }
+
 
     static class ViewHolder{
-        TextView tv_order_money;
-        TextView tv_order_num;
-        TextView orderType;
-        ImageView iv_order_img;
-        TextView tv_order_time;
-        TextView tv_work_item;
-        ImageOnclick imageOnclick;
+
+        TextView money,bill_source;
+        TextView orderNum;
+        TextView[] buttons = new TextView[4];
+        TextView workTime;
     }
-
-    private class ImageOnclick extends AsInnerOnclick{
-        public ImageOnclick(int position) {
-            super(position);
-        }
-
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(context, EnlargementActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putStringArray("IMAGE_URL", new String[]{mList.get(getPosition()).getPhoto()});
-            intent.putExtras(bundle);
-            context.startActivity(intent);
-//            context.overridePendingTransition(R.anim.anim_image_enter, R.anim.anim_image_quit);
-        }
-    };
 }
