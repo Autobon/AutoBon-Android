@@ -79,6 +79,7 @@ public class IndentMapFragment extends BaiduMapFragment{
 
     private String orderType_str;//订单类型
     private String orderOwner_str;//下单人
+    private String contact_phone_str;//联系电话
     private String shopsLocation_str;//商户位置
     private String shopsAlias_str;//商户名称
 
@@ -94,6 +95,8 @@ public class IndentMapFragment extends BaiduMapFragment{
     private TextView create_time;
     private TextView orderType;
     private TextView orderOwner;
+    private TextView contact_phone;
+    private ImageView img_phone;
     private TextView shopsLocation;
     private TextView shopsAlias;
     private TextView workNotes;
@@ -159,6 +162,7 @@ public class IndentMapFragment extends BaiduMapFragment{
         if (cooperator != null) {
             orderType_str = MyApplication.getInstance().getSkill(order.getOrderType());
             orderOwner_str = cooperator.getCorporationName();
+            contact_phone_str = cooperator.getContactPhone();
             shopsLocation_str = cooperator.getAddress();
             shopsAlias_str = cooperator.getFullname();
         }
@@ -196,6 +200,12 @@ public class IndentMapFragment extends BaiduMapFragment{
         }else {
             orderOwner_str = orderInfo.getCreatorName();
         }
+        if (orderInfo.getContactPhone() == null){
+            contact_phone_str = "";
+        }else {
+            contact_phone_str = orderInfo.getContactPhone();
+        }
+
         shopsLocation_str = orderInfo.getAddress();
         shopsAlias_str = orderInfo.getCoopName();
         setBaseData();
@@ -232,6 +242,8 @@ public class IndentMapFragment extends BaiduMapFragment{
         create_time = (TextView) rootView.findViewById(R.id.create_time);
         orderType = (TextView) rootView.findViewById(R.id.order_type);
         orderOwner = (TextView) rootView.findViewById(R.id.create_order_people);
+        contact_phone = (TextView) rootView.findViewById(R.id.contact_phone);
+        img_phone = (ImageView) rootView.findViewById(R.id.img_phone);
         shopsLocation = (TextView) rootView.findViewById(R.id.shops_location);
         workNotes = (TextView) rootView.findViewById(R.id.work_notes);
         shopsAlias = (TextView) rootView.findViewById(R.id.shops_name);
@@ -249,6 +261,8 @@ public class IndentMapFragment extends BaiduMapFragment{
 //                return false;
 //            }
 //        });
+
+
 
         mMapView.showZoomControls(false);
         mMapView.showScaleControl(true);  //默认是true,显示标尺
@@ -357,6 +371,7 @@ public class IndentMapFragment extends BaiduMapFragment{
 
         orderType.setText(orderType_str);
         orderOwner.setText(orderOwner_str);
+        contact_phone.setText(contact_phone_str);
         shopsLocation.setText(shopsLocation_str);
         shopsAlias.setText(shopsAlias_str);
         agree_end_time.setText(agreeEndTime);
@@ -414,6 +429,19 @@ public class IndentMapFragment extends BaiduMapFragment{
             markerClickListener = new BaiduMapUtil.MarkerCilckListener();
             baiduMap.setOnMarkerClickListener(markerClickListener);
         }
+
+
+        img_phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!TextUtils.isEmpty(contact_phone_str)){
+                    Uri uri = Uri.parse("tel:" + contact_phone_str);
+                    Intent intent = new Intent(Intent.ACTION_DIAL, uri);
+                    startActivity(intent);
+                }
+
+            }
+        });
     }
 
 

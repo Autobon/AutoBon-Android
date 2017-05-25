@@ -82,7 +82,7 @@ public class NetTaskToken implements Runnable {
 						break;
 					}
 					handler.sendEmptyMessage(what);
-					break;
+					return;
 				default:
 					break;
 			}
