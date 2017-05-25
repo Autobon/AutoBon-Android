@@ -1,6 +1,8 @@
 package cn.com.incardata.autobon;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Display;
@@ -52,6 +54,7 @@ public class OrderInfoActivity extends BaseActivity {
     private TextView remark;
     private TextView order_type;
     private TextView shops_name;
+    private TextView contact_phone;
     private TextView work_person;
     private TextView worktime;
     private GridView work_before_grid, work_after_grid, order_grid;
@@ -68,6 +71,8 @@ public class OrderInfoActivity extends BaseActivity {
     private Display display;
     private Button check_tech_message;
     private Button collection;
+
+    private ImageView img_phone;
 
     private boolean isMainResponsible;
     private OrderInfo orderInfo;
@@ -91,6 +96,7 @@ public class OrderInfoActivity extends BaseActivity {
         remark = (TextView) findViewById(R.id.remark);
         order_type = (TextView) findViewById(R.id.order_type);
         shops_name = (TextView) findViewById(R.id.shops_name);
+        contact_phone = (TextView) findViewById(R.id.contact_phone);
         work_person = (TextView) findViewById(R.id.work_person);
         worktime = (TextView) findViewById(R.id.sign_in_time);
         order_grid = (GridView) findViewById(R.id.order_grid);
@@ -107,6 +113,8 @@ public class OrderInfoActivity extends BaseActivity {
         noComment = (TextView) findViewById(R.id.noComment);
         rll5 = (RelativeLayout) findViewById(R.id.rll5);
         check_tech_message = (Button) findViewById(R.id.check_tech_message);
+
+        img_phone = (ImageView) findViewById(R.id.img_phone);
 
         collection = (Button) findViewById(R.id.collection);
 
@@ -130,9 +138,21 @@ public class OrderInfoActivity extends BaseActivity {
         orderInfo = getIntent().getParcelableExtra(AutoCon.ORDER_INFO);
         if (orderInfo == null){
             T.show(getContext(),R.string.dataUploadFailed);
+            return;
         }else {
             updateUI(orderInfo);
         }
+
+        img_phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!TextUtils.isEmpty(orderInfo.getContactPhone())){
+                    Uri uri = Uri.parse("tel:" + orderInfo.getContactPhone());
+                    Intent intent = new Intent(Intent.ACTION_DIAL, uri);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
 
@@ -240,6 +260,7 @@ public class OrderInfoActivity extends BaseActivity {
         order_type.setText(type);
         orderNum.setText(getResources().getString(R.string.order_serial_number) + data.getOrderNum());
         shops_name.setText(data.getCoopName());
+        contact_phone.setText(data.getContactPhone());
 
 
         OrderInfo_Data_Comment comment = data.getComment();
@@ -249,12 +270,15 @@ public class OrderInfoActivity extends BaseActivity {
             shops_name.setText(R.string.nothave);
             worktime.setText(R.string.nothave);
             work_person.setText(data.getTechName());
+            contact_phone.setText(R.string.nothave);
         } else if ("GIVEN_UP".equals(data.getStatus())) {
             shops_name.setText(R.string.nothave);
             worktime.setText(R.string.nothave);
             work_person.setText(data.getTechName());
+            contact_phone.setText(R.string.nothave);
         } else if ("EXPIRED".equals(data.getStatus())) {
             shops_name.setText(R.string.nothave);
+            contact_phone.setText(R.string.nothave);
             if (orderInfo.getStartTime() != 0) {
                 worktime.setText(DateCompute.getDate(orderInfo.getStartTime()));
             } else {
