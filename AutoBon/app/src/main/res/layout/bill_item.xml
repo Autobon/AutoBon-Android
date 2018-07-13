@@ -31,6 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp20"
+            android:text="12月"
             android:textColor="@color/darkgray"
             android:textSize="@dimen/sp15"/>
 
@@ -39,6 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:text="8100"
             android:layout_centerVertical="true"
             android:textColor="@color/lightgray"
             android:textSize="@dimen/sp15"/>

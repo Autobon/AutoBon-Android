@@ -81,6 +81,17 @@ public class DateCompute {
 		return formatter.format(curDate);
 	}
 
+	/**
+	 * 得到系统当前日期
+	 * <p> yyyy-MM-dd HH:mm:ss</p>
+	 * @return
+	 */
+	public static String getCurrentAllDate(){
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.CHINA);
+		Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+		return formatter.format(curDate);
+	}
+
 
 	/**
 	 * 获取日期是星期几(补充)

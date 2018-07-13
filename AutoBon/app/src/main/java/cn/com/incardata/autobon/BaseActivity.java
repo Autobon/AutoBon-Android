@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 
+import cn.com.incardata.permission.PermissionUtil;
 import cn.com.incardata.view.CommonDialog;
 
 /**
@@ -13,6 +14,10 @@ import cn.com.incardata.view.CommonDialog;
  */
 public class BaseActivity extends Activity{
     protected CommonDialog dialog;
+    /**
+     * 权限控制
+     */
+    protected PermissionUtil permissionUtil;
 
     protected void startActivity(Class<?> cls){
         Intent i = new Intent(this, cls);
@@ -22,6 +27,15 @@ public class BaseActivity extends Activity{
         Intent i = new Intent(this, cls);
         i.putExtras(bundle);
         startActivity(i);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (permissionUtil != null) {
+            //权限回调处理
+            permissionUtil.handleRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     protected BaseActivity getContext(){

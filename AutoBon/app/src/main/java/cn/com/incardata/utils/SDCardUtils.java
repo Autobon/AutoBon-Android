@@ -33,6 +33,25 @@ public class SDCardUtils {
      * 采集的图片临时目录temp
      * @return
      */
+    public static String getDowloadFile(){
+        String path = null;
+        try {
+            path = getAppRootDir() + File.separator + "file";
+            File file = new File(path);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            return path;
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 采集的图片临时目录temp
+     * @return
+     */
     public static String getGatherDir(){
         String path = null;
         try {

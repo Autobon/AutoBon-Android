@@ -3,27 +3,41 @@ package cn.com.incardata.autobon;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 
+import org.apache.http.message.BasicNameValuePair;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import cn.com.incardata.http.Http;
 import cn.com.incardata.http.ImageLoaderCache;
 import cn.com.incardata.http.NetURL;
 import cn.com.incardata.http.NetWorkHelper;
 import cn.com.incardata.http.OnResult;
+import cn.com.incardata.http.response.CommitCertificateEntity;
 import cn.com.incardata.http.response.MyInfoEntity;
 import cn.com.incardata.http.response.MyInfo_Data;
 import cn.com.incardata.http.response.MyMessage;
 import cn.com.incardata.http.response.MyMessageData;
 import cn.com.incardata.http.response.MyMessageEntity;
+import cn.com.incardata.http.response.RegisterEntity;
+import cn.com.incardata.http.response.TakeCashEntity;
+import cn.com.incardata.http.response.TakeCashJson;
+import cn.com.incardata.utils.DateCompute;
 import cn.com.incardata.utils.DecimalUtil;
 import cn.com.incardata.utils.StringUtil;
 import cn.com.incardata.utils.T;
@@ -42,11 +56,15 @@ public class RestInfoActivity extends BaseActivity {
     private Bundle bundle;
 
 
+    private int id;             //技师ID
     private String rest_money;
     private String bank;
     private String bankCardNumber;
     private String bankCardNumber1;
     private String bankAddress;
+
+    private Button btn_take_cash;       //提现
+    private EditText ed_money;          //提现金额
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +82,9 @@ public class RestInfoActivity extends BaseActivity {
         tv_bank_number = (TextView) findViewById(R.id.tv_bank_number);
         iv_back = (ImageView) findViewById(R.id.iv_back);
         dialog = new ModifyBankCardNoDialog(context);
+
+        btn_take_cash = (Button) findViewById(R.id.btn_take_cash);
+        ed_money = (EditText) findViewById(R.id.ed_money);
 
 
         ll_modify_bank.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +132,22 @@ public class RestInfoActivity extends BaseActivity {
                 startActivityForResult(intent, 0);
             }
         });
+
+        btn_take_cash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String money = ed_money.getText().toString().trim();
+                if (TextUtils.isEmpty(money)){
+                    T.show(context,"请输入提现金额");
+                    return;
+                }
+                if (Double.parseDouble(money) > Double.parseDouble(rest_money)){
+                    T.show(context,"余额不足");
+                    return;
+                }
+                takeCash(money);
+            }
+        });
     }
 
     @Override
@@ -127,6 +164,7 @@ public class RestInfoActivity extends BaseActivity {
 
     private void initData() {
         bundle = getIntent().getExtras();
+        id = bundle.getInt("id",0);
         rest_money = bundle.getString("rest_money", String.valueOf(0));
         bank = bundle.getString("bank", "");
         bankCardNumber = bundle.getString("bankCardNumber", "");
@@ -138,6 +176,14 @@ public class RestInfoActivity extends BaseActivity {
         tv_rest_money.setText(rest_money);
         tv_bank_category.setText(bank);
         tv_bank_number.setText(bankCardNumber);
+
+        double balance = Double.parseDouble(rest_money);
+        if (balance <= 0){
+            btn_take_cash.setAlpha(0.5f);
+            btn_take_cash.setEnabled(false);
+            ed_money.setEnabled(false);
+            ed_money.setFocusable(false);
+        }
     }
 
     private void getDataFromServer() {
@@ -168,6 +214,65 @@ public class RestInfoActivity extends BaseActivity {
             });
         } else {
             T.show(this, getString(R.string.no_network_tips));
+        }
+    }
+
+    /**
+     * 提现接口
+     */
+    private void takeCash(String money){
+        btn_take_cash.setEnabled(false);
+        TakeCashJson takeCashJson = new TakeCashJson();
+        takeCashJson.setTechId(id);
+        takeCashJson.setApplyMoney(Double.parseDouble(money));
+//        takeCashJson.setApplyMoney(108);
+        takeCashJson.setApplyDate(new Date());
+
+        Object json = JSON.toJSON(takeCashJson);
+
+        showDialog();
+        if(NetWorkHelper.isNetworkAvailable(context)) {
+
+            Http.getInstance().postTaskToken(NetURL.TAKECASH, json.toString(), TakeCashEntity.class, new OnResult() {
+                @Override
+                public void onResult(Object entity) {
+                    cancelDialog();
+                    btn_take_cash.setEnabled(true);
+                    if (entity == null) {
+                        T.show(getContext(), R.string.request_failed);
+                        return;
+                    }
+                    if (entity instanceof TakeCashEntity) {
+                        TakeCashEntity takeCashEntity = (TakeCashEntity) entity;
+                        if (takeCashEntity.isStatus()) {
+                            T.show(getContext(),"提交提现申请成功");
+                            ed_money.setText("");
+                        } else {
+                            T.show(getContext(), takeCashEntity.getMessage().toString());
+                            return;
+                        }
+                    }
+                }
+            });
+//            Http.getInstance().postTaskToken(NetURL.TAKECASH, TakeCashEntity.class, new OnResult() {
+//                @Override
+//                public void onResult(Object entity) {
+//                    if (entity == null) {
+//                        T.show(context, "提现申请失败");
+//                        return;
+//                    }
+//                    TakeCashEntity takeCashEntity = (TakeCashEntity) entity;
+//                    if(takeCashEntity.isStatus()){  //成功
+//
+//                    }else{  //失败
+////                        T.show(context,takeCashEntity.getMessage().toString());
+////                        return;
+//                    }
+//                }
+//            },(BasicNameValuePair[]) mList.toArray(new BasicNameValuePair[mList.size()]));
+        }else{
+            T.show(context,getString(R.string.no_network_tips));
+            return;
         }
     }
 

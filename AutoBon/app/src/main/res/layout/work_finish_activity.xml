@@ -390,6 +390,64 @@
 
             <!--</RelativeLayout>-->
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/lightgray"/>
+            <LinearLayout
+                android:background="@android:color/white"
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_height="@dimen/dp35">
+                <TextView
+                    android:textSize="@dimen/sp15"
+                    android:layout_marginLeft="@dimen/dp15"
+                    android:text="订单备注"
+                    android:textColor="@color/darkgray"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/btn_submit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/check_btn"
+                    android:gravity="center"
+                    android:paddingBottom="3dp"
+                    android:layout_marginRight="@dimen/dp15"
+                    android:paddingLeft="@dimen/dp15"
+                    android:paddingRight="@dimen/dp15"
+                    android:paddingTop="3dp"
+                    android:text="提交"
+                    android:textColor="@color/main_orange"
+                    android:textSize="@dimen/sp13" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/lightgray"/>
+
+            <EditText
+                android:id="@+id/edit_remark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:gravity="left"
+                android:hint="请填写备注(最多300字)"
+                android:maxLength="300"
+                android:minLines="5"
+                android:padding="@dimen/dp15"
+                android:textColor="@color/darkgray"
+                android:textColorHint="@color/lightgray"
+                android:textSize="@dimen/sp15" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/lightgray"/>
             <Button
                 android:id="@+id/finish_work_btn"
                 android:layout_width="match_parent"

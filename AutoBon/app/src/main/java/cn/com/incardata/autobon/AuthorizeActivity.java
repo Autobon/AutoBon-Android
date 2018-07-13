@@ -1,5 +1,6 @@
 package cn.com.incardata.autobon;
 
+import android.*;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -40,6 +41,7 @@ import cn.com.incardata.http.response.ConsumeItem;
 import cn.com.incardata.http.response.IdPhotoEntity;
 import cn.com.incardata.http.response.MyMessage;
 import cn.com.incardata.http.response.UploadAuthorizeMessage;
+import cn.com.incardata.permission.PermissionUtil;
 import cn.com.incardata.utils.BankUtil;
 import cn.com.incardata.utils.BitmapHelper;
 import cn.com.incardata.utils.SDCardUtils;
@@ -120,9 +122,35 @@ public class AuthorizeActivity extends BaseActivity implements View.OnClickListe
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.img_rank_default1);
         Log.d("bitmap", bitmap.getHeight() + "/" + bitmap.getWidth());
 
+        checkPermission();
         initView();
         initSpinner();
         checkStatus();
+    }
+
+    /**
+     * 申请存储权限
+     *
+     * @param commandCode 可选指令码，用以执行指定操作
+     */
+    private void checkPermission(final int... commandCode) {
+        permissionUtil = new PermissionUtil(this);
+        permissionUtil.requestPermissions(getString(R.string.please_grant_file_location_phone_correation_authority), new PermissionUtil.PermissionListener() {
+                    @Override
+                    public void doAfterGrant(String... permission) {
+                        Log.d("AuthorizeActivity",getString(R.string.authorization_success));
+                    }
+
+                    @Override
+                    public void doAfterDenied(String... permission) {
+                        Log.d("AuthorizeActivity",getString(R.string.authorization_fail));
+                    }
+                }, android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                android.Manifest.permission.READ_PHONE_STATE,
+                android.Manifest.permission.CAMERA,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                android.Manifest.permission.ACCESS_FINE_LOCATION);
     }
 
     /**

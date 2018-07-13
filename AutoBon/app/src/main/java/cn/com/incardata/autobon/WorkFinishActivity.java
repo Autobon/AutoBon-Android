@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,6 +34,7 @@ import android.widget.Toast;
 
 
 import com.alibaba.fastjson.JSON;
+import com.yanzhenjie.album.Album;
 
 import org.apache.http.message.BasicNameValuePair;
 
@@ -50,9 +53,11 @@ import cn.com.incardata.adapter.ListViewAdapter;
 import cn.com.incardata.adapter.PictureGridAdapter;
 import cn.com.incardata.adapter.RadioFragmentGridAdapter;
 import cn.com.incardata.application.MyApplication;
+import cn.com.incardata.customfun.GatherImage;
 import cn.com.incardata.fragment.BaseStandardFragment;
 import cn.com.incardata.fragment.DropOrderDialogFragment;
 import cn.com.incardata.fragment.FiveCarRadioFragment;
+import cn.com.incardata.fragment.ImageChooseFragment;
 import cn.com.incardata.fragment.SevenCarRadioFragment;
 import cn.com.incardata.http.Http;
 import cn.com.incardata.http.HttpClientInCar;
@@ -67,6 +72,7 @@ import cn.com.incardata.http.response.FinishWorkEntity;
 import cn.com.incardata.http.response.GetOrderProjectItem;
 import cn.com.incardata.http.response.GetOrderProjectItemEntity;
 import cn.com.incardata.http.response.IdPhotoEntity;
+import cn.com.incardata.http.response.ListNewEntity;
 import cn.com.incardata.http.response.ListUnfinishedOrderEntity;
 import cn.com.incardata.http.response.OrderInfo;
 import cn.com.incardata.http.response.OrderInfoEntity;
@@ -86,20 +92,21 @@ import cn.com.incardata.view.AddTechPopupWindow;
 import cn.com.incardata.view.wheel.widget.WheelPopupWindow;
 
 
-
 /**
  * 施工完成
  * Created by zhangming on 2016/3/11.
  */
 public class WorkFinishActivity extends BaseActivity implements BaseStandardFragment.OnFragmentInteractionListener,
-        View.OnClickListener,DropOrderDialogFragment.OnClickListener {
+        View.OnClickListener, DropOrderDialogFragment.OnClickListener, ImageChooseFragment.OnFragmentInteractionListener {
     private GridView gv_single_pic, gv_consume;
     //    private RadioGroup rg_tab;
     private TextView tv_day, tv_has_time, tv_content;
     private PictureGridAdapter mAdapter;
     private LinearLayout ll_other, ll_clean;
+    private Button btn_submit;
+    private EditText edit_remark;
     private Button finish_work_btn;
-    private ImageView iv_left, iv_right, iv_my_info, iv_enter_more_page,iv_back;
+    private ImageView iv_left, iv_right, iv_my_info, iv_enter_more_page, iv_back;
     private Context context;
     private static final int MAX_PICS = 9; //图片数上限
     private Button[] buttons = new Button[4];
@@ -108,6 +115,7 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
 
     private File tempFile;
     private String fileName = "";  //my_picture目录
+    private String fileName1 = "";  //my_picture目录
     private File tempDir;
     private Uri carPhotoUri;  //temp目录
     private static final int CAR_PHOTO = 1;
@@ -131,6 +139,7 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
     private DropOrderDialogFragment dropOderDialog;
     private FragmentManager fragmentManager;
 
+    private ImageChooseFragment mFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,8 +147,8 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
         setContentView(R.layout.work_finish_activity);
         fragmentManager = getFragmentManager();
         initView();
-        getWorkItem();
         initFile();
+        getWorkItem();
         new Thread(new MyThread()).start();
     }
 
@@ -187,8 +196,8 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                 listViewAdapter.setOnGetHeight(new ListViewAdapter.OnGetHeight() {
                     @Override
                     public void getHeight() {
-                        for (int i = 0;i < getOrderProjectItems.size(); i++){
-                            for (int j = 0;j <getOrderProjectItems.get(i).getConstructionPositions().length;j++){
+                        for (int i = 0; i < getOrderProjectItems.size(); i++) {
+                            for (int j = 0; j < getOrderProjectItems.get(i).getConstructionPositions().length; j++) {
                                 getOrderProjectItems.get(i).getConstructionPositions()[j].setTechnicianId(-1);
                                 getOrderProjectItems.get(i).getConstructionPositions()[j].setTotal(0);
                                 getOrderProjectItems.get(i).getConstructionPositions()[j].setCheck(false);
@@ -234,8 +243,8 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                 listViewAdapter.setOnGetHeight(new ListViewAdapter.OnGetHeight() {
                     @Override
                     public void getHeight() {
-                        for (int i = 0;i < getOrderProjectItems.size(); i++){
-                            for (int j = 0;j <getOrderProjectItems.get(i).getConstructionPositions().length;j++ ){
+                        for (int i = 0; i < getOrderProjectItems.size(); i++) {
+                            for (int j = 0; j < getOrderProjectItems.get(i).getConstructionPositions().length; j++) {
                                 getOrderProjectItems.get(i).getConstructionPositions()[j].setTechnicianId(-1);
                                 getOrderProjectItems.get(i).getConstructionPositions()[j].setTotal(0);
                                 getOrderProjectItems.get(i).getConstructionPositions()[j].setCheck(false);
@@ -281,8 +290,8 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                 listViewAdapter.setOnGetHeight(new ListViewAdapter.OnGetHeight() {
                     @Override
                     public void getHeight() {
-                        for (int i = 0;i < getOrderProjectItems.size(); i++){
-                            for (int j = 0;j <getOrderProjectItems.get(i).getConstructionPositions().length;j++ ){
+                        for (int i = 0; i < getOrderProjectItems.size(); i++) {
+                            for (int j = 0; j < getOrderProjectItems.get(i).getConstructionPositions().length; j++) {
                                 getOrderProjectItems.get(i).getConstructionPositions()[j].setTechnicianId(-1);
                                 getOrderProjectItems.get(i).getConstructionPositions()[j].setTotal(0);
                                 getOrderProjectItems.get(i).getConstructionPositions()[j].setCheck(false);
@@ -328,8 +337,8 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                 listViewAdapter.setOnGetHeight(new ListViewAdapter.OnGetHeight() {
                     @Override
                     public void getHeight() {
-                        for (int i = 0;i < getOrderProjectItems.size(); i++){
-                            for (int j = 0;j <getOrderProjectItems.get(i).getConstructionPositions().length;j++ ){
+                        for (int i = 0; i < getOrderProjectItems.size(); i++) {
+                            for (int j = 0; j < getOrderProjectItems.get(i).getConstructionPositions().length; j++) {
                                 getOrderProjectItems.get(i).getConstructionPositions()[j].setTechnicianId(-1);
                                 getOrderProjectItems.get(i).getConstructionPositions()[j].setTotal(0);
                                 getOrderProjectItems.get(i).getConstructionPositions()[j].setCheck(false);
@@ -348,6 +357,25 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
 //                        setListViewHeightBasedOnChildren(listview_workItem);
 //                    }
 //                });
+                break;
+        }
+    }
+
+    /**
+     * 选图对话框
+     *
+     * @param type 操作类型
+     */
+    @Override
+    public void onFragmentInteraction(int type) {
+        switch (type) {
+            case GatherImage.CAPTURE:
+                capture(GatherImage.CAPTURE_REQUEST, carPhotoUri);
+                break;
+            case GatherImage.GALLERY:
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                startActivityForResult(intent, GatherImage.GALLERY_REQUEST);
                 break;
         }
     }
@@ -425,15 +453,14 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
         tv_day.setText(DateCompute.getWeekOfDate());
         add_tech = (ImageView) findViewById(R.id.add_tech);
 
+        btn_submit = (Button) findViewById(R.id.btn_submit);
+        edit_remark = (EditText) findViewById(R.id.edit_remark);
         finish_work_btn = (Button) findViewById(R.id.finish_work_btn);
-
 
 
         iv_my_info = (ImageView) findViewById(R.id.iv_my_info);
         iv_back = (ImageView) findViewById(R.id.iv_back);
 //        iv_enter_more_page = (ImageView) findViewById(R.id.iv_enter_more_page);
-
-
 
 
         mAdapter = new PictureGridAdapter(this, MAX_PICS);
@@ -445,11 +472,14 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.i("test", "position===>" + position + "," + "count===>" + mAdapter.getCount());
                 if (position == mAdapter.getCount() - 1 && !mAdapter.isReachMax()) {
-                    if (tempDir == null) {
-                        tempDir = new File(SDCardUtils.getGatherDir());
-                        carPhotoUri = Uri.fromFile(new File(tempDir, "car_photo.jpeg"));
-                    }
-                    capture(CAR_PHOTO, carPhotoUri);
+//                    if (tempDir == null) {
+//                        tempDir = new File(SDCardUtils.getGatherDir());
+//                    }
+                    Album.startAlbum(WorkFinishActivity.this, 0x999
+                            , 9 - mAdapter.getPicMap().size()                                                         // 指定选择数量。
+                            , ContextCompat.getColor(context, R.color.main_orange)        // 指定Toolbar的颜色。
+                            , ContextCompat.getColor(context, R.color.main_orange));  // 指定状态栏的颜色
+//                    onClickIdentifyPhoto();
                 } else {
                     LinkedHashMap<Integer, String> temp = mAdapter.getPicMap();
                     if (temp == null || temp.isEmpty()) {
@@ -489,6 +519,19 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
             }
         });
 
+        btn_submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String remark = edit_remark.getText().toString().trim();
+                if (!TextUtils.isEmpty(remark)){
+                    submitRemark(remark);
+                }else {
+                    T.show(context,"请填写备注");
+                    return;
+                }
+            }
+        });
+
 
         if (RadioFragmentGridAdapter.workItemMap != null && RadioFragmentGridAdapter.workItemMap.size() > 0) {
             RadioFragmentGridAdapter.workItemMap.clear(); //清空记录工作项的map集合
@@ -501,6 +544,53 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
             }
         });
 
+    }
+
+    /**
+     * 提交订单备注
+     * @param remark
+     */
+    private void submitRemark(String remark) {
+        List<BasicNameValuePair> paramList = new ArrayList<>();
+        paramList.add(new BasicNameValuePair("orderId", String.valueOf(orderInfo.getId())));
+        paramList.add(new BasicNameValuePair("remark", remark));
+        Http.getInstance().postTaskToken(NetURL.SUBMIT_ORDER_REMARK, ListNewEntity.class, new OnResult() {
+            @Override
+            public void onResult(Object entity) {
+                if (entity == null) {
+                    T.show(context, "提交订单备注失败");
+                    return;
+                }
+                ListNewEntity listNewEntity = (ListNewEntity) entity;
+                if (listNewEntity.isStatus()) {
+                    T.show(context, "提交订单备注成功");
+                    edit_remark.setText("");
+                }else {
+                    T.show(getContext(), listNewEntity.getMessage().toString());
+                }
+            }
+        }, (BasicNameValuePair[]) paramList.toArray(new BasicNameValuePair[paramList.size()]));
+    }
+
+    /**
+     * 照片点击事件
+     */
+    private void onClickIdentifyPhoto() {
+        if (mFragment == null) {
+            mFragment = new ImageChooseFragment();
+        }
+
+        if (!SDCardUtils.isExistSDCard()) {
+            T.show(this, R.string.uninstalled_sdcard);
+            return;
+        }
+
+        if (carPhotoUri == null) {
+            carPhotoUri = Uri.fromFile(new File(SDCardUtils.getGatherDir() + File.separator + "car_photo.jpeg"));
+        }
+        initFile();
+
+        mFragment.show(getFragmentManager(), "Choose");
     }
 
     AddTechPopupWindow add;
@@ -517,9 +607,9 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
     private AddTechPopupWindow.OnCheckedListener checkedListener = new AddTechPopupWindow.OnCheckedListener() {
         @Override
         public void onChecked(AddContact_data_list list) {
-            for (Technician technician:technicians){
-                if (technician.getId() == list.getId()){
-                    T.show(getContext(),getString(R.string.this_tech_yet_select));
+            for (Technician technician : technicians) {
+                if (technician.getId() == list.getId()) {
+                    T.show(getContext(), getString(R.string.this_tech_yet_select));
                     return;
                 }
             }
@@ -543,6 +633,7 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                     dir.mkdirs();
                 }
                 fileName = path + File.separator + "my_photo.jpeg";
+                fileName1 = path + File.separator;
                 tempFile = new File(fileName);
             } else {
                 T.show(this, getString(R.string.uninstalled_sdcard));
@@ -594,7 +685,7 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
         urls = urls.substring(0, urls.length() - 1);
         Log.i("test", "urls======>" + urls);
         BasicNameValuePair bv_afterPhotos = new BasicNameValuePair("afterPhotos", urls);
-        if (isSuccess){
+        if (isSuccess) {
             int userSize = technicians == null ? 0 : technicians.size();
 //        baofeiItems = consumeGridViewAdapter.getBaofeiItems();
             ConstructionDetail[] constructionDetails = new ConstructionDetail[userSize];
@@ -650,13 +741,13 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
             }
             boolean isNotNull = false;
 
-            for (int i = 0; i < constructionDetails.length; i++ ){
-                if (constructionDetails[i].getProjectPositions() != null && constructionDetails[i].getProjectPositions().size() > 0){
+            for (int i = 0; i < constructionDetails.length; i++) {
+                if (constructionDetails[i].getProjectPositions() != null && constructionDetails[i].getProjectPositions().size() > 0) {
                     isNotNull = true;
                 }
             }
-            if (!isNotNull){
-                T.show(getContext(),"请最少选择一项施工项目");
+            if (!isNotNull) {
+                T.show(getContext(), "请最少选择一项施工项目");
                 return;
             }
 
@@ -732,6 +823,86 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                }
+                break;
+            case GatherImage.CAPTURE_REQUEST:
+                try {
+                    Bitmap bitmap = BitmapHelper.resizeImage(getContext(), carPhotoUri, 0.35f);
+                    Uri uri = Uri.fromFile(tempFile);
+                    boolean isSuccess = BitmapHelper.saveBitmap(uri, bitmap);  //压缩图片保存到新地址
+
+                    if (isSuccess) {
+                        if (NetWorkHelper.isNetworkAvailable(context)) {
+                            uploadCarPhoto(uri);
+                        } else {
+                            T.show(context, context.getString(R.string.no_network_tips));
+                            return;
+                        }
+                    }
+
+                    if (bitmap != null && !bitmap.isRecycled()) {
+                        bitmap.recycle();
+                        bitmap = null;
+                    }
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case GatherImage.GALLERY_REQUEST:
+                try {
+                    Bitmap bitmap = BitmapHelper.resizeImage(getContext(), data.getData(), 0.35f);
+                    Uri uri = Uri.fromFile(tempFile);
+                    boolean isSuccess = BitmapHelper.saveBitmap(uri, bitmap);  //压缩图片保存到新地址
+                    if (isSuccess) {
+                        if (NetWorkHelper.isNetworkAvailable(context)) {
+                            uploadCarPhoto(uri);
+                        } else {
+                            T.show(context, context.getString(R.string.no_network_tips));
+                            return;
+                        }
+                    }
+
+                    if (bitmap != null && !bitmap.isRecycled()) {
+                        bitmap.recycle();
+                        bitmap = null;
+                    }
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case 0x999:
+                List<String> pathList = Album.parseResult(data);
+                showDialog(getString(R.string.uploading_image));
+                countNum = pathList.size();
+                uploadNum = 0;
+
+                for (int i = 0; i < pathList.size(); i++) {
+                    try {
+                        Bitmap bitmap = BitmapHelper.resizeImage(getContext(), Uri.fromFile(new File(pathList.get(i))), 0.35f);
+                        Uri uri = Uri.fromFile(new File(fileName1 + "myphoto" + (i + 1) + ".jpeg"));
+                        boolean isSuccess = BitmapHelper.saveBitmap(uri, bitmap);
+
+                        if (isSuccess) {  //成功保存后上传压缩后的图片
+                            if (NetWorkHelper.isNetworkAvailable(context)) {
+                                MyAsyncTask task = new MyAsyncTask(i, uri);
+                                //task.execute(new String[0]);
+                                task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, uri.getPath(), NetURL.UPLOAD_WORK_PHOTOV2);
+                            } else {
+                                T.show(context, context.getString(R.string.no_network_tips));
+                                uploadNum++;
+                                return;
+                            }
+                        } else {
+                            uploadNum++;
+                        }
+                        if (bitmap != null && !bitmap.isRecycled()) {
+                            bitmap.recycle();
+                            bitmap = null;
+                        }
+                    } catch (Exception e) {
+                        uploadNum++;
+                        e.printStackTrace();
+                    }
                 }
                 break;
             default:
@@ -861,8 +1032,8 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                         listViewAdapter.setOnGetHeight(new ListViewAdapter.OnGetHeight() {
                             @Override
                             public void getHeight() {
-                                for (int i = 0;i < getOrderProjectItems.size(); i++){
-                                    for (int j = 0;j <getOrderProjectItems.get(i).getConstructionPositions().length;j++ ){
+                                for (int i = 0; i < getOrderProjectItems.size(); i++) {
+                                    for (int j = 0; j < getOrderProjectItems.get(i).getConstructionPositions().length; j++) {
                                         getOrderProjectItems.get(i).getConstructionPositions()[j].setTechnicianId(-1);
                                         getOrderProjectItems.get(i).getConstructionPositions()[j].setTotal(0);
                                         getOrderProjectItems.get(i).getConstructionPositions()[j].setCheck(false);
@@ -910,12 +1081,14 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
         listView.setLayoutParams(params);
     }
 
-    /**放弃订单
+    /**
+     * 放弃订单
+     *
      * @param v
      */
-    public void onClickDropOrder(View v){
+    public void onClickDropOrder(View v) {
         //显示放弃订单对话框
-        if (dropOderDialog == null){
+        if (dropOderDialog == null) {
             dropOderDialog = new DropOrderDialogFragment();
         }
         dropOderDialog.show(fragmentManager, "dropOderDialog");
@@ -927,9 +1100,62 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
             T.show(getContext(), getString(R.string.not_found_order_tips));
             return;
         }
-        Intent intent = new Intent(this,CancelOrderReasonActivity.class);
-        intent.putExtra(AutoCon.ORDER_ID,orderInfo.getId());
+        Intent intent = new Intent(this, CancelOrderReasonActivity.class);
+        intent.putExtra(AutoCon.ORDER_ID, orderInfo.getId());
         startActivity(intent);
 
+    }
+
+    private int uploadNum = 0;
+    private int countNum;
+
+    private class MyAsyncTask extends AsyncTask<String,Void,String>{
+        private int index;
+        private Uri uri;
+
+
+        public MyAsyncTask(int index,Uri uri) {
+            this.index = index;
+            this.uri = uri;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            System.out.println("task"+ (index + 1) + " is run " + DateCompute.timeStampToDate(System.currentTimeMillis()) + " thread id "+ Thread.currentThread().getId());
+            try {
+                String json = HttpClientInCar.uploadImage(params[0], params[1]);
+                return json;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            uploadNum++;
+            if (uploadNum == countNum){
+                cancelDialog();
+            }
+            System.out.println("task"+ (index + 1) + " is finish " + DateCompute.timeStampToDate(System.currentTimeMillis()));
+            if (s == null) {
+//                T.show(context, getString(R.string.upload_image_failed) + index);
+                T.show(context, "第" + (index + 1) + "张图片上传失败，请重新选择上传");
+                return;
+            } else {
+                IdPhotoEntity idPhotoEntity = JSON.parseObject(s, IdPhotoEntity.class);
+                if (idPhotoEntity.isStatus()) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(uri.getPath());
+                    mAdapter.addPic(bitmap, idPhotoEntity.getMessage());  //添加图片
+                    Log.i("test", "上传压缩后的图片成功,width===>" + bitmap.getWidth() + ",height===>" + bitmap.getHeight()
+                            + ",size===>" + (bitmap.getByteCount() / 1024) + "KB" + ",url===>" + idPhotoEntity.getMessage());
+                } else {
+//                    T.show(context, getString(R.string.upload_image_failed));
+                    T.show(context, "第" + (index + 1) + "张图片上传失败，请重新选择上传");
+                    return;
+                }
+            }
+        }
     }
 }

@@ -28,6 +28,9 @@
     <uses-permission android:name="getui.permission.GetuiService.cn.com.incardata.autobon" /> <!-- 替换为第三方应用的包名 -->
     <!-- 个推SDK权限配置结束 -->
 
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <permission
         android:name="getui.permission.GetuiService.cn.com.incardata.autobon"
         android:protectionLevel="normal" /> <!-- 替换为第三方应用的包名 -->
@@ -51,6 +54,13 @@
             android:name=".MainUnauthorizedActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
+
+        <activity
+            android:name="com.yanzhenjie.album.AlbumActivity"
+            android:label="图库"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden" />
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait"
@@ -167,6 +177,11 @@
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".AuthorizeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SpinnerTheme" />
+
+        <activity
+            android:name=".TextDownloadOpenFileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SpinnerTheme" />
 
@@ -317,6 +332,7 @@
         <activity
             android:name=".OrderInfoActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".WorkFinishedActivity"
@@ -368,6 +384,27 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
+
+        <activity
+            android:name=".MyTeamActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".TeamTechnicianActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".TeamTechnicianOrderListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".StudyGardenActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".StudyDataCheckActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
     </application>
 
 </manifest>

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:layout_height="match_parent"
     android:background="@color/main_white">
     <RelativeLayout
@@ -75,5 +78,65 @@
         android:layout_height="wrap_content"
         android:text="@string/pay_bottom_tips"
         android:layout_marginTop="@dimen/dp10"
-        android:layout_marginLeft="@dimen/dp30"/>
+        android:layout_marginLeft="@dimen/dp20"/>
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/dp20"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp40"
+        android:paddingLeft="@dimen/dp20"
+        android:paddingRight="@dimen/dp20"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="60dp"
+            android:gravity="center_vertical"
+            android:layout_height="match_parent"
+            android:text="提现金额" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dp5"
+            android:paddingTop="@dimen/dp5">
+
+            <EditText
+                android:id="@+id/ed_money"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/dp15"
+                android:background="@null"
+                android:inputType="numberDecimal"
+                android:maxLength="9"
+                android:singleLine="true"
+                android:textColor="@color/darkgray"
+                android:textColorHint="@color/lightgray"
+                android:textSize="@dimen/sp13" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/dp15"
+                android:background="#F0F0F0" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_take_cash"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft ="@dimen/dp40"
+        android:layout_marginRight="@dimen/dp40"
+        android:layout_marginTop="@dimen/dp20"
+        android:layout_marginBottom="@dimen/dp20"
+        android:paddingTop="@dimen/dp12"
+        android:paddingBottom="@dimen/dp12"
+        android:text="提现"
+        android:gravity="center"
+        android:textSize="@dimen/sp18"
+        android:background="@drawable/login_btn_selector"
+        android:textColor="@android:color/white"/>
 </LinearLayout>

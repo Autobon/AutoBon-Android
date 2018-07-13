@@ -55,8 +55,12 @@ public class OrderInfoActivity extends BaseActivity {
     private TextView order_type;
     private TextView shops_name;
     private TextView contact_phone;
+    private TextView shop_address;
     private TextView work_person;
     private TextView worktime;
+    private TextView agreed_start_time;
+    private TextView agreed_end_time;
+    private TextView work_end_time;
     private GridView work_before_grid, work_after_grid, order_grid;
     private RatingBar ratingBar;
     private ImageView arriveOnTime;
@@ -76,6 +80,8 @@ public class OrderInfoActivity extends BaseActivity {
 
     private boolean isMainResponsible;
     private OrderInfo orderInfo;
+    private int orderId;
+    private boolean isUpload = false;
     private int id;
     private WorkMessagePopupWindow workMessagePopupWindow;
 
@@ -87,6 +93,21 @@ public class OrderInfoActivity extends BaseActivity {
         initView();
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        orderId = intent.getIntExtra("orderId",-1);
+        if (orderId == -1){
+            T.show(getContext(),R.string.dataUploadFailed);
+            return;
+        }else {
+            if (!isUpload){
+                isUpload = true;
+                getOrderInfo(orderId);
+            }
+        }
+        setIntent(intent);
+    }
 
     private void initView() {
         display = getWindowManager().getDefaultDisplay();
@@ -97,8 +118,12 @@ public class OrderInfoActivity extends BaseActivity {
         order_type = (TextView) findViewById(R.id.order_type);
         shops_name = (TextView) findViewById(R.id.shops_name);
         contact_phone = (TextView) findViewById(R.id.contact_phone);
+        shop_address = (TextView) findViewById(R.id.shop_address);
         work_person = (TextView) findViewById(R.id.work_person);
         worktime = (TextView) findViewById(R.id.sign_in_time);
+        agreed_start_time = (TextView) findViewById(R.id.agreed_start_time);
+        agreed_end_time = (TextView) findViewById(R.id.agreed_end_time);
+        work_end_time = (TextView) findViewById(R.id.work_end_time);
         order_grid = (GridView) findViewById(R.id.order_grid);
         work_before_grid = (GridView) findViewById(R.id.work_before_grid);
         work_after_grid = (GridView) findViewById(R.id.work_after_grid);
@@ -135,13 +160,23 @@ public class OrderInfoActivity extends BaseActivity {
 
 
 
-        orderInfo = getIntent().getParcelableExtra(AutoCon.ORDER_INFO);
-        if (orderInfo == null){
+//        orderInfo = getIntent().getParcelableExtra(AutoCon.ORDER_INFO);
+        orderId = getIntent().getIntExtra("orderId",-1);
+        if (orderId == -1){
             T.show(getContext(),R.string.dataUploadFailed);
             return;
         }else {
-            updateUI(orderInfo);
+            if (!isUpload) {
+                isUpload = true;
+                getOrderInfo(orderId);
+            }
         }
+//        if (orderInfo == null){
+//            T.show(getContext(),R.string.dataUploadFailed);
+//            return;
+//        }else {
+//            updateUI(orderInfo);
+//        }
 
         img_phone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,6 +185,31 @@ public class OrderInfoActivity extends BaseActivity {
                     Uri uri = Uri.parse("tel:" + orderInfo.getContactPhone());
                     Intent intent = new Intent(Intent.ACTION_DIAL, uri);
                     startActivity(intent);
+                }
+            }
+        });
+    }
+
+    //获取订单详情
+    private void getOrderInfo(int orderID) {
+        showDialog();
+        Http.getInstance().getTaskToken(NetURL.getOrderInfoV2(orderID), "", OrderInfoEntity.class, new OnResult() {
+            @Override
+            public void onResult(Object entity) {
+                cancelDialog();
+                isUpload = false;
+                if (entity == null) {
+                    T.show(getContext(), R.string.loading_data_failure);
+                    return;
+                }
+                if (entity instanceof OrderInfoEntity) {
+                    if (((OrderInfoEntity) entity).isStatus()) {
+                        orderInfo = JSON.parseObject(((OrderInfoEntity) entity).getMessage().toString(), OrderInfo.class);
+                        updateUI(orderInfo);
+                    } else {
+                        T.show(getContext(), R.string.loading_data_failure);
+                        return;
+                    }
                 }
             }
         });
@@ -198,25 +258,32 @@ public class OrderInfoActivity extends BaseActivity {
     }
 
 
+    /**
+     * 给控件赋值
+     * @param data
+     */
     private void updateUI(final OrderInfo data) {
         Myadapter myadapter1;
 
-        final String[] urlOrder;
-        String urlOrderPhotos = data.getPhoto();
-        if (urlOrderPhotos.contains(",")) {
-            urlOrder = urlOrderPhotos.split(",");
-        } else {
-            urlOrder = new String[]{urlOrderPhotos};
-        }
-        myadapter1 = new Myadapter(this, urlOrder);
-        order_grid.setAdapter(myadapter1);
-
-        order_grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                openImage(position, urlOrder);
+        if (!TextUtils.isEmpty(data.getPhoto())){
+            final String[] urlOrder;
+            String urlOrderPhotos = data.getPhoto();
+            if (urlOrderPhotos.contains(",")) {
+                urlOrder = urlOrderPhotos.split(",");
+            } else {
+                urlOrder = new String[]{urlOrderPhotos};
             }
-        });
+            myadapter1 = new Myadapter(this, urlOrder);
+            order_grid.setAdapter(myadapter1);
+
+            order_grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                    openImage(position, urlOrder);
+                }
+            });
+        }
+
         remark.setText(data.getRemark());
         String type = "";
         String[] types = (data.getType()).split(",");
@@ -261,6 +328,10 @@ public class OrderInfoActivity extends BaseActivity {
         orderNum.setText(getResources().getString(R.string.order_serial_number) + data.getOrderNum());
         shops_name.setText(data.getCoopName());
         contact_phone.setText(data.getContactPhone());
+        shop_address.setText(data.getAddress());
+
+        agreed_start_time.setText(DateCompute.getDate(orderInfo.getAgreedStartTime()));
+        agreed_end_time.setText(DateCompute.getDate(orderInfo.getAgreedEndTime()));
 
 
         OrderInfo_Data_Comment comment = data.getComment();
@@ -269,16 +340,23 @@ public class OrderInfoActivity extends BaseActivity {
         if ("CANCELED".equals(data.getStatus())) {
             shops_name.setText(R.string.nothave);
             worktime.setText(R.string.nothave);
+            work_end_time.setText(R.string.nothave);
+            shop_address.setText(R.string.nothave);
             work_person.setText(data.getTechName());
             contact_phone.setText(R.string.nothave);
+
         } else if ("GIVEN_UP".equals(data.getStatus())) {
             shops_name.setText(R.string.nothave);
             worktime.setText(R.string.nothave);
+            work_end_time.setText(R.string.nothave);
+            shop_address.setText(R.string.nothave);
             work_person.setText(data.getTechName());
             contact_phone.setText(R.string.nothave);
         } else if ("EXPIRED".equals(data.getStatus())) {
             shops_name.setText(R.string.nothave);
             contact_phone.setText(R.string.nothave);
+            work_end_time.setText(R.string.nothave);
+            shop_address.setText(R.string.nothave);
             if (orderInfo.getStartTime() != 0) {
                 worktime.setText(DateCompute.getDate(orderInfo.getStartTime()));
             } else {
@@ -313,6 +391,7 @@ public class OrderInfoActivity extends BaseActivity {
             }
 
             worktime.setText(DateCompute.getDate(orderInfo.getStartTime()));
+            work_end_time.setText(DateCompute.getDate(orderInfo.getEndTime()));
             String techname = "";
             for (OrderConstructionShow orderConstructionShow : data.getOrderConstructionShow()) {
                 techname = techname + orderConstructionShow.getTechName() + ",";
@@ -322,39 +401,44 @@ public class OrderInfoActivity extends BaseActivity {
             work_person.setText(techname);
 
             Myadapter myadapter;
-
-            final String[] urlBefore;
-            String urlBeforePhotos = data.getBeforePhotos();
-            if (urlBeforePhotos.contains(",")) {
-                urlBefore = urlBeforePhotos.split(",");
-            } else {
-                urlBefore = new String[]{urlBeforePhotos};
-            }
-            myadapter = new Myadapter(this, urlBefore);
-            work_before_grid.setAdapter(myadapter);
-
-            work_before_grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                    openImage(position, urlBefore);
+            if (!TextUtils.isEmpty(data.getBeforePhotos())){
+                final String[] urlBefore;
+                String urlBeforePhotos = data.getBeforePhotos();
+                if (urlBeforePhotos.contains(",")) {
+                    urlBefore = urlBeforePhotos.split(",");
+                } else {
+                    urlBefore = new String[]{urlBeforePhotos};
                 }
-            });
+                myadapter = new Myadapter(this, urlBefore);
+                work_before_grid.setAdapter(myadapter);
 
-            final String[] urlAfter;
-            String urlAfterPhotos = data.getAfterPhotos();
-            if (urlAfterPhotos.contains(",")) {
-                urlAfter = urlAfterPhotos.split(",");
-            } else {
-                urlAfter = new String[]{urlAfterPhotos};
+                work_before_grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                        openImage(position, urlBefore);
+                    }
+                });
             }
-            myadapter = new Myadapter(this, urlAfter);
-            work_after_grid.setAdapter(myadapter);
-            work_after_grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    openImage(position, urlAfter);
+
+
+            if (!TextUtils.isEmpty(data.getAfterPhotos())){
+                final String[] urlAfter;
+                String urlAfterPhotos = data.getAfterPhotos();
+                if (urlAfterPhotos.contains(",")) {
+                    urlAfter = urlAfterPhotos.split(",");
+                } else {
+                    urlAfter = new String[]{urlAfterPhotos};
                 }
-            });
+                myadapter = new Myadapter(this, urlAfter);
+                work_after_grid.setAdapter(myadapter);
+                work_after_grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        openImage(position, urlAfter);
+                    }
+                });
+            }
+
 
             check_tech_message.setOnClickListener(new View.OnClickListener() {
                 @Override

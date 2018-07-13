@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/line_light_color"
+    android:orientation="vertical"
+    android:descendantFocusability="blocksDescendants"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <View
+        android:layout_marginTop="@dimen/dp5"
+        android:background="@color/line_color"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+    <RelativeLayout
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:paddingBottom="@dimen/dp15"
+        android:paddingTop="@dimen/dp15"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/name"
+            android:layout_marginLeft="@dimen/dp15"
+            android:text="张三"
+            android:textColor="@color/darkgray"
+            android:textSize="@dimen/sp15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp30"
+            android:layout_alignBaseline="@id/name"
+            android:text="adasdasdas"
+            android:layout_toRightOf="@id/name"
+            android:textColor="@color/darkgray"
+            android:textSize="@dimen/sp15" />
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp15"
+            android:layout_alignBaseline="@id/name"
+            android:text=""
+            android:textSize="@dimen/sp15"
+            android:textColor="@color/main_orange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/filmLevel"
+            android:layout_marginLeft="@dimen/dp15"
+            android:layout_marginTop="@dimen/dp10"
+            android:text="隔热膜:"
+            android:layout_below="@id/name"
+            android:textColor="@color/darkgray"
+            android:textSize="@dimen/sp13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/filmLevelNum"
+            android:layout_marginLeft="@dimen/dp5"
+            android:layout_marginTop="@dimen/dp10"
+            android:text="4星"
+            android:layout_alignBaseline="@id/filmLevel"
+            android:layout_toRightOf="@id/filmLevel"
+            android:layout_below="@id/name"
+            android:textColor="@color/darkgray"
+            android:textSize="@dimen/sp13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/carCoverLevelNum"
+            android:layout_marginLeft="@dimen/dp5"
+            android:layout_marginTop="@dimen/dp10"
+            android:text="2星"
+            android:layout_alignBaseline="@id/filmLevel"
+            android:layout_alignRight="@id/status"
+            android:layout_below="@id/name"
+            android:textColor="@color/darkgray"
+            android:textSize="@dimen/sp13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/carCoverLevel"
+            android:layout_marginTop="@dimen/dp10"
+            android:text="隐形车衣:"
+            android:layout_below="@id/name"
+            android:layout_alignBaseline="@id/filmLevel"
+            android:layout_toLeftOf="@id/carCoverLevelNum"
+            android:textColor="@color/darkgray"
+            android:textSize="@dimen/sp13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+        <TextView
+            android:id="@+id/colorModifyLevel"
+            android:layout_marginLeft="@dimen/dp15"
+            android:layout_marginTop="@dimen/dp10"
+            android:text="车身改色:"
+            android:layout_below="@id/filmLevel"
+            android:textColor="@color/darkgray"
+            android:textSize="@dimen/sp13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/colorModifyLevelNum"
+            android:layout_marginLeft="@dimen/dp5"
+            android:layout_marginTop="@dimen/dp10"
+            android:text="5星"
+            android:layout_toRightOf="@id/colorModifyLevel"
+            android:layout_alignBaseline="@id/colorModifyLevel"
+            android:layout_below="@id/filmLevel"
+            android:textColor="@color/darkgray"
+            android:textSize="@dimen/sp13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/beautyLevelNum"
+            android:layout_marginLeft="@dimen/dp5"
+            android:layout_marginTop="@dimen/dp10"
+            android:text="3星"
+            android:layout_alignBaseline="@id/colorModifyLevelNum"
+            android:layout_alignRight="@id/status"
+            android:layout_below="@id/name"
+            android:textColor="@color/darkgray"
+            android:textSize="@dimen/sp13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/beautyLevel"
+            android:layout_marginTop="@dimen/dp10"
+            android:text="美容清洁:"
+            android:layout_below="@id/name"
+            android:layout_alignBaseline="@id/colorModifyLevelNum"
+            android:layout_toLeftOf="@id/beautyLevelNum"
+            android:textColor="@color/darkgray"
+            android:textSize="@dimen/sp13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <View
+        android:background="@color/line_color"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+</LinearLayout>

@@ -58,7 +58,7 @@ import cn.com.incardata.utils.T;
  * 工作签到
  */
 public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnClickListener, DropOrderDialogFragment.OnClickListener {
-    private static final int SIGN = 500;//允许签到距离500m
+    private static final int SIGN = 5000;//允许签到距离5000m
     private TextView tv_day;
     private Context context;
     private Button sign_in_btn;
@@ -445,7 +445,7 @@ public class WorkSignInActivity extends BaseBaiduMapActivity implements View.OnC
                     return;
                 }
                 ReportLocationEntity reportLocationEntity = (ReportLocationEntity) entity;
-                if (reportLocationEntity.isStatus()) {
+                if (reportLocationEntity.isResult()) {
                     Log.i("test", "上传数据===>" + mLatlng.longitude + "," + mLatlng.latitude);
                     return;
                 }

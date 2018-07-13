@@ -38,6 +38,7 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -62,6 +63,73 @@
             android:text="@string/order_mode"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/ll_select"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp40"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_all"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/sp13"
+            android:textColor="@color/darkgray"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="全部"/>
+
+        <TextView
+            android:id="@+id/tv_work_item"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/sp13"
+            android:textColor="@color/darkgray"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="施工项目"/>
+
+        <TextView
+            android:id="@+id/tv_distance"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/sp13"
+            android:textColor="@color/darkgray"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="距离"/>
+
+        <TextView
+            android:id="@+id/tv_work_time"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/sp13"
+            android:textColor="@color/darkgray"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="施工时间"/>
+
+        <TextView
+            android:id="@+id/tv_sequence"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/sp13"
+            android:textColor="@color/darkgray"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="顺序"/>
+    </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -78,8 +146,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbarStyle="outsideOverlay"
-            android:divider="#F0F0F0"
-            />
+            android:divider="#F0F0F0" />
 
     </cn.com.incardata.view.PullToRefreshView>
 </LinearLayout>

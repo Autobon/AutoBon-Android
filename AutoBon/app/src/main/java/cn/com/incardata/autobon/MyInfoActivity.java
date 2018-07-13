@@ -37,6 +37,7 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
     private CircleImageView iv_circle;
 
     private String name;  //技师姓名
+    private int id;  //技师ID
     private String bank;
     private String bankCardNumber;
     private String bankAddress;
@@ -91,8 +92,10 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
 
         findViewById(R.id.my_info_layout).setOnClickListener(this);
         findViewById(R.id.my_order_layout).setOnClickListener(this);
+        findViewById(R.id.my_team_layout).setOnClickListener(this);
         findViewById(R.id.notification_list_layout).setOnClickListener(this);
         findViewById(R.id.server_conter_layout).setOnClickListener(this);
+        findViewById(R.id.study_garden_layout).setOnClickListener(this);
     }
 
     /**
@@ -176,6 +179,7 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
                         myMessage = myMessageData.getTechnician();
                         String avatar = myMessage.getAvatar(); //技师头像url尾部
                         name = myMessage.getName(); //技师姓名
+                        id = myMessage.getId();
                         String star = myMessageData.getStarRate();  //星级
                         bank = myMessage.getBank(); //银行字典
                         bankCardNumber = myMessage.getBankCardNo(); //银行卡号
@@ -251,9 +255,11 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
                 String rest_money = tv_cost.getText().toString().trim();
                 Bundle bundle = new Bundle();
                 bundle.putString("name",name);
+                bundle.putInt("id",id);
                 bundle.putString("rest_money",rest_money);  //余额信息
                 bundle.putString("bank",bank);
                 bundle.putString("bankCardNumber",bankCardNumber);
+                bundle.putString("bankAddress",bankAddress);
                 bundle.putString("bankAddress",bankAddress);
                 startActivity(RestInfoActivity.class,bundle);
                 break;
@@ -277,11 +283,17 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
             case R.id.my_order_layout:
                 startActivity(MyOrderActivity.class);
                 break;
+            case R.id.my_team_layout:
+                startActivity(MyTeamActivity.class);
+                break;
             case R.id.notification_list_layout:
                 startActivity(NotificationMessageActivity.class);
                 break;
             case R.id.server_conter_layout:
                 startActivity(ServiceCenterActivity.class);
+                break;
+            case R.id.study_garden_layout:
+                startActivity(StudyGardenActivity.class);
                 break;
             case R.id.collection_shop:
                 startActivity(CollectionShopActivity.class);
