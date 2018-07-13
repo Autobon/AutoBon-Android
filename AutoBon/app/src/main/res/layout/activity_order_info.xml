@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rll1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/rll1"
     android:background="@android:color/white">
 
 
@@ -17,30 +17,30 @@
             android:id="@+id/back"
             android:layout_width="@dimen/dp35"
             android:layout_height="match_parent"
-            android:padding="@dimen/dp10"
-            android:src="@mipmap/default_back"
-            android:scaleType="centerInside"
             android:clickable="true"
-            android:focusable="true"/>
+            android:focusable="true"
+            android:padding="@dimen/dp10"
+            android:scaleType="centerInside"
+            android:src="@mipmap/default_back" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/order_infomation"
-            android:textSize="@dimen/sp18"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp18" />
 
         <ImageView
             android:layout_width="@dimen/dp45"
             android:layout_height="match_parent"
-            android:padding="@dimen/dp10"
-            android:src="@mipmap/emit"
-            android:scaleType="centerInside"
+            android:layout_alignParentRight="true"
             android:clickable="true"
             android:focusable="true"
-            android:visibility="invisible"
-            android:layout_alignParentRight="true"/>
+            android:padding="@dimen/dp10"
+            android:scaleType="centerInside"
+            android:src="@mipmap/emit"
+            android:visibility="invisible" />
     </RelativeLayout>
 
     <ScrollView
@@ -48,54 +48,57 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/r1">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="@dimen/dp5"
-            android:background="@android:color/white">
+            android:background="@android:color/white"
+            android:paddingTop="@dimen/dp5">
+
             <TextView
                 android:id="@+id/money"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/dp15"
                 android:textColor="@color/gray_A3"
-                android:textSize="@dimen/sp13"
-                android:layout_alignParentRight="true" />
+                android:textSize="@dimen/sp13" />
 
             <TextView
                 android:id="@+id/money_state"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_below="@id/money"
-                android:textSize="@dimen/sp13"
                 android:layout_marginRight="@dimen/dp15"
                 android:textColor="@color/main_orange"
-                android:layout_alignParentRight="true" />
+                android:textSize="@dimen/sp13" />
 
             <TextView
                 android:id="@+id/order_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@id/money_state"
-                android:layout_marginRight="@dimen/dp10"
                 android:layout_marginLeft="@dimen/dp15"
+                android:layout_marginRight="@dimen/dp10"
                 android:layout_marginTop="@dimen/dp10"
-                android:textColor="@color/darkgray"
-                android:textSize="@dimen/sp13"
+                android:layout_toLeftOf="@id/money_state"
+                android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@string/order_serial_number"
-                android:ellipsize="end" />
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/sp13" />
 
             <View
                 android:id="@+id/v2"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@id/money_state"
-                android:layout_marginTop="@dimen/dp5"
                 android:layout_marginBottom="@dimen/dp5"
                 android:layout_marginLeft="@dimen/dp15"
                 android:layout_marginRight="@dimen/dp15"
-                android:background="#F0F0F0"/>
+                android:layout_marginTop="@dimen/dp5"
+                android:background="#F0F0F0" />
+
             <RelativeLayout
                 android:id="@+id/rl5"
                 android:layout_width="match_parent"
@@ -108,236 +111,362 @@
                 <cn.com.incardata.view.MyGridView
                     android:id="@+id/order_grid"
                     android:layout_width="wrap_content"
-                    android:numColumns="3"
-                    android:listSelector="@android:color/transparent"
-                    android:verticalSpacing="@dimen/dp10"
-                    android:horizontalSpacing="@dimen/dp10"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:horizontalSpacing="@dimen/dp10"
+                    android:listSelector="@android:color/transparent"
+                    android:numColumns="3"
                     android:stretchMode="columnWidth"
-                    android:layout_height="wrap_content"/>
+                    android:verticalSpacing="@dimen/dp10" />
             </RelativeLayout>
 
             <!--<ImageView-->
-                <!--android:id="@+id/order_image"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="@dimen/dp120"-->
-                <!--android:layout_below="@id/v2"-->
-                <!--android:layout_marginLeft="@dimen/dp15"-->
-                <!--android:layout_marginRight="@dimen/dp15"/>-->
+            <!--android:id="@+id/order_image"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/dp120"-->
+            <!--android:layout_below="@id/v2"-->
+            <!--android:layout_marginLeft="@dimen/dp15"-->
+            <!--android:layout_marginRight="@dimen/dp15"/>-->
 
             <View
                 android:id="@+id/v3"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@id/rl5"
-                android:layout_marginTop="@dimen/dp5"
                 android:layout_marginBottom="@dimen/dp5"
                 android:layout_marginLeft="@dimen/dp15"
                 android:layout_marginRight="@dimen/dp15"
-                android:background="#F0F0F0"/>
+                android:layout_marginTop="@dimen/dp5"
+                android:background="#F0F0F0" />
 
             <TextView
                 android:id="@+id/remark_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/darkgray"
-                android:layout_marginLeft="@dimen/dp15"
                 android:layout_below="@id/v3"
-                android:textSize="@dimen/sp13"
-                android:text="@string/order_remark"/>
+                android:layout_marginLeft="@dimen/dp15"
+                android:text="@string/order_remark"
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/sp13" />
 
             <TextView
                 android:id="@+id/remark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/remark_tv"
                 android:layout_alignTop="@id/remark_tv"
                 android:layout_marginRight="@dimen/dp15"
+                android:layout_toRightOf="@id/remark_tv"
                 android:textColor="@color/darkgray"
-                android:textSize="@dimen/sp13"/>
+                android:textSize="@dimen/sp13" />
 
             <View
                 android:id="@+id/v4"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@id/remark"
-                android:layout_marginTop="@dimen/dp5"
                 android:layout_marginBottom="@dimen/dp5"
                 android:layout_marginLeft="@dimen/dp15"
                 android:layout_marginRight="@dimen/dp15"
-                android:background="#F0F0F0"/>
+                android:layout_marginTop="@dimen/dp5"
+                android:background="#F0F0F0" />
 
             <TextView
                 android:id="@+id/order_type_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/darkgray"
-                android:layout_marginLeft="@dimen/dp15"
                 android:layout_below="@id/v4"
-                android:textSize="@dimen/sp13"
-                android:text="@string/order_type_tv"/>
+                android:layout_marginLeft="@dimen/dp15"
+                android:text="@string/order_type_tv"
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/sp13" />
 
             <TextView
                 android:id="@+id/order_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/order_type_tv"
                 android:layout_alignTop="@id/order_type_tv"
                 android:layout_marginRight="@dimen/dp15"
+                android:layout_toRightOf="@id/order_type_tv"
                 android:textColor="@color/darkgray"
-                android:textSize="@dimen/sp13"/>
+                android:textSize="@dimen/sp13" />
 
             <View
                 android:id="@+id/v5"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@id/order_type"
-                android:layout_marginTop="@dimen/dp5"
                 android:layout_marginBottom="@dimen/dp5"
                 android:layout_marginLeft="@dimen/dp15"
                 android:layout_marginRight="@dimen/dp15"
-                android:background="#F0F0F0"/>
+                android:layout_marginTop="@dimen/dp5"
+                android:background="#F0F0F0" />
 
             <TextView
-            android:id="@+id/work_item_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/darkgray"
-            android:layout_marginLeft="@dimen/dp15"
-            android:layout_below="@id/v5"
-            android:textSize="@dimen/sp13"
-            android:text="@string/shops_name"/>
+                android:id="@+id/work_item_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/v5"
+                android:layout_marginLeft="@dimen/dp15"
+                android:text="@string/shops_name"
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/sp13" />
 
             <TextView
                 android:id="@+id/shops_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/darkgray"
-                android:layout_marginRight="@dimen/dp15"
                 android:layout_alignTop="@id/work_item_tv"
+                android:layout_marginRight="@dimen/dp15"
                 android:layout_toRightOf="@id/work_item_tv"
+                android:textColor="@color/darkgray"
                 android:textSize="@dimen/sp13" />
 
             <Button
                 android:id="@+id/collection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/shops_name"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/v1"
                 android:layout_marginRight="@dimen/dp15"
+                android:background="@drawable/check_btn"
                 android:gravity="center"
                 android:paddingBottom="3dp"
                 android:paddingLeft="@dimen/dp15"
-                android:layout_alignBaseline="@+id/shops_name"
                 android:paddingRight="@dimen/dp15"
-                android:background="@drawable/check_btn"
                 android:paddingTop="3dp"
                 android:text="@string/collection"
                 android:textColor="@color/main_orange"
                 android:textSize="@dimen/sp13" />
+
             <View
                 android:id="@+id/v7"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@id/shops_name"
-                android:layout_marginTop="@dimen/dp5"
                 android:layout_marginBottom="@dimen/dp5"
                 android:layout_marginLeft="@dimen/dp15"
                 android:layout_marginRight="@dimen/dp15"
-                android:background="#F0F0F0"/>
+                android:layout_marginTop="@dimen/dp5"
+                android:background="#F0F0F0" />
 
 
             <ImageView
                 android:id="@+id/img_phone"
-                android:src="@mipmap/phone"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/dp15"
-                android:layout_below="@id/v7"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/v7"
+                android:layout_marginRight="@dimen/dp15"
+                android:src="@mipmap/phone" />
 
             <TextView
                 android:id="@+id/contact_phone_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/darkgray"
-                android:layout_marginLeft="@dimen/dp15"
                 android:layout_below="@id/v7"
-                android:textSize="@dimen/sp13"
-                android:text="联系方式："/>
+                android:layout_marginLeft="@dimen/dp15"
+                android:text="联系方式："
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/sp13" />
 
             <TextView
                 android:id="@+id/contact_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/darkgray"
-                android:layout_toLeftOf="@id/img_phone"
-                android:layout_marginRight="@dimen/dp15"
                 android:layout_alignTop="@id/contact_phone_tv"
+                android:layout_marginRight="@dimen/dp15"
+                android:layout_toLeftOf="@id/img_phone"
                 android:layout_toRightOf="@id/contact_phone_tv"
+                android:textColor="@color/darkgray"
                 android:textSize="@dimen/sp13" />
 
+            <View
+                android:id="@+id/v200"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/contact_phone"
+                android:layout_marginBottom="@dimen/dp5"
+                android:layout_marginLeft="@dimen/dp15"
+                android:layout_marginRight="@dimen/dp15"
+                android:layout_marginTop="@dimen/dp5"
+                android:background="#F0F0F0" />
+
+
+            <TextView
+                android:id="@+id/shop_address_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/v200"
+                android:layout_marginLeft="@dimen/dp15"
+                android:text="商户位置："
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/sp13" />
+
+            <TextView
+                android:id="@+id/shop_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/shop_address_tv"
+                android:layout_marginRight="@dimen/dp15"
+                android:layout_toRightOf="@id/shop_address_tv"
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/sp13" />
 
             <View
                 android:id="@+id/v100"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/contact_phone"
-                android:layout_marginTop="@dimen/dp5"
+                android:layout_below="@id/shop_address"
                 android:layout_marginBottom="@dimen/dp5"
                 android:layout_marginLeft="@dimen/dp15"
                 android:layout_marginRight="@dimen/dp15"
-                android:background="#F0F0F0"/>
+                android:layout_marginTop="@dimen/dp5"
+                android:background="#F0F0F0" />
 
             <TextView
                 android:id="@+id/work_person_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/darkgray"
-                android:layout_marginLeft="@dimen/dp15"
                 android:layout_below="@id/v100"
-                android:textSize="@dimen/sp13"
-                android:text="@string/work_person_tv"/>
+                android:layout_marginLeft="@dimen/dp15"
+                android:text="@string/work_person_tv"
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/sp13" />
 
             <TextView
                 android:id="@+id/work_person"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/darkgray"
-                android:layout_marginRight="@dimen/dp15"
                 android:layout_alignTop="@id/work_person_tv"
+                android:layout_marginRight="@dimen/dp15"
                 android:layout_toRightOf="@id/work_person_tv"
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/sp13" />
+
+            <View
+                android:id="@+id/v201"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/work_person"
+                android:layout_marginBottom="@dimen/dp5"
+                android:layout_marginLeft="@dimen/dp15"
+                android:layout_marginRight="@dimen/dp15"
+                android:layout_marginTop="@dimen/dp5"
+                android:background="#F0F0F0" />
+
+
+            <TextView
+                android:id="@+id/agreed_start_time_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/v201"
+                android:layout_marginLeft="@dimen/dp15"
+                android:text="@string/work_time"
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/sp13" />
+
+            <TextView
+                android:id="@+id/agreed_start_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/agreed_start_time_tv"
+                android:layout_marginRight="@dimen/dp15"
+                android:layout_toRightOf="@id/agreed_start_time_tv"
+                android:textColor="@color/darkgray"
                 android:textSize="@dimen/sp13" />
 
             <View
                 android:id="@+id/v6"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/work_person"
-                android:layout_marginTop="@dimen/dp5"
+                android:layout_below="@id/agreed_start_time"
                 android:layout_marginBottom="@dimen/dp5"
                 android:layout_marginLeft="@dimen/dp15"
                 android:layout_marginRight="@dimen/dp15"
-                android:background="#F0F0F0"/>
+                android:layout_marginTop="@dimen/dp5"
+                android:background="#F0F0F0" />
 
             <TextView
                 android:id="@+id/sign_in_time_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/darkgray"
-                android:layout_marginLeft="@dimen/dp15"
                 android:layout_below="@id/v6"
-                android:textSize="@dimen/sp13"
-                android:text="@string/work_time1"/>
+                android:layout_marginLeft="@dimen/dp15"
+                android:text="@string/start_work_time"
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/sp13" />
 
             <TextView
                 android:id="@+id/sign_in_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/darkgray"
-                android:layout_marginRight="@dimen/dp15"
                 android:layout_alignTop="@id/sign_in_time_tv"
+                android:layout_marginRight="@dimen/dp15"
                 android:layout_toRightOf="@id/sign_in_time_tv"
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/sp13" />
+
+            <View
+                android:id="@+id/v202"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/sign_in_time"
+                android:layout_marginBottom="@dimen/dp5"
+                android:layout_marginLeft="@dimen/dp15"
+                android:layout_marginRight="@dimen/dp15"
+                android:layout_marginTop="@dimen/dp5"
+                android:background="#F0F0F0" />
+
+            <TextView
+                android:id="@+id/agreed_end_time_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/v202"
+                android:layout_marginLeft="@dimen/dp15"
+                android:text="@string/agreed_end_time"
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/sp13" />
+
+            <TextView
+                android:id="@+id/agreed_end_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/agreed_end_time_tv"
+                android:layout_marginRight="@dimen/dp15"
+                android:layout_toRightOf="@id/agreed_end_time_tv"
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/sp13" />
+
+            <View
+                android:id="@+id/v203"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/agreed_end_time"
+                android:layout_marginBottom="@dimen/dp5"
+                android:layout_marginLeft="@dimen/dp15"
+                android:layout_marginRight="@dimen/dp15"
+                android:layout_marginTop="@dimen/dp5"
+                android:background="#F0F0F0" />
+
+            <TextView
+                android:id="@+id/work_end_time_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/v203"
+                android:layout_marginLeft="@dimen/dp15"
+                android:text="@string/work_end_time"
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/sp13" />
+
+            <TextView
+                android:id="@+id/work_end_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/work_end_time_tv"
+                android:layout_marginRight="@dimen/dp15"
+                android:layout_toRightOf="@id/work_end_time_tv"
+                android:textColor="@color/darkgray"
                 android:textSize="@dimen/sp13" />
 
 
@@ -345,44 +474,46 @@
                 android:id="@+id/v11"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/sign_in_time"
-                android:layout_marginTop="@dimen/dp5"
+                android:layout_below="@id/work_end_time"
                 android:layout_marginBottom="@dimen/dp5"
                 android:layout_marginLeft="@dimen/dp15"
                 android:layout_marginRight="@dimen/dp15"
-                android:background="#F0F0F0"/>
+                android:layout_marginTop="@dimen/dp5"
+                android:background="#F0F0F0" />
+
             <Button
                 android:id="@+id/check_tech_message"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/v11"
-                android:background="@null"
-                android:text="@string/check_work_info"
-                android:textColor="@color/main_orange"
-                android:gravity="center"
-                android:layout_marginRight="@dimen/dp20"
                 android:layout_marginLeft="@dimen/dp20"
-                android:layout_height="wrap_content" />
+                android:layout_marginRight="@dimen/dp20"
+                android:background="@null"
+                android:gravity="center"
+                android:text="@string/check_work_info"
+                android:textColor="@color/main_orange" />
+
             <View
                 android:id="@+id/v18"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@id/check_tech_message"
-                android:layout_marginTop="@dimen/dp5"
                 android:layout_marginBottom="@dimen/dp5"
                 android:layout_marginLeft="@dimen/dp15"
                 android:layout_marginRight="@dimen/dp15"
-                android:background="#F0F0F0"/>
+                android:layout_marginTop="@dimen/dp5"
+                android:background="#F0F0F0" />
 
 
             <TextView
                 android:id="@+id/work_before_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/darkgray"
-                android:layout_marginLeft="@dimen/dp15"
                 android:layout_below="@id/v18"
-                android:textSize="@dimen/sp13"
-                android:text="@string/work_before_tv"/>
+                android:layout_marginLeft="@dimen/dp15"
+                android:text="@string/work_before_tv"
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/sp13" />
 
             <RelativeLayout
                 android:id="@+id/rl1"
@@ -390,21 +521,21 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/work_before_tv"
                 android:background="@android:color/white"
-                android:paddingTop="@dimen/dp10"
                 android:paddingBottom="@dimen/dp10"
                 android:paddingLeft="@dimen/dp20"
-                android:paddingRight="@dimen/dp20">
+                android:paddingRight="@dimen/dp20"
+                android:paddingTop="@dimen/dp10">
 
                 <cn.com.incardata.view.MyGridView
                     android:id="@+id/work_before_grid"
                     android:layout_width="wrap_content"
-                    android:numColumns="3"
-                    android:listSelector="@android:color/transparent"
-                    android:verticalSpacing="@dimen/dp10"
-                    android:horizontalSpacing="@dimen/dp10"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:horizontalSpacing="@dimen/dp10"
+                    android:listSelector="@android:color/transparent"
+                    android:numColumns="3"
                     android:stretchMode="columnWidth"
-                    android:layout_height="wrap_content"/>
+                    android:verticalSpacing="@dimen/dp10" />
             </RelativeLayout>
 
             <View
@@ -415,40 +546,40 @@
                 android:layout_marginBottom="@dimen/dp5"
                 android:layout_marginLeft="@dimen/dp15"
                 android:layout_marginRight="@dimen/dp15"
-                android:background="#F0F0F0"/>
+                android:background="#F0F0F0" />
 
             <TextView
                 android:id="@+id/work_after_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/darkgray"
-                android:layout_marginLeft="@dimen/dp15"
                 android:layout_below="@id/v12"
-                android:textSize="@dimen/sp13"
-                android:text="@string/work_after_tv"/>
+                android:layout_marginLeft="@dimen/dp15"
+                android:text="@string/work_after_tv"
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/sp13" />
+
             <RelativeLayout
                 android:id="@+id/rl2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/work_after_tv"
                 android:background="@android:color/white"
+                android:paddingBottom="@dimen/dp10"
                 android:paddingLeft="@dimen/dp20"
-                android:paddingTop="@dimen/dp10"
                 android:paddingRight="@dimen/dp20"
-                android:paddingBottom="@dimen/dp10">
+                android:paddingTop="@dimen/dp10">
 
                 <cn.com.incardata.view.MyGridView
                     android:id="@+id/work_after_grid"
                     android:layout_width="wrap_content"
-                    android:numColumns="3"
-                    android:listSelector="@android:color/transparent"
-                    android:stretchMode="columnWidth"
-                    android:verticalSpacing="@dimen/dp10"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:horizontalSpacing="@dimen/dp10"
-                    android:layout_height="wrap_content"/>
+                    android:listSelector="@android:color/transparent"
+                    android:numColumns="3"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="@dimen/dp10" />
             </RelativeLayout>
-
 
 
             <View
@@ -456,7 +587,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp10"
                 android:layout_below="@id/rl2"
-                android:background="#F0F0F0"/>
+                android:background="#F0F0F0" />
 
             <LinearLayout
                 android:id="@+id/l1"
@@ -468,17 +599,17 @@
                 <View
                     android:layout_width="@dimen/dp5"
                     android:layout_height="match_parent"
-                    android:background="@color/main_orange"/>
+                    android:background="@color/main_orange" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/sp15"
-                    android:textColor="@color/darkgray"
+                    android:layout_marginBottom="@dimen/dp5"
                     android:layout_marginLeft="@dimen/dp10"
                     android:layout_marginTop="@dimen/dp5"
-                    android:layout_marginBottom="@dimen/dp5"
-                    android:text="@string/appraise"/>
+                    android:text="@string/appraise"
+                    android:textColor="@color/darkgray"
+                    android:textSize="@dimen/sp15" />
 
             </LinearLayout>
 
@@ -486,213 +617,217 @@
                 android:id="@+id/v9"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#F0F0F0"
-                android:layout_below="@id/l1" />
+                android:layout_below="@id/l1"
+                android:background="#F0F0F0" />
+
             <RelativeLayout
-                android:layout_below="@+id/v9"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/v9">
+
                 <TextView
                     android:id="@+id/noComment"
-                    android:text="@string/moComment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:textColor="@color/darkgray"
-                    android:textSize="@dimen/sp13"
-                    android:visibility="gone"
+                    android:layout_marginTop="@dimen/dp10"
+                    android:background="@android:color/white"
                     android:gravity="center_horizontal"
                     android:paddingBottom="@dimen/dp30"
-                    android:background="@android:color/white"
-                    android:layout_marginTop="@dimen/dp10"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:text="@string/moComment"
+                    android:textColor="@color/darkgray"
+                    android:textSize="@dimen/sp13"
+                    android:visibility="gone" />
+
                 <RelativeLayout
                     android:id="@+id/rll5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <RatingBar
+                        android:id="@+id/ratingBar"
                         style="@style/LargeRatingBar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/ratingBar"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="@dimen/dp20"
-                        android:isIndicator="true"/>
+                        android:isIndicator="true" />
 
                     <ImageView
                         android:id="@+id/arrive_on_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:maxWidth="@dimen/dp20"
-                        android:maxHeight="@dimen/dp20"
-                        android:padding="2px"
                         android:layout_below="@id/ratingBar"
-                        android:layout_marginTop="@dimen/dp20"
                         android:layout_marginLeft="@dimen/dp20"
-                        android:src="@mipmap/radio_default"
-                        android:scaleType="centerInside"/>
+                        android:layout_marginTop="@dimen/dp20"
+                        android:adjustViewBounds="true"
+                        android:maxHeight="@dimen/dp20"
+                        android:maxWidth="@dimen/dp20"
+                        android:padding="2px"
+                        android:scaleType="centerInside"
+                        android:src="@mipmap/radio_default" />
 
                     <TextView
                         android:id="@+id/arrive_on_time_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/arrive_on_time"
                         android:layout_alignBottom="@id/arrive_on_time"
                         android:layout_marginLeft="@dimen/dp5"
+                        android:layout_toRightOf="@id/arrive_on_time"
+                        android:text="@string/arrive_on_time"
                         android:textColor="@color/darkgray"
-                        android:textSize="@dimen/sp13"
-                        android:text="@string/arrive_on_time"/>
+                        android:textSize="@dimen/sp13" />
 
                     <ImageView
                         android:id="@+id/professional"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:maxWidth="@dimen/dp20"
-                        android:maxHeight="@dimen/dp20"
-                        android:padding="2px"
-                        android:layout_below="@id/arrive_on_time"
                         android:layout_alignLeft="@id/arrive_on_time"
+                        android:layout_below="@id/arrive_on_time"
                         android:layout_marginTop="@dimen/dp10"
-                        android:src="@mipmap/radio_default"
-                        android:scaleType="centerInside"/>
+                        android:adjustViewBounds="true"
+                        android:maxHeight="@dimen/dp20"
+                        android:maxWidth="@dimen/dp20"
+                        android:padding="2px"
+                        android:scaleType="centerInside"
+                        android:src="@mipmap/radio_default" />
 
                     <TextView
                         android:id="@+id/professional_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/professional"
                         android:layout_alignBottom="@id/professional"
                         android:layout_marginLeft="@dimen/dp5"
+                        android:layout_toRightOf="@id/professional"
+                        android:text="@string/professional"
                         android:textColor="@color/darkgray"
-                        android:textSize="@dimen/sp13"
-                        android:text="@string/professional"/>
+                        android:textSize="@dimen/sp13" />
 
 
                     <ImageView
                         android:id="@+id/car_protect"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:maxWidth="@dimen/dp20"
-                        android:maxHeight="@dimen/dp20"
-                        android:padding="2px"
-                        android:layout_below="@id/professional"
                         android:layout_alignLeft="@id/professional"
+                        android:layout_below="@id/professional"
                         android:layout_marginTop="@dimen/dp10"
-                        android:src="@mipmap/radio_default"
-                        android:scaleType="centerInside"/>
+                        android:adjustViewBounds="true"
+                        android:maxHeight="@dimen/dp20"
+                        android:maxWidth="@dimen/dp20"
+                        android:padding="2px"
+                        android:scaleType="centerInside"
+                        android:src="@mipmap/radio_default" />
 
                     <TextView
                         android:id="@+id/car_protect_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/car_protect"
                         android:layout_alignBottom="@id/car_protect"
                         android:layout_marginLeft="@dimen/dp5"
+                        android:layout_toRightOf="@id/car_protect"
+                        android:text="@string/car_protect"
                         android:textColor="@color/darkgray"
-                        android:textSize="@dimen/sp13"
-                        android:text="@string/car_protect"/>
+                        android:textSize="@dimen/sp13" />
 
                     <ImageView
                         android:id="@+id/good_attitude"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/car_protect_tv"
                         android:layout_alignBottom="@id/car_protect_tv"
-                        android:padding="2px"
-                        android:adjustViewBounds="true"
-                        android:maxWidth="@dimen/dp20"
-                        android:maxHeight="@dimen/dp20"
-                        android:layout_marginTop="@dimen/dp20"
                         android:layout_marginLeft="@dimen/dp50"
-                        android:src="@mipmap/radio_default"
-                        android:scaleType="centerInside"/>
+                        android:layout_marginTop="@dimen/dp20"
+                        android:layout_toRightOf="@id/car_protect_tv"
+                        android:adjustViewBounds="true"
+                        android:maxHeight="@dimen/dp20"
+                        android:maxWidth="@dimen/dp20"
+                        android:padding="2px"
+                        android:scaleType="centerInside"
+                        android:src="@mipmap/radio_default" />
 
                     <TextView
                         android:id="@+id/good_attitude_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/good_attitude"
                         android:layout_alignBottom="@id/good_attitude"
                         android:layout_marginLeft="@dimen/dp5"
+                        android:layout_toRightOf="@id/good_attitude"
+                        android:text="@string/good_attitude"
                         android:textColor="@color/darkgray"
-                        android:textSize="@dimen/sp13"
-                        android:text="@string/good_attitude"/>
+                        android:textSize="@dimen/sp13" />
 
                     <ImageView
                         android:id="@+id/dress_neatly"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/professional_tv"
                         android:layout_alignBottom="@id/professional_tv"
                         android:layout_alignLeft="@id/good_attitude"
-                        android:padding="2px"
-                        android:adjustViewBounds="true"
-                        android:maxWidth="@dimen/dp20"
-                        android:maxHeight="@dimen/dp20"
                         android:layout_marginTop="@dimen/dp20"
-                        android:src="@mipmap/radio_default"
-                        android:scaleType="centerInside"/>
+                        android:layout_toRightOf="@id/professional_tv"
+                        android:adjustViewBounds="true"
+                        android:maxHeight="@dimen/dp20"
+                        android:maxWidth="@dimen/dp20"
+                        android:padding="2px"
+                        android:scaleType="centerInside"
+                        android:src="@mipmap/radio_default" />
 
                     <TextView
                         android:id="@+id/dress_neatly_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/dress_neatly"
                         android:layout_alignBottom="@id/dress_neatly"
                         android:layout_marginLeft="@dimen/dp5"
+                        android:layout_toRightOf="@id/dress_neatly"
+                        android:text="@string/dress_neatly"
                         android:textColor="@color/darkgray"
-                        android:textSize="@dimen/sp13"
-                        android:text="@string/dress_neatly"/>
+                        android:textSize="@dimen/sp13" />
 
 
                     <ImageView
                         android:id="@+id/complete_on_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/arrive_on_time_tv"
                         android:layout_alignBottom="@id/arrive_on_time_tv"
                         android:layout_alignLeft="@id/good_attitude"
-                        android:padding="2px"
-                        android:adjustViewBounds="true"
-                        android:maxWidth="@dimen/dp20"
-                        android:maxHeight="@dimen/dp20"
                         android:layout_marginTop="@dimen/dp20"
-                        android:src="@mipmap/radio_default"
-                        android:scaleType="centerInside"/>
+                        android:layout_toRightOf="@id/arrive_on_time_tv"
+                        android:adjustViewBounds="true"
+                        android:maxHeight="@dimen/dp20"
+                        android:maxWidth="@dimen/dp20"
+                        android:padding="2px"
+                        android:scaleType="centerInside"
+                        android:src="@mipmap/radio_default" />
 
                     <TextView
                         android:id="@+id/complete_on_time_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/complete_on_time"
                         android:layout_alignBottom="@id/complete_on_time"
                         android:layout_marginLeft="@dimen/dp5"
+                        android:layout_toRightOf="@id/complete_on_time"
+                        android:text="@string/complete_on_time"
                         android:textColor="@color/darkgray"
-                        android:textSize="@dimen/sp13"
-                        android:text="@string/complete_on_time"/>
+                        android:textSize="@dimen/sp13" />
 
                     <View
                         android:id="@+id/v10"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#F0F0F0"
+                        android:layout_below="@id/car_protect"
                         android:layout_margin="@dimen/dp20"
-                        android:layout_below="@id/car_protect" />
+                        android:background="#F0F0F0" />
 
                     <TextView
                         android:id="@+id/other_proposal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/darkgray"
                         android:layout_below="@id/v10"
-                        android:textSize="@dimen/sp13"
+                        android:hint="其他意见和建议"
+                        android:paddingBottom="@dimen/dp20"
                         android:paddingLeft="@dimen/dp20"
                         android:paddingRight="@dimen/dp20"
-                        android:paddingBottom="@dimen/dp20"
+                        android:textColor="@color/darkgray"
                         android:textColorHint="@color/lightgray"
-                        android:hint="其他意见和建议"/>
+                        android:textSize="@dimen/sp13" />
 
                 </RelativeLayout>
 

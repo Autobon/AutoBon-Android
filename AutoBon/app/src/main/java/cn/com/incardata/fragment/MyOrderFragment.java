@@ -159,7 +159,10 @@ public class MyOrderFragment extends BaseFragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                getOrderInfo(mList.get(position).getId());
+//                getOrderInfo(mList.get(position).getId());
+                Intent intent = new Intent(getActivity(), OrderInfoActivity.class);
+                intent.putExtra("orderId", mList.get(position).getId());
+                startActivity(intent);
             }
         });
         if (isMainResponsible) {

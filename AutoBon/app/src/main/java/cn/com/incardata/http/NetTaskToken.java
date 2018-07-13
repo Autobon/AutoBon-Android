@@ -2,6 +2,7 @@ package cn.com.incardata.http;
 
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 
@@ -42,10 +43,12 @@ public class NetTaskToken implements Runnable {
 				case Http.POST:
 					if (param != null){
 						json = HttpClientInCar.postHttpToken(strUrl, param);
+						Log.e("requestData",json);
 						break;
 					}
 					if (params != null) {
 						json = HttpClientInCar.postHttpToken(strUrl, params);
+						Log.e("requestData",json);
 						break;
 					}
 					handler.sendEmptyMessage(what);
@@ -53,10 +56,12 @@ public class NetTaskToken implements Runnable {
 				case Http.GET:
 					if (param != null){
 						json = HttpClientInCar.getHttpToken(strUrl, param);
+						Log.e("requestData",json);
 						break;
 					}
 					if (params != null){
 						json = HttpClientInCar.getHttpToken(strUrl, params);
+						Log.e("requestData",json);
 						break;
 					}
 					handler.sendEmptyMessage(what);
@@ -64,10 +69,12 @@ public class NetTaskToken implements Runnable {
 				case Http.PUT:
 					if (param != null){
 						json = HttpClientInCar.PutHttpToken(strUrl, param);
+						Log.e("requestData",json);
 						break;
 					}
 					if (params != null){
 						json = HttpClientInCar.PutHttpToken(strUrl, params);
+						Log.e("requestData",json);
 						break;
 					}
 					handler.sendEmptyMessage(what);
@@ -75,10 +82,12 @@ public class NetTaskToken implements Runnable {
 				case Http.DEL:
 					if (param != null){
 						json = HttpClientInCar.DelHttpToken(strUrl, param);
+						Log.e("requestData",json);
 						break;
 					}
 					if (params != null){
 						json = HttpClientInCar.DelHttpToken(strUrl, params);
+						Log.e("requestData",json);
 						break;
 					}
 					handler.sendEmptyMessage(what);

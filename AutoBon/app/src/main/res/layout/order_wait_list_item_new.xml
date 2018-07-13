@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/line_light_color"
+    android:descendantFocusability="blocksDescendants">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/dp5"
+        android:background="#F0F0F0" />
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:padding="@dimen/dp10"
+        android:layout_height="match_parent"
+        android:background="@color/main_white">
+
+        <TextView
+            android:id="@+id/order_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginRight="@dimen/dp10"
+            android:text="@string/order_serial_number"
+            android:textColor="@color/darkgray"
+            android:textSize="@dimen/sp13" />
+
+        <Button
+            android:id="@+id/order_operate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/check_btn"
+            android:gravity="center"
+            android:paddingBottom="3dp"
+            android:paddingLeft="@dimen/dp15"
+            android:paddingRight="@dimen/dp15"
+            android:paddingTop="3dp"
+            android:text="@string/order_receiving"
+            android:textColor="@color/main_orange"
+            android:textSize="@dimen/sp13" />
+
+
+
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#F0F0F0" />
+
+
+</LinearLayout>

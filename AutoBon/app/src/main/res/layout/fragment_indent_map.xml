@@ -22,6 +22,43 @@
             android:background="@color/main_white"
             android:focusable="true"
             android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp5"
+                android:layout_marginBottom="@dimen/dp5"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/order_serial_number"
+                    android:layout_marginLeft="@dimen/dp15"
+                    android:gravity="center_vertical"
+                    android:textSize="@dimen/sp13"
+                    android:textColor="@color/darkgray" />
+                <TextView
+                    android:id="@+id/order_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textSize="@dimen/sp13"
+                    android:textColor="@color/darkgray"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="km"
+                    android:textSize="@dimen/sp15"
+                    android:visibility="gone"
+                    android:textColor="@color/darkgray"
+                    android:layout_marginLeft="@dimen/dp5"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#eeeeee"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -69,7 +106,7 @@
                 android:paddingTop="@dimen/dp10"
                 android:paddingBottom="@dimen/dp10"
                 android:visibility="gone"
-                android:background="@android:color/white"
+                android:background="@color/main_white"
                 android:paddingLeft="@dimen/dp20"
                 android:paddingRight="@dimen/dp20">
 

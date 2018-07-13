@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,6 +20,8 @@ import com.alibaba.fastjson.JSON;
 
 import org.apache.http.message.BasicNameValuePair;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 import cn.com.incardata.adapter.OrderUnfinishedAdapter;
@@ -41,6 +44,7 @@ import cn.com.incardata.http.response.OrderInfo_Construction;
 import cn.com.incardata.http.response.OrderInfo_Data;
 import cn.com.incardata.http.response.TakeupEntity;
 import cn.com.incardata.http.response.UnfinishOrder;
+import cn.com.incardata.permission.PermissionUtil;
 import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.DateCompute;
 import cn.com.incardata.utils.T;
@@ -75,8 +79,39 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_authorized);
+        checkPermission();
+
         init();
         initListView();
+
+    }
+
+
+
+
+    /**
+     * 申请存储权限
+     *
+     * @param commandCode 可选指令码，用以执行指定操作
+     */
+    private void checkPermission(final int... commandCode) {
+        permissionUtil = new PermissionUtil(this);
+        permissionUtil.requestPermissions(getString(R.string.please_grant_file_location_phone_correation_authority), new PermissionUtil.PermissionListener() {
+                    @Override
+                    public void doAfterGrant(String... permission) {
+                        Log.d("Maintivity",getString(R.string.authorization_success));
+                    }
+
+                    @Override
+                    public void doAfterDenied(String... permission) {
+                        Log.d("Maintivity",getString(R.string.authorization_fail));
+                    }
+                }, android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                android.Manifest.permission.READ_PHONE_STATE,
+                android.Manifest.permission.CAMERA,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                android.Manifest.permission.ACCESS_FINE_LOCATION);
     }
 
     private void init() {
@@ -106,6 +141,7 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
                 startActivity(MyInfoActivity.class);
                 break;
             case R.id.order_more:
+//                startActivity(TextDownloadOpenFileActivity.class);
                 startActivity(WaitOrderActivity.class);
                 break;
             case R.id.order_close_window:
@@ -307,6 +343,7 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
             }
         });
     }
+
 
     private void closeWindow() {
         orderLayout.setVisibility(View.GONE);

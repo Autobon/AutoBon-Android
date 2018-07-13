@@ -77,6 +77,7 @@ public class IndentMapFragment extends BaiduMapFragment{
     private String remark;
     private String shopName;//地图标记
 
+    private String orderNumber_str;//订单类型
     private String orderType_str;//订单类型
     private String orderOwner_str;//下单人
     private String contact_phone_str;//联系电话
@@ -87,6 +88,7 @@ public class IndentMapFragment extends BaiduMapFragment{
     private BDLocationListener myBDLocationListener;
     private BaiduMap.OnMarkerClickListener markerClickListener;
     private View rootView;
+    private TextView order_number;
     private TextView distance;
 //    private ImageView indentImage;
     private TextView indentText;
@@ -157,6 +159,8 @@ public class IndentMapFragment extends BaiduMapFragment{
 
             remark = order.getRemark();
             shopName = order.getCreatorName();
+
+            orderNumber_str = order.getOrderNum();
         }
 
         if (cooperator != null) {
@@ -188,6 +192,7 @@ public class IndentMapFragment extends BaiduMapFragment{
         this.createOrderTime = DateCompute.getDate(orderInfo.getCreateTime());
         this.remark = orderInfo.getRemark();
         this.shopName = orderInfo.getCoopName();
+        this.orderNumber_str = orderInfo.getOrderNum();
 
         orderType_str = "";
         String[] types = (orderInfo.getType()).split(",");
@@ -234,6 +239,7 @@ public class IndentMapFragment extends BaiduMapFragment{
         v1 = rootView.findViewById(R.id.v1);
         rl1 = (RelativeLayout) rootView.findViewById(R.id.rl1);
         mMapView = (MapView) rootView.findViewById(R.id.bdmapView);
+        order_number = (TextView) rootView.findViewById(R.id.order_number);
         distance = (TextView) rootView.findViewById(R.id.distance);
 //        indentImage = (ImageView) rootView.findViewById(R.id.indent_image);
         indentText = (TextView) rootView.findViewById(R.id.indent_text);
@@ -369,6 +375,7 @@ public class IndentMapFragment extends BaiduMapFragment{
             e.printStackTrace();
         }
 
+        order_number.setText(orderNumber_str);
         orderType.setText(orderType_str);
         orderOwner.setText(orderOwner_str);
         contact_phone.setText(contact_phone_str);

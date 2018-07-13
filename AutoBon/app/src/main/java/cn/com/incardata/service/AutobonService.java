@@ -151,7 +151,7 @@ public class AutobonService extends Service {
                 @Override
                 public void onResult(Object entity) {
                     if (entity == null)return;
-                    L.d("BDLocation-uploadLocal", "isResult=" + ((ReportLocationEntity)entity).isStatus());
+                    L.d("BDLocation-uploadLocal", "isResult=" + ((ReportLocationEntity)entity).isResult());
                 }
             }, (BasicNameValuePair[]) mParams.toArray(new BasicNameValuePair[mParams.size()]));
         }

@@ -201,8 +201,7 @@ public class HttpClientInCar extends CustomHttpClient {
                 throw new RuntimeException("请求失败");
             }
             HttpEntity resEntity = response.getEntity();
-            return (resEntity == null) ? null : EntityUtils.toString(resEntity,
-                    CHARSET_UTF8);
+            return (resEntity == null) ? null : EntityUtils.toString(resEntity, CHARSET_UTF8);
         } catch (UnsupportedEncodingException e) {
             L.e(TAG, e.getMessage());
             return null;

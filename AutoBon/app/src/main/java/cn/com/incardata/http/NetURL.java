@@ -1,10 +1,20 @@
 package cn.com.incardata.http;
 
 public class NetURL {
-	/** 2017-05-04修改正式服务器基地址 */
-	public final static String BASE_URL = "http://47.93.17.218:12345/api/mobile/";
-	public final static String IP_PORT = "http://47.93.17.218:12345";
-	public static final String PUB = "http://47.93.17.218:12345/api/pub/";
+//	/** 2017-05-04修改正式服务器基地址 */
+//	public final static String BASE_URL = "http://47.93.17.218:12345/api/mobile/";
+//	public final static String IP_PORT = "http://47.93.17.218:12345";
+//	public static final String PUB = "http://47.93.17.218:12345/api/pub/";
+
+//    /** 测试服务器基地址 */
+//    public final static String BASE_URL = "http://47.97.25.159:12345/api/mobile/";
+//    public final static String IP_PORT = "http://47.97.25.159:12345";
+//    public static final String PUB = "http://47.97.25.159:12345/api/pub/";
+
+    /** 田野服务器基地址 */
+    public final static String BASE_URL = "http://10.0.12.170:12345/api/mobile/";
+    public final static String IP_PORT = "http://10.0.12.170:12345";
+    public static final String PUB = "http://10.0.12.170:12345/api/pub/";
 
 //    /** 正式服务器基地址 */
 //    public final static String BASE_URL = "http://121.40.219.58:8000/api/mobile/";
@@ -26,9 +36,9 @@ public class NetURL {
 //    public static final String PUB = "http://dev.incardata.com.cn:12345/api/pub/";
 
 
-//	public final static String BASE_URL = "http://10.0.12.191:12345/api/mobile/";
-//	public final static String IP_PORT = "http://10.0.12.191:12345";
-//	public static final String PUB = "http://10.0.12.191:12345/api/pub/";
+//	public final static String BASE_URL = "http://10.0.12.62:12345/api/mobile/";
+//	public final static String IP_PORT = "http://10.0.12.62:12345";
+//	public static final String PUB = "http://10.0.12.62:12345/api/pub/";
 
     /**
      * 发送验证短信
@@ -261,6 +271,10 @@ public class NetURL {
     public static final String SUBMIT_BEFORE_WORK_PHOTO_URLV2 = BASE_URL + "technician/v2/order/beforePhoto";
 
     /**
+     * 提交施工备注
+     */
+    public static final String SUBMIT_ORDER_REMARK = BASE_URL + "technician/v2/remark";
+    /**
      * 获取当前订单的施工项目
      **/
     public static final String GETPROJECTITEMV2 = BASE_URL + "technician/v2/order/project/position";
@@ -330,6 +344,35 @@ public class NetURL {
     public static final String deleteCollectionShop(int id){
         return BASE_URL + "technician/favorite/cooperator/" + id;
     }
+
+    /**
+     * 提现
+     **/
+    public static final String TAKECASH = BASE_URL + "technician/v2/cash/apply";
+
+    /**
+     * 我的团队列表
+     **/
+    public static final String MY_TEAM_LIST = BASE_URL + "technician/v2/team";
+
+    /**
+     * 团队技师列表
+     **/
+    public static final String getTeanTechnicianlist(int id){
+        return BASE_URL + "technician/v2/team/" + id + "/member";
+    }
+
+    /**
+     * 团队技师列表
+     **/
+    public static final String getTeanTechnicianOrderlist(int id){
+        return BASE_URL + "technician/v2/order/" + id + "/tech";
+    }
+
+    /**
+     * 学习园地列表
+     **/
+    public static final String STUDYGARDEN = BASE_URL + "technician/v2/study";
 
 
 

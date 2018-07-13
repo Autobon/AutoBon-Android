@@ -64,6 +64,10 @@ public class ActionType {
      * 通知消息
      */
     public final static String NEW_MESSAGE = "NEW_MESSAGE";
+    /**
+     * 订单完成
+     */
+    public final static String ORDERFINISH = "COOPERATION";
 
     //--------------------------消息广播---------------------------------------
     /**

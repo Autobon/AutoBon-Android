@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.alibaba.fastjson.JSON;
 import com.igexin.sdk.PushConsts;
 import com.igexin.sdk.PushManager;
 
@@ -19,8 +20,11 @@ import org.json.JSONObject;
 
 import cn.com.incardata.application.MyApplication;
 import cn.com.incardata.autobon.MainAuthorizedActivity;
+import cn.com.incardata.autobon.OrderInfoActivity;
 import cn.com.incardata.autobon.R;
 import cn.com.incardata.getui.ActionType;
+import cn.com.incardata.getui.OrderMsg;
+import cn.com.incardata.http.response.OrderInfo;
 import cn.com.incardata.utils.AutoCon;
 import cn.com.incardata.utils.L;
 import cn.com.incardata.utils.SharedPre;
@@ -116,6 +120,8 @@ public class GeTuiPushReceiver extends BroadcastReceiver {
                 showNotification(context, "认证消息", jsonObject.getString("title"), 0);
             } else if (ActionType.NEW_MESSAGE.equals(action)) {
                 showNotification(context, context.getString(R.string.app_name), jsonObject.getString("title"), 4);
+            }else if (ActionType.ORDERFINISH.equals(action)){
+                showOrderNotification(context, "订单消息", jsonObject.getString("title"), 5, msg);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -141,7 +147,34 @@ public class GeTuiPushReceiver extends BroadcastReceiver {
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setAutoCancel(true)
                 .setTicker("新的消息")
-                .setDefaults(Notification.DEFAULT_SOUND)
+                .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE)
+                .setWhen(System.currentTimeMillis());
+
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification n = null;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+            n = builder.getNotification();
+        } else {
+            n = builder.build();
+        }
+        mNotificationManager.notify(nID, n);
+    }
+
+    private void showOrderNotification(Context context, String title, String message, int nID, String extraMsg) {
+        OrderMsg orderMsg = JSON.parseObject(extraMsg, OrderMsg.class);
+        Intent intent = new Intent();
+        intent.setClass(context, OrderInfoActivity.class);
+        intent.putExtra("orderId", orderMsg.getOrder().getId());
+        PendingIntent contentIntent = PendingIntent.getActivity(context, nID, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        Notification.Builder builder = new Notification.Builder(context)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setContentIntent(contentIntent)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setAutoCancel(true)
+                .setTicker("新的消息")
+                .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE)
                 .setWhen(System.currentTimeMillis());
 
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
