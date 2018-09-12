@@ -97,6 +97,10 @@ public class MyTeamActivity extends BaseActivity implements PullToRefreshView.On
                 if (entity instanceof ListNewEntity) {
                     ListNewEntity listNew = (ListNewEntity) entity;
                     if (listNew.isStatus()) {
+                        if (listNew.getMessage() == null){
+                            T.show(getContext(), "暂无团队");
+                            return;
+                        }
                         List<TeamListData> lists = JSON.parseArray(listNew.getMessage().toString(),TeamListData.class);
                         if (isRefresh) {
                             list.clear();

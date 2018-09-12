@@ -27,15 +27,16 @@ public class GridViewAdapter extends BaseAdapter {
     private Technician user;
     private int checkId;
     private ConstructionPosition[] constructionPositions;
-
+    private int workItemId;
 
     public GridViewAdapter() {
     }
 
-    public GridViewAdapter(Activity context, ConstructionPosition[] list, Technician user) {
+    public GridViewAdapter(Activity context, ConstructionPosition[] list, Technician user,int workItemId ) {
         this.context = context;
         this.list = list;
         this.user = user;
+        this.workItemId = workItemId;
     }
 
     public void setCheck(int checkId) {
@@ -66,10 +67,16 @@ public class GridViewAdapter extends BaseAdapter {
         View view1 = View.inflate(context, R.layout.rg_tab_grid_item, null);
         final Button btn = (Button) view1.findViewById(R.id.rg_btn);
         btn.setText(item.getName());
-        if (btn.getText().toString().length() > 6){
-            String text = btn.getText().toString().trim();
-            btn.setText(text.substring(0,2) + "··" + text.substring(text.length() - 3,text.length()));
+
+        if (workItemId == 4){
+            btn.setSingleLine();
+        }else {
+            if (btn.getText().toString().length() > 6){
+                String text = btn.getText().toString().trim();
+                btn.setText(text.substring(0,2) + "··" + text.substring(text.length() - 3,text.length()));
+            }
         }
+
         if (!item.isCheck()) {
             btn.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.corner_default_btn));
             btn.setTextColor(context.getResources().getColor(R.color.gray_A3));

@@ -112,13 +112,17 @@ public class TeamTechnicianActivity extends BaseActivity implements PullToRefres
                 if (entity instanceof ListNewEntity) {
                     ListNewEntity listNew = (ListNewEntity) entity;
                     if (listNew.isStatus()) {
+                        if (listNew.getMessage() == null){
+                            T.show(getContext(), "暂无技师");
+                            return;
+                        }
                         TeamTechnicianListData data = JSON.parseObject(listNew.getMessage().toString(), TeamTechnicianListData.class);
                         totalPages = data.getTotalPages();
                         if (isRefresh) {
                             list.clear();
                         }
                         if (data.getTotalElements() == 0) {
-                            T.show(getContext(), getString(R.string.no_order));
+                            T.show(getContext(), "暂无技师");
                         }
                         list.addAll(data.getContent());
                         adapter.notifyDataSetInvalidated();

@@ -188,9 +188,15 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
 //                    }
 //                    userSize = technicians.size();
 //                }
-                listViewAdapter = new ListViewAdapter(technicians, getOrderProjectItems.get(0).getConstructionPositions(), WorkFinishActivity.this);
+                listViewAdapter = new ListViewAdapter(technicians, getOrderProjectItems.get(0).getConstructionPositions(), WorkFinishActivity.this,getOrderProjectItems.get(0).getId());
                 listview_workItem.setAdapter(listViewAdapter);
                 setListViewHeightBasedOnChildren(listview_workItem);
+
+                if (getOrderProjectItems.get(0).getId() == 4){
+                    gv_consume.setNumColumns(2);
+                }else {
+                    gv_consume.setNumColumns(4);
+                }
                 consumeGridViewAdapter = new ConsumeGridViewAdapter(getOrderProjectItems.get(0).getConstructionPositions(), getOrderProjectItems.get(0).getId(), WorkFinishActivity.this);
                 gv_consume.setAdapter(consumeGridViewAdapter);
                 listViewAdapter.setOnGetHeight(new ListViewAdapter.OnGetHeight() {
@@ -235,9 +241,14 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
 //                    }
 //                    userSize = technicians.size();
 //                }
-                listViewAdapter = new ListViewAdapter(technicians, getOrderProjectItems.get(1).getConstructionPositions(), WorkFinishActivity.this);
+                listViewAdapter = new ListViewAdapter(technicians, getOrderProjectItems.get(1).getConstructionPositions(), WorkFinishActivity.this,getOrderProjectItems.get(1).getId());
                 listview_workItem.setAdapter(listViewAdapter);
                 setListViewHeightBasedOnChildren(listview_workItem);
+                if (getOrderProjectItems.get(1).getId() == 4){
+                    gv_consume.setNumColumns(2);
+                }else {
+                    gv_consume.setNumColumns(4);
+                }
                 consumeGridViewAdapter = new ConsumeGridViewAdapter(getOrderProjectItems.get(1).getConstructionPositions(), getOrderProjectItems.get(1).getId(), WorkFinishActivity.this);
                 gv_consume.setAdapter(consumeGridViewAdapter);
                 listViewAdapter.setOnGetHeight(new ListViewAdapter.OnGetHeight() {
@@ -282,9 +293,14 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
 //                    }
 //                    userSize = technicians.size();
 //                }
-                listViewAdapter = new ListViewAdapter(technicians, getOrderProjectItems.get(2).getConstructionPositions(), WorkFinishActivity.this);
+                listViewAdapter = new ListViewAdapter(technicians, getOrderProjectItems.get(2).getConstructionPositions(), WorkFinishActivity.this,getOrderProjectItems.get(2).getId());
                 listview_workItem.setAdapter(listViewAdapter);
                 setListViewHeightBasedOnChildren(listview_workItem);
+                if (getOrderProjectItems.get(2).getId() == 4){
+                    gv_consume.setNumColumns(2);
+                }else {
+                    gv_consume.setNumColumns(4);
+                }
                 consumeGridViewAdapter = new ConsumeGridViewAdapter(getOrderProjectItems.get(2).getConstructionPositions(), getOrderProjectItems.get(2).getId(), WorkFinishActivity.this);
                 gv_consume.setAdapter(consumeGridViewAdapter);
                 listViewAdapter.setOnGetHeight(new ListViewAdapter.OnGetHeight() {
@@ -329,9 +345,14 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
 //                    }
 //                    userSize = technicians.size();
 //                }
-                listViewAdapter = new ListViewAdapter(technicians, getOrderProjectItems.get(3).getConstructionPositions(), WorkFinishActivity.this);
+                listViewAdapter = new ListViewAdapter(technicians, getOrderProjectItems.get(3).getConstructionPositions(), WorkFinishActivity.this,getOrderProjectItems.get(3).getId());
                 listview_workItem.setAdapter(listViewAdapter);
                 setListViewHeightBasedOnChildren(listview_workItem);
+                if (getOrderProjectItems.get(3).getId() == 4){
+                    gv_consume.setNumColumns(2);
+                }else {
+                    gv_consume.setNumColumns(4);
+                }
                 consumeGridViewAdapter = new ConsumeGridViewAdapter(getOrderProjectItems.get(3).getConstructionPositions(), getOrderProjectItems.get(3).getId(), WorkFinishActivity.this);
                 gv_consume.setAdapter(consumeGridViewAdapter);
                 listViewAdapter.setOnGetHeight(new ListViewAdapter.OnGetHeight() {
@@ -1024,9 +1045,14 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                         buttons[2].setTextColor(getResources().getColor(R.color.lightgray));
                         buttons[3].setBackgroundDrawable(getResources().getDrawable(R.drawable.corner_default_btn));
                         buttons[3].setTextColor(getResources().getColor(R.color.lightgray));
-                        listViewAdapter = new ListViewAdapter(technicians, getOrderProjectItems.get(0).getConstructionPositions(), WorkFinishActivity.this);
+                        listViewAdapter = new ListViewAdapter(technicians, getOrderProjectItems.get(0).getConstructionPositions(), WorkFinishActivity.this,getOrderProjectItems.get(0).getId());
                         listview_workItem.setAdapter(listViewAdapter);
                         setListViewHeightBasedOnChildren(listview_workItem);
+                        if (getOrderProjectItems.get(0).getId() == 4){
+                            gv_consume.setNumColumns(2);
+                        }else {
+                            gv_consume.setNumColumns(4);
+                        }
                         consumeGridViewAdapter = new ConsumeGridViewAdapter(getOrderProjectItems.get(0).getConstructionPositions(), getOrderProjectItems.get(0).getId(), WorkFinishActivity.this);
                         gv_consume.setAdapter(consumeGridViewAdapter);
                         listViewAdapter.setOnGetHeight(new ListViewAdapter.OnGetHeight() {

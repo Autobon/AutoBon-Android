@@ -37,6 +37,7 @@ public class ConsumeGridViewAdapter extends BaseAdapter {
     private int pojectId;
 
 
+
     public List<ConsumeItem> getConsumeItems() {
         return consumeItems;
     }
@@ -86,10 +87,16 @@ public class ConsumeGridViewAdapter extends BaseAdapter {
             button.setTextColor(context.getResources().getColor(R.color.main_white));
         }
 
-        if (button.getText().toString().length() > 6){
-            String text = button.getText().toString().trim();
-            button.setText(text.substring(0,2) + "··" + text.substring(text.length() - 3,text.length()));
+        if (pojectId == 4){
+            button.setSingleLine();
+        }else {
+            if (button.getText().toString().length() > 6){
+                String text = button.getText().toString().trim();
+                button.setText(text.substring(0,2) + "··" + text.substring(text.length() - 3,text.length()));
+            }
         }
+
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
