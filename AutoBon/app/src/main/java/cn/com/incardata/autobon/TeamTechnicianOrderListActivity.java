@@ -116,6 +116,10 @@ public class TeamTechnicianOrderListActivity extends BaseActivity implements Pul
                 if (entity instanceof ListUnfinishedOrderEntity) {
                     ListUnfinishedOrderEntity lists = (ListUnfinishedOrderEntity) entity;
                     if (lists.isStatus()) {
+                        if (lists.getMessage() == null){
+                            T.show(getContext(), getString(R.string.no_order));
+                            return;
+                        }
                         ListUnFinishOrder listUnFinishOrder = JSON.parseObject(lists.getMessage().toString(), ListUnFinishOrder.class);
                         totalPages = listUnFinishOrder.getTotalPages();
                         if (isRefresh) {

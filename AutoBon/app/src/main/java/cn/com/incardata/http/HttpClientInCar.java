@@ -503,8 +503,8 @@ public class HttpClientInCar extends CustomHttpClient {
             }
         });
 
-        HttpConnectionParams.setConnectionTimeout(httpParameters, 10000);
-        HttpConnectionParams.setSoTimeout(httpParameters, 10000);
+        HttpConnectionParams.setConnectionTimeout(httpParameters, 30000);
+        HttpConnectionParams.setSoTimeout(httpParameters, 30000);
 
 //		//请求超时
 //		httpclient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 10000); 

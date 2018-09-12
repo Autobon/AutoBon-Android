@@ -24,7 +24,8 @@ import cn.com.incardata.http.response.GetOrderProjectItem;
 import cn.com.incardata.http.response.Technician;
 import cn.com.incardata.http.response.WorkFinish;
 
-/** 添加合伙人列表
+/**
+ * 添加合伙人列表
  * Created by yang on 2016/11/2.
  */
 public class ListViewAdapter extends BaseAdapter {
@@ -34,6 +35,8 @@ public class ListViewAdapter extends BaseAdapter {
     private ConstructionPosition[] items;
     private int check;
     private GridViewAdapter adapter1;
+
+    private int workItemId;
 
 
     public int getCheck() {
@@ -46,10 +49,11 @@ public class ListViewAdapter extends BaseAdapter {
 
     private HashMap<Integer, GridViewAdapter> mMapGridView;
 
-    public ListViewAdapter(List<Technician> users, ConstructionPosition[] items, Activity context) {
+    public ListViewAdapter(List<Technician> users, ConstructionPosition[] items, Activity context,int workItemId) {
         this.users = users;
         this.items = items;
         this.context = context;
+        this.workItemId = workItemId;
         mMapGridView = new HashMap<>(5);
 //        for (Technician technician : users){
 //            for (ConstructionPosition constructionPosition : items){
@@ -121,23 +125,29 @@ public class ListViewAdapter extends BaseAdapter {
 //        if (mMapGridView.containsKey(position)) {
 //            holder.ciGridview.setAdapter(mMapGridView.get(position));
 //        } else {
-            GridViewAdapter adapter = new GridViewAdapter(context, items, users.get(position));
-            adapter1 = adapter;
-            holder.ciGridview.setAdapter(adapter);
-            adapter.setOnRefreshGridViewListener(new GridViewAdapter.OnRefreshGridViewListener() {
-                @Override
-                public void onRefresh() {
-                    if (mMapGridView != null && !mMapGridView.isEmpty()) {
-                        Iterator iter = mMapGridView.entrySet().iterator();
-                            while (iter.hasNext()) {
-                            Map.Entry entry = (Map.Entry) iter.next();
-                            GridViewAdapter a = (GridViewAdapter) entry.getValue();
-                            a.notifyDataSetChanged();
-                        }
+        if (workItemId == 4){
+            holder.ciGridview.setNumColumns(2);
+        }else {
+            holder.ciGridview.setNumColumns(4);
+        }
+        GridViewAdapter adapter = new GridViewAdapter(context, items, users.get(position),workItemId);
+        adapter1 = adapter;
+
+        holder.ciGridview.setAdapter(adapter);
+        adapter.setOnRefreshGridViewListener(new GridViewAdapter.OnRefreshGridViewListener() {
+            @Override
+            public void onRefresh() {
+                if (mMapGridView != null && !mMapGridView.isEmpty()) {
+                    Iterator iter = mMapGridView.entrySet().iterator();
+                    while (iter.hasNext()) {
+                        Map.Entry entry = (Map.Entry) iter.next();
+                        GridViewAdapter a = (GridViewAdapter) entry.getValue();
+                        a.notifyDataSetChanged();
                     }
                 }
-            });
-            mMapGridView.put(position, adapter);
+            }
+        });
+        mMapGridView.put(position, adapter);
 //        }
 
         return view;

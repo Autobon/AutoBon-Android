@@ -1,20 +1,20 @@
 package cn.com.incardata.http;
 
 public class NetURL {
-//	/** 2017-05-04修改正式服务器基地址 */
-//	public final static String BASE_URL = "http://47.93.17.218:12345/api/mobile/";
-//	public final static String IP_PORT = "http://47.93.17.218:12345";
-//	public static final String PUB = "http://47.93.17.218:12345/api/pub/";
+	/** 2017-05-04修改正式服务器基地址 */
+	public final static String BASE_URL = "http://47.93.17.218:12345/api/mobile/";
+	public final static String IP_PORT = "http://47.93.17.218:12345";
+	public static final String PUB = "http://47.93.17.218:12345/api/pub/";
 
 //    /** 测试服务器基地址 */
 //    public final static String BASE_URL = "http://47.97.25.159:12345/api/mobile/";
 //    public final static String IP_PORT = "http://47.97.25.159:12345";
 //    public static final String PUB = "http://47.97.25.159:12345/api/pub/";
 
-    /** 田野服务器基地址 */
-    public final static String BASE_URL = "http://10.0.12.170:12345/api/mobile/";
-    public final static String IP_PORT = "http://10.0.12.170:12345";
-    public static final String PUB = "http://10.0.12.170:12345/api/pub/";
+//    /** 田野服务器基地址 */
+//    public final static String BASE_URL = "http://10.0.12.170:12345/api/mobile/";
+//    public final static String IP_PORT = "http://10.0.12.170:12345";
+//    public static final String PUB = "http://10.0.12.170:12345/api/pub/";
 
 //    /** 正式服务器基地址 */
 //    public final static String BASE_URL = "http://121.40.219.58:8000/api/mobile/";

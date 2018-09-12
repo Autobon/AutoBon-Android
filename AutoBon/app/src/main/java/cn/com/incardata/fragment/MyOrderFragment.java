@@ -209,9 +209,11 @@ public class MyOrderFragment extends BaseFragment {
 
     private void getpageList(int page) {
 //        String param = "status=" + status + "page=" + page + "pageSize=" + pageSize;
+        showDialog();
         Http.getInstance().getTaskToken(NetURL.ORDER_LIST, ListUnfinishedOrderEntity.class, new OnResult() {
             @Override
             public void onResult(Object entity) {
+                cancelDialog();
                 mPull.loadedCompleted();
                 if (entity == null) {
                     T.show(getActivity(), R.string.loading_data_failure);
@@ -234,7 +236,7 @@ public class MyOrderFragment extends BaseFragment {
                         }
                         mAdapter.notifyDataSetChanged();
                     } else {
-                        T.show(getActivity(), R.string.loading_data_failure);
+                        T.show(getActivity(), list.getMessage().toString());
                     }
                     isRefresh = false;
                 }
