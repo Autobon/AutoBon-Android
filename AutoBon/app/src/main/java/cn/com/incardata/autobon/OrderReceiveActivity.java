@@ -217,7 +217,7 @@ public class OrderReceiveActivity extends BaseActivity implements
                 //发起开始工作请求
                 if ("TAKEN_UP".equals(orderInfo.getStatus())){
                     startWork();
-                    finish();
+//                    finish();
                 }else if ("IN_PROGRESS".equals(orderInfo.getStatus())){
                     Intent intent1 = new Intent(this, WorkSignInActivity.class);
                     intent1.putExtra(AutoCon.ORDER_INFO, orderInfo);

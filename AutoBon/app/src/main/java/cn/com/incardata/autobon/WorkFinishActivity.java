@@ -784,9 +784,11 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
 
         Log.e("json", json.toString());
 //        T.show(context, json.toString());
-        Http.getInstance().putTaskToken(NetURL.WORK_FINISH_URLV2, json.toString(), FinishWorkEntity.class, new OnResult() {
+        showDialog();
+        Http.getInstance().postTaskToken(NetURL.WORK_FINISH_URLV2, json.toString(), FinishWorkEntity.class, new OnResult() {
             @Override
             public void onResult(Object entity) {
+                cancelDialog();
                 if (entity == null) {
                     isSuccess = false;
                     T.show(context, context.getString(R.string.operate_failed_tips));

@@ -77,6 +77,7 @@ public class HttpClientInCar extends CustomHttpClient {
 
             HttpResponse response = client.execute(httpPost);
             if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                Log.d("responseCode",response.getStatusLine().getStatusCode() + response.getStatusLine().getReasonPhrase());
                 throw new RuntimeException("请求失败");
             }
             List<Cookie> cookies = ((AbstractHttpClient) client).getCookieStore().getCookies();
@@ -131,6 +132,7 @@ public class HttpClientInCar extends CustomHttpClient {
             HttpClient client = getHttpClient(context);
             HttpResponse response = client.execute(httpPost);
             if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                Log.d("responseCode",response.getStatusLine().getStatusCode() + response.getStatusLine().getReasonPhrase());
                 throw new RuntimeException("请求失败");
             }
             HttpEntity resEntity = response.getEntity();
@@ -198,6 +200,7 @@ public class HttpClientInCar extends CustomHttpClient {
             httpPost.setEntity(s);
             HttpResponse response = httpclient.execute(httpPost);
             if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                Log.d("responseCode",response.getStatusLine().getStatusCode() + response.getStatusLine().getReasonPhrase());
                 throw new RuntimeException("请求失败");
             }
             HttpEntity resEntity = response.getEntity();
@@ -233,6 +236,7 @@ public class HttpClientInCar extends CustomHttpClient {
 
             HttpResponse response = client.execute(httpPost);
             if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                Log.d("responseCode",response.getStatusLine().getStatusCode() + response.getStatusLine().getReasonPhrase());
                 throw new RuntimeException("请求失败");
             }
             HttpEntity resEntity = response.getEntity();
@@ -261,6 +265,7 @@ public class HttpClientInCar extends CustomHttpClient {
             HttpResponse httpResponse = httpclient.execute(httpGet);
             // 请求成功
             if (httpResponse.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                Log.d("responseCode",httpResponse.getStatusLine().getStatusCode() + httpResponse.getStatusLine().getReasonPhrase());
                 throw new RuntimeException("连接失败");
             }
             return EntityUtils.toString(httpResponse.getEntity());
@@ -300,6 +305,7 @@ public class HttpClientInCar extends CustomHttpClient {
             HttpResponse httpResponse = httpclient.execute(httpRequest);
             // 请求成功
             if (httpResponse.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                Log.d("responseCode",httpResponse.getStatusLine().getStatusCode() + httpResponse.getStatusLine().getReasonPhrase());
                 throw new RuntimeException("连接失败");
             }
             return EntityUtils.toString(httpResponse.getEntity(), "UTF-8");
@@ -325,11 +331,12 @@ public class HttpClientInCar extends CustomHttpClient {
         try {
             HttpPut httpPut = new HttpPut(url);
             StringEntity s = new StringEntity(json, HTTP.UTF_8);
-            s.setContentType("application/json");
+            s.setContentType("application/json; charset=utf-8");
             httpPut.setEntity(s);
             DefaultHttpClient client = getDefaultHttpClient();
             HttpResponse response = client.execute(httpPut);
             if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                Log.d("responseCode",response.getStatusLine().getStatusCode() + response.getStatusLine().getReasonPhrase());
                 throw new RuntimeException("请求失败");
             }
             HttpEntity resEntity = response.getEntity();
@@ -365,6 +372,7 @@ public class HttpClientInCar extends CustomHttpClient {
 
             HttpResponse response = client.execute(httpPut);
             if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                Log.d("responseCode",response.getStatusLine().getStatusCode() + response.getStatusLine().getReasonPhrase());
                 throw new RuntimeException("请求失败");
             }
             HttpEntity resEntity = response.getEntity();
@@ -392,6 +400,7 @@ public class HttpClientInCar extends CustomHttpClient {
             HttpResponse httpResponse = httpclient.execute(httpDelete);
             // 请求成功
             if (httpResponse.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                Log.d("responseCode",httpResponse.getStatusLine().getStatusCode() + httpResponse.getStatusLine().getReasonPhrase());
                 throw new RuntimeException("连接失败");
             }
             return EntityUtils.toString(httpResponse.getEntity());

@@ -24,6 +24,8 @@ public class NetTaskToken implements Runnable {
 		this.httpMode = httpMode;
 		this.what = what;
 		this.param = param;
+
+		Log.d("requestUrl",strUrl);
 	}
 
 	public NetTaskToken(String strUrl, int httpMode, Class<?> cls, Handler handler, int what, NameValuePair... params) {
@@ -33,6 +35,8 @@ public class NetTaskToken implements Runnable {
 		this.httpMode = httpMode;
 		this.what = what;
 		this.params = params;
+
+		Log.d("requestUrl",strUrl);
 	}
 
 	@Override
