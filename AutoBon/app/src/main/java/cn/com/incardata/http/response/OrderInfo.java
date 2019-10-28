@@ -51,6 +51,8 @@ public class OrderInfo implements Parcelable {
     private ConstructionWasteShow[] constructionWasteShows;
     private OrderInfo_Data_Comment comment;
     private String status;
+    private String license;
+    private String vin;
 
     public int getId() {
         return id;
@@ -380,6 +382,22 @@ public class OrderInfo implements Parcelable {
         this.status = status;
     }
 
+    public String getLicense() {
+        return license;
+    }
+
+    public void setLicense(String license) {
+        this.license = license;
+    }
+
+    public String getVin() {
+        return vin;
+    }
+
+    public void setVin(String vin) {
+        this.vin = vin;
+    }
+
 
     @Override
     public int describeContents() {
@@ -429,6 +447,8 @@ public class OrderInfo implements Parcelable {
         dest.writeTypedArray(this.constructionWasteShows, flags);
         dest.writeParcelable(this.comment, flags);
         dest.writeString(this.status);
+        dest.writeString(this.license);
+        dest.writeString(this.vin);
     }
 
     public OrderInfo() {
@@ -476,6 +496,8 @@ public class OrderInfo implements Parcelable {
         this.constructionWasteShows = in.createTypedArray(ConstructionWasteShow.CREATOR);
         this.comment = in.readParcelable(OrderInfo_Data_Comment.class.getClassLoader());
         this.status = in.readString();
+        this.license = in.readString();
+        this.vin = in.readString();
     }
 
     public static final Creator<OrderInfo> CREATOR = new Creator<OrderInfo>() {

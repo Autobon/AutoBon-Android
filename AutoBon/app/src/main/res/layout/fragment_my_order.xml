@@ -1,16 +1,93 @@
-<cn.com.incardata.view.PullToRefreshView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/order_pull"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/main_white">
+    android:background="@color/line_light_color"
+    android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/finished_order_list"
+    <LinearLayout
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/dp5"
+        android:orientation="horizontal"
+        android:background="@color/main_white"
+        android:layout_width="match_parent"
+        android:paddingTop="@dimen/dp10"
+        android:gravity="center_vertical"
+        android:paddingBottom="@dimen/dp10"
+        android:paddingLeft="@dimen/dp15"
+        android:paddingRight="@dimen/dp15"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/ed_license"
+                android:textSize="@dimen/sp13"
+                android:textColor="@color/darkgray"
+                android:hint="请输入车牌号"
+                android:paddingLeft="@dimen/dp10"
+                android:background="@drawable/query_ed_style"
+                android:textColorHint="@color/gray_A3"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp35"
+                android:layout_weight="1" />
+
+            <EditText
+                android:id="@+id/ed_vin"
+                android:textSize="@dimen/sp13"
+                android:textColor="@color/darkgray"
+                android:hint="请输入车架号"
+                android:paddingLeft="@dimen/dp10"
+                android:background="@drawable/query_ed_style"
+                android:layout_marginTop="@dimen/dp5"
+                android:textColorHint="@color/gray_A3"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp35"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_query"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/shops_name"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/v1"
+            android:layout_marginLeft="@dimen/dp15"
+            android:background="@drawable/check_btn"
+            android:gravity="center"
+            android:paddingBottom="3dp"
+            android:paddingLeft="@dimen/dp15"
+            android:paddingRight="@dimen/dp15"
+            android:paddingTop="3dp"
+            android:text="查询"
+            android:textColor="@color/main_orange"
+            android:textSize="@dimen/sp13" />
+
+
+
+    </LinearLayout>
+
+
+
+    <cn.com.incardata.view.PullToRefreshView
+        android:id="@+id/order_pull"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbarStyle="outsideOverlay"
-        android:divider="@color/main_white"
-        />
+        android:background="@color/main_white"
+        android:orientation="vertical">
 
-</cn.com.incardata.view.PullToRefreshView>
+
+        <ListView
+            android:id="@+id/finished_order_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/main_white"
+            android:scrollbarStyle="outsideOverlay" />
+
+    </cn.com.incardata.view.PullToRefreshView>
+
+</LinearLayout>

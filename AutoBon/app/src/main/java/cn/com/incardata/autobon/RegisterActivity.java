@@ -12,6 +12,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -42,6 +44,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private TextView tv_protocal;
     private Context context;
 
+    private CheckBox cb_btn_check;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +66,23 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         register_btn = (Button) findViewById(R.id.register_btn);
         send_code_btn = (Button) findViewById(R.id.btn_send_code);
         tv_protocal = (TextView) findViewById(R.id.tv_protocal);
+
+        cb_btn_check = (CheckBox) findViewById(R.id.cb_btn_check);
+
+        cb_btn_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    register_btn.setEnabled(true);
+                    register_btn.setAlpha(1.0f);
+
+                }else {
+                    register_btn.setEnabled(false);
+                    register_btn.setAlpha(0.5f);
+
+                }
+            }
+        });
     }
 
     public void setListener(){
@@ -140,6 +162,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
      * 倒计时
      * @param time
      */
+
     private void countDownTimer(int time){
         new CountDownTimer(time*1000,1000){
             @Override

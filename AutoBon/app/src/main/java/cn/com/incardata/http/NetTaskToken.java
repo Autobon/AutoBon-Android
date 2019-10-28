@@ -48,11 +48,13 @@ public class NetTaskToken implements Runnable {
 					if (param != null){
 						json = HttpClientInCar.postHttpToken(strUrl, param);
 						Log.e("requestData",json);
+						Log.e("requestURL",strUrl);
 						break;
 					}
 					if (params != null) {
 						json = HttpClientInCar.postHttpToken(strUrl, params);
 						Log.e("requestData",json);
+						Log.e("requestURL",strUrl);
 						break;
 					}
 					handler.sendEmptyMessage(what);
@@ -61,11 +63,13 @@ public class NetTaskToken implements Runnable {
 					if (param != null){
 						json = HttpClientInCar.getHttpToken(strUrl, param);
 						Log.e("requestData",json);
+						Log.e("requestURL",strUrl);
 						break;
 					}
 					if (params != null){
 						json = HttpClientInCar.getHttpToken(strUrl, params);
 						Log.e("requestData",json);
+						Log.e("requestURL",strUrl);
 						break;
 					}
 					handler.sendEmptyMessage(what);
@@ -74,11 +78,13 @@ public class NetTaskToken implements Runnable {
 					if (param != null){
 						json = HttpClientInCar.PutHttpToken(strUrl, param);
 						Log.e("requestData",json);
+						Log.e("requestURL",strUrl);
 						break;
 					}
 					if (params != null){
 						json = HttpClientInCar.PutHttpToken(strUrl, params);
 						Log.e("requestData",json);
+						Log.e("requestURL",strUrl);
 						break;
 					}
 					handler.sendEmptyMessage(what);
@@ -87,11 +93,13 @@ public class NetTaskToken implements Runnable {
 					if (param != null){
 						json = HttpClientInCar.DelHttpToken(strUrl, param);
 						Log.e("requestData",json);
+						Log.e("requestURL",strUrl);
 						break;
 					}
 					if (params != null){
 						json = HttpClientInCar.DelHttpToken(strUrl, params);
 						Log.e("requestData",json);
+						Log.e("requestURL",strUrl);
 						break;
 					}
 					handler.sendEmptyMessage(what);

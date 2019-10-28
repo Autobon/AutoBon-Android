@@ -483,6 +483,7 @@ public class WaitOrderActivity extends BaseActivity implements PullToRefreshView
                 }
                 if (entity instanceof ListNewEntity) {
                     ListNewEntity listNew = (ListNewEntity) entity;
+                    Log.e("waitOrder",listNew.getMessage().toString());
                     if (listNew.isStatus()) {
                         ListNew_Data listNew_data = JSON.parseObject(listNew.getMessage().toString(), ListNew_Data.class);
                         totalPages = listNew_data.getTotalPages();

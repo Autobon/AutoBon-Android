@@ -18,7 +18,10 @@
             android:layout_alignParentTop="true"
             android:background="#F0F0F0" />
 
+
+
         <TextView
+            android:visibility="gone"
             android:id="@+id/order_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,18 +35,48 @@
             android:textColor="@color/darkgray"
             android:textSize="@dimen/sp13" />
 
+        <TextView
+            android:id="@+id/tv_license"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/v1"
+            android:layout_marginLeft="@dimen/dp15"
+            android:layout_marginRight="@dimen/dp10"
+            android:layout_marginTop="@dimen/dp10"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/license_str"
+            android:textColor="@color/darkgray"
+            android:textSize="@dimen/sp13" />
+
 
         <TextView
             android:id="@+id/money_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/order_number"
+            android:layout_alignBaseline="@id/tv_license"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/v1"
             android:layout_marginRight="@dimen/dp15"
             android:text="asdd"
             android:textColor="@color/main_orange"
             android:textSize="@dimen/sp13" />
+
+        <TextView
+            android:id="@+id/tv_vin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_license"
+            android:layout_marginLeft="@dimen/dp15"
+            android:layout_marginRight="@dimen/dp10"
+            android:layout_marginTop="@dimen/dp10"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/vin_str"
+            android:textColor="@color/darkgray"
+            android:textSize="@dimen/sp13" />
+
+
 
 
         <!--<ImageView-->
@@ -67,7 +100,7 @@
 
         <LinearLayout
             android:id="@+id/ll1"
-            android:layout_below="@id/order_number"
+            android:layout_below="@id/tv_vin"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp40"
             android:layout_marginTop="@dimen/dp5"

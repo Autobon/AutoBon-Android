@@ -28,6 +28,18 @@
             android:text="@string/my_order_text"
             android:textSize="@dimen/sp18"
             android:textColor="@android:color/white" />
+
+
+        <TextView
+            android:id="@+id/tv_query"
+            android:layout_width="@dimen/dp60"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:text="@string/query"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp15" />
+
         <ImageView
             android:layout_width="@dimen/dp45"
             android:layout_height="match_parent"

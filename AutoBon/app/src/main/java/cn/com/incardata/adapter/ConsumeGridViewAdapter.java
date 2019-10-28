@@ -19,6 +19,7 @@ import cn.com.incardata.autobon.R;
 import cn.com.incardata.http.response.ConstructionPosition;
 import cn.com.incardata.http.response.ConsumeItem;
 import cn.com.incardata.http.response.GetOrderProjectItem;
+import cn.com.incardata.http.response.ProductData;
 import cn.com.incardata.utils.T;
 import cn.com.incardata.view.ListViewDialog;
 import cn.com.incardata.view.wheel.widget.WheelPopupWindow;
@@ -27,8 +28,8 @@ import cn.com.incardata.view.wheel.widget.WheelPopupWindow;
  * Created by yang on 2016/11/4.
  */
 public class ConsumeGridViewAdapter extends BaseAdapter {
-//    private List<ConstructionPosition> items;
-    private ConstructionPosition[] items;
+    private List<ProductData> items;
+//    private ConstructionPosition[] items;
     private Activity context;
     private List<ConsumeItem> consumeItems;
     private int checkId;
@@ -46,7 +47,7 @@ public class ConsumeGridViewAdapter extends BaseAdapter {
         this.consumeItems = consumeItems;
     }
 
-    public ConsumeGridViewAdapter(ConstructionPosition[] items,int pojectId, Activity context) {
+    public ConsumeGridViewAdapter(List<ProductData> items,int pojectId, Activity context) {
         this.items = items;
         this.context = context;
         this.pojectId = pojectId;
@@ -55,12 +56,18 @@ public class ConsumeGridViewAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return items.length;
+        if (items == null){
+            return 0;
+        }
+        return items.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return items[position];
+        if (items == null){
+            return null;
+        }
+        return items.get(position);
     }
 
     @Override
@@ -74,15 +81,15 @@ public class ConsumeGridViewAdapter extends BaseAdapter {
         for (int i = 0; i <= 5; i++){
             list.add(String.valueOf(i));
         }
-        final ConstructionPosition item = items[position];
+        final ProductData item = items.get(position);
         View view1 = View.inflate(context, R.layout.rg_tab_grid_item, null);
         Button button = (Button) view1.findViewById(R.id.rg_btn);
         if (item.getTotal() == 0){
-            button.setText(item.getName());
+            button.setText(item.getConstructionPositionName());
             button.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.corner_default_btn));
             button.setTextColor(context.getResources().getColor(R.color.gray_A3));
         }else {
-            button.setText(item.getName() + "×" + item.getTotal());
+            button.setText(item.getConstructionPositionName() + "×" + item.getTotal());
             button.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.corner_choice_btn));
             button.setTextColor(context.getResources().getColor(R.color.main_white));
         }
@@ -130,7 +137,7 @@ public class ConsumeGridViewAdapter extends BaseAdapter {
         @Override
         public void onChecked(int index) {
             ConsumeItem consumeItem = new ConsumeItem();
-            items[check].setTotal(index);
+            items.get(check).setTotal(index);
             notifyDataSetChanged();
 //            T.show(context,list.get(index));
 //            switch (type){

@@ -128,11 +128,75 @@
             <!--android:layout_marginLeft="@dimen/dp15"-->
             <!--android:layout_marginRight="@dimen/dp15"/>-->
 
+
+            <View
+                android:id="@+id/v999"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/rl5"
+                android:layout_marginBottom="@dimen/dp5"
+                android:layout_marginLeft="@dimen/dp15"
+                android:layout_marginRight="@dimen/dp15"
+                android:layout_marginTop="@dimen/dp5"
+                android:background="#F0F0F0" />
+
+            <TextView
+                android:id="@+id/license_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/v999"
+                android:layout_marginLeft="@dimen/dp15"
+                android:text="@string/license_str"
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/sp13" />
+
+            <TextView
+                android:id="@+id/license"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/license_tv"
+                android:layout_marginRight="@dimen/dp15"
+                android:layout_toRightOf="@id/license_tv"
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/sp13" />
+
+            <View
+                android:id="@+id/v1000"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/license"
+                android:layout_marginBottom="@dimen/dp5"
+                android:layout_marginLeft="@dimen/dp15"
+                android:layout_marginRight="@dimen/dp15"
+                android:layout_marginTop="@dimen/dp5"
+                android:background="#F0F0F0" />
+
+            <TextView
+                android:id="@+id/vin_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/v1000"
+                android:layout_marginLeft="@dimen/dp15"
+                android:text="@string/vin_str"
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/sp13" />
+
+            <TextView
+                android:id="@+id/vin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/vin_tv"
+                android:layout_marginRight="@dimen/dp15"
+                android:layout_toRightOf="@id/vin_tv"
+                android:textColor="@color/darkgray"
+                android:textSize="@dimen/sp13" />
+
+
             <View
                 android:id="@+id/v3"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/rl5"
+                android:layout_below="@id/vin"
                 android:layout_marginBottom="@dimen/dp5"
                 android:layout_marginLeft="@dimen/dp15"
                 android:layout_marginRight="@dimen/dp15"

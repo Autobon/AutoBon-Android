@@ -264,6 +264,7 @@ public class HttpClientInCar extends CustomHttpClient {
             // 请求HttpClient，取得HttpResponse
             HttpResponse httpResponse = httpclient.execute(httpGet);
             // 请求成功
+            Log.e("responseCode",httpResponse.getStatusLine().getStatusCode() + "");
             if (httpResponse.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
                 Log.d("responseCode",httpResponse.getStatusLine().getStatusCode() + httpResponse.getStatusLine().getReasonPhrase());
                 throw new RuntimeException("连接失败");

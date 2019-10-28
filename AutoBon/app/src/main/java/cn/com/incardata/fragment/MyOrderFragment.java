@@ -16,6 +16,9 @@ import com.alibaba.fastjson.JSON;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import cn.com.incardata.adapter.OrderFinishedAdapter;
 import cn.com.incardata.autobon.OrderInfoActivity;
@@ -61,6 +64,22 @@ public class MyOrderFragment extends BaseFragment {
     private boolean isRefresh = false;
 
     OrderInfo orderInfo;
+
+    Map<String,String> mainParams = new HashMap<>();
+    Map<String,String> ciParams = new HashMap<>();
+
+    public Map<String, String> getMainParams() {
+        mainParams.put("page", String.valueOf(page));
+        mainParams.put("pageSize", String.valueOf(pageSize));
+        mainParams.put("status", "3");
+        return mainParams;
+    }
+
+    public Map<String, String> getCiParams() {
+        ciParams.put("page", String.valueOf(page1));
+        ciParams.put("pageSize", String.valueOf(pageSize));
+        return ciParams;
+    }
 
     public MyOrderFragment() {
         // Required empty public constructor
@@ -124,11 +143,11 @@ public class MyOrderFragment extends BaseFragment {
                 if (isMainResponsible) {
                     page = 1;
                     isRefresh = true;
-                    getpageList(1);
+                    getpageList(getMainParams());
                 } else {
                     page1 = 1;
                     isRefresh = true;
-                    getpageListCi(1, true);
+                    getpageListCi(getCiParams(), true);
                 }
 
             }
@@ -143,14 +162,16 @@ public class MyOrderFragment extends BaseFragment {
                         mPull.loadedCompleted();
                         return;
                     }
-                    getpageList(++page);
+                    page++;
+                    getpageList(getMainParams());
                 } else {
                     if (page1 >= totalPages) {
                         T.show(getActivity(), R.string.has_load_all_label);
                         mPull.loadedCompleted();
                         return;
                     }
-                    getpageListCi(++page1, true);
+                    page1++;
+                    getpageListCi(getCiParams(), true);
                 }
 
             }
@@ -166,11 +187,41 @@ public class MyOrderFragment extends BaseFragment {
             }
         });
         if (isMainResponsible) {
-            getpageList(1);
+            page = 1;
+            getpageList(getMainParams());
         } else {
-            getpageListCi(1, false);
+            page1 = 1;
+            getpageListCi(getCiParams(), false);
         }
 
+    }
+
+
+    /**
+     * 查询主责任人数据
+     * @param param
+     */
+    public void queryMainData(Map<String,String> param){
+        if (mainParams != null){
+            mainParams.clear();
+        }
+        isRefresh = true;
+        page = 1;
+        mainParams.putAll(param);
+        getpageList(getMainParams());
+    }
+    /**
+     * 查询次责任人数据
+     * @param param
+     */
+    public void queryCiData(Map<String,String> param){
+        if (ciParams != null){
+            ciParams.clear();
+        }
+        page1 = 1;
+        isRefresh = true;
+        ciParams.putAll(param);
+        getpageListCi(getCiParams(), true);
     }
 
     private void startActivity(Class<?> cls, OrderInfo orderInfo) {
@@ -207,8 +258,15 @@ public class MyOrderFragment extends BaseFragment {
         });
     }
 
-    private void getpageList(int page) {
-//        String param = "status=" + status + "page=" + page + "pageSize=" + pageSize;
+    /**
+     * 获取主责任李彪数据
+     * @param param
+     */
+    private void getpageList(Map<String,String> param) {
+        List<BasicNameValuePair> paramList = new ArrayList<>();
+        for (Map.Entry parama : param.entrySet()) {
+            paramList.add(new BasicNameValuePair(parama.getKey().toString(),parama.getValue().toString()));
+        }
         showDialog();
         Http.getInstance().getTaskToken(NetURL.ORDER_LIST, ListUnfinishedOrderEntity.class, new OnResult() {
             @Override
@@ -241,11 +299,19 @@ public class MyOrderFragment extends BaseFragment {
                     isRefresh = false;
                 }
             }
-        }, new BasicNameValuePair("status", String.valueOf(3)), new BasicNameValuePair("page", String.valueOf(page)), new BasicNameValuePair("pageSize", String.valueOf(pageSize)));
+        }, (BasicNameValuePair[]) paramList.toArray(new BasicNameValuePair[paramList.size()]));
     }
 
-    private void getpageListCi(int page, final boolean isHead) {
-//        String param = "status=" + status + "page=" + page + "pageSize=" + pageSize;
+    /**
+     * 获取次责任人列表数据
+     * @param param
+     * @param isHead
+     */
+    private void getpageListCi(Map<String,String> param, final boolean isHead) {
+        List<BasicNameValuePair> paramList = new ArrayList<>();
+        for (Map.Entry parama : param.entrySet()) {
+            paramList.add(new BasicNameValuePair(parama.getKey().toString(),parama.getValue().toString()));
+        }
         Http.getInstance().getTaskToken(NetURL.ORDER_LISTCI, ListUnfinishedOrderEntity.class, new OnResult() {
             @Override
             public void onResult(Object entity) {
@@ -279,7 +345,7 @@ public class MyOrderFragment extends BaseFragment {
                     isRefresh = false;
                 }
             }
-        }, new BasicNameValuePair("page", String.valueOf(page)), new BasicNameValuePair("pageSize", String.valueOf(pageSize)));
+        },  (BasicNameValuePair[]) paramList.toArray(new BasicNameValuePair[paramList.size()]));
     }
 
     // TODO: Rename method, update argument and hook method into UI event

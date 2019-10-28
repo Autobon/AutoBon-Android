@@ -51,6 +51,8 @@ public class OrderInfoActivity extends BaseActivity {
     private TextView moneyState;
     private TextView orderNum;
     //    private ImageView orderImage;
+    private TextView license;
+    private TextView vin;
     private TextView remark;
     private TextView order_type;
     private TextView shops_name;
@@ -114,6 +116,8 @@ public class OrderInfoActivity extends BaseActivity {
         money = (TextView) findViewById(R.id.money);
         moneyState = (TextView) findViewById(R.id.money_state);
         orderNum = (TextView) findViewById(R.id.order_number);
+        license = (TextView) findViewById(R.id.license);
+        vin = (TextView) findViewById(R.id.vin);
         remark = (TextView) findViewById(R.id.remark);
         order_type = (TextView) findViewById(R.id.order_type);
         shops_name = (TextView) findViewById(R.id.shops_name);
@@ -326,6 +330,18 @@ public class OrderInfoActivity extends BaseActivity {
 
         order_type.setText(type);
         orderNum.setText(getResources().getString(R.string.order_serial_number) + data.getOrderNum());
+
+        if (!TextUtils.isEmpty(data.getLicense())){
+            license.setText(data.getLicense());
+        }else {
+            license.setText(R.string.no);
+        }
+
+        if (!TextUtils.isEmpty(data.getVin())){
+            vin.setText(data.getVin());
+        }else {
+            vin.setText(R.string.no);
+        }
         shops_name.setText(data.getCoopName());
         contact_phone.setText(data.getContactPhone());
         shop_address.setText(data.getAddress());

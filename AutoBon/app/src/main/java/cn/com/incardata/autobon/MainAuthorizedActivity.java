@@ -323,6 +323,7 @@ public class MainAuthorizedActivity extends BaseActivity implements View.OnClick
 
     public void getOrerInfo(){
         showDialog();
+        Log.e("mainActivity",orderId + "");
         Http.getInstance().getTaskToken(NetURL.getOrderInfoV2(orderId), "", OrderInfoEntity.class, new OnResult() {
             @Override
             public void onResult(Object entity) {

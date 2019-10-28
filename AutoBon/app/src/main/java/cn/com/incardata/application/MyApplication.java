@@ -176,11 +176,11 @@ public class MyApplication extends Application{
         return this.cookie;
     }
 
-    public int getUserId() {
+    public int getLoginUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setLoginUserId(int userId) {
         this.userId = userId;
     }
 

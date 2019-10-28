@@ -78,6 +78,7 @@ import cn.com.incardata.http.response.OrderInfo;
 import cn.com.incardata.http.response.OrderInfoEntity;
 import cn.com.incardata.http.response.OrderInfo_Construction;
 import cn.com.incardata.http.response.OrderInfo_Data;
+import cn.com.incardata.http.response.ProductData;
 import cn.com.incardata.http.response.ProjectPositions;
 import cn.com.incardata.http.response.Technician;
 import cn.com.incardata.http.response.UnfinishOrder;
@@ -123,8 +124,7 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
 
     private boolean isRunning = true;
     private OrderInfo orderInfo;
-    private List<GetOrderProjectItem> getOrderProjectItems;
-    private List<ConstructionPosition> constructionPositions;
+    private List<ProductData> productDatas;
     private List<Technician> technicians;
     private ListViewAdapter listViewAdapter;
     private ConsumeGridViewAdapter consumeGridViewAdapter;
@@ -148,7 +148,6 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
         fragmentManager = getFragmentManager();
         initView();
         initFile();
-        getWorkItem();
         new Thread(new MyThread()).start();
     }
 
@@ -179,49 +178,12 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                 buttons[2].setTextColor(getResources().getColor(R.color.lightgray));
                 buttons[3].setBackgroundDrawable(getResources().getDrawable(R.drawable.corner_default_btn));
                 buttons[3].setTextColor(getResources().getColor(R.color.lightgray));
-//                for (int i = 0; i < getOrderProjectItems.get(0).getConstructionPositions().length; i++) {
-//                    getOrderProjectItems.get(0).getConstructionPositions()[i].setProjectId(getOrderProjectItems.get(0).getId());
-//                }
-//                if (userSize != technicians.size()){
-//                    for (ConstructionPosition constructionPosition : getOrderProjectItems.get(0).getConstructionPositions()){
-//                        constructionPosition.setTechnicianId(-1);
-//                    }
-//                    userSize = technicians.size();
-//                }
-                listViewAdapter = new ListViewAdapter(technicians, getOrderProjectItems.get(0).getConstructionPositions(), WorkFinishActivity.this,getOrderProjectItems.get(0).getId());
-                listview_workItem.setAdapter(listViewAdapter);
+
+                listViewAdapter.notifyDataSetChanged();
                 setListViewHeightBasedOnChildren(listview_workItem);
 
-                if (getOrderProjectItems.get(0).getId() == 4){
-                    gv_consume.setNumColumns(2);
-                }else {
-                    gv_consume.setNumColumns(4);
-                }
-                consumeGridViewAdapter = new ConsumeGridViewAdapter(getOrderProjectItems.get(0).getConstructionPositions(), getOrderProjectItems.get(0).getId(), WorkFinishActivity.this);
-                gv_consume.setAdapter(consumeGridViewAdapter);
-                listViewAdapter.setOnGetHeight(new ListViewAdapter.OnGetHeight() {
-                    @Override
-                    public void getHeight() {
-                        for (int i = 0; i < getOrderProjectItems.size(); i++) {
-                            for (int j = 0; j < getOrderProjectItems.get(i).getConstructionPositions().length; j++) {
-                                getOrderProjectItems.get(i).getConstructionPositions()[j].setTechnicianId(-1);
-                                getOrderProjectItems.get(i).getConstructionPositions()[j].setTotal(0);
-                                getOrderProjectItems.get(i).getConstructionPositions()[j].setCheck(false);
-                            }
-                        }
-                        listViewAdapter.notifyDataSetChanged();
-                        consumeGridViewAdapter.notifyDataSetChanged();
-                        setListViewHeightBasedOnChildren(listview_workItem);
-                    }
-                });
-//                listViewAdapter.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        technicians.remove(listViewAdapter.getCheck());
-//                        listViewAdapter.notifyDataSetChanged();
-//                        setListViewHeightBasedOnChildren(listview_workItem);
-//                    }
-//                });
+                consumeGridViewAdapter.notifyDataSetChanged();
+
                 break;
             case R.id.btn2:
                 buttons[0].setBackgroundDrawable(getResources().getDrawable(R.drawable.corner_default_btn));
@@ -232,48 +194,11 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                 buttons[2].setTextColor(getResources().getColor(R.color.lightgray));
                 buttons[3].setBackgroundDrawable(getResources().getDrawable(R.drawable.corner_default_btn));
                 buttons[3].setTextColor(getResources().getColor(R.color.lightgray));
-//                for (int i = 0; i < getOrderProjectItems.get(1).getConstructionPositions().length; i++) {
-//                    getOrderProjectItems.get(1).getConstructionPositions()[i].setProjectId(getOrderProjectItems.get(1).getId());
-//                }
-//                if (userSize != technicians.size()){
-//                    for (ConstructionPosition constructionPosition : getOrderProjectItems.get(1).getConstructionPositions()){
-//                        constructionPosition.setTechnicianId(-1);
-//                    }
-//                    userSize = technicians.size();
-//                }
-                listViewAdapter = new ListViewAdapter(technicians, getOrderProjectItems.get(1).getConstructionPositions(), WorkFinishActivity.this,getOrderProjectItems.get(1).getId());
-                listview_workItem.setAdapter(listViewAdapter);
+
+                listViewAdapter.notifyDataSetChanged();
                 setListViewHeightBasedOnChildren(listview_workItem);
-                if (getOrderProjectItems.get(1).getId() == 4){
-                    gv_consume.setNumColumns(2);
-                }else {
-                    gv_consume.setNumColumns(4);
-                }
-                consumeGridViewAdapter = new ConsumeGridViewAdapter(getOrderProjectItems.get(1).getConstructionPositions(), getOrderProjectItems.get(1).getId(), WorkFinishActivity.this);
-                gv_consume.setAdapter(consumeGridViewAdapter);
-                listViewAdapter.setOnGetHeight(new ListViewAdapter.OnGetHeight() {
-                    @Override
-                    public void getHeight() {
-                        for (int i = 0; i < getOrderProjectItems.size(); i++) {
-                            for (int j = 0; j < getOrderProjectItems.get(i).getConstructionPositions().length; j++) {
-                                getOrderProjectItems.get(i).getConstructionPositions()[j].setTechnicianId(-1);
-                                getOrderProjectItems.get(i).getConstructionPositions()[j].setTotal(0);
-                                getOrderProjectItems.get(i).getConstructionPositions()[j].setCheck(false);
-                            }
-                        }
-                        listViewAdapter.notifyDataSetChanged();
-                        consumeGridViewAdapter.notifyDataSetChanged();
-                        setListViewHeightBasedOnChildren(listview_workItem);
-                    }
-                });
-//                listViewAdapter.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        technicians.remove(listViewAdapter.getCheck());
-//                        listViewAdapter.notifyDataSetChanged();
-//                        setListViewHeightBasedOnChildren(listview_workItem);
-//                    }
-//                });
+
+                consumeGridViewAdapter.notifyDataSetChanged();
                 break;
             case R.id.btn3:
                 buttons[0].setBackgroundDrawable(getResources().getDrawable(R.drawable.corner_default_btn));
@@ -284,48 +209,11 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                 buttons[2].setTextColor(getResources().getColor(R.color.main_white));
                 buttons[3].setBackgroundDrawable(getResources().getDrawable(R.drawable.corner_default_btn));
                 buttons[3].setTextColor(getResources().getColor(R.color.lightgray));
-//                for (int i = 0; i < getOrderProjectItems.get(2).getConstructionPositions().length; i++) {
-//                    getOrderProjectItems.get(2).getConstructionPositions()[i].setProjectId(getOrderProjectItems.get(2).getId());
-//                }
-//                if (userSize != technicians.size()){
-//                    for (ConstructionPosition constructionPosition : getOrderProjectItems.get(2).getConstructionPositions()){
-//                        constructionPosition.setTechnicianId(-1);
-//                    }
-//                    userSize = technicians.size();
-//                }
-                listViewAdapter = new ListViewAdapter(technicians, getOrderProjectItems.get(2).getConstructionPositions(), WorkFinishActivity.this,getOrderProjectItems.get(2).getId());
-                listview_workItem.setAdapter(listViewAdapter);
+
+                listViewAdapter.notifyDataSetChanged();
                 setListViewHeightBasedOnChildren(listview_workItem);
-                if (getOrderProjectItems.get(2).getId() == 4){
-                    gv_consume.setNumColumns(2);
-                }else {
-                    gv_consume.setNumColumns(4);
-                }
-                consumeGridViewAdapter = new ConsumeGridViewAdapter(getOrderProjectItems.get(2).getConstructionPositions(), getOrderProjectItems.get(2).getId(), WorkFinishActivity.this);
-                gv_consume.setAdapter(consumeGridViewAdapter);
-                listViewAdapter.setOnGetHeight(new ListViewAdapter.OnGetHeight() {
-                    @Override
-                    public void getHeight() {
-                        for (int i = 0; i < getOrderProjectItems.size(); i++) {
-                            for (int j = 0; j < getOrderProjectItems.get(i).getConstructionPositions().length; j++) {
-                                getOrderProjectItems.get(i).getConstructionPositions()[j].setTechnicianId(-1);
-                                getOrderProjectItems.get(i).getConstructionPositions()[j].setTotal(0);
-                                getOrderProjectItems.get(i).getConstructionPositions()[j].setCheck(false);
-                            }
-                        }
-                        listViewAdapter.notifyDataSetChanged();
-                        consumeGridViewAdapter.notifyDataSetChanged();
-                        setListViewHeightBasedOnChildren(listview_workItem);
-                    }
-                });
-//                listViewAdapter.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        technicians.remove(listViewAdapter.getCheck());
-//                        listViewAdapter.notifyDataSetChanged();
-//                        setListViewHeightBasedOnChildren(listview_workItem);
-//                    }
-//                });
+
+                consumeGridViewAdapter.notifyDataSetChanged();
                 break;
             case R.id.btn4:
                 buttons[0].setBackgroundDrawable(getResources().getDrawable(R.drawable.corner_default_btn));
@@ -336,48 +224,11 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                 buttons[2].setTextColor(getResources().getColor(R.color.lightgray));
                 buttons[3].setBackgroundDrawable(getResources().getDrawable(R.drawable.corner_choice_btn));
                 buttons[3].setTextColor(getResources().getColor(R.color.main_white));
-//                for (int i = 0; i < getOrderProjectItems.get(3).getConstructionPositions().length; i++) {
-//                    getOrderProjectItems.get(3).getConstructionPositions()[i].setProjectId(getOrderProjectItems.get(3).getId());
-//                }
-//                if (userSize != technicians.size()){
-//                    for (ConstructionPosition constructionPosition : getOrderProjectItems.get(3).getConstructionPositions()){
-//                        constructionPosition.setTechnicianId(-1);
-//                    }
-//                    userSize = technicians.size();
-//                }
-                listViewAdapter = new ListViewAdapter(technicians, getOrderProjectItems.get(3).getConstructionPositions(), WorkFinishActivity.this,getOrderProjectItems.get(3).getId());
-                listview_workItem.setAdapter(listViewAdapter);
+
+                listViewAdapter.notifyDataSetChanged();
                 setListViewHeightBasedOnChildren(listview_workItem);
-                if (getOrderProjectItems.get(3).getId() == 4){
-                    gv_consume.setNumColumns(2);
-                }else {
-                    gv_consume.setNumColumns(4);
-                }
-                consumeGridViewAdapter = new ConsumeGridViewAdapter(getOrderProjectItems.get(3).getConstructionPositions(), getOrderProjectItems.get(3).getId(), WorkFinishActivity.this);
-                gv_consume.setAdapter(consumeGridViewAdapter);
-                listViewAdapter.setOnGetHeight(new ListViewAdapter.OnGetHeight() {
-                    @Override
-                    public void getHeight() {
-                        for (int i = 0; i < getOrderProjectItems.size(); i++) {
-                            for (int j = 0; j < getOrderProjectItems.get(i).getConstructionPositions().length; j++) {
-                                getOrderProjectItems.get(i).getConstructionPositions()[j].setTechnicianId(-1);
-                                getOrderProjectItems.get(i).getConstructionPositions()[j].setTotal(0);
-                                getOrderProjectItems.get(i).getConstructionPositions()[j].setCheck(false);
-                            }
-                        }
-                        listViewAdapter.notifyDataSetChanged();
-                        consumeGridViewAdapter.notifyDataSetChanged();
-                        setListViewHeightBasedOnChildren(listview_workItem);
-                    }
-                });
-//                listViewAdapter.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        technicians.remove(listViewAdapter.getCheck());
-//                        listViewAdapter.notifyDataSetChanged();
-//                        setListViewHeightBasedOnChildren(listview_workItem);
-//                    }
-//                });
+
+                consumeGridViewAdapter.notifyDataSetChanged();
                 break;
         }
     }
@@ -444,8 +295,7 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
     private void initView() {
         context = this;
         orderInfo = getIntent().getParcelableExtra(AutoCon.ORDER_INFO);
-        getOrderProjectItems = new ArrayList<GetOrderProjectItem>();
-        constructionPositions = new ArrayList<ConstructionPosition>();
+        productDatas = new ArrayList<>();
         technicians = new ArrayList<Technician>();
         consumeItems = new ArrayList<ConsumeItem>();
         gridViewAdapter = new GridViewAdapter();
@@ -483,6 +333,32 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
         iv_back = (ImageView) findViewById(R.id.iv_back);
 //        iv_enter_more_page = (ImageView) findViewById(R.id.iv_enter_more_page);
 
+
+        listViewAdapter = new ListViewAdapter(technicians, productDatas, WorkFinishActivity.this, Integer.parseInt(orderInfo.getType()));
+        listview_workItem.setAdapter(listViewAdapter);
+        setListViewHeightBasedOnChildren(listview_workItem);
+        if (Integer.parseInt(orderInfo.getType()) == 4) {
+            gv_consume.setNumColumns(2);
+        } else {
+            gv_consume.setNumColumns(4);
+        }
+        consumeGridViewAdapter = new ConsumeGridViewAdapter(productDatas, Integer.parseInt(orderInfo.getType()), WorkFinishActivity.this);
+        gv_consume.setAdapter(consumeGridViewAdapter);
+        listViewAdapter.setOnGetHeight(new ListViewAdapter.OnGetHeight() {
+            @Override
+            public void getHeight() {
+
+                for (int i = 0; i < productDatas.size(); i++) {
+                    productDatas.get(i).setTechnicianId(-1);
+                    productDatas.get(i).setTotal(0);
+                    productDatas.get(i).setCheck(false);
+                }
+
+                listViewAdapter.notifyDataSetChanged();
+                consumeGridViewAdapter.notifyDataSetChanged();
+                setListViewHeightBasedOnChildren(listview_workItem);
+            }
+        });
 
         mAdapter = new PictureGridAdapter(this, MAX_PICS);
         gv_single_pic.setAdapter(mAdapter);
@@ -544,10 +420,10 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
             @Override
             public void onClick(View view) {
                 String remark = edit_remark.getText().toString().trim();
-                if (!TextUtils.isEmpty(remark)){
+                if (!TextUtils.isEmpty(remark)) {
                     submitRemark(remark);
-                }else {
-                    T.show(context,"请填写备注");
+                } else {
+                    T.show(context, "请填写备注");
                     return;
                 }
             }
@@ -565,10 +441,16 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
             }
         });
 
+
+//        getWorkItem();
+        getOrderProductList();
+
+
     }
 
     /**
      * 提交订单备注
+     *
      * @param remark
      */
     private void submitRemark(String remark) {
@@ -586,7 +468,7 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                 if (listNewEntity.isStatus()) {
                     T.show(context, "提交订单备注成功");
                     edit_remark.setText("");
-                }else {
+                } else {
                     T.show(getContext(), listNewEntity.getMessage().toString());
                 }
             }
@@ -716,44 +598,41 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                 temp.setTechId(technicians.get(i).getId());
                 constructionDetails[i] = temp;
             }
-            for (int i = 0; i < getOrderProjectItems.size(); i++) {
-                for (ConstructionDetail con : constructionDetails) {
-                    List<ProjectPositions> pps = new ArrayList<>();
-                    for (ConstructionPosition constructionPosition : getOrderProjectItems.get(i).getConstructionPositions()) {
-                        if (con.getTechId() == constructionPosition.getTechnicianId()) {
-                            boolean isSkip = false;
-                            for (int j = 0; j < pps.size(); j++) {
-                                if (pps.get(j).getProject().equals(String.valueOf(getOrderProjectItems.get(i).getId()))) {
-                                    pps.get(j).setPosition(pps.get(j).getPosition() + "," + constructionPosition.getId());
-                                    isSkip = true;
-                                    break;
-                                }
+            for (ConstructionDetail con : constructionDetails) {
+                List<ProjectPositions> pps = new ArrayList<>();
+                for (ProductData data : productDatas) {
+                    if (con.getTechId() == data.getTechnicianId()) {
+                        boolean isSkip = false;
+                        for (int j = 0; j < pps.size(); j++) {
+                            if (pps.get(j).getProject().equals(orderInfo.getType())) {
+                                pps.get(j).setPosition(pps.get(j).getPosition() + "," + data.getConstructionPosition());
+                                isSkip = true;
+                                break;
                             }
-                            if (isSkip) continue;
-                            ProjectPositions p = new ProjectPositions();
-                            p.setProject(String.valueOf(getOrderProjectItems.get(i).getId()));
-                            p.setPosition(String.valueOf(constructionPosition.getId()));
-                            pps.add(p);
-                            continue;
                         }
+                        if (isSkip) continue;
+                        ProjectPositions p = new ProjectPositions();
+                        p.setProject(orderInfo.getType());
+                        p.setPosition(String.valueOf(data.getConstructionPosition()));
+                        pps.add(p);
+                        continue;
                     }
-                    if (con.getProjectPositions() == null || con.getProjectPositions().size() <= 0) {
-                        con.setProjectPositions(pps);
-                    } else {
-                        con.getProjectPositions().addAll(pps);
-                    }
-                    continue;
                 }
-                for (int j = 0; j < getOrderProjectItems.get(i).getConstructionPositions().length; j++) {
-                    if (getOrderProjectItems.get(i).getConstructionPositions()[j].getTotal() > 0 &&
-                            getOrderProjectItems.get(i).getConstructionPositions()[j].getTechnicianId() != -1) {
-                        ConsumeItem consumeItem = new ConsumeItem();
-                        consumeItem.setProject(String.valueOf(getOrderProjectItems.get(i).getId()));
-                        consumeItem.setPosition(String.valueOf(getOrderProjectItems.get(i).getConstructionPositions()[j].getId()));
-                        consumeItem.setTechId(String.valueOf(getOrderProjectItems.get(i).getConstructionPositions()[j].getTechnicianId()));
-                        consumeItem.setTotal(String.valueOf(getOrderProjectItems.get(i).getConstructionPositions()[j].getTotal()));
-                        consumeItems.add(consumeItem);
-                    }
+                if (con.getProjectPositions() == null || con.getProjectPositions().size() <= 0) {
+                    con.setProjectPositions(pps);
+                } else {
+                    con.getProjectPositions().addAll(pps);
+                }
+                continue;
+            }
+            for (int i = 0; i < productDatas.size(); i++) {
+                if (productDatas.get(i).getTotal() > 0 && productDatas.get(i).getTechnicianId() != -1) {
+                    ConsumeItem consumeItem = new ConsumeItem();
+                    consumeItem.setProject(orderInfo.getType());
+                    consumeItem.setPosition(String.valueOf(productDatas.get(i).getConstructionPosition()));
+                    consumeItem.setTechId(String.valueOf(productDatas.get(i).getTechnicianId()));
+                    consumeItem.setTotal(String.valueOf(productDatas.get(i).getTotal()));
+                    consumeItems.add(consumeItem);
                 }
             }
             ConsumeItem[] constructionWastes = new ConsumeItem[consumeItems.size()];
@@ -785,7 +664,7 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
         Log.e("json", json.toString());
 //        T.show(context, json.toString());
         showDialog();
-        Http.getInstance().postTaskToken(NetURL.WORK_FINISH_URLV2, json.toString(), FinishWorkEntity.class, new OnResult() {
+        Http.getInstance().postTaskToken(NetURL.WORK_FINISH_URLV2_TY, json.toString(), FinishWorkEntity.class, new OnResult() {
             @Override
             public void onResult(Object entity) {
                 cancelDialog();
@@ -1007,38 +886,86 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                 if (entity instanceof GetOrderProjectItemEntity) {
                     GetOrderProjectItemEntity getOrderProjectItemEntity = (GetOrderProjectItemEntity) entity;
                     if (getOrderProjectItemEntity.isStatus()) {
-                        GetOrderProjectItem[] getOrderProjectItemss = JSON.parseObject(getOrderProjectItemEntity.getMessage().toString(), GetOrderProjectItem[].class);
-                        for (GetOrderProjectItem getOrderProjectItem : getOrderProjectItemss) {
-                            getOrderProjectItems.add(getOrderProjectItem);
-                        }
-                        if (getOrderProjectItems.size() == 1) {
-                            buttons[0].setVisibility(View.VISIBLE);
-                            buttons[0].setText(getOrderProjectItems.get(0).getName());
-                        } else if (getOrderProjectItems.size() == 2) {
-                            buttons[0].setVisibility(View.VISIBLE);
-                            buttons[1].setVisibility(View.VISIBLE);
-                            buttons[0].setText(getOrderProjectItems.get(0).getName());
-                            buttons[1].setText(getOrderProjectItems.get(1).getName());
-                        } else if (getOrderProjectItems.size() == 3) {
-                            buttons[0].setVisibility(View.VISIBLE);
-                            buttons[1].setVisibility(View.VISIBLE);
-                            buttons[2].setVisibility(View.VISIBLE);
-                            buttons[0].setText(getOrderProjectItems.get(0).getName());
-                            buttons[1].setText(getOrderProjectItems.get(1).getName());
-                            buttons[2].setText(getOrderProjectItems.get(2).getName());
-                        } else {
-                            buttons[0].setVisibility(View.VISIBLE);
-                            buttons[1].setVisibility(View.VISIBLE);
-                            buttons[2].setVisibility(View.VISIBLE);
-                            buttons[3].setVisibility(View.VISIBLE);
-                            buttons[0].setText(getOrderProjectItems.get(0).getName());
-                            buttons[1].setText(getOrderProjectItems.get(1).getName());
-                            buttons[2].setText(getOrderProjectItems.get(2).getName());
-                            buttons[3].setText(getOrderProjectItems.get(3).getName());
-                        }
-//                        for (int i = 0; i < getOrderProjectItems.get(0).getConstructionPositions().length; i++) {
-//                            getOrderProjectItems.get(0).getConstructionPositions()[i].setProjectId(getOrderProjectItems.get(0).getId());
+//                        GetOrderProjectItem[] getOrderProjectItemss = JSON.parseObject(getOrderProjectItemEntity.getMessage().toString(), GetOrderProjectItem[].class);
+//                        for (GetOrderProjectItem getOrderProjectItem : getOrderProjectItemss) {
+//                            getOrderProjectItems.add(getOrderProjectItem);
 //                        }
+//                        if (getOrderProjectItems.size() == 1) {
+//                            buttons[0].setVisibility(View.VISIBLE);
+//                            buttons[0].setText(getOrderProjectItems.get(0).getName());
+//                        } else if (getOrderProjectItems.size() == 2) {
+//                            buttons[0].setVisibility(View.VISIBLE);
+//                            buttons[1].setVisibility(View.VISIBLE);
+//                            buttons[0].setText(getOrderProjectItems.get(0).getName());
+//                            buttons[1].setText(getOrderProjectItems.get(1).getName());
+//                        } else if (getOrderProjectItems.size() == 3) {
+//                            buttons[0].setVisibility(View.VISIBLE);
+//                            buttons[1].setVisibility(View.VISIBLE);
+//                            buttons[2].setVisibility(View.VISIBLE);
+//                            buttons[0].setText(getOrderProjectItems.get(0).getName());
+//                            buttons[1].setText(getOrderProjectItems.get(1).getName());
+//                            buttons[2].setText(getOrderProjectItems.get(2).getName());
+//                        } else {
+//                            buttons[0].setVisibility(View.VISIBLE);
+//                            buttons[1].setVisibility(View.VISIBLE);
+//                            buttons[2].setVisibility(View.VISIBLE);
+//                            buttons[3].setVisibility(View.VISIBLE);
+//                            buttons[0].setText(getOrderProjectItems.get(0).getName());
+//                            buttons[1].setText(getOrderProjectItems.get(1).getName());
+//                            buttons[2].setText(getOrderProjectItems.get(2).getName());
+//                            buttons[3].setText(getOrderProjectItems.get(3).getName());
+//                        }
+////                        for (int i = 0; i < getOrderProjectItems.get(0).getConstructionPositions().length; i++) {
+////                            getOrderProjectItems.get(0).getConstructionPositions()[i].setProjectId(getOrderProjectItems.get(0).getId());
+////                        }
+//                        buttons[0].setBackgroundDrawable(getResources().getDrawable(R.drawable.corner_choice_btn));
+//                        buttons[0].setTextColor(getResources().getColor(R.color.main_white));
+//                        buttons[1].setBackgroundDrawable(getResources().getDrawable(R.drawable.corner_default_btn));
+//                        buttons[1].setTextColor(getResources().getColor(R.color.lightgray));
+//                        buttons[2].setBackgroundDrawable(getResources().getDrawable(R.drawable.corner_default_btn));
+//                        buttons[2].setTextColor(getResources().getColor(R.color.lightgray));
+//                        buttons[3].setBackgroundDrawable(getResources().getDrawable(R.drawable.corner_default_btn));
+//                        buttons[3].setTextColor(getResources().getColor(R.color.lightgray));
+
+                        listViewAdapter.notifyDataSetChanged();
+                        setListViewHeightBasedOnChildren(listview_workItem);
+
+                        consumeGridViewAdapter.notifyDataSetChanged();
+                    } else {
+                        T.show(getContext(), R.string.loading_data_failure);
+                    }
+                }
+            }
+        });
+    }
+
+
+    /**
+     * 获取当前订单的报价产品列表
+     */
+    private void getOrderProductList() {
+        Http.getInstance().getTaskToken(NetURL.getOrderProductList(orderInfo.getId()), "", GetOrderProjectItemEntity.class, new OnResult() {
+            @Override
+            public void onResult(Object entity) {
+                if (entity == null) {
+                    T.show(getContext(), R.string.loading_data_failure);
+                    return;
+                }
+                if (entity instanceof GetOrderProjectItemEntity) {
+                    GetOrderProjectItemEntity getOrderProjectItemEntity = (GetOrderProjectItemEntity) entity;
+                    if (getOrderProjectItemEntity.isStatus()) {
+                        ProductData[] datas = JSON.parseObject(getOrderProjectItemEntity.getMessage().toString(), ProductData[].class);
+                        GetOrderProjectItem item = new GetOrderProjectItem();
+                        item.setId(Integer.parseInt(orderInfo.getType()));
+                        buttons[0].setVisibility(View.VISIBLE);
+                        buttons[0].setText(getProject(orderInfo.getType()));
+                        if (productDatas != null && productDatas.size() > 0) {
+                            productDatas.clear();
+                        }
+                        for (ProductData data : datas) {
+                            productDatas.add(data);
+                        }
+
                         buttons[0].setBackgroundDrawable(getResources().getDrawable(R.drawable.corner_choice_btn));
                         buttons[0].setTextColor(getResources().getColor(R.color.main_white));
                         buttons[1].setBackgroundDrawable(getResources().getDrawable(R.drawable.corner_default_btn));
@@ -1047,39 +974,17 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                         buttons[2].setTextColor(getResources().getColor(R.color.lightgray));
                         buttons[3].setBackgroundDrawable(getResources().getDrawable(R.drawable.corner_default_btn));
                         buttons[3].setTextColor(getResources().getColor(R.color.lightgray));
-                        listViewAdapter = new ListViewAdapter(technicians, getOrderProjectItems.get(0).getConstructionPositions(), WorkFinishActivity.this,getOrderProjectItems.get(0).getId());
+
+                        listViewAdapter.notifyDataSetChanged();
                         listview_workItem.setAdapter(listViewAdapter);
                         setListViewHeightBasedOnChildren(listview_workItem);
-                        if (getOrderProjectItems.get(0).getId() == 4){
+
+                        if (orderInfo.getType().equals("4")) {
                             gv_consume.setNumColumns(2);
-                        }else {
+                        } else {
                             gv_consume.setNumColumns(4);
                         }
-                        consumeGridViewAdapter = new ConsumeGridViewAdapter(getOrderProjectItems.get(0).getConstructionPositions(), getOrderProjectItems.get(0).getId(), WorkFinishActivity.this);
-                        gv_consume.setAdapter(consumeGridViewAdapter);
-                        listViewAdapter.setOnGetHeight(new ListViewAdapter.OnGetHeight() {
-                            @Override
-                            public void getHeight() {
-                                for (int i = 0; i < getOrderProjectItems.size(); i++) {
-                                    for (int j = 0; j < getOrderProjectItems.get(i).getConstructionPositions().length; j++) {
-                                        getOrderProjectItems.get(i).getConstructionPositions()[j].setTechnicianId(-1);
-                                        getOrderProjectItems.get(i).getConstructionPositions()[j].setTotal(0);
-                                        getOrderProjectItems.get(i).getConstructionPositions()[j].setCheck(false);
-                                    }
-                                }
-                                listViewAdapter.notifyDataSetChanged();
-                                consumeGridViewAdapter.notifyDataSetChanged();
-                                setListViewHeightBasedOnChildren(listview_workItem);
-                            }
-                        });
-//                        listViewAdapter.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View view) {
-//                                technicians.remove(listViewAdapter.getCheck());
-//                                listViewAdapter.notifyDataSetChanged();
-//                                setListViewHeightBasedOnChildren(listview_workItem);
-//                            }
-//                        });
+                        consumeGridViewAdapter.notifyDataSetChanged();
                     } else {
                         T.show(getContext(), R.string.loading_data_failure);
                     }
@@ -1137,19 +1042,19 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
     private int uploadNum = 0;
     private int countNum;
 
-    private class MyAsyncTask extends AsyncTask<String,Void,String>{
+    private class MyAsyncTask extends AsyncTask<String, Void, String> {
         private int index;
         private Uri uri;
 
 
-        public MyAsyncTask(int index,Uri uri) {
+        public MyAsyncTask(int index, Uri uri) {
             this.index = index;
             this.uri = uri;
         }
 
         @Override
         protected String doInBackground(String... params) {
-            System.out.println("task"+ (index + 1) + " is run " + DateCompute.timeStampToDate(System.currentTimeMillis()) + " thread id "+ Thread.currentThread().getId());
+            System.out.println("task" + (index + 1) + " is run " + DateCompute.timeStampToDate(System.currentTimeMillis()) + " thread id " + Thread.currentThread().getId());
             try {
                 String json = HttpClientInCar.uploadImage(params[0], params[1]);
                 return json;
@@ -1163,10 +1068,10 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             uploadNum++;
-            if (uploadNum == countNum){
+            if (uploadNum == countNum) {
                 cancelDialog();
             }
-            System.out.println("task"+ (index + 1) + " is finish " + DateCompute.timeStampToDate(System.currentTimeMillis()));
+            System.out.println("task" + (index + 1) + " is finish " + DateCompute.timeStampToDate(System.currentTimeMillis()));
             if (s == null) {
 //                T.show(context, getString(R.string.upload_image_failed) + index);
                 T.show(context, "第" + (index + 1) + "张图片上传失败，请重新选择上传");
@@ -1185,5 +1090,19 @@ public class WorkFinishActivity extends BaseActivity implements BaseStandardFrag
                 }
             }
         }
+    }
+
+
+    public String getProject(String type) {
+        if ("1".equals(type)) {
+            return "隔热膜";
+        } else if ("2".equals(type)) {
+            return "隐形车衣";
+        } else if ("3".equals(type)) {
+            return "车身改色";
+        } else if ("4".equals(type)) {
+            return "美容清洁";
+        } else
+            return null;
     }
 }

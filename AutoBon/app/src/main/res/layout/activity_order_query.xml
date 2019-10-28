@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/main_white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/r1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp45"
+        android:background="@color/main_orange">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="@dimen/dp35"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="@dimen/dp10"
+            android:scaleType="centerInside"
+            android:src="@mipmap/default_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/order_query"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp18" />
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/main_white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="@dimen/dp110"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingBottom="@dimen/dp10"
+            android:paddingLeft="@dimen/dp10"
+            android:paddingTop="@dimen/dp10"
+            android:text="@string/license"
+            android:textColor="@color/darkgray"
+            android:textSize="@dimen/sp15" />
+
+        <EditText
+            android:id="@+id/ed_license"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="@dimen/dp20"
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:maxLength="27"
+            android:paddingRight="@dimen/dp10"
+            android:textColor="@color/darkgray"
+            android:textSize="@dimen/sp15" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#F0F0F0" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/main_white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="@dimen/dp110"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingBottom="@dimen/dp10"
+            android:paddingLeft="@dimen/dp10"
+            android:paddingTop="@dimen/dp10"
+            android:text="@string/vin"
+            android:textColor="@color/darkgray"
+            android:textSize="@dimen/sp15" />
+
+        <EditText
+            android:id="@+id/ed_vin"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="@dimen/dp20"
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:maxLength="11"
+            android:paddingRight="@dimen/dp10"
+            android:textColor="@color/darkgray"
+            android:textSize="@dimen/sp15" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#F0F0F0" />
+
+    <Button
+        android:id="@+id/btn_query"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp5"
+        android:layout_marginLeft="@dimen/dp15"
+        android:layout_marginRight="@dimen/dp15"
+        android:layout_marginTop="@dimen/dp35"
+        android:background="@drawable/login_btn_selector"
+        android:padding="@dimen/dp10"
+        android:text="@string/query"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp18" />
+
+</LinearLayout>

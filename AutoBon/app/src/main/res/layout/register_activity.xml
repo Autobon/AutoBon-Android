@@ -1,209 +1,242 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_white">
+    android:background="@color/main_white"
+    android:orientation="vertical">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp45"
         android:background="@color/main_orange">
+
         <ImageView
             android:id="@+id/iv_back"
             android:layout_width="@dimen/dp35"
             android:layout_height="match_parent"
-            android:padding="@dimen/dp10"
-            android:src="@mipmap/default_back"
-            android:scaleType="centerInside"
             android:clickable="true"
-            android:focusable="true"/>
+            android:focusable="true"
+            android:padding="@dimen/dp10"
+            android:scaleType="centerInside"
+            android:src="@mipmap/default_back" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/text_reg"
-            android:textSize="@dimen/sp18"
             android:textColor="@android:color/white"
-            android:textStyle="bold"/>
+            android:textSize="@dimen/sp18"
+            android:textStyle="bold" />
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp50"
         android:layout_marginTop="@dimen/dp30">
+
         <ImageView
             android:id="@+id/iv_phone"
             android:layout_width="@dimen/dp25"
             android:layout_height="@dimen/dp25"
-            android:src="@mipmap/iv_phone"
-            android:scaleType="centerInside"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp35"
-            android:layout_centerVertical="true"/>
+            android:scaleType="centerInside"
+            android:src="@mipmap/iv_phone" />
+
         <EditText
             android:id="@+id/et_phone"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp40"
-            android:background="@null"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp15"
             android:layout_marginRight="@dimen/dp60"
             android:layout_toRightOf="@+id/iv_phone"
+            android:background="@null"
+            android:hint="@string/hint_text_phone"
             android:inputType="number"
             android:maxLength="11"
-            android:hint="@string/hint_text_phone"
-            android:layout_centerVertical="true"
-            android:textColorHint="@color/lightgray"
             android:textColor="@color/darkgray"
-            android:textSize="@dimen/sp15"/>
+            android:textColorHint="@color/lightgray"
+            android:textSize="@dimen/sp15" />
+
         <ImageView
             android:id="@+id/iv_clear"
             android:layout_width="@dimen/dp20"
             android:layout_height="@dimen/dp20"
-            android:scaleType="centerInside"
-            android:src="@mipmap/iv_delete"
-            android:layout_marginRight="@dimen/dp35"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp35"
             android:clickable="true"
             android:focusable="true"
-            android:visibility="invisible"/>
+            android:scaleType="centerInside"
+            android:src="@mipmap/iv_delete"
+            android:visibility="invisible" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_alignLeft="@id/et_phone"
             android:layout_below="@id/et_phone"
-            android:background="@color/line_color"
-            android:layout_marginRight="@dimen/dp35"/>
+            android:layout_marginRight="@dimen/dp35"
+            android:background="@color/line_color" />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp50">
+
         <ImageView
             android:id="@+id/iv_check"
             android:layout_width="@dimen/dp25"
             android:layout_height="@dimen/dp25"
-            android:src="@mipmap/iv_check"
-            android:scaleType="centerInside"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp35"
-            android:layout_centerVertical="true"/>
+            android:scaleType="centerInside"
+            android:src="@mipmap/iv_check" />
+
         <EditText
             android:id="@+id/et_code"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp40"
-            android:background="@null"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp15"
             android:layout_marginRight="@dimen/dp100"
             android:layout_toRightOf="@+id/iv_check"
+            android:background="@null"
             android:hint="@string/hint_text_code"
-            android:layout_centerVertical="true"
-            android:textColorHint="@color/lightgray"
-            android:textColor="@color/darkgray"
-            android:textSize="@dimen/sp15"
             android:inputType="number"
-            android:maxLength="6"/>
+            android:maxLength="6"
+            android:textColor="@color/darkgray"
+            android:textColorHint="@color/lightgray"
+            android:textSize="@dimen/sp15" />
+
         <Button
             android:id="@+id/btn_send_code"
             android:layout_width="@dimen/dp65"
             android:layout_height="@dimen/dp25"
-            android:layout_marginRight="@dimen/dp35"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp35"
             android:background="@drawable/check_btn"
+            android:gravity="center"
             android:text="@string/text_get_code"
-            android:textSize="@dimen/sp12"
             android:textColor="@color/main_orange"
-            android:gravity="center"/>
+            android:textSize="@dimen/sp12" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_alignLeft="@id/et_code"
             android:layout_below="@id/et_code"
-            android:background="@color/line_color"
-            android:layout_marginRight="@dimen/dp35"/>
+            android:layout_marginRight="@dimen/dp35"
+            android:background="@color/line_color" />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp50">
+
         <ImageView
             android:id="@+id/iv_pwd"
             android:layout_width="@dimen/dp25"
             android:layout_height="@dimen/dp25"
-            android:src="@mipmap/img_pwd"
-            android:scaleType="centerInside"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp35"
-            android:layout_centerVertical="true"/>
+            android:scaleType="centerInside"
+            android:src="@mipmap/img_pwd" />
+
         <EditText
             android:id="@+id/et_pwd"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp40"
-            android:background="@null"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp15"
             android:layout_marginRight="@dimen/dp60"
             android:layout_toRightOf="@+id/iv_pwd"
+            android:background="@null"
+            android:hint="@string/hint_text_pwd"
             android:inputType="textPassword"
             android:maxLength="18"
-            android:hint="@string/hint_text_pwd"
-            android:layout_centerVertical="true"
-            android:textColorHint="@color/lightgray"
             android:textColor="@color/darkgray"
-            android:textSize="@dimen/sp15"/>
+            android:textColorHint="@color/lightgray"
+            android:textSize="@dimen/sp15" />
+
         <ImageView
             android:id="@+id/iv_eye"
             android:layout_width="@dimen/dp20"
             android:layout_height="@dimen/dp20"
-            android:scaleType="centerInside"
-            android:src="@mipmap/eye_hidden"
-            android:layout_marginRight="@dimen/dp35"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp35"
             android:clickable="true"
-            android:focusable="true"/>
+            android:focusable="true"
+            android:scaleType="centerInside"
+            android:src="@mipmap/eye_hidden" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_alignLeft="@id/et_pwd"
             android:layout_below="@id/et_pwd"
             android:layout_marginRight="@dimen/dp35"
-            android:background="@color/line_color"/>
+            android:background="@color/line_color" />
     </RelativeLayout>
 
     <Button
         android:id="@+id/register_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp25"
         android:layout_marginLeft="@dimen/dp35"
         android:layout_marginRight="@dimen/dp35"
         android:layout_marginTop="@dimen/dp15"
-        android:layout_marginBottom="@dimen/dp10"
-        android:paddingTop="@dimen/dp10"
-        android:paddingBottom="@dimen/dp10"
-        android:text="@string/btn_text_submit"
-        android:gravity="center"
-        android:textSize="@dimen/sp15"
         android:background="@drawable/login_btn_selector"
-        android:textColor="@android:color/white"/>
+        android:gravity="center"
+        android:paddingBottom="@dimen/dp10"
+        android:paddingTop="@dimen/dp10"
+        android:text="@string/btn_text_submit"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/sp15" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
-        <TextView
-            android:id="@+id/tv_tips"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/dp35"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/cb_btn_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:textSize="@dimen/sp10"
+            android:button="@drawable/radio_selector"
+            android:checked="true"
+            android:paddingLeft="@dimen/dp10"
             android:text="@string/tips"
-            android:textColor="@color/line_color"/>
+            android:textColor="@color/line_color"
+            android:textSize="@dimen/sp10"/>
+
+        <!--<TextView-->
+            <!--android:id="@+id/tv_tips"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:singleLine="true"-->
+            <!--android:text="@string/tips"-->
+            <!--android:layout_marginLeft="@dimen/dp10"-->
+            <!--android:textColor="@color/line_color"-->
+            <!--android:textSize="@dimen/sp10" />-->
+
         <TextView
             android:id="@+id/tv_protocal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
             android:singleLine="true"
-            android:textSize="@dimen/sp10"
             android:text="@string/text_protocal"
             android:textColor="@color/main_orange"
-            android:clickable="true"
-            android:focusable="true"/>
+            android:textSize="@dimen/sp10" />
     </LinearLayout>
 
 </LinearLayout>

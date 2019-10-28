@@ -2,6 +2,7 @@ package cn.com.incardata.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,6 +86,7 @@ public class OrderWaitNewAdapter extends BaseAdapter{
 //        }
 
         String type = "";
+        Log.e("orderType",orderList.get(position).getType() + "");
         String[] types = (orderList.get(position).getType()).split(",");
         for (int i = 0; i < types.length; i++){
             type = type + getProject(types[i]) + ",";

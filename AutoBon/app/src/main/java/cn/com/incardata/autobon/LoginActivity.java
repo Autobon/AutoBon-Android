@@ -266,7 +266,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 SharedPre.setSharedPreferences(context, AutoCon.FLAG_PASSWORD, this.password);  //保存密码
                 Login_Data login_data = JSON.parseObject(loginEntity.getMessage().toString(), Login_Data.class);
 
-                MyApplication.getInstance().setUserId(login_data.getId());
+                MyApplication.getInstance().setLoginUserId(login_data.getId());
                 //TODO 跳转主页
                 String status = login_data.getStatus();
                 if (StatusCode.VERIFIED.equals(status)) {

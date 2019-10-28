@@ -15,6 +15,7 @@ import java.util.TreeMap;
 import cn.com.incardata.autobon.R;
 import cn.com.incardata.http.response.ConstructionPosition;
 import cn.com.incardata.http.response.GetOrderProjectItem;
+import cn.com.incardata.http.response.ProductData;
 import cn.com.incardata.http.response.Technician;
 
 /**
@@ -22,7 +23,7 @@ import cn.com.incardata.http.response.Technician;
  * Created by yang on 2016/11/2.
  */
 public class GridViewAdapter extends BaseAdapter {
-    private ConstructionPosition[] list;
+    private List<ProductData> list;
     private Activity context;
     private Technician user;
     private int checkId;
@@ -32,7 +33,7 @@ public class GridViewAdapter extends BaseAdapter {
     public GridViewAdapter() {
     }
 
-    public GridViewAdapter(Activity context, ConstructionPosition[] list, Technician user,int workItemId ) {
+    public GridViewAdapter(Activity context, List<ProductData> list, Technician user,int workItemId ) {
         this.context = context;
         this.list = list;
         this.user = user;
@@ -47,26 +48,35 @@ public class GridViewAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return list.length;
+        if (list == null){
+            return 0;
+        }
+        return list.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return list[position];
+        if (list == null){
+            return null;
+        }
+        return list.get(position);
     }
 
     @Override
     public long getItemId(int position) {
+        if (list == null){
+            return 0;
+        }
         return position;
     }
 
     @Override
     public View getView(final int position, View view, ViewGroup viewGroup) {
 
-        final ConstructionPosition item = list[position];
+        final ProductData item = list.get(position);
         View view1 = View.inflate(context, R.layout.rg_tab_grid_item, null);
         final Button btn = (Button) view1.findViewById(R.id.rg_btn);
-        btn.setText(item.getName());
+        btn.setText(item.getConstructionPositionName());
 
         if (workItemId == 4){
             btn.setSingleLine();
@@ -106,7 +116,7 @@ public class GridViewAdapter extends BaseAdapter {
             public void onClick(View view) {
                 if (item.getId() == 18) {
                     if (!item.isCheck()) {
-                        for (ConstructionPosition constructionPosition : list) {
+                        for (ProductData constructionPosition : list) {
                             if (constructionPosition.getId() == 18) {
                                 btn.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.corner_choice_btn));
                                 btn.setTextColor(context.getResources().getColor(R.color.main_white));
@@ -123,7 +133,7 @@ public class GridViewAdapter extends BaseAdapter {
                         }
                     } else {
                         if (item.getTechnicianId() == user.getId()) {
-                            for (ConstructionPosition constructionPosition : list) {
+                            for (ProductData constructionPosition : list) {
                                 btn.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.corner_default_btn));
                                 btn.setTextColor(context.getResources().getColor(R.color.gray_A3));
                                 constructionPosition.setTechnicianId(-1);
@@ -186,7 +196,7 @@ public class GridViewAdapter extends BaseAdapter {
     }
 
     public void setUserId(int userId) {
-        for (ConstructionPosition constructionPosition : list) {
+        for (ProductData constructionPosition : list) {
 //            if (constructionPosition.getTechnicianId() == userId) {
                 constructionPosition.setTechnicianId(-1);
                 constructionPosition.setCheck(false);

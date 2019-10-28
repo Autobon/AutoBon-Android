@@ -21,6 +21,7 @@ import cn.com.incardata.autobon.R;
 import cn.com.incardata.autobon.WorkFinishActivity;
 import cn.com.incardata.http.response.ConstructionPosition;
 import cn.com.incardata.http.response.GetOrderProjectItem;
+import cn.com.incardata.http.response.ProductData;
 import cn.com.incardata.http.response.Technician;
 import cn.com.incardata.http.response.WorkFinish;
 
@@ -32,7 +33,7 @@ public class ListViewAdapter extends BaseAdapter {
     private List<Technician> users;
     //    private List<GetOrderProjectItem> items;
     private Activity context;
-    private ConstructionPosition[] items;
+    private List<ProductData> items;
     private int check;
     private GridViewAdapter adapter1;
 
@@ -49,7 +50,7 @@ public class ListViewAdapter extends BaseAdapter {
 
     private HashMap<Integer, GridViewAdapter> mMapGridView;
 
-    public ListViewAdapter(List<Technician> users, ConstructionPosition[] items, Activity context,int workItemId) {
+    public ListViewAdapter(List<Technician> users, List<ProductData> items, Activity context,int workItemId) {
         this.users = users;
         this.items = items;
         this.context = context;
@@ -94,7 +95,7 @@ public class ListViewAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        if (users.get(position).getId() == MyApplication.getInstance().getUserId()) {
+        if (users.get(position).getId() == MyApplication.getInstance().getLoginUserId()) {
             holder.delect_tech.setVisibility(View.GONE);
         }
         holder.delect_tech.setOnClickListener(new View.OnClickListener() {

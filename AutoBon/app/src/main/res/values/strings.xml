@@ -38,8 +38,10 @@
     <string name="btn_text_send_code">获取验证</string>
     <string name="btn_text_send_code_repeat">再次获取</string>
     <string name="btn_text_submit">提交</string>
-    <string name="tips">点击“提交”代表本人已阅读并同意</string>
-    <string name="text_protocal">《车邻邦技师服务协议》</string>
+    <!--<string name="tips">点击“提交”代表本人已阅读并同意</string>-->
+    <string name="tips">我已详细阅读并同意</string>
+    <!--<string name="text_protocal">《车邻邦技师服务协议》</string>-->
+    <string name="text_protocal">《共享经济合作伙伴协议》</string>
     <string name="register_failed_tips">注册失败</string>
     <string name="register_success_tips">注册成功</string>
     <string name="valid_code_error_tips">验证码错误</string>
@@ -381,6 +383,7 @@
     <string name="bank_address1">开户行地址</string>
     <string name="check_work_info">查看施工详情</string>
     <string name="service_agreement">服务协议</string>
+    <string name="share_agreement">共享经济合作伙伴协议</string>
     <string name="level_message">一星代表初学，二星代表生疏，三星代表熟练，四星代表优秀，五星代表大师</string>
     <string name="material_consume">材料耗损</string>
     <string name="material_scrap">材料报废</string>
@@ -398,4 +401,10 @@
     <string name="working">施工中</string>
     <string name="uncommented">待评价</string>
     <string name="yetcommented">已评价</string>
+    <string name="query">查询</string>
+    <string name="order_query">订单查询</string>
+    <string name="license">车牌号</string>
+    <string name="vin">车架号</string>
+    <string name="license_str">车牌号：</string>
+    <string name="vin_str">车架号：</string>
 </resources>

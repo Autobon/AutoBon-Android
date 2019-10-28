@@ -80,4 +80,5 @@ public class BaseActivity extends Activity{
         cancelDialog();
         dialog = null;
     }
+
 }

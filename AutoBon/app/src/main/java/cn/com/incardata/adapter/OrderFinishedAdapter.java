@@ -71,6 +71,8 @@ public class OrderFinishedAdapter extends BaseAdapter {
             holder.money = (TextView) convertView.findViewById(R.id.money);
             holder.moneyState = (TextView) convertView.findViewById(R.id.money_state);
             holder.orderNum = (TextView) convertView.findViewById(R.id.order_number);
+            holder.tv_license = (TextView) convertView.findViewById(R.id.tv_license);
+            holder.tv_vin = (TextView) convertView.findViewById(R.id.tv_vin);
             holder.buttons[0] = (TextView) convertView.findViewById(R.id.btn1);
             holder.buttons[1] = (TextView) convertView.findViewById(R.id.btn2);
             holder.buttons[2] = (TextView) convertView.findViewById(R.id.btn3);
@@ -86,6 +88,19 @@ public class OrderFinishedAdapter extends BaseAdapter {
 
         holder.orderNum.setText(R.string.order_serial_number);
         holder.orderNum.append(mList.get(position).getOrderNum());
+        holder.tv_license.setText(R.string.license_str);
+        holder.tv_vin.setText(R.string.vin_str);
+        if (!TextUtils.isEmpty(mList.get(position).getLicense())){
+            holder.tv_license.append(mList.get(position).getLicense());
+        }else {
+            holder.tv_license.append("");
+        }
+        if (!TextUtils.isEmpty(mList.get(position).getVin())){
+            holder.tv_vin.append(mList.get(position).getVin());
+        }else {
+            holder.tv_vin.append("");
+        }
+
         holder.workTime.setText(DateCompute.getDate(mList.get(position).getStartTime()));
         String[] types = (mList.get(position).getType()).split(",");
         for (int i = 0; i < 4; i++){
@@ -163,6 +178,8 @@ public class OrderFinishedAdapter extends BaseAdapter {
         TextView money;
         TextView moneyState;
         TextView orderNum;
+        TextView tv_license;
+        TextView tv_vin;
         TextView[] buttons = new TextView[4];
 //        ImageView orderImage;
         TextView workTime;

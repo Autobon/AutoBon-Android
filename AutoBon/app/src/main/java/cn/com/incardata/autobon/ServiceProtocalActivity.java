@@ -36,7 +36,8 @@ public class ServiceProtocalActivity extends BaseActivity {
         });
 
         webView = (WebView) findViewById(R.id.webview);
-        mUrl = "file:///android_asset/technicianServiceProtocol.html";
+                mUrl = "file:///android_asset/protocol.html";
+//        mUrl = "file:///android_asset/technicianServiceProtocol.html";
         webViewSettings = webView.getSettings();
 
 
